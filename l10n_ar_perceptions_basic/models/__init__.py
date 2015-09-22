@@ -16,42 +16,9 @@
 #
 ##############################################################################
 
-{
-
-    "name": "Perceptions",
-
-    "summary": """Percepciones""",
-
-    "description": """Percepciones""",
-
-    "author": "OPENPYME SRL",
-
-    "website": "www.openpyme.com.ar",
-
-    "category": "Account",
-
-    "version": "1.0",
-
-    "depends": [
-
-        "base",
-        "account",
-        "account_accountant",
-        "l10n_ar_point_of_sale",
-
-    ],
-
-    "data": [
-
-        "data/security.xml",
-        "data/perception_data.xml",
-        "security/ir.model.access.csv",
-        "views/account_invoice.xml",
-        "views/perception_perception.xml",
-        "views/perception_tax_line.xml",
-
-    ],
-
-}
+import perception_tax_line
+import account_invoice
+import account_invoice_tax
+import perception_perception
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

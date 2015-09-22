@@ -16,35 +16,28 @@
 #
 ##############################################################################
 
-from openerp import api, models, fields
-import time
-import logging
-_logger = logging.getLogger(__name__)
+from openerp import models, fields, api
+from openerp.exceptions import Warning
 
-class account_invoice_tax(models.Model):
+
+class AccountInvoiceTax(models.Model):
 
     _inherit = "account.invoice.tax"
 
-    # Aca le agregamos las account_invoice_taxes pertenecientes a las Percepciones
+    #~ SE AGREGAN LOS IMPUESTOS A LA FACTURA PERTENECIENTES A LA PERCEPCION.
+    @api.v8
     def hook_compute_invoice_taxes(self, invoice, tax_grouped):
 
-
-        # Si se hacen calculo automatico de Percepciones,
-        # esta funcion ya no tiene sentido
-        # Esta key se setea en el modulo l10n_ar_perceptions
         auto = self.env.context.get('auto', False)
 
         if auto:
-            return super(account_invoice_tax, self).hook_compute_invoice_taxes(invoice, tax_grouped)
-
-        percep_tax_line_obj = self.env['perception.tax.line']
+            return super(AccountInvoiceTax, self).hook_compute_invoice_taxes(invoice, tax_grouped)
 
         currency = invoice.currency_id.with_context(date=invoice.date_invoice or fields.Date.context_today(invoice))
-        company_currency = invoice.company_id.currency_id
 
-        # Recorremos las percepciones y las computamos como account.invoice.tax
+        #~ SE COMPUTAN LAS PERCEPCIONES COMO IMPUESTOS
         for line in invoice.perception_ids:
-            val={}
+            val = {}
             tax = line.perception_id.tax_id
             val['invoice_id'] = invoice.id
             val['name'] = line.name
@@ -55,22 +48,22 @@ class account_invoice_tax(models.Model):
             val['base'] = line.base
             val['tax_id'] = tax.id
 
-            # Computamos tax_amount y base_amount
-            tax_amount, base_amount = percep_tax_line_obj._compute(line.perception_id.id, val['base'], val['amount'])
+            #~ CALCULO DE TAX AMOUNT Y BASE AMOUNT
+            tax_amount, base_amount = line._compute(invoice, val['base'], val['amount'])
 
-            if invoice.type in ('out_invoice','in_invoice'):
-                val['base_code_id'] = tax.base_code_id.id
-                val['tax_code_id'] = tax.tax_code_id.id
-                val['base_amount'] = currency.compute(val['base'] * tax['base_sign'], company_currency, round=False)
-                val['tax_amount'] = currency.compute(val['amount'] * tax['tax_sign'], company_currency, round=False)
-                val['account_id'] = tax.account_collected_id.id or line.account_id.id
+            if invoice.type in ('out_invoice', 'in_invoice'):
+                val['base_code_id'] = line.base_code_id.id
+                val['tax_code_id'] = line.tax_code_id.id
+                val['base_amount'] = base_amount
+                val['tax_amount'] = tax_amount
+                val['account_id'] = tax.account_collected_id.id
                 val['account_analytic_id'] = tax.account_analytic_collected_id.id
             else:
                 val['base_code_id'] = tax.ref_base_code_id.id
                 val['tax_code_id'] = tax.ref_tax_code_id.id
-                val['base_amount'] = currency.compute(val['base'] * tax['ref_base_sign'], company_currency, round=False)
-                val['tax_amount'] = currency.compute(val['amount'] * tax['ref_tax_sign'], company_currency, round=False)
-                val['account_id'] = tax.account_paid_id.id or line.account_id.id
+                val['base_amount'] = base_amount
+                val['tax_amount'] = tax_amount
+                val['account_id'] = tax.account_paid_id.id
                 val['account_analytic_id'] = tax.account_analytic_paid_id.id
 
             key = (val['tax_code_id'], val['base_code_id'], val['account_id'])
@@ -88,6 +81,9 @@ class account_invoice_tax(models.Model):
             t['base_amount'] = currency.round(t['base_amount'])
             t['tax_amount'] = currency.round(t['tax_amount'])
 
-        return super(account_invoice_tax, self).hook_compute_invoice_taxes(invoice, tax_grouped)
+        return super(AccountInvoiceTax, self).hook_compute_invoice_taxes(invoice, tax_grouped)
 
-account_invoice_tax()
+AccountInvoiceTax()
+
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
