@@ -38,7 +38,7 @@ class perception_perception(models.Model):
     tax_id = fields.Many2one('account.tax', string='Tax', required=True, help="Tax configuration for this perception")
     type_tax_use = fields.Selection(related= 'tax_id.type_tax_use', string='Tax Application', readonly=True)
     state_id = fields.Many2one('res.country.state', string='State/Province')
-    afip_code = fields.Char('Afip Code')
+    afip_code = fields.Char(string='Afip Code',)
 
     type = fields.Selection([('vat', 'VAT'),
                               ('gross_income', 'Gross Income'),
