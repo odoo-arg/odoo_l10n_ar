@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record model="ir.ui.view" id="view_vendor_l10n_ar_receipt_form">
+            <field name="name">account.voucher.l10n_ar.receipt.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <field name="amount" position="replace"/>
+                <field name="journal_id" position="after">
+                    <field name="amount" class="oe_inline"
+                           string="Paid Amount"
+                           widget="monetary" options="{'currency_field': 'currency_id'}"
+                           on_change="onchange_amount(amount, payment_rate, partner_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)"/>
+                </field>
+                <field name="journal_id" position="attributes">
+                    <attribute name="string">Journal</attribute>
+                </field>
+                <xpath expr="//page[@string='Payment Information']/label[@for='line_cr_ids']" position="before">
+                    <label for="payment_line_ids"/>
+                    <field name="payment_line_ids">
+                        <tree string="Payment Methods" editable="bottom" colors="gray:amount==0">
+                            <field name="name"/>
+                            <field name="currency" readonly="1"/>
+                            <field name="payment_mode_id" invisible="1"/>
+                            <field name="date"/>
+                            <field name="voucher_id" invisible="1"/>
+                            <field name="amount" sum="Total"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_vendor_l10n_ar_payment_form">
+            <field name="name">account.voucher.l10n_ar.payment.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="amount" position="replace"/>
+                <field name="journal_id" position="after">
+                    <field name="amount" class="oe_inline"
+                           string="Paid Amount"
+                           widget="monetary" options="{'currency_field': 'currency_id'}"
+                           on_change="onchange_amount(amount, payment_rate, partner_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)"/>
+                </field>
+                <field name="journal_id" position="attributes">
+                    <attribute name="string">Journal</attribute>
+                </field>
+                <xpath expr="//page[@string='Payment Information']/label[@for='line_dr_ids']" position="before">
+                    <label for="payment_line_ids"/>
+                    <field name="payment_line_ids">
+                        <tree string="Payment Methods" editable="bottom" colors="gray:amount==0">
+                            <field name="name"/>
+                            <field name="currency" readonly="1"/>
+                            <field name="payment_mode_id" invisible="1"/>                            
+                            <field name="date"/>
+                            <field name="voucher_id" invisible="1"/>
+                            <field name="amount" sum="Total"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

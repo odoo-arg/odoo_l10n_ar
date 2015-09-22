@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+
+    <data>
+
+        <!-- FORM VIEW -->
+        <record id="bank_reconcile_form_view" model="ir.ui.view">
+            <field name="name">bank.reconcile.form.view</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <sheet>
+                    <group string="Bank information">
+                        <group>
+                            <field name="name"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <button
+                            name="open_unreconciled_accounts"
+                            class="oe_inline oe_stat_button"
+                            icon="fa fa-check"
+                            type="object">
+                                <field string="Not conciled" name="unreconciled_count" widget="statinfo"/>
+                            </button>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Conciliations">
+                            <field name="bank_reconcile_line_ids">
+                                <tree create="false">
+                                    <field name="period_id"/>
+                                    <field name="last_balance"/>
+                                    <field name="current_balance"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </field>
+        </record>
+
+        <!-- TREE VIEW -->
+        <record id="bank_reconcile_tree_view" model="ir.ui.view">
+            <field name="name">bank.reconcile.tree.view</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="name"/>
+                <field name="account_id"/>
+                <field name="unreconciled_count"/>
+            </field>
+        </record>
+
+        <!-- VIEW DEFINITION -->
+        <record model="ir.actions.act_window" id="action_bank_reconcile">
+            <field name="name">Bank reconcile</field>
+            <field name="res_model">account.bank.reconcile</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_bank_reconcile" id="menu_bank_reconcile" name="Bank reconciles" parent="account.periodical_processing_reconciliation" />
+
+    </data>
+
+</openerp>
