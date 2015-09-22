@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+  <data>
+
+        <!-- Form View for perception.perception -->
+        <record id="view_perception_perception_form" model="ir.ui.view">
+            <field name="name">perception.perception.form</field>
+            <field name="model">perception.perception</field>
+            <field name="arch" type="xml">
+                <form string="Perception">
+                    <sheet>
+                        <div class="oe_left oe_avatar">
+                            <!--imagenes-->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                            <field name="name" select="1" placeholder="Nombre"/>
+                            </h1>
+                        </div>
+                        <div class="oe_right oe_button_box" name="button_box">
+                            <!--buttons-->
+                        </div>
+                        <separator/>
+                        <group>
+                            <group string="Configuration">
+                                <field name="tax_id"/>
+                                <field name="type_tax_use"/>
+                                <field name="type"/>
+                                <field name="jurisdiccion"/>
+                                <field name="state_id" attrs="{'invisible':[('jurisdiccion','!=','provincial')], 'required':[('jurisdiccion','=','provincial')]}"/>
+                                <field name="afip_code"/>
+                            </group>
+                        </group>
+                        <separator/>
+                        <notebook>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for perception.perception -->
+        <record id="view_perception_perception_tree" model="ir.ui.view">
+            <field name="name">perception.perception.tree</field>
+            <field name="model">perception.perception</field>
+            <field name="arch" type="xml">
+                <tree string="Perceptions">
+                    <field name="name"/>
+                    <field name="type" invisible="True"/>
+                    <field name="type_tax_use"/>
+                    <field name="jurisdiccion"/>
+                    <field name="state_id"/>
+                    <field name="afip_code"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Window Action para Perceptions -->
+        <record model="ir.actions.act_window" id="action_perception_perception_tree">
+            <field name="name">Percepcion</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">perception.perception</field>
+            <field name="help">Here you can define Perceptions and their configuration to be used in Customer Invoices or Supplier Invoices</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_perception_perception_tree_view" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_perception_perception_tree"/>
+            <field name="act_window_id" ref="action_perception_perception_tree"/>
+        </record>
+
+        <menuitem id="perception_perception_menu" name="Perceptions" parent="account.next_id_27" sequence="20" action="action_perception_perception_tree"/>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
