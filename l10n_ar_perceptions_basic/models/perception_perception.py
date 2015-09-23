@@ -38,7 +38,7 @@ class PerceptioPerception(models.Model):
 
     state_id = fields.Many2one("res.country.state", string="Provincia",)
 
-    afip_code = fields.Char(string="Afip Code")
+    afip_code = fields.Char(string="Codigo Afip")
 
     company_id = fields.Many2one(
         'res.company',
