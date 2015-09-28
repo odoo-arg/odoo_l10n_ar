@@ -247,12 +247,48 @@
             <field name="parent_id" ref="otros_creditos"/>
         </record>
 
-        <record model="account.account.template" id="saldo_favorable_ing_ganancias">
+        <record model="account.account.template" id="iva_credito_fiscal_exento">
+            <field name="type">other</field>
+            <field name="code">11406</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA crédito fiscal Exento</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="otros_creditos"/>
+        </record>
+
+        <record model="account.account.template" id="iva_credito_fiscal_no_gravado">
+            <field name="type">other</field>
+            <field name="code">11407</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA crédito fiscal No gravado</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="otros_creditos"/>
+        </record>
+
+        <record model="account.account.template" id="iva_credito_fiscal_25">
             <field name="type">other</field>
             <field name="code">11408</field>
-            <field name="reconcile" eval="True"/>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">Saldo a favor ingresos a las ganancias</field>
+            <field name="name">IVA crédito fiscal 2,5%</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="otros_creditos"/>
+        </record>
+
+        <record model="account.account.template" id="iva_credito_fiscal_5">
+            <field name="type">other</field>
+            <field name="code">11409</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA crédito fiscal 5%</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="otros_creditos"/>
+        </record>
+
+        <record model="account.account.template" id="iva_credito_fiscal_0">
+            <field name="type">other</field>
+            <field name="code">11410</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA crédito fiscal 0%</field>
+            <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="otros_creditos"/>
         </record>
 
@@ -485,29 +521,48 @@
             <field name="parent_id" ref="deudas_fiscales"/>
         </record>
 
-        <record model="account.account.template" id="iva_a_pagar">
+        <record model="account.account.template" id="iva_debito_fiscal_exento">
             <field name="type">other</field>
             <field name="code">21205</field>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">IVA a pagar</field>
+            <field name="name">IVA débito fiscal Exento</field>
             <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="deudas_fiscales"/>
         </record>
 
-        <record model="account.account.template" id="retencion_ganancias_a_depositar">
+        <record model="account.account.template" id="iva_debito_fiscal_no_gravado">
             <field name="type">other</field>
             <field name="code">21206</field>
-            <field name="reconcile" eval="True"/>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">Retención ganancias a depositar</field>
+            <field name="name">IVA débito fiscal No gravado</field>
+            <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="deudas_fiscales"/>
         </record>
 
-        <record model="account.account.template" id="provision_impuesto_a_las_ganancias">
+        <record model="account.account.template" id="iva_debito_fiscal_25">
             <field name="type">other</field>
             <field name="code">21207</field>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">Provision impuesto a las ganancias</field>
+            <field name="name">IVA débito fiscal 2,5%</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="deudas_fiscales"/>
+        </record>
+
+        <record model="account.account.template" id="iva_debito_fiscal_5">
+            <field name="type">other</field>
+            <field name="code">21208</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA débito fiscal 5%</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="deudas_fiscales"/>
+        </record>
+
+        <record model="account.account.template" id="iva_debito_fiscal_0">
+            <field name="type">other</field>
+            <field name="code">21209</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">IVA débito fiscal 0%</field>
+            <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="deudas_fiscales"/>
         </record>
 
@@ -937,6 +992,22 @@
             <field name="code">51403</field>
             <field name="user_type" ref="account_type_tax"/>
             <field name="name">Impuestos transacciones bancarias</field>
+            <field name="parent_id" ref="gastos_fiscales"/>
+        </record>
+
+        <record model="account.account.template" id="impuestos_internos">
+            <field name="type">other</field>
+            <field name="code">51404</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">Impuestos internos</field>
+            <field name="parent_id" ref="gastos_fiscales"/>
+        </record>
+
+        <record model="account.account.template" id="impuestos_enard">
+            <field name="type">other</field>
+            <field name="code">51405</field>
+            <field name="user_type" ref="account_type_tax"/>
+            <field name="name">Enard</field>
             <field name="parent_id" ref="gastos_fiscales"/>
         </record>
 
