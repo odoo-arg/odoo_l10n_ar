@@ -33,32 +33,36 @@ class stock_picking(osv.osv):
 
         invoice_obj = self.pool.get('account.invoice')
 
-        invoices = invoice_obj.browse(cr, uid, invoice_ids, context)
-
         for picking in self.browse(cr, uid, ids, context=context):
 
-            if picking.sale_id:
-                
-                order_to_pick = picking.sale_id
+            denom_id = False
+            res_pos = False
+            order_to_pick = False
 
-                if not order_to_pick.fiscal_position :
-                    raise osv.except_osv( _('Error'),
-                                          _('Check the Fiscal Position Configuration'))
-                                          
-                denom_id = order_to_pick.fiscal_position.denomination_id
+            if picking.sale_id and picking.sale_id.invoice_ids:
 
-                pos_ar_obj = self.pool.get('pos.ar')
+                for inv in picking.sale_id.invoice_ids:
 
-                res_pos = pos_ar_obj.search(cr, uid,[('warehouse_id', '=', order_to_pick.warehouse_id.id), ('denomination_id', '=', denom_id.id)])
+                    if inv.id in invoice_ids:
 
-                vals = {'denomination_id' : denom_id.id , 'pos_ar_id': res_pos[0] }
+                        order_to_pick = picking.sale_id
 
-                for invoice in invoices:
+                        if not order_to_pick.fiscal_position :
+                            raise osv.except_osv( _('Error'),
+                                                  _('Check the Fiscal Position Configuration'))
 
-                    invoice_obj.write(cr, uid, invoice.id, vals)
+                        denom_id = order_to_pick.fiscal_position.denomination_id
+
+                        pos_ar_obj = self.pool.get('pos.ar')
+
+                        res_pos = pos_ar_obj.search(cr, uid,[('warehouse_id', '=', order_to_pick.warehouse_id.id), ('denomination_id', '=', denom_id.id)])
+
+                        vals = {'denomination_id' : denom_id.id , 'pos_ar_id': res_pos[0] }
+
+                        inv.write(vals)
 
         return invoice_ids
-        
+
 stock_picking()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
