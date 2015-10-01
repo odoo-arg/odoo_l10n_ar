@@ -1368,6 +1368,7 @@
         <record model="account.account.template" id="impuestos_transacciones_bancarias">
             <field name="type">other</field>
             <field name="code">5141.01</field>
+            <field name="reconcile" eval="True"/>
             <field name="user_type" ref="account_type_tax"/>
             <field name="name">Impuestos transacciones bancarias</field>
             <field name="parent_id" ref="gastos_fiscales"/>
@@ -1376,6 +1377,7 @@
         <record model="account.account.template" id="impuestos_internos">
             <field name="type">other</field>
             <field name="code">5141.02</field>
+            <field name="reconcile" eval="True"/>
             <field name="user_type" ref="account_type_tax"/>
             <field name="name">Impuestos internos</field>
             <field name="parent_id" ref="gastos_fiscales"/>
@@ -1384,6 +1386,7 @@
         <record model="account.account.template" id="impuestos_enard">
             <field name="type">other</field>
             <field name="code">5141.03</field>
+            <field name="reconcile" eval="True"/>
             <field name="user_type" ref="account_type_tax"/>
             <field name="name">Enard</field>
             <field name="parent_id" ref="gastos_fiscales"/>
