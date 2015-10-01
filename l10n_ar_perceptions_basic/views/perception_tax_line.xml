@@ -31,9 +31,9 @@
                     <field name="invoice_id"/>
                     <field name="partner_id"/>
                     <field name="vat"/>
-                    <field name="amount_with_sign" sum="Amount Total"/>
+                    <field name="amount_with_sign" sum="Total"/>
                     <field name="amount" invisible="True"/>
-                    <field name="base" sum="Base Total"/>
+                    <field name="base" invisible="True"/>
                     <field name="company_id" invisible="True"/>
                 </tree>
             </field>
