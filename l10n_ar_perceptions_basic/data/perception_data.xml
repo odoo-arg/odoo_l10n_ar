@@ -311,7 +311,7 @@
         <record id="perception_perception_iibb_caba_efectuada" model="perception.perception">
             <field name="name">Percepcion IIBB CABA Efectuada</field>
             <field name="type_tax_use">sale</field>
-            <field name="type">vat</field>
+            <field name="type">gross_income</field>
             <field name="jurisdiccion">provincial</field>
             <field name="state_id" ref="l10n_ar_states.CABA"/>
             <field name="tax_id" ref="tax_percepcion_iibb_caba_efectuada"/>
@@ -320,7 +320,7 @@
         <record id="perception_perception_iibb_caba_sufrida" model="perception.perception">
             <field name="name">Percepcion IBB CABA Sufrida</field>
             <field name="type_tax_use">purchase</field>
-            <field name="type">vat</field>
+            <field name="type">gross_income</field>
             <field name="jurisdiccion">provincial</field>
             <field name="state_id" ref="l10n_ar_states.CABA"/>
             <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
@@ -329,7 +329,7 @@
         <record id="perception_perception_iibb_pba_efectuada" model="perception.perception">
             <field name="name">Percepcion IIBB PBA Efectuada</field>
             <field name="type_tax_use">sale</field>
-            <field name="type">vat</field>
+            <field name="type">gross_income</field>
             <field name="jurisdiccion">provincial</field>
             <field name="state_id" ref="l10n_ar_states.B"/>
             <field name="tax_id" ref="tax_percepcion_iibb_pba_efectuada"/>
@@ -338,7 +338,7 @@
         <record id="perception_perception_iibb_pba_sufrida" model="perception.perception">
             <field name="name">Percepcion IBB PBA Sufrida</field>
             <field name="type_tax_use">purchase</field>
-            <field name="type">vat</field>
+            <field name="type">gross_income</field>
             <field name="jurisdiccion">provincial</field>
             <field name="state_id" ref="l10n_ar_states.B"/>
             <field name="tax_id" ref="tax_percepcion_iibb_pba_sufrida"/>
