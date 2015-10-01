@@ -25,7 +25,7 @@
             <field name="arch" type="xml">
                 <page string="Invoice Lines" position="after">
                     <page string="Percepciones">
-                        <separator string="Percepciones Efectuadas"/>
+                        <label for="perception_ids"/>
                         <field name="perception_ids" nolabel="1" colspan="4">
                             <tree string="Lineas Percepcion" editable="bottom">
                                 <field name="perception_id" domain="[('type_tax_use','in',['sale','all'])]"/>
@@ -50,7 +50,7 @@
             <field name="arch" type="xml">
                 <page string="Invoice" position="after">
                     <page string="Percepciones">
-                        <separator string="Percepciones Soportadas"/>
+                        <label for="perception_ids"/>
                         <field name="perception_ids" nolabel="1" colspan="4">
                             <tree string="Lineas Percepcion" editable="bottom">
                                 <field name="perception_id" domain="[('type_tax_use','in',['purchase','all'])]"/>

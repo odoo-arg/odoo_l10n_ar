@@ -26,7 +26,7 @@
             <field name="arch" type="xml">
                 <page string="Journal Items" position="before">
                     <page string="Retenciones">
-                        <separator string="Retenciones Soportadas"/>
+                        <label for="retention_ids"/>
                         <field name="retention_ids" nolabel="1" colspan="4">
                             <tree string="Lineas Retencion" editable="bottom">
                                 <field name="retention_id" domain="[('type_tax_use','in',['sale','all'])]"/>
