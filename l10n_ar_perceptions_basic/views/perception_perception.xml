@@ -30,7 +30,7 @@
                         </div>
                         <div class="oe_title">
                             <h1>
-                            <field name="name" select="1" placeholder="Nombre"/>
+                            <field name="name" placeholder="Nombre"/>
                             </h1>
                         </div>
                         <div class="oe_right oe_button_box" name="button_box">

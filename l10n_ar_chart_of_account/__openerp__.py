@@ -38,13 +38,13 @@
 
     "data" : [
 
+        "views/account_tax_view.xml",
+        "views/res_currency_view.xml",
         "data/account_tax_code_data.xml",
         "data/account_chart_data.xml",
         "data/account_tax_data.xml",
-        "data/fiscal_templates_data.xml",
         "wizard/l10n_chart_ar_wizard.xml",
-        "views/account_tax_view.xml",
-        "views/res_currency_view.xml",
+
 
     ],
 
