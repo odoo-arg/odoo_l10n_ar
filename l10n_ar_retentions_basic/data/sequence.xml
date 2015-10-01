@@ -44,9 +44,9 @@
             <field name="name">Payment Retention Vat Sequence</field>
             <field name="code">rtl.vat.seq</field>
             <field name="active">True</field>
-            <field name="prefix">0001-%(year)s-</field>
+            <field name="prefix">0001-</field>
             <field name="number_increment">1</field>
-            <field name="padding">6</field>
+            <field name="padding">8</field>
             <field name="implementation">no_gap</field>
         </record>
 

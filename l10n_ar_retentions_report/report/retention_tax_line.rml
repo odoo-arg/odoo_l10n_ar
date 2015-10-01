@@ -49,19 +49,19 @@
         <blockTable style='header_table'>
             <tr>
                 <td>
-                    <image width='4.00cm' height='2.00cm' alignment='left'>[[ o.company_id.logo ]]</image>
+                    <image width='4.00cm' height='2.00cm' alignment='left'>[[ o.company_id.logo or removeParentNode('para') ]]</image>
                 </td>
                 <td>
-                    <para style='main_title' alignment='right'><b>Constancia de Retención IIBB [[ ((o.retention_id.type == 'gross_income') or removeParentNode('para')) and '' ]]</b></para>
-                    <para style='main_title' alignment='right'><b>Constancia de Retención SICORE [[ ((o.retention_id.type == 'profit') or removeParentNode('para')) and '' ]]</b></para>
-                    <para style='main_title' alignment='right'><b>Constancia de Retención IVA [[ ((o.retention_id.type == 'vat') or removeParentNode('para')) and '' ]]</b></para>
+                    <para style='main_title' alignment='right'><b>Constancia de Retención IIBB [[ ((o.type == 'gross_income') or removeParentNode('para')) and '' ]]</b></para>
+                    <para style='main_title' alignment='right'><b>Constancia de Retención SICORE [[ ((o.type == 'profit') or removeParentNode('para')) and '' ]]</b></para>
+                    <para style='main_title' alignment='right'><b>Constancia de Retención IVA [[ ((o.type == 'vat') or removeParentNode('para')) and '' ]]</b></para>
                 </td>
             </tr>
         </blockTable>
 
         <spacer length='1.00cm'/>
 
-        <para style='text' alignment='right'>Certificado N°: [[ o.certificate_no ]]</para>
+        <para style='text' alignment='right'>Certificado N°: [[ o.certificate_no or '' ]]</para>
 
         <para style='text' alignment='right'>Fecha: [[ o.date or '' ]]</para>
 
@@ -71,11 +71,11 @@
 
         <spacer length='0.50cm'/>
 
-        <para style='text' alignment='left'><b>Apellido y Nombre o Denominación:</b> [[ o.company_id.name ]]</para>
+        <para style='text' alignment='left'><b>Apellido y Nombre o Denominación:</b> [[ o.company_id.name or '' ]]</para>
 
-        <para style='text' alignment='left'><b>C.U.I.T N°:</b> [[ o.company_id.vat ]]</para>
+        <para style='text' alignment='left'><b>C.U.I.T N°:</b> [[ o.company_id.vat or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Domicilio:</b> Calle: [[ o.company_id.street ]] [[ o.company_id.number ]] , Ciudad: [[ o.company_id.city ]]</para>
+        <para style='text' alignment='left'><b>Domicilio:</b> Direccion: [[ o.company_id.street or '' ]], Ciudad: [[ o.company_id.city or '' ]]</para>
 
         <spacer length='1.00cm'/>
 
@@ -83,11 +83,11 @@
 
         <spacer length='0.50cm'/>
 
-        <para style='text' alignment='left'><b>Apellido y Nombre o Denominación:</b> [[ o.partner_id.name ]]</para>
+        <para style='text' alignment='left'><b>Apellido y Nombre o Denominación:</b> [[ o.partner_id.name or '' ]]</para>
 
-        <para style='text' alignment='left'><b>C.U.I.T N°:</b> [[ o.partner_id.vat ]]</para>
+        <para style='text' alignment='left'><b>C.U.I.T N°:</b> [[ o.partner_id.vat or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Domicilio:</b> Calle: [[ o.partner_id.street ]] [[ o.partner_id.number ]] , Ciudad: [[ o.partner_id.city ]]</para>
+        <para style='text' alignment='left'><b>Domicilio:</b> Direccion: [[ o.partner_id.street or '' ]] , Ciudad: [[ o.partner_id.city or '' ]]</para>
 
         <spacer length='1.00cm'/>
 
@@ -95,18 +95,18 @@
 
         <spacer length='0.50cm'/>
 
-        <para style='text' alignment='left'><b>Impuesto: </b> [[ o.name ]]</para>
+        <para style='text' alignment='left'><b>Impuesto: </b> [[ o.name or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Regimen: [[ ((o.retention_id.type == 'profit') or removeParentNode('para')) and '' ]]</b> [[ o.regimen ]]</para>
+        <para style='text' alignment='left'><b>Regimen: [[ ((o.type == 'profit') or removeParentNode('para')) and '' ]]</b> [[ o.regimen ]]</para>
 
-        <para style='text' alignment='left'><b>Comprobante que origina la Retención:</b> [[ o.voucher_id.reference ]]</para>
+        <para style='text' alignment='left'><b>Comprobante que origina la Retención:</b> [[ o.voucher_number or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Monto del Comprobante que origina la Retención:</b> $[[ o.voucher_id.amount ]]</para>
+        <para style='text' alignment='left'><b>Monto del Comprobante que origina la Retención:</b> $[[ o.voucher_id.amount or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.retention_id.type == 'gross_income') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
-        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.retention_id.type == 'vat') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
+        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type == 'gross_income') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
+        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type == 'vat') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
 
-        <para style='text' alignment='left'><b>Monto de la Retención:</b> $[[ o.amount ]]</para>
+        <para style='text' alignment='left'><b>Monto de la Retención:</b> $[[ o.amount or '' ]]</para>
 
         <para style='text' alignment='left'><b>Imposibilidad de Retención:</b> </para>
 
@@ -120,9 +120,9 @@
 
         <spacer length='4.00cm'/>
 
-        <para style='text' alignment='center'>Declaro que los datos consignados en este Formulario son correctos y completos y que he confeccionado la presente utilizando mismo formato que la AFIP sin falsear dato alguno que deba contener, siendo fiel expresión de la verdad [[ ((o.retention_id.type == 'profit') or removeParentNode('para')) and '' ]]</para>
-        <para style='text' alignment='center'>Declaro que los datos consignados en este Formulario son correctos y completos y que he confeccionado la presente utilizando mismo formato que la AFIP sin falsear dato alguno que deba contener, siendo fiel expresión de la verdad [[ ((o.retention_id.type == 'vat') or removeParentNode('para')) and '' ]]</para>
-        <para style='text' alignment='center'>La retención practicada mediante el presete certificado sera informada en la declaración jurada correspondiente al periodo [[ ((o.retention_id.type == 'gross_income') or removeParentNode('para')) and '' ]] [[ o.period_id.name ]]</para>
+        <para style='text' alignment='center'>Declaro que los datos consignados en este Formulario son correctos y completos y que he confeccionado la presente utilizando mismo formato que la AFIP sin falsear dato alguno que deba contener, siendo fiel expresión de la verdad [[ ((o.type == 'profit') or removeParentNode('para')) and '' ]]</para>
+        <para style='text' alignment='center'>Declaro que los datos consignados en este Formulario son correctos y completos y que he confeccionado la presente utilizando mismo formato que la AFIP sin falsear dato alguno que deba contener, siendo fiel expresión de la verdad [[ ((o.type == 'vat') or removeParentNode('para')) and '' ]]</para>
+        <para style='text' alignment='center'>La retención practicada mediante el presete certificado sera informada en la declaración jurada correspondiente al periodo [[ ((o.type == 'gross_income') or removeParentNode('para')) and '' ]] [[ o.period_id.name or '' ]]</para>
 
     </story>
 
