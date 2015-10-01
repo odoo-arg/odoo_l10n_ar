@@ -31,7 +31,7 @@
                     <field name="type"/>
                     <field name="jurisdiccion"/>
                     <field name="state_id"/>
-                    <field name="voucher_id"/>
+                    <field name="voucher_id" invisible="True"/>
                     <field name="partner_id"/>
                     <field name="vat"/>
                     <field name="amount_with_sign" sum="Total"/>

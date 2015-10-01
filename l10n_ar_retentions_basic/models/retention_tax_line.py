@@ -34,9 +34,10 @@ class RetentionTaxLine(models.Model):
     @api.depends('amount')
     def _get_amount_with_sign(self):
         if self.retention_id.type_tax_use == 'purchase':
-            self.amount_with_sign = - self.amount
-        else:
             self.amount_with_sign = self.amount
+        else:
+            self.amount_with_sign = - self.amount
+
 
 
     name = fields.Char(string="Nombre", required=True)
@@ -45,7 +46,7 @@ class RetentionTaxLine(models.Model):
 
     voucher_id = fields.Many2one("account.voucher",string="Recibo",ondelete="cascade",)
 
-    voucher_number = fields.Char('Numero Recibo', related="voucher_id.number", readonly=True)
+    voucher_number = fields.Char('Numero Recibo', related="voucher_id.reference", readonly=True)
 
     account_id = fields.Many2one("account.account", string="Cuenta Impuesto", required=True, domain=[('type','<>','view'),('type','<>','income'), ('type', '<>', 'closed')],)
 
@@ -57,7 +58,7 @@ class RetentionTaxLine(models.Model):
 
     retention_id = fields.Many2one("retention.retention", string="Retencion", required=True,)
 
-    type = fields.Selection(related="retention_id.type", string="Tipo Percepcion", readonly=True, store=True)
+    type = fields.Selection(related="retention_id.type", string="Tipo Retencion", readonly=True, store=True)
 
     state_id = fields.Many2one(related="retention_id.state_id", string="Provincia", readonly=True, store=True)
 
