@@ -38,6 +38,7 @@
         "account",
         "account_accountant",
         "l10n_ar_point_of_sale",
+        "l10n_ar_chart_of_account",
 
     ],
 
