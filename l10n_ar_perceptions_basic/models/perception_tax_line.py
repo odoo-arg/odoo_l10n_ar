@@ -33,7 +33,7 @@ class PerceptionTaxLine(models.Model):
     @api.one
     @api.depends('amount')
     def _get_amount_with_sign(self):
-        if self.perception_id.type_tax_use == 'purchase':
+        if self.invoice_id.type in ['in_invoice','out_refund']:
             self.amount_with_sign = - self.amount
         else:
             self.amount_with_sign = self.amount
