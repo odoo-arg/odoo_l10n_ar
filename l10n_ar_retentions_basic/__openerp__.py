@@ -36,6 +36,7 @@
         'account',
         'account_accountant',
         'account_voucher',
+        'l10n_ar_chart_of_account',
         'l10n_ar_account_payment',
         'l10n_ar_account_check',
 
