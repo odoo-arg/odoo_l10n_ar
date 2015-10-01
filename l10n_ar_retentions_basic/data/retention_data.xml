@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published
@@ -19,288 +18,304 @@
 
     <data noupdate="1">
 
-        <!-- Operaciones con Retencion -->
+        <!-- INGRESOS BRUTOS -->
 
-        <record id="operaciones_con_retenciones" model="account.tax.code">
-            <field name="name">Operaciones con Retenciones</field>
-            <field name="code">400</field>
-            <!--<field name="parent_id" ref= *** AGREGAR CUENTA PADRE ***/>-->
+         <record id="l10n_ar_chart_of_account.ingresos_brutos_a_pagar" model="account.tax.code">
+            <field name="name">Ingresos Brutos a pagar</field>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion Sufrida</field>
-            <field name="code">600</field>
-            <field name="parent_id" ref="operaciones_con_retenciones"/>
+        <record id="l10n_ar_chart_of_account.ganancias_a_pagar" model="account.tax.code">
+            <field name="name">Ganancias a pagar</field>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion Efectuada</field>
-            <field name="code">700</field>
-            <field name="parent_id" ref="operaciones_con_retenciones"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA</field>
+            <field name="code">401</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_a_pagar"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iva_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IVA Sufrida</field>
-            <field name="code">601</field>
-            <field name="parent_id" ref="operaciones_con_retencion_sufrida"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba_ventas" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA (Ventas)</field>
+            <field name="code">4011</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iva_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IVA Efectuada</field>
-            <field name="code">701</field>
-            <field name="parent_id" ref="operaciones_con_retencion_efectuada"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba_compras" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA (Compras)</field>
+            <field name="code">4012</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iibb_caba_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IIBB CABA Sufrida</field>
-            <field name="code">602</field>
-            <field name="parent_id" ref="operaciones_con_retencion_sufrida"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA</field>
+            <field name="code">402</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_a_pagar"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iibb_caba_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IIBB CABA Efectuada</field>
-            <field name="code">702</field>
-            <field name="parent_id" ref="operaciones_con_retencion_efectuada"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba_ventas" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA (Ventas)</field>
+            <field name="code">4021</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iibb_pba_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IIBB PBA Sufrida</field>
-            <field name="code">603</field>
-            <field name="parent_id" ref="operaciones_con_retencion_sufrida"/>
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba_compras" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA (Compras)</field>
+            <field name="code">4022</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_iibb_pba_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion IIBB PBA Efectuada</field>
-            <field name="code">703</field>
-            <field name="parent_id" ref="operaciones_con_retencion_efectuada"/>
+        <record id="retenciones_ingresos_brutos_pba_realizadas" model="account.tax.code">
+            <field name="name">Retenciones Ingresos Brutos PBA realizadas</field>
+            <field name="code">40112</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba_ventas"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_ganancias_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion Ganancias Sufrida</field>
-            <field name="code">604</field>
-            <field name="parent_id" ref="operaciones_con_retencion_sufrida"/>
+        <record id="retenciones_ingresos_brutos_pba_sufridas" model="account.tax.code">
+            <field name="name">Retenciones Ingresos Brutos PBA sufridas</field>
+            <field name="code">40122</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba_compras"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_ganancias_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion Ganancias Efectuada</field>
-            <field name="code">704</field>
-            <field name="parent_id" ref="operaciones_con_retencion_efectuada"/>
+        <record id="retenciones_ingresos_brutos_caba_realizadas" model="account.tax.code">
+            <field name="name">Retenciones Ingresos Brutos CABA realizadas</field>
+            <field name="code">40212</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba_ventas"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_suss_sufrida" model="account.tax.code">
-            <field name="name">Operaciones con Retencion SUSS Sufrida</field>
-            <field name="code">605</field>
-            <field name="parent_id" ref="operaciones_con_retencion_sufrida"/>
+        <record id="retenciones_ingresos_brutos_caba_sufridas" model="account.tax.code">
+            <field name="name">Retenciones Ingresos Brutos CABA sufridas</field>
+            <field name="code">40222</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba_compras"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="operaciones_con_retencion_suss_efectuada" model="account.tax.code">
-            <field name="name">Operaciones con Retencion SUSS Efectuada</field>
-            <field name="code">705</field>
-            <field name="parent_id" ref="operaciones_con_retencion_efectuada"/>
-            <field name="sign">1.0</field>
-        </record>
+        <!-- GANANCIAS -->
 
-        <!-- Retenciones Tax Code -->
-        <record id="retencion_iva_sufrida" model="account.tax.code">
-            <field name="name">Retencion IVA Sufrida (Cobros)</field>
+        <record id="retenciones_ganancias_realizadas" model="account.tax.code">
+            <field name="name">Retenciones Ganancias realizadas</field>
             <field name="code">501</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iva_sufrida"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_iva_efectuada" model="account.tax.code">
-            <field name="name">Retencion IVA Efectuada (Pagos)</field>
+        <record id="retenciones_ganancias_sufridas" model="account.tax.code">
+            <field name="name">Retenciones Ganancias sufridas</field>
             <field name="code">502</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iva_efectuada"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_iibb_caba_sufrida" model="account.tax.code">
-            <field name="name">Retencion IIBB CABA Sufrida (Cobros)</field>
-            <field name="code">503</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iibb_caba_sufrida"/>
+        <!-- SUSS -->
+
+        <record id="suss" model="account.tax.code">
+            <field name="name">SUSS</field>
+            <field name="code">033</field>
+            <field name="parent_id" search="[('name', '=', 'Otros impuestos')]"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_iibb_caba_efectuada" model="account.tax.code">
-            <field name="name">Retencion IIBB CABA Efectuada (Pagos)</field>
-            <field name="code">504</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iibb_caba_efectuada"/>
+        <record id="retenciones_suss_sufridas" model="account.tax.code">
+            <field name="name">Retenciones SUSS sufridas</field>
+            <field name="code">0331</field>
+            <field name="parent_id" ref="suss"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_iibb_pba_sufrida" model="account.tax.code">
-            <field name="name">Retencion IIBB PBA Sufrida (Cobros)</field>
-            <field name="code">505</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iibb_pba_sufrida"/>
+        <!-- IVA -->
+        <record id="retenciones_iva_realizadas" model="account.tax.code">
+            <field name="name">Retenciones IVA realizadas</field>
+            <field name="code">0192</field>
+            <field name="parent_id" search="[('name', '=', 'IVA Ventas')]"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_iibb_pba_efectuada" model="account.tax.code">
-            <field name="name">Retencion IIBB PBA Efectuada (Pagos)</field>
-            <field name="code">506</field>
-            <field name="parent_id" ref="operaciones_con_retencion_iibb_pba_efectuada"/>
+        <record id="retenciones_iva_sufridas" model="account.tax.code">
+            <field name="name">Retenciones IVA sufridas</field>
+            <field name="code">0292</field>
+            <field name="parent_id" search="[('name', '=', 'IVA Compras')]"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retencion_ganancias_sufrida" model="account.tax.code">
-            <field name="name">Retencion Ganancias Sufrida (Cobros)</field>
-            <field name="code">507</field>
-            <field name="parent_id" ref="operaciones_con_retencion_ganancias_sufrida"/>
-            <field name="sign">1.0</field>
+        <!-- CUENTAS DE RETENCIONES ACTIVO -->
+        <record model="account.account" id="creditos_por_iigg_y_gmp">
+            <field name="type">view</field>
+            <field name="code">1140*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">CRÉDITOS POR IIGG Y GMP</field>
+            <field name="parent_id" search="[('code', '=', '113*')]"/>
         </record>
 
-        <record id="retencion_ganancias_efectuada" model="account.tax.code">
-            <field name="name">Retencion Ganancias Efectuada (Pagos)</field>
-            <field name="code">508</field>
-            <field name="parent_id" ref="operaciones_con_retencion_ganancias_efectuada"/>
-            <field name="sign">1.0</field>
-        </record>
-
-        <record id="retencion_suss_sufrida" model="account.tax.code">
-            <field name="name">Retencion SUSS Sufrida (Cobros)</field>
-            <field name="code">509</field>
-            <field name="parent_id" ref="operaciones_con_retencion_suss_sufrida"/>
-            <field name="sign">1.0</field>
-        </record>
-
-        <record id="retencion_suss_efectuada" model="account.tax.code">
-            <field name="name">Retencion SUSS Efectuada (Pagos)</field>
-            <field name="code">510</field>
-            <field name="parent_id" ref="operaciones_con_retencion_suss_efectuada"/>
-            <field name="sign">1.0</field>
-        </record>
-
-        <!-- Retenciones Accounts -->
-        <!-- Cuenta de retencion de iva efectuada al momento de pagar a un proveedor -->
-        <record id="retencion_iva_a_depositar" model="account.account">
-            <field name="code">212051</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('name', '=', 'DEUDAS FISCALES')]"/>
+        <record id="anticipo_iigg_y_gmp" model="account.account">
+            <field name="code">1140.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="creditos_por_iigg_y_gmp"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IVA a Depositar</field>
+            <field name="name">Anticipo IIGG y GMP</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de iva sufrida al momento de cobrar a un cliente -->
-        <record id="retencion_iva" model="account.account">
-            <field name="code">114051</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('code', '=', '114*')]"/> <!-- Otros Creditos -->
+        <record id="retenciones_sufridas_iigg" model="account.account">
+            <field name="code">1140.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="creditos_por_iigg_y_gmp"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IVA</field>
+            <field name="name">Retenciones Sufridas IIGG</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de iibb caba efectuada al momento de pagar a un proveedor -->
-        <record id="retencion_iibb_caba_a_depositar" model="account.account">
-            <field name="code">212052</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('name', '=', 'DEUDAS FISCALES')]"/>
+        <record model="account.account" id="l10n_ar_chart_of_account.creditos_por_iibb">
+            <field name="type">view</field>
+            <field name="code">1142*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">CRÉDITOS POR IIBB</field>
+            <field name="parent_id" search="[('code', '=', '113*')]"/>
+        </record>
+
+        <record id="retenciones_iibb_pba_sufrida" model="account.account">
+            <field name="code">1142.03</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iibb"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IIBB CABA a Depositar</field>
+            <field name="name">Retenciones IIBB PBA Sufrida</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de iibb caba sufrida al momento de cobrar a un cliente -->
-        <record id="retencion_iibb_caba" model="account.account">
-            <field name="code">114052</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('code', '=', '114*')]"/>
+        <record id="retenciones_iibb_caba_sufrida" model="account.account">
+            <field name="code">1142.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iibb"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IIBB CABA</field>
+            <field name="name">Retenciones IIBB CABA Sufrida</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de iibb pba efectuada al momento de pagar a un proveedor -->
-        <record id="retencion_iibb_pba_a_depositar" model="account.account">
-            <field name="code">212053</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('name', '=', 'DEUDAS FISCALES')]"/>
+        <record id="retencion_iva_sufrida" model="account.account">
+            <field name="code">1141.11</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" search="[('code', '=', '1141*')]"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IIBB PBA a Depositar</field>
+            <field name="name">Retenciones IVA sufrida</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de iibb pba sufrida al momento de cobrar a un cliente -->
-        <record id="retencion_iibb_pba" model="account.account">
-            <field name="code">114053</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('code', '=', '114*')]"/>
+        <!-- CUENTAS DE RETENCIONES PASIVO -->
+
+        <record model="account.account" id="iigg_y_gmp_pagar">
+            <field name="type">view</field>
+            <field name="code">2152*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">IIGG Y GMP A PAGAR</field>
+            <field name="parent_id" search="[('code', '=', '215*')]"/>
+        </record>
+
+        <record id="provision_iigg" model="account.account">
+            <field name="code">2152.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="iigg_y_gmp_pagar"/>
             <field name="type">other</field>
-            <field name="name">Retenciones IIBB PBA</field>
+            <field name="name">Provisión IIGG</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de ganancias efectuada al momento de pagar a un proveedor -->
-        <record id="retencion_ganancias_a_depositar" model="account.account">
-            <field name="code">212054</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('name', '=', 'DEUDAS FISCALES')]"/>
+        <record id="iigg_ddjj_a_pagar" model="account.account">
+            <field name="code">2152.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="iigg_y_gmp_pagar"/>
             <field name="type">other</field>
-            <field name="name">Retenciones de Ganancias a depositar</field>
+            <field name="name">IIGG DDJJ a pagar</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de ganancias sufrida al momento de cobrar a un cliente -->
-        <record id="retencion_ganancias" model="account.account">
-            <field name="code">114054</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('code', '=', '114*')]"/>
+        <record id="anticipo_iigg_y_gmp_a_pagar" model="account.account">
+            <field name="code">2152.03</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="iigg_y_gmp_pagar"/>
             <field name="type">other</field>
-            <field name="name">Retenciones de Ganancias</field>
+            <field name="name">Anticipo IIGG y GMP a pagar</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de suss sufrida al momento de cobrar a un cliente -->
-        <record id="retencion_suss" model="account.account">
-            <field name="code">114055</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('code', '=', '114*')]"/>
+        <record id="retencion_iigg_a_pagar" model="account.account">
+            <field name="code">2152.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="iigg_y_gmp_pagar"/>
             <field name="type">other</field>
-            <field name="name">Retenciones SUSS</field>
+            <field name="name">Retención IIGG a pagar</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
-        <!-- Cuenta de retencion de suss efectuada al momento de pagar a un proveedor -->
-        <record id="retencion_suss_a_depositar" model="account.account">
-            <field name="code">212055</field>
-            <field name="reconcile" eval="False"/>
-            <field name="parent_id" search="[('name', '=', 'DEUDAS FISCALES')]"/>
+        <record model="account.account" id="l10n_ar_chart_of_account.iibb_a_pagar">
+            <field name="type">view</field>
+            <field name="code">2153*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">IIBB A PAGAR</field>
+            <field name="parent_id" search="[('code', '=', '215*')]"/>
+        </record>
+
+        <record id="retencion_iibb_pba_efectuada" model="account.account">
+            <field name="code">2153.03</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.iibb_a_pagar"/>
             <field name="type">other</field>
-            <field name="name">Retenciones SUSS a Depositar</field>
+            <field name="name">Retenciones IIBB PBA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="retencion_iibb_caba_efectuada" model="account.account">
+            <field name="code">2153.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.iibb_a_pagar"/>
+            <field name="type">other</field>
+            <field name="name">Retenciones IIBB CABA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="retencion_iva_efectuada" model="account.account">
+            <field name="code">2151.11</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" search="[('code', '=', '2151*')]"/>
+            <field name="type">other</field>
+            <field name="name">Retenciones IVA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <!-- RETENCIONES RESULTADO NEGATIVO -->
+        <record id="retencion_suss_sufrida" model="account.account">
+            <field name="code">5141.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" search="[('code', '=', '514*')]"/>
+            <field name="type">other</field>
+            <field name="name">Retenciones SUSS sufrida</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
 
-        <!-- Retenciones Taxes -->
+
+        <!-- ** IMPUESTOS ** -->
 
         <record id="tax_retencion_iva_sufrida" model="account.tax">
             <field name="name">Retencion IVA Sufrida</field>
             <field name="description">Retencion IVA Sufrida</field>
-            <field name="sequence">30</field>
+            <field name="sequence">36</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iva"/>
-            <field name="account_paid_id" ref="retencion_iva"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iva_sufrida"/>
-            <field name="tax_code_id" ref="retencion_iva_sufrida"/>
+            <field name="account_collected_id" ref="retencion_iva_sufrida"/>
+            <field name="account_paid_id" ref="retencion_iva_sufrida"/>
+            <field name="tax_code_id" ref="retenciones_iva_sufridas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iva_sufrida"/>
-            <field name="ref_tax_code_id" ref="retencion_iva_sufrida"/>
+            <field name="ref_tax_code_id" ref="retenciones_iva_sufridas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">sale</field>
@@ -309,17 +324,15 @@
         <record id="tax_retencion_iva_efectuada" model="account.tax">
             <field name="name">Retencion IVA Efectuada</field>
             <field name="description">Retencion IVA Efectuada</field>
-            <field name="sequence">30</field>
+            <field name="sequence">37</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iva_a_depositar"/>
-            <field name="account_paid_id" ref="retencion_iva_a_depositar"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iva_efectuada"/>
-            <field name="tax_code_id" ref="retencion_iva_efectuada"/>
+            <field name="account_collected_id" ref="retencion_iva_efectuada"/>
+            <field name="account_paid_id" ref="retencion_iva_efectuada"/>
+            <field name="tax_code_id" ref="retenciones_iva_realizadas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iva_efectuada"/>
-            <field name="ref_tax_code_id" ref="retencion_iva_efectuada"/>
+            <field name="ref_tax_code_id" ref="retenciones_iva_realizadas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">purchase</field>
@@ -328,17 +341,15 @@
         <record id="tax_retencion_iibb_caba_sufrida" model="account.tax">
             <field name="name">Retencion IIBB CABA Sufrida</field>
             <field name="description">Retencion IIBB CABA Sufrida</field>
-            <field name="sequence">31</field>
+            <field name="sequence">38</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iibb_caba"/>
-            <field name="account_paid_id" ref="retencion_iibb_caba"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iibb_caba_sufrida"/>
-            <field name="tax_code_id" ref="retencion_iibb_caba_sufrida"/>
+            <field name="account_collected_id" ref="retenciones_iibb_caba_sufrida"/>
+            <field name="account_paid_id" ref="retenciones_iibb_caba_sufrida"/>
+            <field name="tax_code_id" ref="retenciones_ingresos_brutos_caba_sufridas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iibb_caba_sufrida"/>
-            <field name="ref_tax_code_id" ref="retencion_iibb_caba_sufrida"/>
+            <field name="ref_tax_code_id" ref="retenciones_ingresos_brutos_caba_sufridas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">sale</field>
@@ -347,17 +358,15 @@
         <record id="tax_retencion_iibb_caba_efectuada" model="account.tax">
             <field name="name">Retencion IIBB CABA Efectuada</field>
             <field name="description">Retencion IIBB CABA Efectuada</field>
-            <field name="sequence">31</field>
+            <field name="sequence">39</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iibb_caba_a_depositar"/>
-            <field name="account_paid_id" ref="retencion_iibb_caba_a_depositar"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iibb_caba_efectuada"/>
-            <field name="tax_code_id" ref="retencion_iibb_caba_efectuada"/>
+            <field name="account_collected_id" ref="retencion_iibb_caba_efectuada"/>
+            <field name="account_paid_id" ref="retencion_iibb_caba_efectuada"/>
+            <field name="tax_code_id" ref="retenciones_ingresos_brutos_caba_realizadas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iibb_caba_efectuada"/>
-            <field name="ref_tax_code_id" ref="retencion_iibb_caba_efectuada"/>
+            <field name="ref_tax_code_id" ref="retenciones_ingresos_brutos_caba_realizadas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">purchase</field>
@@ -366,17 +375,15 @@
         <record id="tax_retencion_iibb_pba_sufrida" model="account.tax">
             <field name="name">Retencion IIBB PBA Sufrida</field>
             <field name="description">Retencion IIBB PBA Sufrida</field>
-            <field name="sequence">32</field>
+            <field name="sequence">40</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iibb_pba"/>
-            <field name="account_paid_id" ref="retencion_iibb_pba"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iibb_pba_sufrida"/>
-            <field name="tax_code_id" ref="retencion_iibb_pba_sufrida"/>
+            <field name="account_collected_id" ref="retenciones_iibb_pba_sufrida"/>
+            <field name="account_paid_id" ref="retenciones_iibb_pba_sufrida"/>
+            <field name="tax_code_id" ref="retenciones_ingresos_brutos_pba_sufridas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iibb_pba_sufrida"/>
-            <field name="ref_tax_code_id" ref="retencion_iibb_pba_sufrida"/>
+            <field name="ref_tax_code_id" ref="retenciones_ingresos_brutos_pba_sufridas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">sale</field>
@@ -385,17 +392,15 @@
         <record id="tax_retencion_iibb_pba_efectuada" model="account.tax">
             <field name="name">Retencion IIBB PBA Efectuada</field>
             <field name="description">Retencion IIBB PBA Efectuada</field>
-            <field name="sequence">32</field>
+            <field name="sequence">41</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_iibb_pba_a_depositar"/>
-            <field name="account_paid_id" ref="retencion_iibb_pba_a_depositar"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_iibb_pba_efectuada"/>
-            <field name="tax_code_id" ref="retencion_iibb_pba_efectuada"/>
+            <field name="account_collected_id" ref="retencion_iibb_pba_efectuada"/>
+            <field name="account_paid_id" ref="retencion_iibb_pba_efectuada"/>
+            <field name="tax_code_id" ref="retenciones_ingresos_brutos_pba_realizadas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_iibb_pba_efectuada"/>
-            <field name="ref_tax_code_id" ref="retencion_iibb_pba_efectuada"/>
+            <field name="ref_tax_code_id" ref="retenciones_ingresos_brutos_pba_realizadas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">purchase</field>
@@ -404,17 +409,15 @@
         <record id="tax_retencion_ganancias_sufrida" model="account.tax">
             <field name="name">Retencion Ganancias Sufrida</field>
             <field name="description">Retenciones Ganancias Sufrida</field>
-            <field name="sequence">33</field>
+            <field name="sequence">42</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_ganancias"/>
-            <field name="account_paid_id" ref="retencion_ganancias"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_ganancias_sufrida"/>
-            <field name="tax_code_id" ref="retencion_ganancias_sufrida"/>
+            <field name="account_collected_id" ref="retenciones_sufridas_iigg"/>
+            <field name="account_paid_id" ref="retenciones_sufridas_iigg"/>
+            <field name="tax_code_id" ref="retenciones_ganancias_sufridas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_ganancias_sufrida"/>
-            <field name="ref_tax_code_id" ref="retencion_ganancias_sufrida"/>
+            <field name="ref_tax_code_id" ref="retenciones_ganancias_sufridas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">sale</field>
@@ -423,17 +426,15 @@
         <record id="tax_retencion_ganancias_efectuada" model="account.tax">
             <field name="name">Retenciones Ganancias Efectuada</field>
             <field name="description">Retenciones Ganancias Efectuada</field>
-            <field name="sequence">33</field>
+            <field name="sequence">43</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_ganancias_a_depositar"/>
-            <field name="account_paid_id" ref="retencion_ganancias_a_depositar"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_ganancias_efectuada"/>
-            <field name="tax_code_id" ref="retencion_ganancias_efectuada"/>
+            <field name="account_collected_id" ref="retencion_iigg_a_pagar"/>
+            <field name="account_paid_id" ref="retencion_iigg_a_pagar"/>
+            <field name="tax_code_id" ref="retenciones_ganancias_realizadas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_ganancias_efectuada"/>
-            <field name="ref_tax_code_id" ref="retencion_ganancias_efectuada"/>
+            <field name="ref_tax_code_id" ref="retenciones_ganancias_realizadas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">purchase</field>
@@ -442,39 +443,18 @@
         <record id="tax_retencion_suss_sufrida" model="account.tax">
             <field name="name">Retencion SUSS Sufrida</field>
             <field name="description">Retenciones SUSS Sufrida</field>
-            <field name="sequence">34</field>
+            <field name="sequence">44</field>
             <field name="type">none</field>
             <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_suss"/>
-            <field name="account_paid_id" ref="retencion_suss"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_suss_sufrida"/>
-            <field name="tax_code_id" ref="retencion_suss_sufrida"/>
+            <field name="account_collected_id" ref="retencion_suss_sufrida"/>
+            <field name="account_paid_id" ref="retencion_suss_sufrida"/>
+            <field name="tax_code_id" ref="retenciones_suss_sufridas"/>
             <field eval="1.0" name="tax_sign"/>
             <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_suss_sufrida"/>
-            <field name="ref_tax_code_id" ref="retencion_suss_sufrida"/>
+            <field name="ref_tax_code_id" ref="retenciones_suss_sufridas"/>
             <field eval="-1.0" name="ref_tax_sign"/>
             <field eval="-1.0" name="ref_base_sign"/>
             <field name="type_tax_use">sale</field>
-        </record>
-
-        <record id="tax_retencion_suss_efectuada" model="account.tax">
-            <field name="name">Retenciones SUSS Efectuada</field>
-            <field name="description">Retenciones SUSS Efectuada</field>
-            <field name="sequence">34</field>
-            <field name="type">none</field>
-            <field name="tax_group">retention</field>
-            <field name="account_collected_id" ref="retencion_suss_a_depositar"/>
-            <field name="account_paid_id" ref="retencion_suss_a_depositar"/>
-            <field name="base_code_id" ref="operaciones_con_retencion_suss_efectuada"/>
-            <field name="tax_code_id" ref="retencion_suss_efectuada"/>
-            <field eval="1.0" name="tax_sign"/>
-            <field eval="1.0" name="base_sign"/>
-            <field name="ref_base_code_id" ref="operaciones_con_retencion_suss_efectuada"/>
-            <field name="ref_tax_code_id" ref="retencion_suss_efectuada"/>
-            <field eval="-1.0" name="ref_tax_sign"/>
-            <field eval="-1.0" name="ref_base_sign"/>
-            <field name="type_tax_use">purchase</field>
         </record>
 
 
@@ -545,13 +525,6 @@
             <field name="type">other</field>
             <field name="jurisdiccion">nacional</field>
             <field name="tax_id" ref="tax_retencion_suss_sufrida" />
-        </record>
-
-        <record id="retention_retention_suss_efectuada" model="retention.retention">
-            <field name="name">Retencion SUSS Efectuada</field>
-            <field name="type">other</field>
-            <field name="jurisdiccion">nacional</field>
-            <field name="tax_id" ref="tax_retencion_suss_efectuada" />
         </record>
 
     </data>
