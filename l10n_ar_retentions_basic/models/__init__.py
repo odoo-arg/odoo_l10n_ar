@@ -16,43 +16,8 @@
 #
 ##############################################################################
 
-{
-
-    "name": "Retentions",
-
-    "summary": """Retenciones""",
-
-    "description": """Retenciones""",
-
-    "author": "OPENPYME SRL",
-
-    "website": "www.openpyme.com.ar",
-
-    'category': 'Account',
-
-    'depends': [
-
-        'base',
-        'account',
-        'account_accountant',
-        'account_voucher',
-        'l10n_ar_account_payment',
-        'l10n_ar_account_check',
-
-    ],
-
-    'data': [
-
-        'data/retention_data.xml',
-        'data/security.xml',
-        'data/sequence.xml',
-        'security/ir.model.access.csv',
-        'views/retention_retention.xml',
-        'views/retention_tax_line.xml',
-        'views/voucher_payment_receipt_view.xml',
-
-    ],
-
-}
+import retention_retention
+import retention_tax_line
+import account_voucher
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
