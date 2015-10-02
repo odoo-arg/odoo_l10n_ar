@@ -233,13 +233,15 @@
             <field name="model">account.third.check</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Third Checks" create="false">
+                <tree string="Third Checks" colors="red: close_to_due == True" create="false">
+                    <field name="close_to_due" invisible="1"/>
                     <field name="internal_number"/>
                     <field name="number"/>
                     <field name="source_partner_id"/>
                     <field name="issue_date"/>
                     <field name="receipt_date"/>
                     <field name="payment_date"/>
+                    <field name="due_date"/>
                     <field name="destiny_partner_id"/>
                     <field name="endorsement_date"/>
                     <field name="bank_id"/>

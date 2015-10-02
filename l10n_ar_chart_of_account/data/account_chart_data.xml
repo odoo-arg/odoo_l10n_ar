@@ -406,7 +406,7 @@
             <field name="type">other</field>
             <field name="code">1141.06</field>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">IVA crédito fiscal No gravado</field>
+            <field name="name">Compra No gravado</field>
             <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="creditos_por_iva"/>
         </record>
@@ -909,7 +909,7 @@
             <field name="type">other</field>
             <field name="code">2151.06</field>
             <field name="user_type" ref="account_type_tax"/>
-            <field name="name">IVA débito fiscal No gravado</field>
+            <field name="name">Venta No gravado</field>
             <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="iva_a_pagar"/>
         </record>

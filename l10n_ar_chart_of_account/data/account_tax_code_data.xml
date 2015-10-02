@@ -75,7 +75,7 @@
         <record id="vat_code_iva_venta_no_gravado" model="account.tax.code.template">
             <field name="code">015</field>
             <field name="parent_id" ref="vat_code_iva_venta"/>
-            <field name="name">IVA Ventas No gravado</field>
+            <field name="name">Venta No gravado</field>
         </record>
 
         <record id="vat_code_iva_venta25" model="account.tax.code.template">
@@ -131,7 +131,7 @@
         <record id="vat_code_iva_compra_no_gravado" model="account.tax.code.template">
             <field name="code">025</field>
             <field name="parent_id" ref="vat_code_iva_compra"/>
-            <field name="name">IVA Compras No Gravado</field>
+            <field name="name">Compra No Gravado</field>
         </record>
 
         <record id="vat_code_iva_compra25" model="account.tax.code.template">

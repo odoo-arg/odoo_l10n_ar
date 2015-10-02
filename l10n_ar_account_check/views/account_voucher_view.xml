@@ -90,7 +90,8 @@
                         <field name="third_check_ids" invisible="1"/>
                         <field name="checks_quantity" invisible="1"/>
                         <field name="third_check_receipt_ids" string="Third Checks" nolabel="1" attrs="{'readonly': [('state','!=','draft')]}" context="{'checks_quantity': checks_quantity}" colspan="4">
-                            <tree string="Third Checks">
+                            <tree string="Third Checks" colors="red: close_to_due == True">
+                                <field name="close_to_due" invisible="1"/>
                                 <field name="internal_number"/>
                                 <field name="number"/>
                                 <field name="receipt_date"/>

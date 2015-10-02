@@ -43,8 +43,9 @@ class account_check_reject(osv.osv_memory):
 
         'reject_date': fields.date('Reject Date', required=True),
         'journal_id': fields.many2one('account.journal', 'Journal', required=True),
-        'expense_line_ids': fields.one2many('check.reject.expense', 'reject_id', 'Expenses'),
+        'expense_line_ids': fields.one2many('check.reject.expense', 'reject_id', 'Gastos'),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'account_id': fields.many2one('account.account', 'Cuenta',  required=True)
 
     }
 
@@ -75,6 +76,7 @@ class account_check_reject(osv.osv_memory):
         period_id = self.pool.get('account.period').find(cr, uid, wizard.reject_date)[0]
 
         for check in check_objs:
+
             if check.state not in ('deposited', 'delivered', 'wallet'):
                 raise osv.except_osv(_("Error"), _('Check %s has to be deposited or delivered!') % (check.number))
 
@@ -83,7 +85,7 @@ class account_check_reject(osv.osv_memory):
             invoice_vals = {
 
                 'origin': _('Check: %s') % check.number,
-                'name': 'Debit Note due to rejected check %s [%s]' % (check.number or '', check.source_voucher_id.number),
+                'name': 'Nota de debito por cheque rechazado numero %s [%s]' % (check.number or '', check.source_voucher_id.reference),
                 'type': 'out_invoice',
                 'is_debit_note': True,
                 'account_id': partner.property_account_receivable.id,
@@ -93,6 +95,7 @@ class account_check_reject(osv.osv_memory):
                 'journal_id': wizard.journal_id.id,
                 'fiscal_position': partner.property_account_position.id,
                 'company_id': wizard.company_id.id,
+                'account_id': wizard.account_id.id,
 
             }
 
@@ -159,7 +162,6 @@ class account_check_reject(osv.osv_memory):
                 wf_service.trg_validate(uid, 'account.third.check', check.id, 'deposited_rejected', cr)
 
             # Guardamos la referencia a la nota de debito del rechazo
-            # TODO: Cambiar el write del state, tiene que ser por workflow.
             third_check_obj.write(cr, uid, check.id, {'debit_note_id': debit_note_id, 'state': 'rejected'}, context=context)
 
         ir_model_data = self.pool.get('ir.model.data')

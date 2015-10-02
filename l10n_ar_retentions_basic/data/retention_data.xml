@@ -100,19 +100,38 @@
             <field name="sign">1.0</field>
         </record>
 
-        <!-- GANANCIAS -->
+        <!-- GANANCIAS A PAGAR -->
+        <record id="l10n_ar_chart_of_account.ganancias_a_pagar" model="account.tax.code">
+            <field name="name">Ganancias a pagar</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
+            <field name="sign">1.0</field>
+        </record>
 
-        <record id="retenciones_ganancias_realizadas" model="account.tax.code">
-            <field name="name">Retenciones Ganancias realizadas</field>
+        <record id="l10n_ar_chart_of_account.ganancias_debitos" model="account.tax.code">
+            <field name="name">Ganancias (Débitos)</field>
             <field name="code">501</field>
             <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
             <field name="sign">1.0</field>
         </record>
 
-        <record id="retenciones_ganancias_sufridas" model="account.tax.code">
-            <field name="name">Retenciones Ganancias sufridas</field>
+        <record id="l10n_ar_chart_of_account.ganancias_creditos" model="account.tax.code">
+            <field name="name">Ganancias (Créditos)</field>
             <field name="code">502</field>
             <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="retenciones_ganancias_realizadas" model="account.tax.code">
+            <field name="name">Retenciones Ganancias realizadas</field>
+            <field name="code">5012</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_debitos"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="retenciones_ganancias_sufridas" model="account.tax.code">
+            <field name="name">Retenciones Ganancias sufridas</field>
+            <field name="code">5022</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_creditos"/>
             <field name="sign">1.0</field>
         </record>
 
@@ -148,7 +167,7 @@
         </record>
 
         <!-- CUENTAS DE RETENCIONES ACTIVO -->
-        <record model="account.account" id="creditos_por_iigg_y_gmp">
+        <record model="account.account" id="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp">
             <field name="type">view</field>
             <field name="code">1140*</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
@@ -156,19 +175,19 @@
             <field name="parent_id" search="[('code', '=', '113*')]"/>
         </record>
 
-        <record id="anticipo_iigg_y_gmp" model="account.account">
+        <record id="l10n_ar_chart_of_account.anticipo_iigg_y_gmp" model="account.account">
             <field name="code">1140.01</field>
             <field name="reconcile" eval="True"/>
-            <field name="parent_id" ref="creditos_por_iigg_y_gmp"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp"/>
             <field name="type">other</field>
             <field name="name">Anticipo IIGG y GMP</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
         </record>
 
         <record id="retenciones_sufridas_iigg" model="account.account">
-            <field name="code">1140.02</field>
+            <field name="code">1140.03</field>
             <field name="reconcile" eval="True"/>
-            <field name="parent_id" ref="creditos_por_iigg_y_gmp"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp"/>
             <field name="type">other</field>
             <field name="name">Retenciones Sufridas IIGG</field>
             <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>

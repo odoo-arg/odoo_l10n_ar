@@ -20,8 +20,10 @@ import time
 from openerp import api
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-from datetime import date
+from datetime import date, datetime, timedelta
 from dateutil import parser
+import logging
+_logger = logging.getLogger(__name__)
 
 class account_check_config(osv.osv):
 
@@ -138,6 +140,42 @@ class account_third_check(osv.osv):
 
     _rec_name = 'number'
 
+    def _get_close_to_due(self, cr, uid, ids, close_to_due, arg, context=None):
+
+        checks = self.browse(cr, uid, ids, context=context)
+        res = {}
+
+        for check in checks:
+
+            check_state = False
+
+            if check.payment_date and check.state == 'wallet':
+
+                if datetime.strptime(check.due_date, ('%Y-%m-%d')) - timedelta(days=15) <= datetime.today():
+
+                    check_state = True
+
+            res[check.id] = check_state
+
+        return res
+
+    def _get_due_date(self, cr, uid, ids, due_date, arg, context=None):
+
+        checks = self.browse(cr, uid, ids, context=context)
+        res = {}
+        for check in checks:
+
+            due_date = None
+
+            if check.payment_date:
+
+                due_date = datetime.strptime(check.payment_date, ('%Y-%m-%d')) + timedelta(days=30)
+
+            res[check.id] = due_date
+
+        return res
+
+
     def _get_payment_date_day(self, cr, uid, ids, payment_date_by_day, arg, context=None):
 
         check_obj = self.browse(cr, uid, ids[0], context=context)
@@ -218,7 +256,8 @@ class account_third_check(osv.osv):
         'image_dorso': fields.binary("Dorso del cheque"),
         'internal_number': fields.integer("Numero interno", default = _get_internal_number),
         'payment_date_by_day': fields.function(_get_payment_date_day, string="Dia de pago", type='char', readonly=True, store=True),
-
+        'due_date': fields.function(_get_due_date, string='Fecha de vencimiento', type='date', readonly=True, store=True),
+        'close_to_due': fields.function(_get_close_to_due, string='Cercano al vencimiento', type='boolean', readonly=True)
     }
 
 
