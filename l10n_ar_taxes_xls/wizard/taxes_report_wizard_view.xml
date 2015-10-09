@@ -22,9 +22,8 @@
         <record model="ir.ui.view" id="taxes_report_xls_tree">
             <field name="name">taxes.report.xls.tree</field>
             <field name="model">taxes.report.xls</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree version="7.0">
+                <tree>
                     <field name="name"/>
                     <field name="data" filename="filename"/>
                     <field name="filename" invisible="1"/>
@@ -36,9 +35,8 @@
         <record model="ir.ui.view" id="taxes_report_xls_form">
             <field name="name">taxes.report.xls.form</field>
             <field name="model">taxes.report.xls</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
-                <form version="7.0">
+                <form>
                     <sheet>
                         <group>
                             <group>
@@ -60,17 +58,8 @@
             </field>
         </record>
 
-        <act_window
-            name="Generate Report"
-            res_model="taxes.report.xls"
-            src_model="account.invoice"
-            view_mode="form"
-            target="new"
-            key2="client_action_multi"
-            id="action_generate_report"/>
-
         <!-- ACCIÓN  -->
-        <record  id="account_deposit_slip_action" model="ir.actions.act_window">
+        <record  id="subjournal_vat_action" model="ir.actions.act_window">
             <field name="name">Subdiario de Iva</field>
             <field name="res_model">taxes.report.xls</field>
             <field name="view_type">form</field>
@@ -78,7 +67,7 @@
         </record>
 
         <!-- MENÚ  -->
-        <menuitem id="account_generate_tax_report_menu" action="account_deposit_slip_action" name="Subdiario de Iva" parent="account.menu_tax_report"/>
+        <menuitem id="account_generate_tax_report_menu" action="subjournal_vat_action" name="Subdiario de Iva" parent="account.menu_tax_report"/>
 
     </data>
 
