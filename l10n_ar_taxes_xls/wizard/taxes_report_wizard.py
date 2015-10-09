@@ -34,32 +34,32 @@ class taxes_report_xls(models.TransientModel):
                 ('sales', 'Sales'),
                 ('purchases', 'Purchases'),
     ], required=True)
-                            
+
     @api.one
     def generate_taxes_report(self):
 
         filename = None
-        
+
         if self.based_on == 'sales':
-            
+
             invoices = self.env['account.invoice'].search([('period_id', '=', self.period_id.id),
                                                            ('type', 'in', ('out_invoice', 'out_refund')),
                                                            ('state', 'not in', ('draft', 'cancel'))
                                                            ])
 
             filename = 'ventas '
-            
+
         elif self.based_on == 'purchases':
 
             invoices = self.env['account.invoice'].search([('period_id', '=', self.period_id.id),
                                                            ('type', 'in', ('in_invoice', 'in_refund')),
-                                                           ('state', 'not in', ('draft', 'cancel')) 
+                                                           ('state', 'not in', ('draft', 'cancel'))
                                                            ])
- 
+
             filename = 'compras '
-            
+
         taxesIds = self._get_taxes(invoices)
-        
+
         taxes = self.env['account.tax'].browse(taxesIds)
 
         import StringIO
@@ -96,19 +96,19 @@ class taxes_report_xls(models.TransientModel):
 
         counter = 6
         tax_dict = {}
-        
+
         for x in range(6, 6+(len(taxesIds))):
 
             sheet1.write(s1, counter , taxes[x-6].name+' - Base',style1)
-            tax_dict[taxes[x-6].name+' - Base'] = counter            
+            tax_dict[taxes[x-6].name+' - Base'] = counter
             counter += 1
             sheet1.write(s1, counter , taxes[x-6].name+ ' - Cantidad',style1)
-            tax_dict[taxes[x-6].name+' - Cantidad'] = counter            
+            tax_dict[taxes[x-6].name+' - Cantidad'] = counter
             counter += 1
 
-            
+
         sheet1.write(s1,counter,"Total",style1)
-        
+
         for invoice in sorted(invoices, key=attrgetter('date_invoice', 'type', 'internal_number')):
 
             invoice_type = self._get_invoice_type(invoice)
@@ -123,10 +123,23 @@ class taxes_report_xls(models.TransientModel):
 
             for invoice_tax in invoice.tax_line:
 
-                sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Base'), invoice_tax.base)
-                sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Cantidad'), invoice_tax.amount)
-                   
-            sheet1.write(s1, counter, invoice.amount_total)
+                if invoice.type == 'out_refund' or invoice.type == 'in_refund':
+
+                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Base'), - invoice_tax.base)
+                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Cantidad'), -invoice_tax.amount)
+
+                else:
+
+                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Base'), invoice_tax.base)
+                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Cantidad'), invoice_tax.amount)
+
+            if invoice.type == 'out_refund' or invoice.type == 'in_refund':
+
+                 sheet1.write(s1, counter, - invoice.amount_total)
+
+            else:
+
+                sheet1.write(s1, counter, invoice.amount_total)
 
         """PARSING DATA AS STRING """
         file_data=StringIO.StringIO()
@@ -136,11 +149,11 @@ class taxes_report_xls(models.TransientModel):
         filename ='Subdiario de iva ' + filename + self.period_id.name
 
         return self.write({'filename': filename + '.xls', 'data': out})
-          
+
     def _get_taxes(self, invoices):
 
         taxes = []
-        
+
         for invoice in invoices:
 
             for tax in invoice.tax_line:
@@ -174,5 +187,5 @@ class taxes_report_xls(models.TransientModel):
         res = res + denomination
 
         return res
-            
-taxes_report_xls()    
+
+taxes_report_xls()
