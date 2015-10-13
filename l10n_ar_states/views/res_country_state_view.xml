@@ -25,6 +25,7 @@
             <field name="arch" type="xml">
                 <field name="code" position="after">
                     <field name="afip_code"/>
+                    <field name="jurisdiccion_code"/>
                 </field>
             </field>
         </record>

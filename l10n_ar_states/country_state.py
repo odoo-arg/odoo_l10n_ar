@@ -26,7 +26,7 @@ class country_state(osv.osv):
         _columns = {
 
             'afip_code': fields.char('AFIP code'),
-
+            'jurisdiccion_code': fields.char('Codigo Jurisdiccion'),
         }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
