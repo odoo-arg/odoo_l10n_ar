@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'nvoice Analysis',
+    'name': 'Invoice Analysis',
 
     'version': '1.0',
 
