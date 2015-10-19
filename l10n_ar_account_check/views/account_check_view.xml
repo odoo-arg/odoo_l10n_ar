@@ -74,7 +74,7 @@
             <field name="model">account.issued.check</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Issued Checks" create="false">
+                <tree string="Issued Checks" create="false" delete="false">
                     <field name="number"/>
                     <field name="receiving_partner_id"/>
                     <field name="issue_date"/>
@@ -93,7 +93,7 @@
             <field name="model">account.issued.check</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Issued Checks" version="7.0" create="false">
+                <form string="Issued Checks" version="7.0" create="false" delete="false">
                     <sheet>
                         <div class="oe_title">
                             <h1>
@@ -233,7 +233,7 @@
             <field name="model">account.third.check</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Third Checks" colors="red: close_to_due == True" create="false">
+                <tree string="Third Checks" colors="red: close_to_due == True" create="false" delete="false">
                     <field name="close_to_due" invisible="1"/>
                     <field name="internal_number"/>
                     <field name="number"/>
@@ -259,7 +259,7 @@
             <field name="type">form</field>
             <field name="priority">10</field>
             <field name="arch" type="xml">
-               <form string="Third Checks" version="7.0" create="false">
+               <form string="Third Checks" version="7.0" create="false" delete="false">
                     <header>
                         <button name="%(action_check_deposit)d" type='action' string='Deposit Check' states='wallet' class="oe_highlight" groups="account.group_account_invoice,account.group_account_manager"/>
                         <field name="state" widget="statusbar" statusbar_visible="wallet,deposited,delivered" statusbar_colors='{"wallet":"blue","rejected":"red"}'/>
