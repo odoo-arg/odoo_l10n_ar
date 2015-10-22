@@ -722,9 +722,9 @@
         </record>
 
         <record model="account.account.template" id="proveedores_en_general">
-            <field name="type">other</field>
+            <field name="type">payable</field>
             <field name="code">2111.01</field>
-            <field name="user_type" ref="account_type_liability"/>
+            <field name="user_type" ref="account_type_payable"/>
             <field name="name">Proveedores en general</field>
             <field name="reconcile" eval="True"/>
             <field name="parent_id" ref="deudas_comerciales"/>
