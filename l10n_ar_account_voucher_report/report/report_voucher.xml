@@ -4,15 +4,8 @@
         <template id="report_voucher_document">
             <t t-call="report.external_layout">
                 <div class="page">
-                    <div class="row">
-                        <div class="col-xs-5 col-xs-offset-7">
-                            <address t-field="o.partner_id"
-                                t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
-                            <span t-field="o.partner_id.vat"/>
-                        </div>
-                    </div>
 
-                    <h3>
+                    <h3 class="col-xs-offset-3">
                         <span t-if="o.type == 'receipt' and (o.state not in ('draft', 'cancel'))">RECIBO N°</span>
                         <span t-if="o.type == 'payment' and (o.state not in ('draft', 'cancel'))">ORDEN DE PAGO N°</span>
                         <span t-if="o.type == 'receipt' and o.state == 'draft'">RECIBO BORRADOR N°</span>
@@ -22,13 +15,18 @@
                         <span t-field="o.reference"/>
                     </h3>
 
-                    <div class="row mt32 mb32">
-                        <div class="col-xs-2" t-if="o.date">
+
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <address t-field="o.partner_id" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+                            <span t-field="o.partner_id.vat"/>
+                        </div>
+                        <div class="col-xs-1 col-xs-offset-5" t-if="o.date">
                             <t t-if=" o.type == 'receipt' ">
-                                <strong>Fecha de recibo:</strong>
+                                <strong><u>Fecha</u></strong>
                             </t>
                             <t t-if=" o.type == 'payment' ">
-                                <strong>Fecha de orden de pago:</strong>
+                                <strong><u>Fecha</u></strong>
                             </t>
                             <p t-field="o.date"/>
                         </div>
