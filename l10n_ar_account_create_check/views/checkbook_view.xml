@@ -81,6 +81,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Checkbook" version="7.0">
+                    <header>
+                        <button name="cancel_check_on_checkbook" type="object" string="Anular Cheque"/>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                         <h1><label for="name"/><field name="name" class="oe_inline"/></h1>
@@ -92,6 +95,7 @@
                                 <field name="partner_id" invisible="1"/>
                             </group>
                             <group>
+                            <field name="account_id"/>
                             <field name="type"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             </group>

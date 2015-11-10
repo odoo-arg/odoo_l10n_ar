@@ -410,7 +410,6 @@
             </field>
         </record>
 
-        <!-- Tesoreria/Cheques/Cheques Emitidos -->
         <record model="ir.actions.act_window" id="action_third_check">
             <field name="name">Third Checks</field>
             <field name="res_model">account.third.check</field>

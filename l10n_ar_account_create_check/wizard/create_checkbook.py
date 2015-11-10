@@ -24,7 +24,7 @@
 
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-
+from openerp import api
 
 class wizard_create_check(osv.osv_memory):
 
@@ -37,8 +37,9 @@ class wizard_create_check(osv.osv_memory):
         'bank_account_id': fields.many2one('res.partner.bank','Bank', required=True),
         'start_num': fields.char('Start number of check',size=20, required=True),
         'end_num': fields.char('End number of check',size=20, required=True),
-        'checkbook_num': fields.char('Checkbook number',size=20, required=True),
+        'checkbook_num': fields.char('Referencia de chequera',size=20, required=True),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'account_id': fields.many2one('account.account', 'Cuenta', required=True)
 
     }
 
@@ -47,6 +48,20 @@ class wizard_create_check(osv.osv_memory):
         'company_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).company_id.id
 
     }
+
+    @api.onchange('bank_account_id')
+    def onchange_bank_account_id(self):
+
+        bank_account_id = None
+
+        if self.bank_account_id:
+
+            if self.bank_account_id.account_id:
+
+                bank_account_id = self.bank_account_id.account_id.id
+
+        self.account_id = bank_account_id
+
 
     def create_checkbook(self, cr, uid, ids, context=None):
         checkbook_obj = self.pool.get('account.checkbook')
@@ -73,7 +88,8 @@ class wizard_create_check(osv.osv_memory):
                 'name': form.checkbook_num,
                 'bank_id': form.bank_account_id.bank.id,
                 'bank_account_id': form.bank_account_id.id,
-                'check_ids': checks
+                'check_ids': checks,
+                'account_id': form.account_id.id
 
             }
 

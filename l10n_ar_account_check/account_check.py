@@ -89,10 +89,7 @@ class account_issued_check(osv.osv):
     def create_voucher_move_line(self, cr, uid, check, voucher, context={}):
         voucher_obj = self.pool.get('account.voucher')
 
-        # Buscamos la cuenta contable para el asiento del cheque
-        # Esta cuenta se corresponde con la cuenta de banco de donde
-        # pertenece el cheque
-        account_id = check.account_bank_id.account_id.id
+        account_id = check.account_bank_id.id
         if not account_id:
             raise osv.except_osv(_("Error"), _("Bank Account has no account configured. Please, configure an account for the bank account used for checks!"))
 
@@ -113,7 +110,7 @@ class account_issued_check(osv.osv):
         # Creamos la linea contable perteneciente al cheque
         move_line = {
 
-            'name': 'Issued Check ' + check.number or '/',
+            'name': 'Cheque propio ' + check.number or '/',
             'debit': debit,
             'credit': credit,
             'account_id': account_id,

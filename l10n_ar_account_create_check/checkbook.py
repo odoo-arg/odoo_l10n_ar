@@ -22,9 +22,11 @@
 ##############################################################################
 
 
+from openerp import models, fields, api, _
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class account_checkbook(osv.osv):
 
@@ -42,7 +44,7 @@ class account_checkbook(osv.osv):
         'partner_id': fields.related('company_id', 'partner_id', type="many2one", relation="res.partner", string="Partner", store=True),
         'company_id': fields.many2one('res.company', 'Company', required=True),
         'type': fields.selection([('common', 'Common'),('postdated', 'Post-dated')], 'Checkbook Type', help="If common, checks only have issued_date. If post-dated they also have payment date"),
-
+        'account_id': fields.many2one('account.account', 'Cuenta', required=True)
     }
 
     _defaults = {
@@ -78,6 +80,21 @@ class account_checkbook(osv.osv):
             super(account_checkbook, self).unlink(cr, uid, checkbook.id, context=context)
 
         return True
+
+    @api.multi
+    def cancel_check_on_checkbook(self):
+
+        return {
+
+            'name': _('Anular cheque'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'cancel.issued.check.wizard',
+            'views': [[False, "form"]],
+            'target': 'new',
+            'context': {'default_checkbook_id': self.id}
+        }
 
 account_checkbook()
 
@@ -117,6 +134,7 @@ class account_issued_check(osv.osv):
         'check_id': fields.many2one('account.checkbook.check', 'Check'),
         'checkbook_id': fields.many2one('account.checkbook', 'Checkbook'),
         'number': fields.char('Check Number', size=20),
+        'account_id': fields.many2one('account.account', 'Cuenta', required=True)
 
     }
 
@@ -129,8 +147,12 @@ class account_issued_check(osv.osv):
         check = self.pool.get('account.checkbook.check').browse(cr, uid, check_id, context=context)
         checkbook = check.checkbook_id
 
+        _logger.info('check %s', check_id)
+        _logger.info('check account %s', checkbook.account_id.id)
+
         return {'value':{'account_bank_id': checkbook.bank_account_id.id, 'checkbook_id': checkbook.id,
-                         'bank_id': checkbook.bank_id.id, 'number': check.name, 'type': checkbook.type}}
+                         'bank_id': checkbook.bank_id.id, 'number': check.name, 'type': checkbook.type,
+                         'account_id': checkbook.account_id.id}}
 
     def write(self, cr, uid, ids, vals, context=None):
         a = vals.get('check_id', False)
@@ -154,6 +176,47 @@ class account_issued_check(osv.osv):
         aux_check_id = cr.fetchone()
         self.pool.get('account.checkbook.check').write(cr, uid, aux_check_id, {'state': 'draft'})
         return super(account_issued_check, self).unlink(cr, uid, ids, context=context)
+
+    #Misma función que en el módulo de cheques, solo que la cuenta no la va a buscar al banco ahora
+    def create_voucher_move_line(self, cr, uid, check, voucher, context={}):
+        voucher_obj = self.pool.get('account.voucher')
+
+        account_id = check.account_id.id
+        if not account_id:
+            raise osv.except_osv(_("Error"), _("Bank Account has no account configured. Please, configure an account for the bank account used for checks!"))
+
+        company_currency = voucher.company_id.currency_id.id
+        current_currency = voucher.currency_id.id
+
+        amount_in_company_currency =  voucher_obj._convert_paid_amount_in_company_currency(cr, uid, voucher, check.amount, context=context)
+
+        debit = credit = 0.0
+        if voucher.type in ('purchase', 'payment'):
+            credit = amount_in_company_currency
+        elif voucher.type in ('sale', 'receipt'):
+            debit = amount_in_company_currency
+        if debit < 0: credit = -debit; debit = 0.0
+        if credit < 0: debit = -credit; credit = 0.0
+        sign = debit - credit < 0 and -1 or 1
+
+        # Creamos la linea contable perteneciente al cheque
+        move_line = {
+
+            'name': 'Cheque propio ' + check.number or '/',
+            'debit': debit,
+            'credit': credit,
+            'account_id': account_id,
+            'journal_id': voucher.journal_id.id,
+            'period_id': voucher.period_id.id,
+            'partner_id': voucher.partner_id.id,
+            'currency_id': company_currency <> current_currency and  current_currency or False,
+            'amount_currency': company_currency <> current_currency and sign * check.amount or 0.0,
+            'date': voucher.date,
+            'date_maturity': voucher.date_due
+
+        }
+
+        return move_line
 
 account_issued_check()
 

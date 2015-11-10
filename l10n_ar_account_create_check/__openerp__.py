@@ -25,7 +25,7 @@
     "author" : "OPENPYME SRL",
 
     "website": "openpyme.com.ar",
-    
+
     "category" : "Treasury",
 
     "summary": "Checkbook management for Own Checks",
@@ -41,6 +41,7 @@
         "views/checkbook_view.xml",
         "views/account_voucher_view.xml",
         "wizard/create_checkbook_view.xml",
+        "wizard/cancel_issued_check_wizard_view.xml"
 
     ],
 
