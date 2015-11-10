@@ -241,7 +241,7 @@
 
         <!-- *** IMPUESTOS *** -->
 
-        <record id="tax_percepcion_gananacia_sufrida" model="account.tax">
+        <record id="tax_percepcion_ganancia_sufrida" model="account.tax">
             <field name="name">Percepciones Ganancias Sufrida</field>
             <field name="description">Percepciones Ganancias Sufrida</field>
             <field name="sequence">29</field>
@@ -411,7 +411,7 @@
             <field name="type_tax_use">purchase</field>
             <field name="type">profit</field>
             <field name="jurisdiccion">nacional</field>
-            <field name="tax_id" ref="tax_percepcion_gananacia_sufrida"/>
+            <field name="tax_id" ref="tax_percepcion_ganancia_sufrida"/>
         </record>
 
     </data>
