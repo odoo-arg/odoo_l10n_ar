@@ -36,14 +36,6 @@ class AccountInvoice(models.Model):
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
 
-        '''
-        # Como nos faltan los account.move.line de las bases imponibles de las percepciones
-        # utilizamos este hook para agregarlos
-
-        company_currency = self.company_id.currency_id.id
-        current_currency = self.currency_id.id
-        '''
-
         for p in self.perception_ids:
 
             #~ ESCRIBIMOS LA FECHA DE LA FACTURA EN LA PERCEPCIONES PARA AQUELLAS
@@ -52,33 +44,31 @@ class AccountInvoice(models.Model):
 
                 p.date = self.date_invoice or time.strftime('%Y-%m-%d')
 
-            '''
-            sign = p.perception_id.tax_id.base_sign
-
-            tax_amount, base_amount = p._compute(self, p.base, p.amount)
-
-            # ...y ahora creamos la linea contable perteneciente a la base imponible de la perception
-            # Notar que credit & debit son 0.0 ambas. Lo que cuenta es el tax_code_id y el tax_amount
-            move_line = {
-                'name': p.name + '(Base Imp)',
-                'ref': self.internal_number or False,
-                'debit': 0.0,
-                'credit': 0.0,
-                'account_id': p.account_id.id,
-                'tax_code_id': p.base_code_id.id,
-                'tax_amount': base_amount,
-                'journal_id': self.journal_id.id,
-                'period_id': self.period_id.id,
-                'partner_id': self.partner_id.id,
-                'currency_id': company_currency != current_currency and current_currency or False,
-                'amount_currency': company_currency != current_currency and sign * p.amount or 0.0,
-                'date': self.date_invoice or time.strftime('%Y-%m-%d'),
-                'date_maturity': self.date_due or False,
-            }
-
-            move_lines.insert(len(move_lines) - 1, (0, 0, move_line))
-            '''
         return move_lines
+
+
+    #~ SE AGREGA A LA ACCION DE REFUND LAS LINEAS DE PERCEPCION
+    @api.model
+    def _prepare_refund(self, invoice, date=None, period_id=None, description=None, journal_id=None):
+        """ Prepare the dict of values to create the new refund from the invoice.
+            This method may be overridden to implement custom
+            refund generation (making sure to call super() to establish
+            a clean extension chain).
+
+            :param record invoice: invoice to refund
+            :param string date: refund creation date from the wizard
+            :param integer period_id: force account.period from the wizard
+            :param string description: description of the refund from the wizard
+            :param integer journal_id: account.journal from the wizard
+            :return: dict of value to create() the refund
+        """
+
+        values = super(AccountInvoice, self)._prepare_refund(invoice, date=None, period_id=None, description=None, journal_id=None)
+
+        values['perception_ids'] = self._refund_cleanup_lines(invoice.perception_ids)
+
+        return values
+
 
 AccountInvoice()
 
