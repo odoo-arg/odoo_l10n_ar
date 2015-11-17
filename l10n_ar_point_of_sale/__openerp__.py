@@ -51,6 +51,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'data/partner_data.xml',
+        'data/pos_ar_type.xml',
         'views/pos_ar_view.xml',
         'views/account_invoice_view.xml',
         'views/fiscal_position_view.xml',

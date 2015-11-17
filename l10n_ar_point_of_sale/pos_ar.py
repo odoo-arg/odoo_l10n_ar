@@ -20,6 +20,10 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from openerp import api
+
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class invoice_denomination(osv.osv):
@@ -52,6 +56,20 @@ class invoice_denomination(osv.osv):
 
 invoice_denomination()
 
+class pos_ar_type(osv.osv):
+
+    _name = "pos.ar.type"
+
+    _description = "Tipo de impresion"
+
+    _columns = {
+
+        'name' : fields.char('Nombre', required=True),
+        'foo' : fields.char('Funcion', required=True),
+
+    }
+
+pos_ar_type()
 
 class pos_ar(osv.osv):
 
@@ -65,11 +83,17 @@ class pos_ar(osv.osv):
         'name' : fields.char('Nro', required=True, size=6),
         'desc' : fields.char('Description', required=False, size=180),
         'priority' : fields.integer('Priority', required=True, size=6),
-        'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse', required=True),        
+        'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse', required=True),
         'denomination_id': fields.many2one('invoice.denomination', 'Denomination'),
-        'print_type': fields.selection( ([('preprinted','Preimpreso'),('electronic_invoice','Factura Electronica'),('fiscal_printer','Impresora Fiscal')]),required=True,),
+        'print_type_id': fields.many2one('pos.ar.type', 'Tipo de impresion', required=True),
+        'print_type_name': fields.char(string="Nombre Tipo Impresion"),
 
     }
+
+    @api.onchange('print_type_id')
+    def onchange_print_type(self):
+        self.print_type_name = self.print_type_id.name if self.print_type_id else False
+
 
     def name_get(self, cr, uid, ids, context=None):
         res = []

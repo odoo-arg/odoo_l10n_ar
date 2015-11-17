@@ -255,17 +255,34 @@ class invoice(models.Model):
 
         return next_number
 
+    @api.one
+    def action_number_preprinted(self):
+
+        if not self.internal_number:
+
+            next_number = None
+
+            next_number = self.get_next_invoice_number()[0]
+
+            internal_number = '%s-%08d' % (self.pos_ar_id.name, next_number)
+
+            self.internal_number = internal_number
+
+        m = re.match('^[0-9]{4}-[0-9]{8}$', self.internal_number)
+        if not m:
+            raise ValidationError(_('The Invoice Number should be the format XXXX-XXXXXXXX'))
+
+
+
     @api.multi
     def action_number(self):
-
-        next_number = None
-        invoice_vals = {}
 
         #TODO: not correct fix but required a fresh values before reading it
         # Esto se usa para forzar a que recalcule los campos funcion
         self.write({})
 
         for inv in self:
+
             partner_country = inv.partner_id.country_id and inv.partner_id.country_id.id or False
             company_country = inv.company_id.country_id and inv.company_id.country_id.id or False
 
@@ -279,38 +296,21 @@ class invoice(models.Model):
             if local:
                 inv._check_fiscal_values()
 
-            # si el usuario no ingreso un numero, busco el ultimo y lo incremento , si no hay ultimo va 1.
-            # si el usuario hizo un ingreso dejo ese numero
-            internal_number = False
-            next_number = False
-
             # Si son de Cliente
             if inv.type in ('out_invoice', 'out_refund'):
 
-                pos_ar = inv.pos_ar_id
-                next_number = self.get_next_invoice_number()[0]
-
-                # Nos fijamos si el usuario dejo en blanco el campo de numero de factura
-                if inv.internal_number:
-                    internal_number = inv.internal_number
-
-                # Lo ponemos como en Proveedores, o sea, A0001-00000001
-                if not internal_number:
-                    if pos_ar.print_type == 'preprinted':
-                        internal_number = '%s-%08d' % (pos_ar.name, next_number)
-                    else :
-                        #LE SUMO 90000000 PARA DARLE UN RANGO ALTO Y QUE NO TENGA PROBLEMAS DE DUPLICIDAD
-                        if next_number < 90000000 :
-                            next_number = next_number + 90000000
-                            internal_number = '%s-%08d' % (pos_ar.name, next_number)
+                if inv.pos_ar_id:
+                    pos_ar = inv.pos_ar_id
+                else:
+                    raise ValidationError(_('El punto de venta no esta configurado'))
 
 
-                m = re.match('^[0-9]{4}-[0-9]{8}$', internal_number)
-                if not m:
-                    raise ValidationError(_('The Invoice Number should be the format XXXX-XXXXXXXX'))
+                if not pos_ar.print_type_id:
+                    raise ValidationError(_('El punto de venta no tiene un tipo de impresion configurado'))
 
-                # Escribimos el internal number
-                invoice_vals['internal_number'] = internal_number
+                foo = pos_ar.print_type_id.foo
+
+                getattr(inv, foo )()
 
             # Si son de Proveedor
             else:
@@ -322,8 +322,6 @@ class invoice(models.Model):
                     if not m:
                         raise ValidationError(_('The Invoice Number should be the format XXXX-XXXXXXXX'))
 
-            # Escribimos los campos necesarios de la factura
-            inv.write(invoice_vals)
 
             invoice_name = inv.name_get()[0][1]
             if not reference:
@@ -333,6 +331,7 @@ class invoice(models.Model):
 
             # Actulizamos el campo reference del move_id correspondiente a la creacion de la factura
             inv._update_reference(ref)
+
         return True
 
     def refund(self, cr, uid, ids, date=None, period_id=None, description=None, journal_id=None, context=None):

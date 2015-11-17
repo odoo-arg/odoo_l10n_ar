@@ -35,7 +35,7 @@
                         <group>
                             <group>
                                 <field name="name"/>
-                                <field name="warehouse_id" widget="selection"/>                                
+                                <field name="warehouse_id" widget="selection"/>
                             </group>
                             <group>
                                 <field name="priority" colspan="2"/>
@@ -43,7 +43,8 @@
                             </group>
                         </group>
                         <group>
-                            <field name="print_type" string="Print Type"/>
+                            <field name="print_type_id" widget="selection"/>
+                            <field name="print_type_name" invisible="True"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <separator string="Description"/>
@@ -64,7 +65,7 @@
             <field name="arch" type="xml">
                 <tree string="POS AR">
                     <field name="name"/>
-                    <field name="warehouse_id"/>                    
+                    <field name="warehouse_id"/>
                     <field name="denomination_id"/>
                     <field name="priority"/>
                 </tree>
