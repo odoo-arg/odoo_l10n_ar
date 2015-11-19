@@ -23,9 +23,10 @@
             <field name="name">account.deposit.slip.tree</field>
             <field name="model">account.deposit.slip</field>
             <field name="arch" type="xml">
-                <tree string="Deposit slip" create="false">
+                <tree string="Deposit slip" create="false" colors="green:state == 'deposited'; gray:state== 'canceled'" delete="false">
                     <field name="name"/>
                     <field name="date"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -35,14 +36,23 @@
             <field name="name">account.deposit.slip.form</field>
             <field name="model">account.deposit.slip</field>
             <field name="arch" type="xml">
-                <form string="Deposit slip" create="false" edit="false">
+                <form string="Deposit slip" create="false" edit="false" delete="false">
+                    <header>
+                        <button name="cancel_deposit_slip" type="object" string="Anular Boleta" confirm="Está seguro?" attrs="{'invisible': [('state', '=', 'canceled')]}"/>
+                    </header>
                     <group>
-                        <field name="name"/>
-                        <field name="date"/>
+                        <group>
+                            <field name="state" invisible="1"/>
+                            <field name="name"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="move_id" attrs="{'invisible': [('state', '=', 'canceled')]}"/>
+                        </group>
                     </group>
                     <newline/>
-                    <group>
-                        <field name="checks_ids">
+                    <group string="Cheques">
+                        <field name="checks_ids" nolabel="1">
                             <tree string="Deposit slip">
                                 <field name="internal_number"/>
                                 <field name="source_partner_id"/>

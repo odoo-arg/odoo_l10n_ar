@@ -21,9 +21,8 @@
         <record model="ir.ui.view" id="account_deposit_slip_wizard_form">
             <field name="name">account.deposit.slip.wizard.form</field>
             <field name="model">wizard.account.deposit.slip</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Check Deposit" version="7.0">
+                <form string="Check Deposit">
                     <group>
                         <field name="company_id" invisible="1"/>
                         <field name="bank_account_id" domain="[('company_id','=',company_id)]" widget="selection"/>

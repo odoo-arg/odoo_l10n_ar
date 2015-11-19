@@ -16,21 +16,15 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from openerp import models, fields, api, _
 
-
-class account_third_check(osv.osv):
+class AccountThirdCheck(models.Model):
 
     _inherit = "account.third.check"
 
-    _columns = {
+    name = fields.Char('Cheque de tercero')
+    deposit_slip_id = fields.Many2one('account.deposit.slip', 'Boleta de deposito')
 
-        'name': fields.char('Third checks'),
-        'deposit_slip_id': fields.many2one('account.deposit.slip', 'Deposit slip Id'),
-
-    }
-
-account_third_check()
+AccountThirdCheck()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

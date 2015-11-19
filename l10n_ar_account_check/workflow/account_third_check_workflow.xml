@@ -41,7 +41,6 @@
         <record id="act_deposited" model="workflow.activity">
             <field name="wkf_id" ref="third_checks"/>
             <field name="name">deposited</field>
-            <field name="flow_stop">True</field>
             <field name="kind">function</field>
             <field name="action">wkf_deposited()</field>
         </record>
@@ -74,6 +73,12 @@
             <field name="signal">cartera_deposited</field>
         </record>
 
+        <record id="trans_deposited_cartera" model="workflow.transition">
+            <field name="act_from" ref="act_deposited"/>
+            <field name="act_to" ref="act_cartera"/>
+            <field name="signal">deposited_cartera</field>
+        </record>
+
         <record id="trans_delivered_rejected" model="workflow.transition">
             <field name="act_from" ref="act_delivered"/>
             <field name="act_to" ref="act_rejected"/>
@@ -103,7 +108,7 @@
             <field name="act_to" ref="act_draft" />
             <field name="signal">cartera_draft</field>
         </record>
-        
+
     </data>
 
 </openerp>

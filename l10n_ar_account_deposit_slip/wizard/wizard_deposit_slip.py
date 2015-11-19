@@ -16,87 +16,63 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from openerp import models, fields, api, _
 import time
+from openerp.exceptions import Warning
 from dateutil import parser
 from openerp import netsvc
 import logging
 _logger = logging.getLogger(__name__)
 
-
-class wizard_account_deposit_slip(osv.osv_memory):
+class WizardAccountDepositSlip(models.TransientModel):
 
     _name = "wizard.account.deposit.slip"
 
-    _columns = {
-
-        'name': fields.char(string='Deposit slip number',size=128),
-        'date': fields.date('From', required=True),
-        'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account', required=True),
-        'company_id': fields.many2one('res.company', 'Company', required=True),
-        'journal_id': fields.many2one('account.journal', 'Journal', domain=[('type','in',('cash', 'bank'))], required=True),
-
-    }
-
-    def _get_journal(self, cr, uid, context=None):
-        journal_id = False
-        voucher_obj = self.pool.get('account.voucher')
-        model = context.get('active_model', False)
-        if model and model == 'account.third.check':
-            ids = context.get('active_ids', [])
-            vouchers = self.pool.get(model).read(cr, uid, ids, ['source_voucher_id'], context=context)
-            if vouchers and vouchers[0] and 'source_voucher_id' in vouchers[0]:
-                if vouchers[0]['source_voucher_id']:
-                    voucher_id = vouchers[0]['source_voucher_id'][0]
-                    journal_id = voucher_obj.read(cr, uid, voucher_id, ['journal_id'], context=context)['journal_id'][0]
-        return journal_id
+    name = fields.Char(string='Boleta de deposito numero')
+    date = fields.Date('Fecha', required=True)
+    bank_account_id = fields.Many2one('res.partner.bank', 'Cuenta bancaria', required=True)
+    company_id = fields.Many2one('res.company', 'Compania', required=True)
+    journal_id = fields.Many2one('account.journal', 'Diario', domain=[('type','in',('cash', 'bank'))], required=True)
 
     _defaults = {
 
         'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).company_id.id,
-        'journal_id': _get_journal,
 
     }
 
-    def _get_source_account_check(self, cr, uid, company_id):
-        check_config_obj = self.pool.get('account.check.config')
+    def _get_source_account_check(self, company_id):
+        check_config_obj = self.env['account.check.config']
 
-        # Obtenemos la configuracion
-        res = check_config_obj.search(cr, uid, [('company_id', '=', company_id)])
-        if not len(res):
-            raise osv.except_osv(_('Error!'), _('There is no check configuration for this Company!'))
+        res = check_config_obj.search([('company_id', '=', company_id)])
 
-        src_account = check_config_obj.read(cr, uid, res[0], ['account_id'])
-        if 'account_id' in src_account:
-            return src_account['account_id'][0]
+        if not res:
+            raise Warning('No hay configuración de cheques para esta companía!')
 
-        raise osv.except_osv(_('Error!'), _('Bad Treasury configuration for this Company!'))
+        return res[0].account_id
 
 
-    def action_deposit(self, cr, uid, ids, context=None):
+    @api.multi
+    def action_deposit(self):
 
-        deposit_slip_obj = self.pool.get('account.deposit.slip')
-
-        third_check = self.pool.get('account.third.check')
+        deposit_slip_obj = self.env['account.deposit.slip']
+        third_check_obj = self.env['account.third.check']
         wf_service = netsvc.LocalService('workflow')
-        move_line = self.pool.get('account.move.line')
-        wizard = self.browse(cr, uid, ids[0], context=context)
+        move_line = self.env['account.move.line']
+        period_id = self.env['account.period'].find(self.date)
 
-        period_id = self.pool.get('account.period').find(cr, uid, wizard.date)[0]
-        deposit_date = wizard.date or time.strftime('%Y-%m-%d')
+        if period_id:
 
-        if not wizard.bank_account_id.account_id:
-            raise osv.except_osv(_("Error"), _("You have to configure an account on Bank Account %s: %s") % (wizard.bank_account_id.bank_name, wizard.bank_account_id.acc_number))
+            period_id = period_id[0]
 
-        #Deposit slip
-        if context is None:
-            context = {}
+        deposit_date = self.date or time.strftime('%Y-%m-%d')
 
-        active_ids = context.get('active_ids', [])
-        company_id = wizard.company_id.id
-        check_objs = third_check.browse(cr, uid, active_ids, context=context)
+        if not self.bank_account_id.account_id:
+            raise Warning("Configurar cuenta para la cuenta bancaria "+self.bank_account_id.bank_name+": "+self.bank_account_id.acc_number)
+
+        active_ids = self.env.context.get('active_ids', [])
+        company_id = self.company_id.id
+        check_objs = third_check_obj.browse(active_ids)
 
         deposit_slip_amount = 0
         checks = []
@@ -104,48 +80,50 @@ class wizard_account_deposit_slip(osv.osv_memory):
         for check in check_objs:
 
             if check.state != 'wallet':
-                raise osv.except_osv(_("Error"), _("The selected checks must to be in cartera.\nCheck %s is not in wallet") % (check.number))
+                raise Warning("Los cheques seleccionados deben estar en cartera. \n El cheque "+check.number +" no esta en cartera", )
 
             if check.payment_date > deposit_date:
-                raise osv.except_osv(_("Cannot deposit"), _("You cannot deposit check %s because Payment Date is greater than Deposit Date.") % (check.number))
+                raise Warning("No se puede depositar el cheque " +check.number+ " la fecha del cheque es mayor que la de la boleta.", )
 
-            account_check_id = self._get_source_account_check(cr, uid, company_id)
+            account_check_id = self._get_source_account_check(company_id)
 
             deposit_slip_amount += check.amount
 
-            check_vals = {'deposit_bank_id': wizard.bank_account_id.id, 'deposit_date': deposit_date}
+            check_vals = {'deposit_bank_id': self.bank_account_id.id, 'deposit_date': deposit_date}
             check.write(check_vals)
 
-            wf_service.trg_validate(uid, 'account.third.check', check.id, 'cartera_deposited', cr)
+            wf_service.trg_validate(self.env.uid, 'account.third.check', check.id, 'cartera_deposited', self.env.cr)
 
             checks.append(check.id)
 
-        sequence = self.pool.get('ir.sequence').get(cr, uid, 'account.deposit.slip.sequence')
+        sequence = self.env['ir.sequence'].get('account.deposit.slip.sequence')
 
-        deposit_slip_obj.create(cr, uid, {
+        move_id = self.env['account.move'].create( {
             'name': sequence,
-            'date': wizard.date,
-            'bank_account_id': wizard.bank_account_id.id,
-            'total_amount': deposit_slip_amount,
-            'checks_ids': [(6, 0, checks)]
-        })
-
-        move_id = self.pool.get('account.move').create(cr, uid, {
-            'name': sequence,
-            'journal_id': wizard.journal_id.id,
+            'journal_id': self.journal_id.id,
             'state': 'draft',
-            'period_id': period_id,
+            'period_id': period_id.id,
             'date': deposit_date,
             'ref': _('Deposit Slip Number %s') % sequence,
         })
 
-        move_line.create(cr, uid, {
+        deposit_slip_obj.create({
+            'name': sequence,
+            'date': self.date,
+            'bank_account_id': self.bank_account_id.id,
+            'move_id': move_id.id,
+            'total_amount': deposit_slip_amount,
+            'checks_ids': [(6, 0, checks)],
+            'state': 'deposited',
+        })
+
+        move_line.create({
             'name': sequence,
             'centralisation': 'normal',
-            'account_id': wizard.bank_account_id.account_id.id,
-            'move_id': move_id,
-            'journal_id': wizard.journal_id.id,
-            'period_id': period_id,
+            'account_id': self.bank_account_id.account_id.id,
+            'move_id': move_id.id,
+            'journal_id': self.journal_id.id,
+            'period_id': period_id.id,
             'date': deposit_date,
             'debit': deposit_slip_amount,
             'credit': 0.0,
@@ -153,13 +131,13 @@ class wizard_account_deposit_slip(osv.osv_memory):
             'state': 'valid',
         })
 
-        move_line.create(cr, uid, {
+        move_line.create({
             'name': sequence,
             'centralisation': 'normal',
-            'account_id': account_check_id,
-            'move_id': move_id,
-            'journal_id': wizard.journal_id.id,
-            'period_id': period_id,
+            'account_id': account_check_id.id,
+            'move_id': move_id.id,
+            'journal_id': self.journal_id.id,
+            'period_id': period_id.id,
             'date': deposit_date,
             'debit': 0.0,
             'credit': deposit_slip_amount,
@@ -167,13 +145,10 @@ class wizard_account_deposit_slip(osv.osv_memory):
             'state': 'valid',
         })
 
-        # Se postea el asiento llamando a la funcion post de account_move.
-        # TODO: Se podria poner un check en el wizard para que elijan si postear
-        # el asiento o no.
-        self.pool.get('account.move').post(cr, uid, [move_id], context=context)
+        move_id.post()
 
         return { 'type': 'ir.actions.act_window_close' }
 
-wizard_account_deposit_slip()
+WizardAccountDepositSlip()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
