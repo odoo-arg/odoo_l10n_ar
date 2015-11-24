@@ -66,15 +66,31 @@ class bank_reconciliation_wizard(models.TransientModel):
             #Check if the period is ok
             self._check_period(self.period_id, bank_reconciliation)
 
+            flag_last = False
+
             #Get last balance
             if bank_reconciliation.bank_reconcile_line_ids:
 
                 last_balance = bank_reconciliation.bank_reconcile_line_ids[0].current_balance
+                flag_last = True
 
-            reconcile_line = bank_reconciliation.bank_reconcile_line_ids.create({'period_id': self.period_id.id,
-                                                                                 'last_balance': last_balance,
-                                                                                 'current_balance': current_balance + last_balance,
-                                                                                 'bank_reconcile_id': bank_reconciliation.id,})
+            # Si habia un balance previo, chequeo si es el mismo que el seleccionado
+            # Si? Agrego las move a ese balance.
+            # No? Creo una nuevo linea de conciliacion.
+            if flag_last and self.period_id.id == bank_reconciliation.bank_reconcile_line_ids[0].period_id.id:
+
+
+                reconcile_line = bank_reconciliation.bank_reconcile_line_ids[0]
+
+                reconcile_line.write({'current_balance': current_balance + last_balance})
+
+
+            else:
+
+                reconcile_line = bank_reconciliation.bank_reconcile_line_ids.create({'period_id': self.period_id.id,
+                                                                                     'last_balance': last_balance,
+                                                                                     'current_balance': current_balance + last_balance,
+                                                                                     'bank_reconcile_id': bank_reconciliation.id,})
 
             move_lines.write({'is_reconciled': True, 'bank_reconcile_line_id': reconcile_line.id})
 
@@ -84,7 +100,7 @@ class bank_reconciliation_wizard(models.TransientModel):
         bank_reconcile_line_obj = self.env['account.bank.reconcile.line']
         account_period_obj = self.env['account.period']
 
-        account_periods = account_period_obj.search([('date_start', '>=', period.date_start)])
+        account_periods = account_period_obj.search([('date_start', '>', period.date_start)])
 
         bank_reconcile_line = bank_reconcile_line_obj.search([('period_id', 'in', account_periods.ids),
                                                               ('bank_reconcile_id', '=', bank_reconciliation.id)])
