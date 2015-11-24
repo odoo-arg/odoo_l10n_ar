@@ -89,7 +89,7 @@ class account_issued_check(osv.osv):
     def create_voucher_move_line(self, cr, uid, check, voucher, context={}):
         voucher_obj = self.pool.get('account.voucher')
 
-        account_id = check.account_bank_id.id
+        account_id = check.account_bank_id.account_id.id
         if not account_id:
             raise osv.except_osv(_("Error"), _("Bank Account has no account configured. Please, configure an account for the bank account used for checks!"))
 
