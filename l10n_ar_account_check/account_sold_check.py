@@ -17,54 +17,60 @@
 ##############################################################################
 
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
-from dateutil import parser
 from openerp import netsvc
 
-class AccountDepositSlip(models.Model):
+class AccountSoldCheck(models.Model):
 
-    _name = "account.deposit.slip"
+    _name = "account.sold.check"
 
-    _description = 'Deposit slip'
+    name = fields.Char('Documento', readonly=True)
+    partner_id = fields.Many2one('res.partner', 'Partner', readonly=True)
+    bank_account_id = fields.Many2one('res.partner.bank', 'Cuenta bancaria', readonly=True)
+    date = fields.Date('Fecha de emision')
+    commission = fields.Float('Importe de la comision', readonly=True)
+    interests = fields.Float('Importe de los intereses', readonly=True)
+    amount = fields.Float('Total cobrado', readonly=True)
+    account_third_check_ids = fields.One2many('account.third.check', 'sold_check_id', string='Cheques', readonly=True)
+    account_move_id = fields.Many2one('account.move', 'Asiento contable', readonly=True)
+    state = fields.Selection([('canceled', 'Cancelado'), ('sold', 'Vendido')], string='Estado', readonly=True)
+    company_id = fields.Many2one('res.company', 'Compania')
 
-    name = fields.Char(string='Numero boleta de deposito',size=128, select=True, required=True, readonly=True, ondelete='set null')
-    date = fields.Date('Fecha boleta de deposito',readonly=True)
-    bank_account_id = fields.Many2one('res.partner.bank', 'Cuenta Bancaria',required=True)
-    total_ammount = fields.Float('Importe total',readonly=True)
-    checks_ids = fields.One2many('account.third.check','deposit_slip_id',string='Cheques', readonly=True)
-    state = fields.Selection([('canceled', 'Cancelado'), ('deposited', 'Depositado')], string='Estado')
-    move_id = fields.Many2one('account.move', 'Asiento contable', readonly=True)
+    _defaults = {
+
+        'company_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).company_id.id,
+     }
 
     _sql_constraints = [('name_uniq','unique(name)','The name must be unique!')]
 
     _order = "date desc, name desc"
 
+    ''' Anula el documento, volviendo a cartera los cheques
+    '''
     @api.one
-    def cancel_deposit_slip(self):
+    def cancel_sell_check_document(self):
+        if not self.account_move_id:
 
-        if not self.move_id:
-
-            raise Warning('No hay un asiento relacionado a la boleta de depósito')
+            raise Warning('No hay un asiento relacionado al documento')
 
         reconcile_pool = self.env['account.move.reconcile']
 
-        self.move_id.button_cancel()
-        self.move_id.unlink()
+        self.account_move_id.button_cancel()
+        self.account_move_id.unlink()
 
         wf_service = netsvc.LocalService('workflow')
 
-        for check in self.checks_ids:
+        for check in self.account_third_check_ids:
 
             if check.state != 'deposited':
 
                 raise Warning('El cheque '+check.number+' no se encuentra en estado depositado')
 
-            check.deposit_bank_id = False
+            check.sold_check_id = False
             check.deposit_date = False
             wf_service.trg_validate(self.env.uid, 'account.third.check', check.id, 'deposited_cartera', self.env.cr)
 
         self.state = 'canceled'
 
-AccountDepositSlip()
+AccountSoldCheck()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record id="account_third_check_sell_wizard_form_view" model="ir.ui.view">
+            <field name="name">account.third.check.sell.wizard.form.view</field>
+            <field name="model">account.third.check.sell.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Vender cheques">
+                    <field name="company_id" invisible="1"/>
+                    <field name="initial_amount" invisible="1"/>
+                    <group string="Datos de la operación">
+                        <group>
+                            <field name="bank_account_id" domain="[('company_id','=',company_id)]" attrs="{'invisible': [('partner_id', '!=', False)]}" widget="selection"/>
+                            <field name="partner_id" attrs="{'invisible': [('bank_account_id', '!=', False)]}"/>
+                            <field name="account_id"/>
+                        </group>
+                        <group>
+                            <field name="journal_id"/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <group string="Importes">
+                        <group>
+                            <field name="commission"/>
+                            <field name="interests"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="commission_account_id" attrs="{'required': [('commission', '!=', 0)]}"/>
+                            <field name="interest_account_id" attrs="{'required': [('interests', '!=', 0)]}"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_sell_check_document" string="Vender" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACCIÓN  -->
+
+        <act_window
+            name="Vender cheques"
+            res_model="account.third.check.sell.wizard"
+            src_model="account.third.check"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_sell_checks"/>
+
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

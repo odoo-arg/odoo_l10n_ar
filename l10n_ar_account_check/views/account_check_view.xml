@@ -295,6 +295,7 @@
                                 <field name="bank_id"/>
                                 <field name="origin"/>
                                 <field name="dest" attrs="{'invisible': [('state','!=','delivered')]}"/>
+                                <field name="sold_check_id" attrs="{'invisible': [('sold_check_id', '=', False)]}"/>
                             </group>
                             <group>
                                 <field name="clearing"/>

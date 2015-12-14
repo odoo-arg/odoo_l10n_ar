@@ -18,5 +18,6 @@
 
 import check_deposit
 import check_reject
+import account_third_check_sell_wizard
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

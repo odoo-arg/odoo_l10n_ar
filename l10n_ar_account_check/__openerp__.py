@@ -20,7 +20,7 @@
 
     'name': 'Account Checks',
 
-    'version': '1.1',
+    'version': '1.2',
 
     'summary': 'Allows to manage checks',
 
@@ -48,6 +48,9 @@
         'workflow/account_third_check_workflow.xml',
         'wizard/view_check_reject.xml',
         'views/partner_view.xml',
+        'wizard/account_third_check_sell_wizard_view.xml',
+        'views/account_sold_check_view.xml',
+        'data/check_sold_data.xml'
 
     ],
 
