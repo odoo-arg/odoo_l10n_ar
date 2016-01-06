@@ -40,7 +40,7 @@ class AccountVoucher(models.Model):
 
         for voucher in self:
 
-            if voucher.type == 'payment':
+            if voucher.type == 'payment' and not voucher.audit:
 
                 for ret in voucher.retention_ids:
 
