@@ -47,10 +47,10 @@ class wizard_account_collect_check(osv.osv_memory):
         'type': fields.selection([('common', 'Common'),('postdated', 'Post-dated')], 'Check Type', help="If common, checks only have issued_date. If post-dated they also have payment date"),
         'issue_date': fields.date('Issue date'),
         'payment_date': fields.date('Payment date'),
-        
-        
+
+
     }
-                      
+
     _defaults = {
 
         'date': lambda *a: time.strftime('%Y-%m-%d'),
@@ -66,7 +66,7 @@ class wizard_account_collect_check(osv.osv_memory):
         checkbook_obj = self.pool.get('account.checkbook')
         account_checkbook_obj = self.pool.get('account.checkbook.check')
 
-        
+
         wizard = self.browse(cr, uid, ids[0], context=context)
 
         period_id = self.pool.get('account.period').find(cr, uid, wizard.date)[0]
@@ -76,21 +76,21 @@ class wizard_account_collect_check(osv.osv_memory):
             raise osv.except_osv(_("Error"), _("You have to configure an account on Bank Account %s: %s") % (wizard.bank_account_id.bank_name, wizard.bank_account_id.acc_number))
 
         #Collect_check
-        
+
         if context is None:
             context = {}
 
         company_id = wizard.company_id.id
-       
-        
+
+
         if wizard.payment_date > wizard.date:
             raise osv.except_osv(_("Cannot collect"), _("You cannot collect check %s because Payment Date is greater than Collect Date.") % (wizard.check_id.name))
 
-        
+
         new_issued_check_id = issued_check.create(cr, uid, { 'number': wizard.check_id.name, 'checkbook_id': wizard.check_id.checkbook_id.id, 'type': wizard.type, 'amount': wizard.amount,
         'receiving_partner_id': wizard.company_id.partner_id.id, 'bank_id': wizard.check_id.checkbook_id.bank_id.id, 'issue_date': wizard.issue_date,
         'payment_date': wizard.payment_date, 'account_bank_id': wizard.check_id.checkbook_id.bank_account_id.id, 'issued': 'true',
-        'check_id': wizard.check_id.id }, context=context)
+        'check_id': wizard.check_id.id, 'account_id': wizard.check_id.checkbook_id.account_id.id }, context=context)
 
         account_checkbook_obj.write(cr, uid, wizard.check_id.id, {'state': 'done'}, context=context)
 
@@ -135,9 +135,9 @@ class wizard_account_collect_check(osv.osv_memory):
 
         # Se postea el asiento llamando a la funcion post de account_move.
         self.pool.get('account.move').post(cr, uid, [move_id], context=context)
-        
+
         return { 'type': 'ir.actions.act_window_close' }
-        
+
 wizard_account_collect_check()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
