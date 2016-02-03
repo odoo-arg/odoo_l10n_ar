@@ -19,7 +19,6 @@
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
-
 class res_document_type(osv.osv):
 
     _name = 'res.document.type'
@@ -122,7 +121,7 @@ class res_partner(osv.osv):
     _constraints = [
 
         (check_vat, _('The Vat does not seems to be correct.'), ['vat']) ,
-        (exist_vat, _('That Vat already exist for other partner.'), ['vat']),
+        (exist_vat, _('That Vat already exist for other partner.'), ['vat', 'is_company']),
 
     ]
 

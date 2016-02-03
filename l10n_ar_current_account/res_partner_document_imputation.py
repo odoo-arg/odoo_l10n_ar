@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (c) 2013 Eynes S.R.L. (http://www.eynes.com.ar) All Rights Reserved.
-#    Copyright (c) 2014 Aconcagua Team (http://www.proyectoaconcagua.com.ar)
-#    All Rights Reserved. See AUTHORS for details.
-#
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
@@ -21,8 +16,19 @@
 #
 ##############################################################################
 
-import create_checkbook
-import cancel_issued_check_wizard
-import reject_issued_check_wizard
+from openerp import models, fields
+
+class ResPartnerDocumentImputation(models.Model):
+
+    _name = "res.partner.document.imputation"
+
+    name = fields.Char('Documento')
+    imputation_to = fields.Char('Imputado a')
+    amount = fields.Float('Importe imputado')
+    imputation_id = fields.Many2one('res.partner.imputation', 'Imputation id')
+
+ResPartnerDocumentImputation()
+
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

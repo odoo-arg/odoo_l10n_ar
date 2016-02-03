@@ -40,8 +40,10 @@
         "security/security.xml",
         "views/checkbook_view.xml",
         "views/account_voucher_view.xml",
+        "views/account_issued_check_view.xml",
         "wizard/create_checkbook_view.xml",
-        "wizard/cancel_issued_check_wizard_view.xml"
+        "wizard/cancel_issued_check_wizard_view.xml",
+        "wizard/reject_issued_check_wizard_view.xml"
 
     ],
 

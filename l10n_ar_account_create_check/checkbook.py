@@ -22,11 +22,9 @@
 ##############################################################################
 
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
-import logging
-_logger = logging.getLogger(__name__)
 
 class account_checkbook(osv.osv):
 
@@ -134,10 +132,27 @@ class account_issued_check(osv.osv):
         'check_id': fields.many2one('account.checkbook.check', 'Check'),
         'checkbook_id': fields.many2one('account.checkbook', 'Checkbook'),
         'number': fields.char('Check Number', size=20),
-        'account_id': fields.many2one('account.account', 'Cuenta', required=True)
+        'account_id': fields.many2one('account.account', 'Cuenta', required=True),
+        'rejected': fields.boolean('Rechazado'),
+        'reject_move_id': fields.many2one('account.move', 'Asiento de rechazo')
 
     }
 
+    @api.multi
+    def reject_issued_check(self):
+
+        return {
+
+            'name': _('Rechazar cheque'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'reject.issued.check.wizard',
+            'views': [[False, "form"]],
+            'target': 'new',
+        }
+                
+        
     def on_change_check_id(self, cr, uid, ids, check_id, context=None):
         if context is None:
             context = {}
@@ -146,9 +161,6 @@ class account_issued_check(osv.osv):
 
         check = self.pool.get('account.checkbook.check').browse(cr, uid, check_id, context=context)
         checkbook = check.checkbook_id
-
-        _logger.info('check %s', check_id)
-        _logger.info('check account %s', checkbook.account_id.id)
 
         return {'value':{'account_bank_id': checkbook.bank_account_id.id, 'checkbook_id': checkbook.id,
                          'bank_id': checkbook.bank_id.id, 'number': check.name, 'type': checkbook.type,

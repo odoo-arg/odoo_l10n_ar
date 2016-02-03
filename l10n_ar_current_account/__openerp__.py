@@ -16,27 +16,42 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-import logging
-_logger = logging.getLogger(__name__)
+{
 
-class CancelIssuedCheckWizard(models.TransientModel):
+    'name': 'Current account',
 
-    _name = "cancel.issued.check.wizard"
+    'version': '1.0',
 
-    checkbook_check_id = fields.Many2one('account.checkbook.check', 'Cheque', required=True)
-    checkbook_id = fields.Many2one('account.checkbook')
+    'summary': 'Current account and conciliations of documents',
 
-    @api.one
-    def cancel_check(self):
+    'author': 'OPENPYME SRL',
 
-        issued_check = self.env['account.issued.check']
-        issued_check = issued_check.create({ 'number': 'ANULADO', 'checkbook_id': self.checkbook_id.id, 'amount': 0.0,
-        'bank_id': self.checkbook_id.bank_id.id, 'issued': 'true', 'check_id':  self.checkbook_check_id.id,
-        'account_bank_id': self.checkbook_id.bank_account_id.id, 'account_id': self.checkbook_id.account_id.id})
+    'website': 'openpyme.com.ar',
 
-        return { 'type': 'ir.actions.act_window_close' }
+    'category': 'Generic Modules/Accounting',
 
-CancelIssuedCheckWizard()
+    'depends': [
+
+        'account',
+        'l10n_ar_point_of_sale',
+        'account_voucher',
+        'sale_stock',
+    ],
+
+    'data': [
+
+        'views/res_partner_view.xml',
+        'views/current_account_view.xml',
+        'views/res_partner_document_imputation_view.xml',
+        'wizard/current_account_imputation_wizard_view.xml',
+        'data/current_account_data.xml'
+
+    ],
+
+    'active': False,
+
+    'installable': True,
+
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
