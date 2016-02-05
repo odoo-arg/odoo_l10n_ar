@@ -44,7 +44,8 @@
         'views/current_account_view.xml',
         'views/res_partner_document_imputation_view.xml',
         'wizard/current_account_imputation_wizard_view.xml',
-        'data/current_account_data.xml'
+        'data/current_account_data.xml',
+        'security/ir.model.access.csv',
 
     ],
 
