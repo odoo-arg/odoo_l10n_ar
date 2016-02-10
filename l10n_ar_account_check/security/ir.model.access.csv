@@ -5,3 +5,5 @@
 "access_account_issued_check_user","account.issued.check user","model_account_issued_check","account.group_account_user",1,0,0,0
 "access_account_third_check_manager","account.third.check manager","model_account_third_check","account.group_account_manager",1,1,1,1
 "access_account_third_check_user","account.third.check user","model_account_third_check","account.group_account_user",1,0,0,0
+"access_account_sold_check_manager","account.sold.check manager","model_account_sold_check","account.group_account_manager",1,1,1,1
+"access_account_sold_check_user","account.sold.check user","model_account_sold_check","account.group_account_user",1,0,0,0

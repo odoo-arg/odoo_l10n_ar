@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 from openerp import netsvc
 
 class AccountSoldCheck(models.Model):
@@ -51,8 +51,6 @@ class AccountSoldCheck(models.Model):
         if not self.account_move_id:
 
             raise Warning('No hay un asiento relacionado al documento')
-
-        reconcile_pool = self.env['account.move.reconcile']
 
         self.account_move_id.button_cancel()
         self.account_move_id.unlink()
