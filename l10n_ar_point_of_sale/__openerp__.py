@@ -56,6 +56,7 @@
         'views/account_invoice_view.xml',
         'views/fiscal_position_view.xml',
         'views/account_view.xml',
+        'views/res_partner_view.xml'
 
     ],
 

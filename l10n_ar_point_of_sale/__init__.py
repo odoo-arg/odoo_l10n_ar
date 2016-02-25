@@ -27,5 +27,6 @@ import account
 import stock
 import sale_line
 import sale_advance_payment_inv
+import res_partner
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

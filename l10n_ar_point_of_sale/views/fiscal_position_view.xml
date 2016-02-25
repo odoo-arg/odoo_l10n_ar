@@ -32,6 +32,7 @@
                 </separator>
                 <field name="name" position="after">
                     <field name="afip_code"/>
+                    <field name="has_country_cuit"/>
                 </field>
             </field>
         </record>

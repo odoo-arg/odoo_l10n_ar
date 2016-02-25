@@ -98,6 +98,7 @@
             <field name="afip_code">08</field>
             <field name="denomination_id" ref="denomination_E"/>
             <field name="denom_supplier_id" ref="denomination_M"/>
+            <field name="has_country_cuit">True</field>            
         </record>
 
         <record id="fiscal_position_ce" model="account.fiscal.position">
@@ -105,6 +106,7 @@
             <field name="afip_code">09</field>
             <field name="denomination_id" ref="denomination_E"/>
             <field name="denom_supplier_id" ref="denomination_M"/>
+            <field name="has_country_cuit">True</field>
         </record>
 
         <record id="fiscal_position_il" model="account.fiscal.position">
