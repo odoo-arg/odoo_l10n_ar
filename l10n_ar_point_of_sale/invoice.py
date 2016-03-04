@@ -287,7 +287,7 @@ class invoice(models.Model):
             company_country = inv.company_id.country_id and inv.company_id.country_id.id or False
 
             if self.type in ('in_invoice', 'in_refund'):
-                local = (partner_country == company_country) or partner_country == False
+                local = (partner_country == company_country)
             else:
                 local = True
 
