@@ -112,12 +112,11 @@ class account_check_reject(osv.osv_memory):
             config = check_config_obj.browse(cr, uid, res[0])
 
             account_id = False
-            if check.state == 'delivered':
-                account_id = config.account_id.id
-            elif check.state == 'wallet':
-                account_id = config.account_id.id
-            elif check.state == 'deposited':
+
+            if check.state == 'deposited' and check.deposit_bank_id:
                 account_id = check.deposit_bank_id.account_id.id
+            else:
+                account_id = config.account_id.id
 
             name = _('Check Rejected %s') % check.number
             invoice_line_vals = {
