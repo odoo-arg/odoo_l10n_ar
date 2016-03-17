@@ -327,7 +327,7 @@
                         <filter icon="gtk-go-forward" name="delivered"
                             string="Delivered" domain="[('state','=','delivered')]"/>
                         <filter icon="gtk-jump-to" name="deposit"
-                            string="Deposited" domain="[('state','=','deposit')]"/>
+                            string="Deposited" domain="[('state','=','deposited')]"/>
                         <filter icon="gtk-cancel" name="rejected"
                             string="Rejected" domain="[('state','=','rejected')]"/>
                         <separator orientation="vertical"/>
