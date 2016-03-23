@@ -45,6 +45,8 @@ class PerceptionTaxLine(models.Model):
 
     invoice_id = fields.Many2one("account.invoice",string="Factura",ondelete="cascade",)
 
+    currency_id = fields.Many2one("res.currency",related='invoice_id.currency_id', store=True, string="Moneda")
+
     account_id = fields.Many2one("account.account", string="Cuenta Impuesto", required=True, domain=[('type','<>','view'),('type','<>','income'), ('type', '<>', 'closed')],)
 
     base = fields.Float(string="Base", digits_compute=dp.get_precision("Account"), required=True)
