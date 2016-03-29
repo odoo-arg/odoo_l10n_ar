@@ -70,9 +70,12 @@ class res_partner(models.Model):
 
             if move_line.invoice:
 
+
+                currency_rate = abs( total / move_line.amount_currency) if move_line.amount_currency else 1
+
                 doc_type = self._check_invoice_type(move_line)
-                residual = move_line.invoice.residual * multiplier
-                subtotal = move_line.invoice.amount_untaxed * multiplier
+                residual = move_line.invoice.residual * currency_rate * multiplier
+                subtotal = move_line.invoice.amount_untaxed * currency_rate * multiplier
                 denomination = move_line.invoice.denomination_id.name
                 name = move_line.invoice.internal_number
                 invoice_id = move_line.invoice.id
