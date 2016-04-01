@@ -33,6 +33,7 @@
                     <field name="vat"/>
                     <field name="amount_with_sign" sum="Total"/>
                     <field name="amount" invisible="True"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
                     <field name="base" invisible="True"/>
                     <field name="company_id" invisible="True"/>
                 </tree>
@@ -58,6 +59,7 @@
                             <group>
                                 <field name="amount" sum="Amount Total"/>
                                 <field name="base" sum="Base Total"/>
+                                <field name="currency_id" groups="base.group_multi_currency"/>
                             </group>
                             <group>
                                 <field name="type"/>
@@ -99,6 +101,7 @@
                         <filter string="Tipo" domain="[]" context="{'group_by':'type'}"/>
                         <filter string="Jurisdiccion" domain="[]" context="{'group_by':'jurisdiccion'}"/>
                         <filter string="Fecha" domain="[]"  context="{'group_by':'date'}"/>
+                        <filter string="Moneda" domain="[]"  context="{'group_by':'currency_id'}"/>
                     </group>
                 </search>
             </field>
