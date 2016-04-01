@@ -164,6 +164,7 @@ class account_voucher(osv.osv):
 
     def unlink(self, cr, uid, ids, context=None):
 
+        wf_service = netsvc.LocalService('workflow')
         third_check_obj = self.pool.get('account.third.check')
 
         for voucher in self.browse(cr, uid, ids, context=context):
