@@ -94,6 +94,7 @@ class AccountThirdCheckSellWizard(models.TransientModel):
             'amount': self.amount,
             'partner_id': self.partner_id.id,
             'bank_account_id': self.bank_account_id.id,
+            'reject_account_id': self.account_id.id,            
             'state': 'sold',
         })
 

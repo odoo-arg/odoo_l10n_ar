@@ -34,7 +34,8 @@ class AccountSoldCheck(models.Model):
     account_move_id = fields.Many2one('account.move', 'Asiento contable', readonly=True)
     state = fields.Selection([('canceled', 'Cancelado'), ('sold', 'Vendido')], string='Estado', readonly=True)
     company_id = fields.Many2one('res.company', 'Compania')
-
+    reject_account_id = fields.Many2one('account.account', 'Cuenta de rechazo')
+    
     _defaults = {
 
         'company_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).company_id.id,

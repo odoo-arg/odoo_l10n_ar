@@ -20,7 +20,7 @@
 
     'name': 'Account Checks',
 
-    'version': '1.2',
+    'version': '1.1.0',
 
     'summary': 'Allows to manage checks',
 

@@ -113,10 +113,13 @@ class account_check_reject(osv.osv_memory):
 
             account_id = False
 
-            if check.state == 'deposited' and check.deposit_bank_id:
+            if check.sold_check_id and check.sold_check_id.reject_account_id:
+                account_id = check.sold_check_id.reject_account_id.id
+                
+            elif check.state == 'deposited' and check.deposit_bank_id:
                 account_id = check.deposit_bank_id.account_id.id
-            else:
-                account_id = config.account_id.id
+            
+            else: account_id = config.account_id.id
 
             name = _('Check Rejected %s') % check.number
             invoice_line_vals = {
