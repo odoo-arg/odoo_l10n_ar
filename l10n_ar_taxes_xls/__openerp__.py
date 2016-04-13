@@ -41,7 +41,7 @@
 
     "data": [
 
-        'wizard/taxes_report_wizard_view.xml'
+        'view/taxes_report_view.xml'
     ],
 
     "installable": True,

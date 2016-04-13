@@ -21,7 +21,7 @@ import time
 from datetime import date, datetime
 from operator import attrgetter
 
-class taxes_report_xls(models.TransientModel):
+class taxes_report_xls(models.Model):
 
     _name = 'taxes.report.xls'
 
@@ -121,17 +121,31 @@ class taxes_report_xls(models.TransientModel):
             sheet1.write(s1, 4, invoice_type)
             sheet1.write(s1, 5, invoice.internal_number)
 
-            for invoice_tax in invoice.tax_line:
+
+            tax_mapped_ids = invoice.tax_line.mapped('tax_id')
+
+            for tax in tax_mapped_ids:
+
+                base = 0
+                amount = 0
+
+                filter_tax_lines = invoice.tax_line.filtered(lambda r: r.tax_id == tax)
+
+                for line in filter_tax_lines:
+
+                    base += line.base
+                    amount += line.amount
 
                 if invoice.type == 'out_refund' or invoice.type == 'in_refund':
 
-                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Base'), - invoice_tax.base)
-                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Cantidad'), -invoice_tax.amount)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), - base)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), - amount)
 
                 else:
 
-                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Base'), invoice_tax.base)
-                    sheet1.write(s1, tax_dict.get(invoice_tax.tax_id.name+' - Cantidad'), invoice_tax.amount)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), base)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), amount)
+
 
             if invoice.type == 'out_refund' or invoice.type == 'in_refund':
 
