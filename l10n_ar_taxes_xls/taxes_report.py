@@ -82,8 +82,9 @@ class taxes_report_xls(models.Model):
         sheet1.col(3).width = 6000
         sheet1.col(4).width = 1500
         sheet1.col(5).width = 4000
+        sheet1.col(6).width = 4000
 
-        for x in range(6, 6+len(taxesIds)):
+        for x in range(7, 7+len(taxesIds)):
 
             sheet1.col(x).width = 3500
 
@@ -93,17 +94,18 @@ class taxes_report_xls(models.Model):
         sheet1.write(s1,3,"Condicion IVA",style1)
         sheet1.write(s1,4,"Tipo",style1)
         sheet1.write(s1,5,"Numero",style1)
+        sheet1.write(s1,6,"Provincia",style1)
 
-        counter = 6
+        counter = 7
         tax_dict = {}
 
-        for x in range(6, 6+(len(taxesIds))):
+        for x in range(7, 7+(len(taxesIds))):
 
-            sheet1.write(s1, counter , taxes[x-6].name+' - Base',style1)
-            tax_dict[taxes[x-6].name+' - Base'] = counter
+            sheet1.write(s1, counter , taxes[x-7].name+' - Base',style1)
+            tax_dict[taxes[x-7].name+' - Base'] = counter
             counter += 1
-            sheet1.write(s1, counter , taxes[x-6].name+ ' - Cantidad',style1)
-            tax_dict[taxes[x-6].name+' - Cantidad'] = counter
+            sheet1.write(s1, counter , taxes[x-7].name+ ' - Cantidad',style1)
+            tax_dict[taxes[x-7].name+' - Cantidad'] = counter
             counter += 1
 
 
@@ -120,6 +122,7 @@ class taxes_report_xls(models.Model):
             sheet1.write(s1, 3, invoice.partner_id.property_account_position.name)
             sheet1.write(s1, 4, invoice_type)
             sheet1.write(s1, 5, invoice.internal_number)
+            sheet1.write(s1, 6, invoice.partner_id.state_id.name)
 
 
             tax_mapped_ids = invoice.tax_line.mapped('tax_id')
