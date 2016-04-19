@@ -158,6 +158,13 @@ class taxes_report_xls(models.Model):
 
                 sheet1.write(s1, counter, invoice.amount_total)
 
+
+        for x in range(7, counter+1):
+
+            column_start = xlwt.Utils.rowcol_to_cell(1, x)
+            column_end = xlwt.Utils.rowcol_to_cell(s1, x)
+            sheet1.write(s1+1, x, xlwt.Formula('SUM('+column_start+':'+column_end+')'))
+
         """PARSING DATA AS STRING """
         file_data=StringIO.StringIO()
         o=wbk.save(file_data)
