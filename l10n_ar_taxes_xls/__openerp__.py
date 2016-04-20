@@ -41,7 +41,9 @@
 
     "data": [
 
-        'view/taxes_report_view.xml'
+        'security/ir.model.access.csv',
+        'view/taxes_report_view.xml',
+
     ],
 
     "installable": True,
