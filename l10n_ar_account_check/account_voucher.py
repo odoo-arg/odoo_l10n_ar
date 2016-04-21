@@ -42,11 +42,11 @@ class account_voucher(osv.osv):
     _columns = {
 
         'issued_check_ids': fields.one2many('account.issued.check','voucher_id',
-                                            'Issued Checks', required=False),
+                                            'Issued Checks', required=False, copy=False),
         'third_check_receipt_ids': fields.one2many('account.third.check','source_voucher_id',
-                                            'Third Checks', required=False),
+                                            'Third Checks', required=False, copy=False),
         'third_check_ids': fields.many2many('account.third.check','third_check_voucher_rel',
-                                            'dest_voucher_id', 'third_check_id','Third Checks'),
+                                            'dest_voucher_id', 'third_check_id','Third Checks', copy=False),
         'checks_quantity': fields.function(_reset_checks_quantity, 'quantity of checks', type='integer', store=True)
     }
 
@@ -164,7 +164,7 @@ class account_voucher(osv.osv):
 
     def unlink(self, cr, uid, ids, context=None):
 
-        wf_service = netsvc.LocalService('workflow')
+        wf_service = netsvc.LocalService('workflow') 
         third_check_obj = self.pool.get('account.third.check')
 
         for voucher in self.browse(cr, uid, ids, context=context):
