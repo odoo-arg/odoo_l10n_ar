@@ -35,7 +35,7 @@
                 </field>
                 <xpath expr="//page[@string='Payment Information']/label[@for='line_cr_ids']" position="before">
                     <label for="payment_line_ids"/>
-                    <field name="payment_line_ids">
+                    <field name="payment_line_ids" attrs="{'readonly': [('state', '=', 'posted']}">
                         <tree string="Payment Methods" editable="bottom" colors="gray:amount==0">
                             <field name="name"/>
                             <field name="currency" readonly="1"/>
