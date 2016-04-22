@@ -27,7 +27,7 @@
             <field name="arch" type="xml">
                 <page string="Payment Information" position="after">
                     <page string="Checks">
-                        <field name="third_check_receipt_ids" invisible="1" attrs="{'readonly': [('state', '=', 'posted']}"/>
+                        <field name="third_check_receipt_ids" invisible="1" attrs="{'readonly': [('state', '=', 'posted')]}"/>
                         <field name="issued_check_ids" string="Issued Checks" nolabel="1" colspan="4">
                             <tree string="Issued Checks">
                                 <field name="number"/>
@@ -59,7 +59,7 @@
                             </form>
                         </field>
                         <label for="third_check_ids"/>
-                        <field name="third_check_ids" string="Third Checks" nolabel="1" colspan="4" domain="[('state', '=', 'wallet')]" attrs="{'readonly': [('state', '=', 'posted']}">
+                        <field name="third_check_ids" string="Third Checks" nolabel="1" colspan="4" domain="[('state', '=', 'wallet')]" attrs="{'readonly': [('state', '=', 'posted')]}">
                             <tree string="Third Checks">
                                 <field name="number"/>
                                 <field name="source_partner_id"/>
