@@ -29,9 +29,9 @@
                     <field name="denomination"/>
                     <field name="name"/>
                     <field name="date"/>
-                    <field name="residual"/>
-                    <field name="subtotal"/>
-                    <field name="total"/>
+                    <field name="residual" sum="Total"/>
+                    <field name="subtotal" sum="Total"/>
+                    <field name="total" sum="Total"/>
                     <field name="state"/>
                 </tree>
             </field>
