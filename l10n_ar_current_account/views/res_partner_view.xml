@@ -31,7 +31,8 @@
                             type="object"
                             name="get_customer_current_account"
                             attrs="{'invisible':[('customer','=', False )]}">
-                            <field name="credit" string="Customer" widget="statinfo" attrs="{'invisible':[('customer','=', False )]}"/>
+                            <div><strong><field name="credit" string="Customer" widget="monetary" 
+                            attrs="{'invisible':[('customer','=', False )]}"/></strong><br/>Cliente</div>
                     </button>
                 </xpath>
                 <xpath expr="//div[@name='buttons']" position="inside">
@@ -40,13 +41,15 @@
                             type="object"
                             name="get_supplier_current_account"
                             attrs="{'invisible':[('supplier','=', False )]}">
-                            <field name="debit" string="Supplier" widget="statinfo" attrs="{'invisible':[('supplier','=', False )]}"/>
+                            <div><strong><field name="debit" string="Supplier" widget="monetary"
+                             attrs="{'invisible':[('supplier','=', False )]}"/></strong><br/>Proveedor</div>
                     </button>
                 </xpath>
                 <xpath expr="//div[@name='buttons']" position="inside">
                     <button class="oe_inline oe_stat_button"
                             icon="fa-check"
                             type="object"
+                            attrs="{'invisible': [('supplier', '=', False), ('customer', '=', False)]}"
                             name="get_partner_imputation_documents">
                             <field String="Imputaciones" name="count_imputations" widget="statinfo"/>
                     </button>
