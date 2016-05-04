@@ -21,8 +21,30 @@
 #
 ##############################################################################
 
-import checkbook
-import wizard
-import account_voucher
+from openerp import models, fields, api
+from openerp.exceptions import Warning
+import logging
+_logger = logging.getLogger(__name__)
+
+class AccountVoucher(models.Model):
+
+    _inherit = 'account.voucher'
+
+    @api.multi
+    def unlink(self):
+
+        for voucher in self:
+
+            if voucher.type == 'payment':
+
+                for issued_check in voucher.issued_check_ids:
+
+                    if issued_check.check_id:
+                        
+                        issued_check.check_id.state = 'draft'
+
+        return super(AccountVoucher, self).unlink()
+
+AccountVoucher()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -151,8 +151,9 @@ class account_issued_check(osv.osv):
             'views': [[False, "form"]],
             'target': 'new',
         }
-                
         
+
+
     def on_change_check_id(self, cr, uid, ids, check_id, context=None):
         if context is None:
             context = {}
