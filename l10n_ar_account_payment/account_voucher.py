@@ -292,6 +292,51 @@ class account_voucher(osv.osv):
 
         return True
 
+    def account_move_get(self, cr, uid, voucher_id, context=None):
+        '''
+        This method prepare the creation of the account move related to the given voucher.
+
+        :param voucher_id: Id of voucher for which we are creating account_move.
+        :return: mapping between fieldname and value of account move to create
+        :rtype: dict
+        '''
+        
+        seq_obj = self.pool.get('ir.sequence')
+        voucher = self.pool.get('account.voucher').browse(cr,uid,voucher_id,context)
+        
+        if voucher.number:
+            name = voucher.number
+        elif voucher.journal_id.sequence_id:
+            if not voucher.journal_id.sequence_id.active:
+                raise osv.except_osv(_('Configuration Error !'),
+                    _('Please activate the sequence of selected journal !'))
+            c = dict(context)
+            c.update({'fiscalyear_id': voucher.period_id.fiscalyear_id.id})
+            name = seq_obj.next_by_id(cr, uid, voucher.journal_id.sequence_id.id, context=c)
+        else:
+            raise osv.except_osv(_('Error!'),
+                        _('Please define a sequence on the journal.'))
+        
+        if not voucher.reference:
+            ref = name.replace('/','')
+        else:
+            if voucher.type == 'payment':
+                ref = 'OP ' + voucher.reference
+            elif voucher.type == 'receipt':
+                ref = 'REC ' + voucher.reference
+            else:
+                ref = voucher.reference
+
+        move = {
+            'name': name,
+            'journal_id': voucher.journal_id.id,
+            'narration': voucher.narration,
+            'date': voucher.date,
+            'ref': ref,
+            'period_id': voucher.period_id.id,
+        }
+        return move
+        
 account_voucher()
 
 
