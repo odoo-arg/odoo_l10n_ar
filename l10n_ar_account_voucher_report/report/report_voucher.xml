@@ -13,6 +13,7 @@
                         <span t-if="o.type == 'payment' and o.state == 'draft'">ORDEN DE PAGO BORRADOR N°</span>
                         <span t-if="o.type == 'payment' and o.state == 'cancel'">ORDEN DE PAGO CANCELADA N°</span>
                         <span t-field="o.reference"/>
+                        <span t-if="o.type == 'purchase'"><span t-field="o.name"/></span>
                     </h3>
 
 
@@ -61,12 +62,17 @@
                                     <tr t-foreach="o.line_cr_ids" t-as="l">
                                         <t t-if="l.amount > 0">
                                             <td>
-                                                <t t-if="not l.move_line_id.invoice.is_debit_note">
-                                                    <span>FC </span><span t-field="l.move_line_id.invoice.internal_number"/>
+                                                <t t-if="l.move_line_id.invoice">
+                                                    <t t-if="not l.move_line_id.invoice.is_debit_note">
+                                                        <span>FC </span><span t-field="l.move_line_id.invoice.internal_number"/>
+                                                    </t>
+                                                    <t t-if="l.move_line_id.invoice.is_debit_note">
+                                                        <span>ND </span><span t-field="l.move_line_id.invoice.internal_number"/>
+                                                    </t>
                                                 </t>
-                                                <t t-if="l.move_line_id.invoice.is_debit_note">
-                                                    <span>ND </span><span t-field="l.move_line_id.invoice.internal_number"/>
-                                                </t>
+                                                <t t-if="not l.move_line_id.invoice">
+                                                    <span t-field="l.move_line_id.name"/>
+                                                </t>                           
                                             </td>
                                             <td><span t-field="l.date_original"/></td>
                                             <td class="text-right">
@@ -124,11 +130,16 @@
                                     <tr t-foreach="o.line_dr_ids" t-as="l">
                                         <t t-if="l.amount > 0">
                                             <td>
-                                                <t t-if="not l.move_line_id.invoice">
-                                                    <span>REC </span><span t-field="l.move_line_id.ref"/>
-                                                </t>
                                                 <t t-if="l.move_line_id.invoice">
-                                                    <span>NC </span><span t-field="l.move_line_id.invoice.internal_number"/>
+                                                    <t t-if="not l.move_line_id.invoice">
+                                                        <span>REC </span><span t-field="l.move_line_id.ref"/>
+                                                    </t>
+                                                    <t t-if="l.move_line_id.invoice">
+                                                        <span>NC </span><span t-field="l.move_line_id.invoice.internal_number"/>
+                                                    </t>
+                                                </t>
+                                                <t t-if="not l.move_line_id.invoice">
+                                                    <span t-field="l.move_line_id.name"/>
                                                 </t>
                                             </td>
                                             <td><span t-field="l.date_original"/></td>
@@ -332,6 +343,7 @@
                         </t>
 
                     </t>
+
 
                     <!-- Detalles de formas de pago -->
                     <t t-if= "sum(l.amount for l in o.payment_line_ids) > 0">

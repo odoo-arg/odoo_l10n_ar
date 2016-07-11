@@ -29,6 +29,7 @@
                     <field name="denomination"/>
                     <field name="name"/>
                     <field name="date"/>
+                    <field name="due_date"/>
                     <field name="residual" sum="Total"/>
                     <field name="subtotal" sum="Total"/>
                     <field name="total" sum="Total"/>
