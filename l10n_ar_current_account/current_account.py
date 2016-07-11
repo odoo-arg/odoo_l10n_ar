@@ -40,7 +40,8 @@ class current_account(models.TransientModel):
     voucher_id = fields.Many2one('account.voucher', 'Voucher')
     wizard_id = fields.Integer('Wizard')
     move_line_id = fields.Many2one('account.move.line', 'Linea del asiento')
-
+    due_date = fields.Date(related='move_line_id.date_maturity', string='Fecha de vencimiento')
+    
     _order = "date asc"
 
     """ Function to raise the wizard to concile documents
