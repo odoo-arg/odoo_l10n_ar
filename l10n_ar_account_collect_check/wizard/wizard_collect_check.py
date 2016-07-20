@@ -63,7 +63,6 @@ class wizard_account_collect_check(osv.osv_memory):
 
         issued_check = self.pool.get('account.issued.check')
         move_line = self.pool.get('account.move.line')
-        checkbook_obj = self.pool.get('account.checkbook')
         account_checkbook_obj = self.pool.get('account.checkbook.check')
 
 
@@ -80,17 +79,26 @@ class wizard_account_collect_check(osv.osv_memory):
         if context is None:
             context = {}
 
-        company_id = wizard.company_id.id
 
 
         if wizard.payment_date > wizard.date:
             raise osv.except_osv(_("Cannot collect"), _("You cannot collect check %s because Payment Date is greater than Collect Date.") % (wizard.check_id.name))
 
 
-        new_issued_check_id = issued_check.create(cr, uid, { 'number': wizard.check_id.name, 'checkbook_id': wizard.check_id.checkbook_id.id, 'type': wizard.type, 'amount': wizard.amount,
-        'receiving_partner_id': wizard.company_id.partner_id.id, 'bank_id': wizard.check_id.checkbook_id.bank_id.id, 'issue_date': wizard.issue_date,
-        'payment_date': wizard.payment_date, 'account_bank_id': wizard.check_id.checkbook_id.bank_account_id.id, 'issued': 'true',
-        'check_id': wizard.check_id.id, 'account_id': wizard.check_id.checkbook_id.account_id.id }, context=context)
+        issued_check.create(cr, uid, { 
+            'number': wizard.check_id.name, 
+            'checkbook_id': wizard.check_id.checkbook_id.id,
+            'type': wizard.type, 
+            'amount': wizard.amount,
+            'receiving_partner_id': wizard.company_id.partner_id.id, 
+            'bank_id': wizard.check_id.checkbook_id.bank_id.id, 
+            'issue_date': wizard.issue_date,
+            'payment_date': wizard.payment_date, 
+            'account_bank_id': wizard.check_id.checkbook_id.bank_account_id.id, 
+            'issued': 'true',
+            'check_id': wizard.check_id.id, 
+            'account_id': wizard.check_id.checkbook_id.account_id.id 
+        }, context=context)
 
         account_checkbook_obj.write(cr, uid, wizard.check_id.id, {'state': 'done'}, context=context)
 
@@ -122,7 +130,7 @@ class wizard_account_collect_check(osv.osv_memory):
         move_line.create(cr, uid, {
             'name': name,
             'centralisation': 'normal',
-            'account_id': wizard.bank_account_id.account_id.id,
+            'account_id': wizard.check_id.checkbook_id.account_id.id,
             'move_id': move_id,
             'journal_id': wizard.journal_id.id,
             'period_id': period_id,

@@ -33,12 +33,10 @@ class bank_reconciliation_wizard(models.TransientModel):
     def create_conciliation(self):
 
         #Domain with the active account_id
-        active_domain = self.env.context.get('active_domain')
         active_ids = self.env.context.get('active_ids')
         move_lines = self.env['account.move.line'].browse(active_ids)
 
         bank_reconciliation_obj = self.env['account.bank.reconcile']
-        bank_reconciliation = None
 
         account_ids = []
         for move_line in move_lines:
@@ -79,18 +77,23 @@ class bank_reconciliation_wizard(models.TransientModel):
             # No? Creo una nuevo linea de conciliacion.
             if flag_last and self.period_id.id == bank_reconciliation.bank_reconcile_line_ids[0].period_id.id:
 
-
                 reconcile_line = bank_reconciliation.bank_reconcile_line_ids[0]
-
                 reconcile_line.write({'current_balance': current_balance + last_balance})
 
 
             else:
 
+                if bank_reconciliation.bank_reconcile_line_ids:
+
+                    bank_reconciliation.bank_reconcile_line_ids[0].last = False
+                
                 reconcile_line = bank_reconciliation.bank_reconcile_line_ids.create({'period_id': self.period_id.id,
                                                                                      'last_balance': last_balance,
                                                                                      'current_balance': current_balance + last_balance,
-                                                                                     'bank_reconcile_id': bank_reconciliation.id,})
+                                                                                     'bank_reconcile_id': bank_reconciliation.id,
+                                                                                     'last': True})
+                
+                _logger.info('reconcile line %s', reconcile_line)
 
             move_lines.write({'is_reconciled': True, 'bank_reconcile_line_id': reconcile_line.id})
 

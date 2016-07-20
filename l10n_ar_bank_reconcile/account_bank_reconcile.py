@@ -18,6 +18,8 @@
 
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
+import logging
+_logger = logging.getLogger(__name__)
 
 class account_bank_reconcile(models.Model):
 
@@ -29,7 +31,25 @@ class account_bank_reconcile(models.Model):
     bank_reconcile_line_ids = fields.One2many('account.bank.reconcile.line', 'bank_reconcile_id', 'Conciliations', limit=12)
 
     _sql_constraints = [ ('field_unique', 'unique(account_id)', 'You are already using that account for a conciliation!')]
-
+        
+    ''' Devuelve el la ultima conciliacion hecha para ese banco
+    '''
+    def _get_last_conciliation(self):
+        
+        last_conciliation = False
+        if self.bank_reconcile_line_ids:
+            
+            #Busco los periodos para esta conciliacion
+            periods = self.bank_reconcile_line_ids.mapped('period_id')
+            
+            #Traigo el periodo mas grande
+            last_period = periods.sorted(key=lambda x: x.date_stop, reverse=True)[0]
+            
+            #Busco la conciliacion con ese periodo
+            last_conciliation = self.bank_reconcile_line_ids.filtered(lambda x: x.period_id == last_period)
+        
+        return last_conciliation
+    
     #Search for all the unreconciled account move lines for this account
     @api.one
     def _get_unreconciled_accounts(self):
