@@ -18,8 +18,6 @@
 
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
-import logging
-_logger = logging.getLogger(__name__)
 
 class current_account(models.TransientModel):
 
@@ -41,6 +39,7 @@ class current_account(models.TransientModel):
     wizard_id = fields.Integer('Wizard')
     move_line_id = fields.Many2one('account.move.line', 'Linea del asiento')
     due_date = fields.Date(related='move_line_id.date_maturity', string='Fecha de vencimiento')
+    current_account_type = fields.Selection((('customer','Cliente'),('supplier','Proveedor')), 'Tipo de cc')
     
     _order = "date asc"
 
@@ -57,6 +56,7 @@ class current_account(models.TransientModel):
         credit_line_obj = self.env['current.account.imputation.wizard.credit.line']
         wizard = wizard_obj.create({'partner_id': self.partner_id.id})
         credit_residual = 0
+        wizard_type = None
 
         for document in self.browse(active_ids):
 
@@ -94,7 +94,8 @@ class current_account(models.TransientModel):
                                         'move_line_id': document.move_line_id.id
                 })
 
-        
+            if not wizard_type: wizard.wizard_type = document.current_account_type
+            
         debit_residual = 0
         wizard_credit_residual = 0
         

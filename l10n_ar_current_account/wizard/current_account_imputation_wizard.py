@@ -19,8 +19,6 @@
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 from datetime import date
-import logging
-_logger = logging.getLogger(__name__)
 
 class current_account_imputation_wizard(models.TransientModel):
 
@@ -33,14 +31,14 @@ class current_account_imputation_wizard(models.TransientModel):
     debit_residual = fields.Float('Remaining to concile', readonly=True)
     credit_residual = fields.Float('Total to concile', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Partner')
-
+    wizard_type = fields.Selection((('customer','Cliente'),('supplier','Proveedor')), 'Tipo de wizard')
+    
     @api.multi
     def concile_documents(self):
 
         self._create_moves(self._create_imputation())
         
         if self.partner_id.customer and not self.partner_id.supplier:
-            _logger.info('HI')
         
             return self.partner_id.get_customer_current_account();
 
@@ -81,7 +79,7 @@ class current_account_imputation_wizard(models.TransientModel):
     def _create_moves(self, imputation):
 
         document_imputation_proxy = self.env['res.partner.document.imputation']
-        
+        current_account_type = self.wizard_type
         journal = self.env['account.journal'].search([('code', '=', 'IMP')])
         move_date = date.today()
         period = self.env['account.period'].find(move_date)
@@ -120,7 +118,10 @@ class current_account_imputation_wizard(models.TransientModel):
         for credit_line in self.imputation_credit_lines:
             
             for debit_line in self.imputation_debit_lines:
-
+                
+                debit_line_created = None
+                credit_line_created = None
+                
                 if credit_line.amount_to_concile > 0:
 
                     name = 'IMP ' + credit_line.document + ' ' + credit_line.document_number + ' / ' +  debit_line.document + ' ' + debit_line.document_number
@@ -153,50 +154,76 @@ class current_account_imputation_wizard(models.TransientModel):
                     
                     imputation.move_id = move.id
                     
-                    credit_line_created = move_line_proxy.create({
-                        'name': name,
-                        'account_id': debit_line_move_line.account_id.id,
-                        'move_id': move.id,
-                        'journal_id': journal.id,
-                        'period_id': period.id,
-                        'date': move_date,
-                        'debit': 0.0,
-                        'credit': amount,
-                        'ref': ref,
-                        'state': 'valid',
-                        'partner_id': self.partner_id.id,
-                    })
-
-                    debit_line_created = move_line_proxy.create({
-                        'name': name,
-                        'account_id': credit_line.move_line_id.account_id.id,
-                        'move_id': move.id,
-                        'journal_id': journal.id,
-                        'period_id': period.id,
-                        'date': move_date,
-                        'debit': amount,
-                        'credit': 0.0,
-                        'ref': ref,
-                        'state': 'valid',
-                        'partner_id': self.partner_id.id,
-                    })
-          
-                    #CC de cliente
-                    if debit_line_move_line.debit > 0 and credit_line.move_line_id.credit > 0:
+                    if current_account_type == 'customer':
                         
+                        credit_line_created = move_line_proxy.create({
+                            'name': name,
+                            'account_id': debit_line_move_line.account_id.id,
+                            'move_id': move.id,
+                            'journal_id': journal.id,
+                            'period_id': period.id,
+                            'date': move_date,
+                            'debit': 0.0,
+                            'credit': amount,
+                            'ref': ref,
+                            'state': 'valid',
+                            'partner_id': self.partner_id.id,
+                        })
+    
+                        debit_line_created = move_line_proxy.create({
+                            'name': name,
+                            'account_id': credit_line.move_line_id.account_id.id,
+                            'move_id': move.id,
+                            'journal_id': journal.id,
+                            'period_id': period.id,
+                            'date': move_date,
+                            'debit': amount,
+                            'credit': 0.0,
+                            'ref': ref,
+                            'state': 'valid',
+                            'partner_id': self.partner_id.id,
+                        })
+
+                    elif current_account_type == 'supplier':
+                        
+                        credit_line_created = move_line_proxy.create({
+                            'name': name,
+                            'account_id': debit_line_move_line.account_id.id,
+                            'move_id': move.id,
+                            'journal_id': journal.id,
+                            'period_id': period.id,
+                            'date': move_date,
+                            'debit': amount,
+                            'credit': 0.0,
+                            'ref': ref,
+                            'state': 'valid',
+                            'partner_id': self.partner_id.id,
+                        })
+    
+                        debit_line_created = move_line_proxy.create({
+                            'name': name,
+                            'account_id': credit_line.move_line_id.account_id.id,
+                            'move_id': move.id,
+                            'journal_id': journal.id,
+                            'period_id': period.id,
+                            'date': move_date,
+                            'debit': 0.0,
+                            'credit': amount,
+                            'ref': ref,
+                            'state': 'valid',
+                            'partner_id': self.partner_id.id,
+                        })
+                    
+                    
+                    if debit_line_created and credit_line_created:
+
                         move_line_pool.reconcile_partial(self.env.cr, self.env.uid, [credit_line_created.id, debit_line_move_line.id], writeoff_acc_id=False, writeoff_period_id=False, writeoff_journal_id=False)
                         move_line_pool.reconcile_partial(self.env.cr, self.env.uid, [debit_line_created.id, credit_line.move_line_id.id], writeoff_acc_id=False, writeoff_period_id=False, writeoff_journal_id=False)
                     
-                    #CC de proveedor
-                    elif debit_line_move_line.credit > 0 and credit_line.move_line_id.debit > 0:
-                    
-                        move_line_pool.reconcile_partial(self.env.cr, self.env.uid, [debit_line_created.id, debit_line_move_line.id], writeoff_acc_id=False, writeoff_period_id=False, writeoff_journal_id=False)
-                        move_line_pool.reconcile_partial(self.env.cr, self.env.uid, [credit_line_created.id, credit_line.move_line_id.id], writeoff_acc_id=False, writeoff_period_id=False, writeoff_journal_id=False)
-                                        
                     else:
                         
                         raise Warning('No se pudo realizar la imputacion')
-    
+
     """" Onchange to recompute the credit residual
 
     :returns: New credit residual
