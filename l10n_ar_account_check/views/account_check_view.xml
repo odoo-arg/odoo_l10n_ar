@@ -124,6 +124,11 @@
                                 <field name="issued" readonly="1"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Notas">
+                                <field name="note" placeholder="Notas..."/>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

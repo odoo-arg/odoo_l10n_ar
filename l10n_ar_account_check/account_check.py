@@ -75,6 +75,7 @@ class account_issued_check(osv.osv):
         'type': fields.selection([('common', 'Common'),('postdated', 'Post-dated')], 'Check Type',
                                 help="If common, checks only have issued_date. If post-dated they also have payment date"),
         'company_id': fields.many2one('res.company', 'Company', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'note': fields.text('Notas')
     }
 
     _defaults = {
