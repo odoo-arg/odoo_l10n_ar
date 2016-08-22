@@ -39,6 +39,8 @@ class taxes_report_xls(models.Model):
     def generate_taxes_report(self):
 
         filename = None
+        # Digits rounding used for xls
+        rounding = 2
 
         if self.based_on == 'sales':
 
@@ -113,6 +115,8 @@ class taxes_report_xls(models.Model):
 
         for invoice in sorted(invoices, key=attrgetter('date_invoice', 'type', 'internal_number')):
 
+            currency_rate = self._get_invoice_currency_rate(invoice)
+
             invoice_type = self._get_invoice_type(invoice)
             s1 += 1
 
@@ -136,27 +140,27 @@ class taxes_report_xls(models.Model):
 
                 for line in filter_tax_lines:
 
-                    base += line.base
-                    amount += line.amount
+                    base += line.base * currency_rate
+                    amount += line.amount * currency_rate
 
                 if invoice.type == 'out_refund' or invoice.type == 'in_refund':
 
-                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), - base)
-                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), - amount)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), - round(base, rounding))
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), - round(amount, rounding))
 
                 else:
 
-                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), base)
-                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), amount)
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Base'), round(base, rounding))
+                    sheet1.write(s1, tax_dict.get(tax.name+' - Cantidad'), round(amount, rounding))
 
 
             if invoice.type == 'out_refund' or invoice.type == 'in_refund':
 
-                 sheet1.write(s1, counter, - invoice.amount_total)
+                 sheet1.write(s1, counter, - round(invoice.amount_total * currency_rate, rounding))
 
             else:
 
-                sheet1.write(s1, counter, invoice.amount_total)
+                sheet1.write(s1, counter, round(invoice.amount_total * currency_rate, rounding))
 
 
         for x in range(7, counter+1):
@@ -211,5 +215,16 @@ class taxes_report_xls(models.Model):
         res = res + denomination
 
         return res
+
+    def _get_invoice_currency_rate(self, invoice):
+
+        rate = 1
+
+        if invoice.move_id.line_id:
+            move = invoice.move_id.line_id[0]
+            if move.amount_currency != 0:
+                rate = abs((move.credit + move.debit) / move.amount_currency)
+
+        return rate
 
 taxes_report_xls()
