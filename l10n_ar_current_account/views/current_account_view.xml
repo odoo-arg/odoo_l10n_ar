@@ -45,7 +45,12 @@
             <field name="model">current.account</field>
             <field name="arch" type="xml">
                 <search>
+                    <field name="partner_id"/>
                     <field name="state"/>
+                    <group expand="0" string="Agrupar">
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_type" string="Tipo" context="{'group_by':'doc_type'}"/>
+                    </group>
                 </search>
             </field>
         </record>
@@ -76,7 +81,7 @@
             <field name="model">current.account</field>
             <field name="key2">client_action_multi</field>
         </record>
-
+   
     </data>
 
 </openerp>

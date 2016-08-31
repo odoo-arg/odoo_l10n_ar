@@ -154,13 +154,13 @@ class res_partner(models.Model):
 
         self._get_supplier_move_lines(supplier_move_lines=supplier_move_lines)
 
-        cusomer_move_lines = move_line_proxy.search([
+        customer_move_lines = move_line_proxy.search([
             ('state','=','valid'), 
             ('account_id.type', '=', 'receivable'), 
             ('partner_id', '=', self.id)
         ])
 
-        self._get_supplier_move_lines(cusomer_move_lines)
+        self._get_supplier_move_lines(customer_move_lines)
         
         return {
 
@@ -277,13 +277,13 @@ class res_partner(models.Model):
         move_line_proxy = self.env['account.move.line']
         current_accounts = current_account_proxy.search([('partner_id', '=', self.id)])
         current_accounts.unlink()
-        cusomer_move_lines = move_line_proxy.search([
+        customer_move_lines = move_line_proxy.search([
             ('state','=','valid'), 
             ('account_id.type', '=', 'receivable'), 
             ('partner_id', '=', self.id)
         ])
         
-        self._get_customer_move_lines(cusomer_move_lines)
+        self._get_customer_move_lines(customer_move_lines)
 
         supplier_move_lines = move_line_proxy.search([
             ('state','=','valid'), 

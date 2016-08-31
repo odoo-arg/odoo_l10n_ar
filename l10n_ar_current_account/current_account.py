@@ -18,6 +18,8 @@
 
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
+import logging
+_logger = logging.getLogger(__name__)
 
 class current_account(models.TransientModel):
 
@@ -38,18 +40,17 @@ class current_account(models.TransientModel):
     voucher_id = fields.Many2one('account.voucher', 'Voucher')
     wizard_id = fields.Integer('Wizard')
     move_line_id = fields.Many2one('account.move.line', 'Linea del asiento')
-    due_date = fields.Date(related='move_line_id.date_maturity', string='Fecha de vencimiento')
+    due_date = fields.Date(related='move_line_id.date_maturity', string='Fecha de vencimiento', store=True)
     current_account_type = fields.Selection((('customer','Cliente'),('supplier','Proveedor')), 'Tipo de cc')
     
     _order = "date asc"
 
-    """ Function to raise the wizard to concile documents
-
-    :returns: Form view of the wizard
-    """
     @api.multi
     def raise_imputation_wizard(self):
-
+        """ Function to raise the wizard to concile documents
+        :returns: Form view of the wizard
+        """
+        
         active_ids = self.env.context.get('active_ids')
         wizard_obj = self.env['current.account.imputation.wizard']
         debit_line_obj = self.env['current.account.imputation.wizard.debit.line']
@@ -137,9 +138,7 @@ class current_account(models.TransientModel):
         self.wizard_id = wizard.id
 
         return True
-
+        
 current_account()
-
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
