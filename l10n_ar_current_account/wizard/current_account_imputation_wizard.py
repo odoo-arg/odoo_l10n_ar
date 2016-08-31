@@ -46,7 +46,6 @@ class current_account_imputation_wizard(models.TransientModel):
             
             return self.partner_id.get_supplier_current_account();  
                   
-
         else:
              
             return {
