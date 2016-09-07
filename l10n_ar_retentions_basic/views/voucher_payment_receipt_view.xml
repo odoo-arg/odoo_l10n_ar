@@ -37,6 +37,7 @@
                                 <field name="base" sum="Base"/>
                                 <field name="amount" sum="Base"/>
                                 <field name="certificate_no"/>
+                                <field name="notes"/>
                                 <field name="date"/>
                             </tree>
                         </field>
@@ -64,6 +65,7 @@
                                 <field name="base" sum="Base"/>
                                 <field name="amount" sum="Monto"/>
                                 <field name="certificate_no"/>
+                                <field name="notes"/>
                                 <field name="date"/>
                             </tree>
                         </field>
