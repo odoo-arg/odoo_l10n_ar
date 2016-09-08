@@ -16,7 +16,6 @@
 #
 ##############################################################################
 
-import check_deposit
 import check_reject
 import account_third_check_sell_wizard
 

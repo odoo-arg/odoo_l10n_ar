@@ -42,7 +42,6 @@
 
         'security/ir.model.access.csv',
         'security/security.xml',
-        'wizard/view_check_deposit.xml',
         'views/account_check_view.xml',
         'views/account_voucher_view.xml',
         'workflow/account_third_check_workflow.xml',
