@@ -266,7 +266,6 @@
             <field name="arch" type="xml">
                <form string="Third Checks" version="7.0" create="false" delete="false">
                     <header>
-                        <button name="%(action_check_deposit)d" type='action' string='Deposit Check' states='wallet' class="oe_highlight" groups="account.group_account_invoice,account.group_account_manager"/>
                         <field name="state" widget="statusbar" statusbar_visible="wallet,deposited,delivered" statusbar_colors='{"wallet":"blue","rejected":"red"}'/>
                     </header>
                     <sheet>
