@@ -84,6 +84,7 @@ class RetentionTaxLine(models.Model):
 
     regimen_code = fields.Integer("Codigo Regimen")
 
+    notes = fields.Text("Notas")
 
     @api.one
     @api.constrains('amount', 'base')

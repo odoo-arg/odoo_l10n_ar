@@ -101,6 +101,8 @@
 
         <para style='text' alignment='left'><b>Comprobante que origina la Retención:</b> [[ o.voucher_number or '' ]]</para>
 
+        <para style='text' alignment='left'><b>Notas:</b> [[ o.notes or '' ]]</para>
+
         <para style='text' alignment='left'><b>Monto del Comprobante que origina la Retención:</b> $[[ o.voucher_id.amount or '' ]]</para>
 
         <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type == 'gross_income') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
