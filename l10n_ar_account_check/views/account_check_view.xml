@@ -298,6 +298,7 @@
                             <group>
                                 <field name="bank_id"/>
                                 <field name="origin"/>
+                                <field name="not_to_order" attrs="{'invisible': [('not_to_order', '=', False)]}"/>
                                 <field name="dest" attrs="{'invisible': [('state','!=','delivered')]}"/>
                                 <field name="sold_check_id" attrs="{'invisible': [('sold_check_id', '=', False)]}"/>
                             </group>

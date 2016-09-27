@@ -255,7 +255,8 @@ class account_third_check(osv.osv):
         'payment_date_by_day': fields.function(_get_payment_date_day, string="Dia de pago", type='char', readonly=True, store=True),
         'due_date': fields.function(_get_due_date, string='Fecha de vencimiento', type='date', readonly=True, store=True),
         'close_to_due': fields.function(_get_close_to_due, string='Cercano al vencimiento', type='boolean', readonly=True),
-        'sold_check_id': fields.many2one('account.sold.check', 'Documento destino')
+        'sold_check_id': fields.many2one('account.sold.check', 'Documento destino'),
+        'not_to_order': fields.boolean('No a la orden')
     }
 
 

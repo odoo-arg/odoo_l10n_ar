@@ -82,7 +82,7 @@ class payment_mode_receipt_line(osv.osv):
         'company_currency': fields.many2one('res.currency', 'Company Currency', readonly=False),
         'date': fields.date('Payment Date', help="If no payment date is specified, the bank will treat this payment line directly"),
         'move_line_id': fields.many2one('account.move.line', 'Entry line', domain=[('reconcile_id', '=', False), ('account_id.type', '=', 'payable')], help='This Entry Line will be referred for the information of the ordering customer.'),
-        'voucher_id' : fields.many2one('account.voucher', 'Voucher'),
+        'voucher_id' : fields.many2one('account.voucher', 'Voucher', ondelete="cascade"),
 
     }
 
