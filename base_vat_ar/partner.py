@@ -59,7 +59,7 @@ class res_partner(osv.osv):
 
         for partner in self.browse(cr, uid, ids, context=context):
 
-            if partner.vat != False and partner.is_company:
+            if partner.vat and partner.document_type_id and partner.is_company:
 
                 cr.execute("""SELECT 1 FROM res_partner WHERE vat = %s AND document_type_id = %s AND is_company AND id <> %s""" , (partner.vat, partner.document_type_id.id, partner.id) )
 

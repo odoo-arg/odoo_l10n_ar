@@ -59,7 +59,7 @@
                             </form>
                         </field>
                         <label for="third_check_ids"/>
-                        <field name="third_check_ids" string="Third Checks" nolabel="1" colspan="4" domain="[('state', '=', 'wallet')]" attrs="{'readonly': [('state', '=', 'posted')]}">
+                        <field name="third_check_ids" string="Third Checks" nolabel="1" colspan="4" domain="[('state', '=', 'wallet'), ('not_to_order', '=', False)]" attrs="{'readonly': [('state', '=', 'posted')]}">
                             <tree string="Third Checks">
                                 <field name="number"/>
                                 <field name="source_partner_id"/>
@@ -121,6 +121,7 @@
                                         <field name="clearing"/>
                                         <field name="signatory"/>
                                         <field name="signatory_vat"/>
+                                        <field name="not_to_order"/>                                        
                                     </group>
                                     <group string="Fotos del cheque">
                                         <field name="image" widget="image"/>
