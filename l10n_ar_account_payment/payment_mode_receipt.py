@@ -75,7 +75,7 @@ class payment_mode_receipt_line(osv.osv):
     _columns= {
 
         'name': fields.char('Mode', size=64, required=True, readonly=True, help='Payment reference'),
-        'payment_mode_id': fields.many2one('payment.mode.receipt', 'Payment Mode Receipt', required=False, select=True),
+        'payment_mode_id': fields.many2one('payment.mode.receipt', 'Payment Mode Receipt', required=False, select=True, ondelete='restrict'),
         'amount': fields.float('Amount', digits=(16, 2), required=False, help='Payment amount in the company currency'),
         'amount_currency': fields.float('Amount in Partner Currency', digits=(16, 2), required=False, help='Payment amount in the partner currency'),
         'currency': fields.many2one('res.currency','Currency', required=False),
