@@ -620,6 +620,12 @@
                         </div>
                     </t>
 
+                    <!-- NOTAS -->
+                    <t t-if= "o.narration">
+                        <span>Nota: </span>
+                        <span t-field="o.narration"/>
+                    </t>
+
                 </div>
 
             </t>
