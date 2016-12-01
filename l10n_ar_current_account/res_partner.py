@@ -335,10 +335,7 @@ class res_partner(models.Model):
 
     def _check_for_voucher(self, move_line):
 
-        voucher = self.env['account.voucher'].search([
-            ('move_id', '=', move_line.move_id.id), 
-            ('partner_id', '=', move_line.partner_id.id)
-        ])
+        voucher = self.env['account.voucher'].search([('move_id', '=', move_line.move_id.id)])
 
         if voucher:
 
