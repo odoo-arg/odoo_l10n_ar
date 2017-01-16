@@ -25,6 +25,8 @@
 from openerp import models, fields, api
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+import logging
+_logger = logging.getLogger(__name__)
 
 class account_checkbook(osv.osv):
 
@@ -151,8 +153,6 @@ class account_issued_check(osv.osv):
             'views': [[False, "form"]],
             'target': 'new',
         }
-        
-
 
     def on_change_check_id(self, cr, uid, ids, check_id, context=None):
         if context is None:
@@ -230,7 +230,9 @@ class account_issued_check(osv.osv):
         }
 
         return move_line
-
+    
+    _sql_constraints = [('unique_number','unique (number, checkbook_id)', 'Ya existe una cheque con ese numero para esa chequera')]
+    
 account_issued_check()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
