@@ -231,7 +231,7 @@ class account_issued_check(osv.osv):
 
         return move_line
     
-    _sql_constraints = [('unique_number','unique (number, checkbook_id)', 'Ya existe una cheque con ese numero para esa chequera')]
+    _sql_constraints = [('unique_number','unique (check_id, checkbook_id)', 'Ya existe una cheque con ese numero para esa chequera')]
     
 account_issued_check()
 
