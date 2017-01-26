@@ -420,7 +420,7 @@
             <field name='code'>104</field>
         </record>
         
-        <!-- CREACION DE LA REALCION CON CODES_MODELS -->
+        <!-- CREACION DE LA RELACION CON CODES_MODELS -->
 
         <record id='codes_models_afip_voucher_type_001' model='codes.models.relation'>
             <field name='name'>Afip</field>
