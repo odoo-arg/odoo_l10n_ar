@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+    	
+        <record id='account_fiscal_position_0' model='account.fiscal.position'>
+            <field name='name'>CI Policia Federal</field>
+        </field>
+        
+        <record id='account_fiscal_position_1' model='account.fiscal.position'>
+            <field name='name'>CI Buenos Aires</field>
+        </field>
+        
+        <record id='account_fiscal_position_2' model='account.fiscal.position'>
+            <field name='name'>CI Catamarca</field>
+        </field>
+        
+        <record id='account_fiscal_position_3' model='account.fiscal.position'>
+            <field name='name'>CI Cordoba</field>
+        </field>
+        
+        <record id='account_fiscal_position_4' model='account.fiscal.position'>
+            <field name='name'>CI Corrientes</field>
+        </field>
+        
+        <record id='account_fiscal_position_5' model='account.fiscal.position'>
+            <field name='name'>CI Entre Rios</field>
+        </field>
+        
+        <record id='account_fiscal_position_6' model='account.fiscal.position'>
+            <field name='name'>CI Jujuy</field>
+        </field>
+        
+        <record id='account_fiscal_position_7' model='account.fiscal.position'>
+            <field name='name'>CI Mendoza</field>
+        </field>
+        
+        <record id='account_fiscal_position_8' model='account.fiscal.position'>
+            <field name='name'>CI La Rioja</field>
+        </field>
+        
+        <record id='account_fiscal_position_9' model='account.fiscal.position'>
+            <field name='name'>CI Salta</field>
+        </field>
+        
+        <record id='account_fiscal_position_10' model='account.fiscal.position'>
+            <field name='name'>CI San Juan</field>
+        </field>
+        
+        <record id='account_fiscal_position_11' model='account.fiscal.position'>
+            <field name='name'>CI San Luis</field>
+        </field>
+        
+        <record id='account_fiscal_position_12' model='account.fiscal.position'>
+            <field name='name'>CI Santa Fe</field>
+        </field>
+        
+        <record id='account_fiscal_position_13' model='account.fiscal.position'>
+            <field name='name'>CI Santiago del Estero</field>
+        </field>
+        
+        <record id='account_fiscal_position_14' model='account.fiscal.position'>
+            <field name='name'>CI Tucuman</field>
+        </field>
+        
+        <record id='account_fiscal_position_16' model='account.fiscal.position'>
+            <field name='name'>CI Chaco</field>
+        </field>
+        
+        <record id='account_fiscal_position_17' model='account.fiscal.position'>
+            <field name='name'>CI Chubut</field>
+        </field>
+        
+        <record id='account_fiscal_position_18' model='account.fiscal.position'>
+            <field name='name'>CI Formosa</field>
+        </field>
+        
+        <record id='account_fiscal_position_19' model='account.fiscal.position'>
+            <field name='name'>CI Misiones</field>
+        </field>
+        
+        <record id='account_fiscal_position_20' model='account.fiscal.position'>
+            <field name='name'>CI Neuquan</field>
+        </field>
+        
+        <record id='account_fiscal_position_21' model='account.fiscal.position'>
+            <field name='name'>CI La Pampa</field>
+        </field>
+        
+        <record id='account_fiscal_position_22' model='account.fiscal.position'>
+            <field name='name'>CI Rio Negro</field>
+        </field>
+        
+        <record id='account_fiscal_position_23' model='account.fiscal.position'>
+            <field name='name'>CI Santa Cruz</field>
+        </field>
+        
+        <record id='account_fiscal_position_24' model='account.fiscal.position'>
+            <field name='name'>CI Tierra del Fuego</field>
+        </field>
+        
+        <record id='account_fiscal_position_80' model='account.fiscal.position'>
+            <field name='name'>CUIT</field>
+        </field>
+        
+        <record id='account_fiscal_position_86' model='account.fiscal.position'>
+            <field name='name'>CUIL</field>
+        </field>
+        
+        <record id='account_fiscal_position_87' model='account.fiscal.position'>
+            <field name='name'>CDI</field>
+        </field>
+        
+        <record id='account_fiscal_position_89' model='account.fiscal.position'>
+            <field name='name'>LE</field>
+        </field>
+        
+        <record id='account_fiscal_position_90' model='account.fiscal.position'>
+            <field name='name'>LC</field>
+        </field>
+        
+        <record id='account_fiscal_position_91' model='account.fiscal.position'>
+            <field name='name'>CI extranjera</field>
+        </field>
+        
+        <record id='account_fiscal_position_92' model='account.fiscal.position'>
+            <field name='name'>en tramite</field>
+        </field>
+        
+        <record id='account_fiscal_position_93' model='account.fiscal.position'>
+            <field name='name'>Acta nacimiento</field>
+        </field>
+        
+        <record id='account_fiscal_position_94' model='account.fiscal.position'>
+            <field name='name'>Pasaporte</field>
+        </field>
+        
+        <record id='account_fiscal_position_95' model='account.fiscal.position'>
+            <field name='name'>CI Bs. As. RNP</field>
+        </field>
+        
+        <record id='account_fiscal_position_96' model='account.fiscal.position'>
+            <field name='name'>DNI</field>
+        </field
+        
+        <record id='account_fiscal_position_99' model='account.fiscal.position'>
+            <field name='name'>Sin identificar/venta global diaria</field>
+        </field
+        
+        <record id='account_fiscal_position_30' model='account.fiscal.position'>
+            <field name='name'>Certificado de Migracion</field>
+        </field
+        
+        <record id='account_fiscal_position_88' model='account.fiscal.position'>
+            <field name='name'>Usado por Anses para Padron</field>
+        </field
+            
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

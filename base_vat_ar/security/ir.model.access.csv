@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+base_vat_ar_partner_document_type_user,base_vat_ar.partner_document_type.user,base_vat_ar.model_partner_document_type,base.group_user,1,0,0,0
+base_vat_ar_partner_document_type_manager,base_vat_ar.partner_document_type.manager,base_vat_ar.model_partner_document_type,account.group_account_manager,1,1,1,1
