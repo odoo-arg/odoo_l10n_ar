@@ -31,11 +31,14 @@ class ResPartner(models.Model):
            
         #Si la empresa tiene el mismo pais, obviamos la parte de que el documento
         #necesite el prefijo del pais adelante para el chequeo de documento
-        if self.env.user.company_id.country_id == self.country_id and self.country_id.no_prefix:
+        if self.country_id.no_prefix:
             check_func = self.simple_vat_check
             if not check_func(self.country_id.code.lower(), self.vat):
-                raise ValidationError("El numero de documento [%s] no parece ser correcto para el tipo [%s]" %
-                                      (self.vat, self.partner_document_type_id.name))
+                raise ValidationError("El numero de documento [{vat}] no parece ser correcto para el tipo [{type}]".format(
+                        vat=self.vat, 
+                        type=self.partner_document_type_id.name
+                    )
+                )
         else:
             super(ResPartner, self).check_vat()
 
