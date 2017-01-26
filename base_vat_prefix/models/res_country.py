@@ -23,9 +23,11 @@ class ResCountry(models.Model):
     _inherit = 'res.country'
     
     no_prefix = fields.Boolean(
-        'Evitar Prefijo', 
-        help=("Tildar esta opcion si para verificar si el documento de un partner "
-              "asociado a este pais no se debe poner el prefijo del pais")
+        string='Evitar Prefijo', 
+        help=(
+            "Tildar esta opcion si para verificar si el documento de un partner "
+            "asociado a este pais no se debe poner el prefijo del pais"
+        )
     )
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
