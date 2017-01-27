@@ -1,0 +1,989 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<openerp>
+    <data>
+    	
+        <!-- CREACION DE TIPOS DE COMPROBANTES DE AFIP -->
+        
+        <record id='afip_voucher_type_001' model='afip.voucher.type'>
+            <field name='name'>FACTURAS A</field>
+            <field name='code'>001</field>
+        </record>
+        
+        <record id='afip_voucher_type_002' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO A</field>
+            <field name='code'>002</field>
+        </record>
+        
+        <record id='afip_voucher_type_003' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO A</field>
+            <field name='code'>003</field>
+        </record>
+        
+        <record id='afip_voucher_type_004' model='afip.voucher.type'>
+            <field name='name'>RECIBOS A</field>
+            <field name='code'>004</field>
+        </record>
+        
+        <record id='afip_voucher_type_005' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE VENTA AL CONTADO A</field>
+            <field name='code'>005</field>
+        </record>
+        
+        <record id='afip_voucher_type_006' model='afip.voucher.type'>
+            <field name='name'>FACTURAS B</field>
+            <field name='code'>006</field>
+        </record>
+        
+        <record id='afip_voucher_type_007' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO B</field>
+            <field name='code'>007</field>
+        </record>
+        
+        <record id='afip_voucher_type_008' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO B</field>
+            <field name='code'>008</field>
+        </record>
+        
+        <record id='afip_voucher_type_009' model='afip.voucher.type'>
+            <field name='name'>RECIBOS B</field>
+            <field name='code'>009</field>
+        </record>
+        
+        <record id='afip_voucher_type_010' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE VENTA AL CONTADO B</field>
+            <field name='code'>010</field>
+        </record>
+        
+        <record id='afip_voucher_type_011' model='afip.voucher.type'>
+            <field name='name'>FACTURAS C</field>
+            <field name='code'>011</field>
+        </record>
+        
+        <record id='afip_voucher_type_012' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO C</field>
+            <field name='code'>012</field>
+        </record>
+        
+        <record id='afip_voucher_type_013' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO C</field>
+            <field name='code'>013</field>
+        </record>
+        
+        <record id='afip_voucher_type_014' model='afip.voucher.type'>
+            <field name='name'>DOCUMENTO ADUANERO</field>
+            <field name='code'>014</field>
+        </record>
+        
+        <record id='afip_voucher_type_015' model='afip.voucher.type'>
+            <field name='name'>RECIBOS C</field>
+            <field name='code'>015</field>
+        </record>
+        
+        <record id='afip_voucher_type_016' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE VENTA AL CONTADO C</field>
+            <field name='code'>016</field>
+        </record>
+        
+        <record id='afip_voucher_type_019' model='afip.voucher.type'>
+            <field name='name'>FACTURAS DE EXPORTACION</field>
+            <field name='code'>019</field>
+        </record>
+        
+        <record id='afip_voucher_type_020' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO POR OPERACIONES CON EL EXTERIOR</field>
+            <field name='code'>020</field>
+        </record>
+        
+        <record id='afip_voucher_type_021' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO POR OPERACIONES CON EL EXTERIOR</field>
+            <field name='code'>021</field>
+        </record>
+        
+        <record id='afip_voucher_type_022' model='afip.voucher.type'>
+            <field name='name'>FACTURAS - PERMISO EXPORTACION SIMPLIFICADO - DTO. 855/97</field>
+            <field name='code'>022</field>
+        </record>
+        
+        <record id='afip_voucher_type_030' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES DE COMPRA DE BIENES USADOS</field>
+            <field name='code'>030</field>
+        </record>
+        
+        <record id='afip_voucher_type_031' model='afip.voucher.type'>
+            <field name='name'>MANDATO - CONSIGNACION</field>
+            <field name='code'>031</field>
+        </record>
+        
+        <record id='afip_voucher_type_032' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES PARA RECICLAR MATERIALES</field>
+            <field name='code'>032</field>
+        </record>
+        
+        <record id='afip_voucher_type_034' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES A DEL APARTADO A  INCISO F  R G  N  1415</field>
+            <field name='code'>034</field>
+        </record>
+        
+        <record id='afip_voucher_type_035' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES B DEL ANEXO I, APARTADO A, INC. F), RG N° 1415</field>
+            <field name='code'>035</field>
+        </record>
+        
+        <record id='afip_voucher_type_036' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES C DEL Anexo I, Apartado A, INC.F), R.G. N° 1415</field>
+            <field name='code'>036</field>
+        </record>
+        
+        <record id='afip_voucher_type_037' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO O DOCUMENTO EQUIVALENTE QUE CUMPLAN CON LA R.G. N° 1415</field>
+            <field name='code'>037</field>
+        </record>
+        
+        <record id='afip_voucher_type_038' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO O DOCMENTO EQUIVALENTE QUE CUMPLAN CON LA R.G. N° 1415</field>
+            <field name='code'>038</field>
+        </record>
+        
+        <record id='afip_voucher_type_039' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES A QUE CUMPLEN CON LA R G  1415</field>
+            <field name='code'>039</field>
+        </record>
+        
+        <record id='afip_voucher_type_040' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES B QUE CUMPLAN CON LA R.G. N° 1415</field>
+            <field name='code'>040</field>
+        </record>
+        
+        <record id='afip_voucher_type_041' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES C QUE CUMPLAN CON LA R.G. N° 1415</field>
+            <field name='code'>041</field>
+        </record>
+        
+        <record id='afip_voucher_type_050' model='afip.voucher.type'>
+            <field name='name'>RECIBO FACTURA A  REGIMEN DE FACTURA DE CREDITO </field>
+            <field name='code'>050</field>
+        </record>
+        
+        <record id='afip_voucher_type_051' model='afip.voucher.type'>
+            <field name='name'>FACTURAS M</field>
+            <field name='code'>051</field>
+        </record>
+        
+        <record id='afip_voucher_type_052' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE DEBITO M</field>
+            <field name='code'>052</field>
+        </record>
+        
+        <record id='afip_voucher_type_053' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO M</field>
+            <field name='code'>053</field>
+        </record>
+        
+        <record id='afip_voucher_type_054' model='afip.voucher.type'>
+            <field name='name'>RECIBOS M</field>
+            <field name='code'>054</field>
+        </record>
+        
+        <record id='afip_voucher_type_055' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE VENTA AL CONTADO M</field>
+            <field name='code'>055</field>
+        </record>
+        
+        <record id='afip_voucher_type_056' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTES M DEL ANEXO I  APARTADO A  INC F   R G  N  1415</field>
+            <field name='code'>056</field>
+        </record>
+        
+        <record id='afip_voucher_type_057' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES M QUE CUMPLAN CON LA R G  N  1415</field>
+            <field name='code'>057</field>
+        </record>
+        
+        <record id='afip_voucher_type_058' model='afip.voucher.type'>
+            <field name='name'>CUENTAS DE VENTA Y LIQUIDO PRODUCTO M</field>
+            <field name='code'>058</field>
+        </record>
+        
+        <record id='afip_voucher_type_059' model='afip.voucher.type'>
+            <field name='name'>LIQUIDACIONES M</field>
+            <field name='code'>059</field>
+        </record>
+        
+        <record id='afip_voucher_type_060' model='afip.voucher.type'>
+            <field name='name'>CUENTAS DE VENTA Y LIQUIDO PRODUCTO A</field>
+            <field name='code'>060</field>
+        </record>
+        
+        <record id='afip_voucher_type_061' model='afip.voucher.type'>
+            <field name='name'>CUENTAS DE VENTA Y LIQUIDO PRODUCTO B</field>
+            <field name='code'>061</field>
+        </record>
+        
+        <record id='afip_voucher_type_063' model='afip.voucher.type'>
+            <field name='name'>LIQUIDACIONES A</field>
+            <field name='code'>063</field>
+        </record>
+        
+        <record id='afip_voucher_type_064' model='afip.voucher.type'>
+            <field name='name'>LIQUIDACIONES B</field>
+            <field name='code'>064</field>
+        </record>
+        
+        <record id='afip_voucher_type_065' model='afip.voucher.type'>
+            <field name='name'>NOTAS DE CREDITO DE COMPROBANTES CON COD. 34, 39, 58, 59, 60, 63, 96, 97 </field>
+            <field name='code'>065</field>
+        </record>
+        
+        <record id='afip_voucher_type_066' model='afip.voucher.type'>
+            <field name='name'>DESPACHO DE IMPORTACION</field>
+            <field name='code'>066</field>
+        </record>
+        
+        <record id='afip_voucher_type_067' model='afip.voucher.type'>
+            <field name='name'>IMPORTACION DE SERVICIOS</field>
+            <field name='code'>067</field>
+        </record>
+        
+        <record id='afip_voucher_type_068' model='afip.voucher.type'>
+            <field name='name'>LIQUIDACION C</field>
+            <field name='code'>068</field>
+        </record>
+        
+        <record id='afip_voucher_type_070' model='afip.voucher.type'>
+            <field name='name'>RECIBOS FACTURA DE CREDITO</field>
+            <field name='code'>070</field>
+        </record>
+        
+        <record id='afip_voucher_type_071' model='afip.voucher.type'>
+            <field name='name'>CREDITO FISCAL POR CONTRIBUCIONES PATRONALES</field>
+            <field name='code'>071</field>
+        </record>
+        
+        <record id='afip_voucher_type_073' model='afip.voucher.type'>
+            <field name='name'>FORMULARIO 1116 RT</field>
+            <field name='code'>073</field>
+        </record>
+        
+        <record id='afip_voucher_type_074' model='afip.voucher.type'>
+            <field name='name'>CARTA DE PORTE PARA EL TRANSPORTE AUTOMOTOR PARA GRANOS</field>
+            <field name='code'>074</field>
+        </record>
+        
+        <record id='afip_voucher_type_075' model='afip.voucher.type'>
+            <field name='name'>CARTA DE PORTE PARA EL TRANSPORTE FERROVIARIO PARA GRANOS</field>
+            <field name='code'>075</field>
+        </record>
+        
+        <record id='afip_voucher_type_077' model='afip.voucher.type'>
+            <field name='name'></field>
+            <field name='code'>077</field>
+        </record>
+        
+        <record id='afip_voucher_type_078' model='afip.voucher.type'>
+            <field name='name'></field>
+            <field name='code'>078</field>
+        </record>
+        
+        <record id='afip_voucher_type_079' model='afip.voucher.type'>
+            <field name='name'></field>
+            <field name='code'>079</field>
+        </record>
+        
+        <record id='afip_voucher_type_080' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTE DIARIO DE CIERRE (ZETA)</field>
+            <field name='code'>080</field>
+        </record>
+        
+        <record id='afip_voucher_type_081' model='afip.voucher.type'>
+            <field name='name'>TIQUE FACTURA A   CONTROLADORES FISCALES</field>
+            <field name='code'>081</field>
+        </record>
+        
+        <record id='afip_voucher_type_082' model='afip.voucher.type'>
+            <field name='name'>TIQUE - FACTURA B</field>
+            <field name='code'>082</field>
+        </record>
+        
+        <record id='afip_voucher_type_083' model='afip.voucher.type'>
+            <field name='name'>TIQUE</field>
+            <field name='code'>083</field>
+        </record>
+        
+        <record id='afip_voucher_type_084' model='afip.voucher.type'>
+            <field name='name'>COMPROBANTE   FACTURA DE SERVICIOS PUBLICOS   INTERESES FINANCIEROS</field>
+            <field name='code'>084</field>
+        </record>
+        
+        <record id='afip_voucher_type_085' model='afip.voucher.type'>
+            <field name='name'>NOTA DE CREDITO   SERVICIOS PUBLICOS   NOTA DE CREDITO CONTROLADORES FISCALES</field>
+            <field name='code'>085</field>
+        </record>
+        
+        <record id='afip_voucher_type_086' model='afip.voucher.type'>
+            <field name='name'>NOTA DE DEBITO   SERVICIOS PUBLICOS</field>
+            <field name='code'>086</field>
+        </record>
+        
+        <record id='afip_voucher_type_087' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES - SERVICIOS DEL EXTERIOR</field>
+            <field name='code'>087</field>
+        </record>
+        
+        <record id='afip_voucher_type_088' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES - DOCUMENTOS EXCEPTUADOS / REMITO ELECTRONICO </field>
+            <field name='code'>088</field>
+        </record>
+        
+        <record id='afip_voucher_type_089' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES - DOCUMENTOS EXCEPTUADOS - NOTAS DE DEBITO / RESUMEN DE DATOS</field>
+            <field name='code'>089</field>
+        </record>
+        
+        <record id='afip_voucher_type_090' model='afip.voucher.type'>
+            <field name='name'>OTROS COMPROBANTES - DOCUMENTOS EXCEPTUADOS - NOTAS DE CREDITO</field>
+            <field name='code'>090</field>
+        </record>
+        
+        <record id='afip_voucher_type_091' model='afip.voucher.type'>
+            <field name='name'>REMITOS R</field>
+            <field name='code'>091</field>
+        </record>
+        
+        <record id='afip_voucher_type_092' model='afip.voucher.type'>
+            <field name='name'>AJUSTES CONTABLES QUE INCREMENTAN EL DEBITO FISCAL</field>
+            <field name='code'>092</field>
+        </record>
+        
+        <record id='afip_voucher_type_093' model='afip.voucher.type'>
+            <field name='name'>AJUSTES CONTABLES QUE DISMINUYEN EL DEBITO FISCAL</field>
+            <field name='code'>093</field>
+        </record>
+        
+        <record id='afip_voucher_type_094' model='afip.voucher.type'>
+            <field name='name'>AJUSTES CONTABLES QUE INCREMENTAN EL CREDITO FISCAL</field>
+            <field name='code'>094</field>
+        </record>
+        
+        <record id='afip_voucher_type_095' model='afip.voucher.type'>
+            <field name='name'>AJUSTES CONTABLES QUE DISMINUYEN EL CREDITO FISCAL</field>
+            <field name='code'>095</field>
+        </record>
+        
+        <record id='afip_voucher_type_096' model='afip.voucher.type'>
+            <field name='name'>FORMULARIO 1116 B</field>
+            <field name='code'>096</field>
+        </record>
+        
+        <record id='afip_voucher_type_097' model='afip.voucher.type'>
+            <field name='name'>FORMULARIO 1116 C</field>
+            <field name='code'>097</field>
+        </record>
+        
+        <record id='afip_voucher_type_099' model='afip.voucher.type'>
+            <field name='name'>OTROS COMP  QUE NO CUMPLEN CON LA R G  3419 Y SUS MODIF </field>
+            <field name='code'>099</field>
+        </record>
+        
+        <record id='afip_voucher_type_101' model='afip.voucher.type'>
+            <field name='name'>AJUSTE ANUAL PROVENIENTE DE LA  D J  DEL IVA  POSITIVO </field>
+            <field name='code'>101</field>
+        </record>
+        
+        <record id='afip_voucher_type_102' model='afip.voucher.type'>
+            <field name='name'>AJUSTE ANUAL PROVENIENTE DE LA  D J  DEL IVA  NEGATIVO </field>
+            <field name='code'>102</field>
+        </record>
+        
+        <record id='afip_voucher_type_103' model='afip.voucher.type'>
+            <field name='name'>NOTA DE ASIGNACION</field>
+            <field name='code'>103</field>
+        </record>
+        
+        <record id='afip_voucher_type_104' model='afip.voucher.type'>
+            <field name='name'>NOTA DE CREDITO DE ASIGNACION</field>
+            <field name='code'>104</field>
+        </record>
+        
+        <!-- CREACION DE LA RELACION CON CODES_MODELS -->
+
+        <record id='codes_models_afip_voucher_type_001' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_001'/>
+            <field name='code'>001</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_002' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_002'/>
+            <field name='code'>002</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_003' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_003'/>
+            <field name='code'>003</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_004' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_004'/>
+            <field name='code'>004</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_005' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_005'/>
+            <field name='code'>005</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_006' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_006'/>
+            <field name='code'>006</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_007' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_007'/>
+            <field name='code'>007</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_008' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_008'/>
+            <field name='code'>008</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_009' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_009'/>
+            <field name='code'>009</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_010' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_010'/>
+            <field name='code'>010</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_011' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_011'/>
+            <field name='code'>011</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_012' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_012'/>
+            <field name='code'>012</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_013' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_013'/>
+            <field name='code'>013</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_014' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_014'/>
+            <field name='code'>014</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_015' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_015'/>
+            <field name='code'>015</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_016' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_016'/>
+            <field name='code'>016</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_019' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_019'/>
+            <field name='code'>019</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_020' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_020'/>
+            <field name='code'>020</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_021' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_021'/>
+            <field name='code'>021</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_022' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_022'/>
+            <field name='code'>022</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_030' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_030'/>
+            <field name='code'>030</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_031' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_031'/>
+            <field name='code'>031</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_032' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_032'/>
+            <field name='code'>032</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_034' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_034'/>
+            <field name='code'>034</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_035' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_035'/>
+            <field name='code'>035</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_036' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_036'/>
+            <field name='code'>036</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_037' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_037'/>
+            <field name='code'>037</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_038' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_038'/>
+            <field name='code'>038</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_039' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_039'/>
+            <field name='code'>039</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_040' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_040'/>
+            <field name='code'>040</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_041' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_041'/>
+            <field name='code'>041</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_050' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_050'/>
+            <field name='code'>050</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_051' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_051'/>
+            <field name='code'>051</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_052' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_052'/>
+            <field name='code'>052</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_053' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_053'/>
+            <field name='code'>053</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_054' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_054'/>
+            <field name='code'>054</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_055' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_055'/>
+            <field name='code'>055</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_056' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_056'/>
+            <field name='code'>056</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_057' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_057'/>
+            <field name='code'>057</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_058' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_058'/>
+            <field name='code'>058</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_059' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_059'/>
+            <field name='code'>059</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_060' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_060'/>
+            <field name='code'>060</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_061' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_061'/>
+            <field name='code'>061</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_063' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_063'/>
+            <field name='code'>063</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_064' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_064'/>
+            <field name='code'>064</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_065' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_065'/>
+            <field name='code'>065</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_066' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_066'/>
+            <field name='code'>066</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_067' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_067'/>
+            <field name='code'>067</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_068' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_068'/>
+            <field name='code'>068</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_070' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_070'/>
+            <field name='code'>070</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_071' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_071'/>
+            <field name='code'>071</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_073' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_073'/>
+            <field name='code'>073</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_074' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_074'/>
+            <field name='code'>074</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_075' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_075'/>
+            <field name='code'>075</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_077' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_077'/>
+            <field name='code'>077</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_078' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_078'/>
+            <field name='code'>078</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_079' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_079'/>
+            <field name='code'>079</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_080' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_080'/>
+            <field name='code'>080</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_081' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_081'/>
+            <field name='code'>081</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_082' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_082'/>
+            <field name='code'>082</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_083' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_083'/>
+            <field name='code'>083</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_084' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_084'/>
+            <field name='code'>084</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_085' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_085'/>
+            <field name='code'>085</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_086' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_086'/>
+            <field name='code'>086</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_087' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_087'/>
+            <field name='code'>087</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_088' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_088'/>
+            <field name='code'>088</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_089' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_089'/>
+            <field name='code'>089</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_090' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_090'/>
+            <field name='code'>090</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_091' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_091'/>
+            <field name='code'>091</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_092' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_092'/>
+            <field name='code'>092</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_093' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_093'/>
+            <field name='code'>093</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_094' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_094'/>
+            <field name='code'>094</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_095' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_095'/>
+            <field name='code'>095</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_096' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_096'/>
+            <field name='code'>096</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_097' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_097'/>
+            <field name='code'>097</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_099' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_099'/>
+            <field name='code'>099</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_101' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_101'/>
+            <field name='code'>101</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_102' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_102'/>
+            <field name='code'>102</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_103' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_103'/>
+            <field name='code'>103</field>
+        </record>
+        
+        <record id='codes_models_afip_voucher_type_104' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'> afip.voucher.type </field>
+            <field name='id_model' ref='afip_voucher_type_104'/>
+            <field name='code'>104</field>
+        </record>
+        
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
