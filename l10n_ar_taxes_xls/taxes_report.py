@@ -76,7 +76,7 @@ class taxes_report_xls(models.Model):
         s1=0
 
         """ADDING A WORKSHEET ALONG WITH NAME"""
-        sheet1 = wbk.add_sheet('Iva Ventas')
+        sheet1 = wbk.add_sheet('Iva Ventas') if self.based_on == 'sales' else wbk.add_sheet('Iva Compras') 
 
         sheet1.col(0).width = 2500
         sheet1.col(1).width = 6000
