@@ -22,8 +22,8 @@ class account_move_line(models.Model):
 
     _inherit = "account.move.line"
 
-    bank_reconcile_line_id = fields.Many2one('account.bank.reconcile.line', 'Bank reconcile line')
-    is_reconciled = fields.Boolean('Conciliado')
+    bank_reconcile_line_id = fields.Many2one('account.bank.reconcile.line', 'Bank reconcile line', copy=False)
+    is_reconciled = fields.Boolean('Conciliado', copy=False)
     delete_from_conciliation = fields.Boolean('Eliminar de la conciliacion')
         
 account_move_line()
