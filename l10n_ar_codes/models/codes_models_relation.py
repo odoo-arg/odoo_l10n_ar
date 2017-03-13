@@ -19,7 +19,6 @@
 from openerp import models, fields
 from openerp.exceptions import Warning
 
-
 class CodesModelsRelation(models.Model):
     """ 
     Intermediate table to asign models, code and apllication
@@ -35,6 +34,9 @@ class CodesModelsRelation(models.Model):
     code = fields.Char('Codigo / Nombre', required=True)
     
     def get_record(self):
+        ''' 
+        :return record: Objeto del modelo "name_model" con id "id_model"
+        '''
         
         try:
             record = self.env[self.name_model].browse(self.id_model)
@@ -42,7 +44,7 @@ class CodesModelsRelation(models.Model):
             raise Warning("No existe el modelo {}".format(self.name_model))
         
         if not record:
-            raise Warning("No se encontro el objeto con id: {} para el modelo {}".format(self.id, self.name_model))
+            raise Warning("No se encontro el objeto con id: {} para el modelo {}".format(self.id_model, self.name_model))
         
         return record
     
