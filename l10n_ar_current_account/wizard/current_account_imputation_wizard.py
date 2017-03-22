@@ -20,7 +20,6 @@ from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 from datetime import date
 
-
 class current_account_imputation_wizard(models.TransientModel):
     _name = 'current.account.imputation.wizard'
 
@@ -110,7 +109,7 @@ class current_account_imputation_wizard(models.TransientModel):
         move_date = date.today()
         period = self.env['account.period'].find(move_date)
         date_formated = move_date.strftime('%d/%m/%Y')
-        ref = 'Imputacion {} - {}'.format(self.partner_id.name, date_formated)
+        ref = 'Imputacion {} - {}'.format(self.partner_id.name.encode('utf-8'), date_formated)
         if not journal or len(journal) > 1:
             raise Warning('No se pudo generar el asiento debido a que no se encontro el diario de imputaciones')
 
