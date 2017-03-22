@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+    	
+        
+        <!-- VISTAS -->	
+        <record model="ir.ui.view" id="partner_document_type_form">
+            <field name="name">Partner document type form</field>
+            <field name="model">partner.document.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="verification_required"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="partner_document_type_tree">
+            <field name="name">Partner document type tree</field>
+            <field name="model">partner.document.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="verification_required"/>          
+                </tree>
+            </field>
+        </record>
+            
+        <!-- ACCION -->
+        <record id="action_partner_document_type_view" model="ir.actions.act_window">
+            <field name="name">Tipos de documento</field>
+            <field name="res_model">partner.document.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- MENU -->
+        
+        <menuitem
+            action="action_partner_document_type_view"
+            id="menu_partner_document_type"
+            sequence="10"
+            name="Tipos de documento"
+            parent="account.account_account_menu"
+        />
+        
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

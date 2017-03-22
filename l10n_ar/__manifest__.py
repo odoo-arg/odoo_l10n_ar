@@ -18,33 +18,32 @@
 
 {
 
-    'name': 'l10n_ar_afip_tables',
+    'name': 'l10n_ar',
 
     'version': '1.0',
 
-    'summary': 'Datas of tables of afip V.0 25082010-5',
+    'summary': 'Datas of taxes and accounts',
 
-    'description': """ Datas of tables of afip V.0 25082010-5,
-mapped with models using l10n_ar_codes application
-""",
+    'description': """ Datas of a custom chart of account and taxes """,
 
     'author': 'OPENPYME S.R.L.',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'base',
+    'category': 'Accounting',
 
     'depends': [
-        'l10n_ar',
-        'l10n_ar_codes',
-        'base_vat_ar'
+        'base_vat_ar',
     ],
 
     'data': [
-        'data/res_country_state.xml',
-        'data/afip_voucher_type.xml',
-        'data/partner_document_type.xml',
-        'data/account_tax.xml',
+        'data/account_type_data.xml',
+        'data/account_chart_template_data.xml',
+        'data/account_chart_data.xml',
+        'data/account_tax_data.xml',
+        'data/account_chart_template_data.yml',
+        'views/account_tax_view.xml'
+        
     ],
 
     'active': False,

@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+l10n_ar_afip_tables_afip_voucher_type_user,l10n_ar_afip_tables.afip_voucher_type.user,l10n_ar_afip_tables.model_afip_voucher_type,base.group_user,1,0,0,0
+l10n_ar_afip_tables_afip_voucher_type_manager,l10n_ar_afip_tables.afip_voucher_type.manager,l10n_ar_afip_tables.model_afip_voucher_type,base.group_system,1,1,1,1

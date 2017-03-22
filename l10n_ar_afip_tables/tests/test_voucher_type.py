@@ -16,17 +16,23 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from odoo.tests import common
 
-class AfipVoucherType(models.Model):
+class TestVoucherType(common.TransactionCase): 
 
-    _name = 'afip.voucher.type'
+    def setUp(self):
+        super(TestVoucherType, self).setUp()
+        self.voucher_type_test = self.env['afip.voucher.type'].create({
+            'name': 'Denominacion',
+            'code': '1832'
+        })
+        
+    def test_unique_voucher_type(self):
+        self.assertRaises(
+            Exception, 
+            self.env['afip.voucher.type'].create, 
+            {'code': '1832'}
+        )
 
-    name = fields.Char('Denominacion')
-    code = fields.Integer('Codigo', required=True)
-    
-    _sql_constraints = [
-        ('Unique code', 'unique(code)', "Ya existe un registro con ese codigo")
-    ]
-     
+            
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

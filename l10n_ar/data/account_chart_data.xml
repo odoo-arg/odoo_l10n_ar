@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <!-- Chart of account -->
+        <!-- *** ACTIVOS *** -->
+
+        <record model="account.account.template" id="caja_pesos">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1111.01</field>
+            <field name="name">Caja pesos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="caja_monex">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1111.02</field>
+            <field name="name">Caja Moneda Extranjera</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="fondos_fijos">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1111.03</field>
+            <field name="name">Fondos fijos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="valores_a_depositar">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1112.01</field>
+            <field name="name">Valores a depositar</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="depositos_a_plazo_fijo">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1112.02</field>
+            <field name="name">Depósitos a plazo fijo</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="banco">
+            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1112.03</field>
+            <field name="name">Banco</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <record model="account.account.template" id="deudores_ventas">
+            <field name="user_type_id" ref="account_type_receivable"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1131.01</field>
+            <field name="name">Deudores por ventas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="cheques_rechazados">
+            <field name="user_type_id" ref="account_type_receivable"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1131.02</field>
+            <field name="name">Cheques rechazados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="deudores_morosos">
+            <field name="user_type_id" ref="account_type_receivable"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1131.03</field>
+            <field name="name">Deudores morosos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="prevision_deudores_incobrables">
+            <field name="user_type_id" ref="account_type_receivable"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1131.04</field>
+            <field name="name">Previsión deudores incobrables</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="anticipos_de_sueldo">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1132.01</field>
+            <field name="name">Anticipos de sueldo</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="vales_a_rendir">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1132.02</field>
+            <field name="name">Vales a rendir</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="prestamos_al_personal">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1132.03</field>
+            <field name="name">Prestamos al personal</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="anticipos_a_directores">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1132.04</field>
+            <field name="name">Anticipos a directores</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="gastos_pagados_por_adelantado">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1133.01</field>
+            <field name="name">Gastos pagados por adelantado</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="anticipo_a_proveedores">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1133.02</field>
+            <field name="name">Anticipo a proveedores</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="depositos_en_garantia">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1133.03</field>
+            <field name="name">Depósitos en garantía</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="intereses_pagados_por_adelantado">
+            <field name="user_type_id" ref="account_type_credits"/>
+            <field name="reconcile" eval="False"/>
+            <field name="code">1133.04</field>
+            <field name="name">Intereses pagados por adelantado</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="iva_saldo_a_favor">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1141.01</field>
+            <field name="name">IVA saldo a favor</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="iva_credito_fiscal">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1141.02</field>
+            <field name="name">IVA crédito fiscal</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="bienes_de_cambio">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.01</field>
+            <field name="name">Bienes de cambio</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="materias_primas">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.02</field>
+            <field name="name">Materias primas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="semi_elaborados">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.03</field>
+            <field name="name">Semi elaborados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="productos_terminados">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.04</field>
+            <field name="name">Productos terminados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="produccion_en_proceso">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.05</field>
+            <field name="name">Producción en proceso</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="productos_en_transito">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.06</field>
+            <field name="name">Productos en tránsito</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="repuestos">
+            <field name="user_type_id" ref="account_type_exchange_assets"/>
+            <field name="code">1150.07</field>
+            <field name="name">Repuestos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="terrenos">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.01</field>
+            <field name="name">Terrenos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="construcciones">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.02</field>
+            <field name="name">Construcciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="instalaciones">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.03</field>
+            <field name="name">Instalaciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="maquinas_equipos_tanques">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.04</field>
+            <field name="name">Máquinas, equipos y tanques</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="rodados">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.05</field>
+            <field name="name">Rodados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="herramientas">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.06</field>
+            <field name="name">Herramientas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="muebles_y_utiles">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1211.07</field>
+            <field name="name">Muebles y útiles</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_terrenos">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.01</field>
+            <field name="name">Amort. acum. terrenos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_construcciones">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.02</field>
+            <field name="name">Amort. acum. construcciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_instalaciones">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.03</field>
+            <field name="name">Amort. acum. instalaciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_maquinas_equipos_tanques">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.04</field>
+            <field name="name">Amort. acum. máquinas, equipos y tanques</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_rodados">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.05</field>
+            <field name="name">Amort. acum. rodados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_herramientas">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.06</field>
+            <field name="name">Amort. acum. herramientas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_muebles_y_utiles">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1212.07</field>
+            <field name="name">Amort. acum. muebles y útiles</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="software_de_gestion">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1213.01</field>
+            <field name="name">Software de gestión</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="gastos_de_organizacion">
+            <field name="user_type_id" ref="account_type_fixed_assets"/>
+            <field name="code">1213.02</field>
+            <field name="name">Gastos de organización</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_software_de_gestion">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1214.01</field>
+            <field name="name">Amort. acum. software de gestión</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amort_acum_gastos_de_organizacion">
+            <field name="user_type_id" ref="account_type_accumulated_amortizations"/>
+            <field name="code">1214.02</field>
+            <field name="name">Amort. acum. gastos de organización</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- *** PASIVO *** -->
+        <record model="account.account.template" id="proveedores_en_general">
+            <field name="user_type_id" ref="account_type_payable"/>
+            <field name="code">2111.01</field>
+            <field name="name">Proveedores en general</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="anticipos_de_clientes">
+            <field name="user_type_id" ref="account_type_payable"/>
+            <field name="code">2111.02</field>
+            <field name="name">Anticipos de clientes</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="alquileres_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2121.01</field>
+            <field name="name">Alquileres a pagar</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="documentos_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2121.02</field>
+            <field name="name">Documentos a pagar</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="provision_telefono">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2131.01</field>
+            <field name="name">Provisión teléfono</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="provision_energia_electrica">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2131.02</field>
+            <field name="name">Provisión energía eléctrica</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="prestamos_bancarios">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2141.01</field>
+            <field name="name">Préstamos bancarios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="descubiertos_bancarios">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2141.02</field>
+            <field name="name">Descubiertos bancarios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="prestamos_financieros">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2142.01</field>
+            <field name="name">Préstamos financieros</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="intereses_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2142.02</field>
+            <field name="name">Intereses a pagar</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="iva_a_pagar">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="code">2151.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">IVA a pagar</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="iva_debito_fiscal">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="code">2151.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">IVA débito fiscal</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="remun_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2161.01</field>
+            <field name="name">Remuneraciones a pagar</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="sac_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2161.02</field>
+            <field name="name">SAC a pagar</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="vacaciones_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2161.03</field>
+            <field name="name">Vacaciones a pagar</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="indemnizaciones_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2161.04</field>
+            <field name="name">Indemnizaciones a pagar</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="carg_sociales_a_pagar">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2162.01</field>
+            <field name="name">Cargas sociales a pagar</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="provision_sac">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2163.01</field>
+            <field name="name">Provisión SAC</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="provision_vacaciones">
+            <field name="user_type_id" ref="account_type_liability"/>
+            <field name="code">2163.02</field>
+            <field name="name">Provisión vacaciones</field>
+            <field name="reconcile" eval="True"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="capital">
+            <field name="user_type_id" ref="account_type_equity"/>
+            <field name="code">3.01</field>
+            <field name="name">Capital</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="aporte_irrevocable">
+            <field name="user_type_id" ref="account_type_equity"/>
+            <field name="code">3.02</field>
+            <field name="name">Aporte irrevocable </field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="reserva_legal">
+            <field name="user_type_id" ref="account_type_equity"/>
+            <field name="code">3.03</field>
+            <field name="name">Reserva legal</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="resultados_no_asignados">
+            <field name="user_type_id" ref="account_type_equity"/>
+            <field name="code">3.04</field>
+            <field name="name">Resultados no asignados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="resultado_del_ejercicio">
+            <field name="user_type_id" ref="account_type_equity"/>
+            <field name="code">3.05</field>
+            <field name="name">Resultado del ejercicio</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="ingresos_por_ventas">
+            <field name="user_type_id" ref="account_type_sales_profits"/>
+            <field name="code">4111.01</field>
+            <field name="name">Ingresos por ventas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="venta_de_bienes">
+            <field name="user_type_id" ref="account_type_sales_profits"/>
+            <field name="code">4111.02</field>
+            <field name="name">Venta de bienes</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="venta_de_servicios">
+            <field name="user_type_id" ref="account_type_sales_profits"/>
+            <field name="code">4111.03</field>
+            <field name="name">Venta de servicios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <record model="account.account.template" id="intereses_ganados">
+            <field name="user_type_id" ref="account_type_other_profits"/>
+            <field name="code">4211.01</field>
+            <field name="name">Intereses ganados</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="otros_ingresos_varios">
+            <field name="user_type_id" ref="account_type_other_profits"/>
+            <field name="code">4211.02</field>
+            <field name="name">Otros ingresos varios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="gastos_gral">
+            <field name="user_type_id" ref="account_type_production_expenses"/>
+            <field name="code">5111.01</field>
+            <field name="name">Gastos operativos general</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="costo_de_mercaderia_vendida">
+            <field name="user_type_id" ref="account_type_production_expenses"/>
+            <field name="code">5111.02</field>
+            <field name="name">Costo de mercadería vendida</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="costo_del_servicio_prestado">
+            <field name="user_type_id" ref="account_type_production_expenses"/>
+            <field name="code">5111.03</field>
+            <field name="name">Costo del servicio prestado</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="ajust_de_inventario">
+            <field name="user_type_id" ref="account_type_production_expenses"/>
+            <field name="code">5111.04</field>
+            <field name="name">Ajuste de inventario</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <record model="account.account.template" id="haberes_comerciales">
+            <field name="user_type_id" ref="account_type_comercial_expenses"/>
+            <field name="code">5121.01</field>
+            <field name="name">Haberes comerciales</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="cargas_sociales_comerciales">
+            <field name="user_type_id" ref="account_type_comercial_expenses"/>
+            <field name="code">5121.02</field>
+            <field name="name">Cargas sociales comerciales</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="comisiones_comerciales">
+            <field name="user_type_id" ref="account_type_comercial_expenses"/>
+            <field name="code">5121.03</field>
+            <field name="name">Comisiones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="publicidad">
+            <field name="user_type_id" ref="account_type_comercial_expenses"/>
+            <field name="code">5121.04</field>
+            <field name="name">Publicidad</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="haberes_administrativos">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.01</field>
+            <field name="name">Haberes administrativos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="cargas_sociales_administrativas">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.02</field>
+            <field name="name">Cargas sociales administrativas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="honorarios">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.03</field>
+            <field name="name">Honorarios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="servicios">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.04</field>
+            <field name="name">Servicios</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="alquileres">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.05</field>
+            <field name="name">Alquileres</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="seguros">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.06</field>
+            <field name="name">Seguros</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="viaticos">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.07</field>
+            <field name="name">Viaticos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="servicios_de_limpieza">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.08</field>
+            <field name="name">Servicios de limpieza</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="papeleria_y_utiles">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.09</field>
+            <field name="name">Papeleria y utiles</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="cadeteria_y_correo">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.10</field>
+            <field name="name">Cadetería y correo</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="indemnizaciones">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.11</field>
+            <field name="name">Indemnizaciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="sueldos">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.12</field>
+            <field name="name">Sueldos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="cargas_sociales">
+            <field name="user_type_id" ref="account_type_administration_expenses"/>
+            <field name="code">5131.13</field>
+            <field name="name">Cargas sociales</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="impuestos_transacciones_bancarias">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="code">5141.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">Impuestos transacciones bancarias</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="impuestos_internos">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="code">5141.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">Impuestos internos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="impuestos_enard">
+            <field name="user_type_id" ref="account_type_tax"/>
+            <field name="code">5141.03</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">Enard</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_terrenos">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.01</field>
+            <field name="name">Amortización terrenos</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_construcciones">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.02</field>
+            <field name="name">Amortización construcciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_instalaciones">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.03</field>
+            <field name="name">Amortización instalaciones</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_maquinas_equipos_y_tanques">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.04</field>
+            <field name="name">Amortización máquinas, equipos y tanques</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_herramientas">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.06</field>
+            <field name="name">Amortización herramientas</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record model="account.account.template" id="amortizacion_muebles_y_utiles">
+            <field name="user_type_id" ref="account_type_amortizations"/>
+            <field name="code">5211.07</field>
+            <field name="name">Amortizacion muebles y útiles</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <record id="ar_chart_template" model="account.chart.template">
+            <field name="property_account_receivable_id" ref="deudores_ventas"/>
+            <field name="property_account_payable_id" ref="proveedores_en_general"/>
+            <field name="property_account_expense_categ_id" ref="gastos_gral"/>
+            <field name="property_account_income_categ_id" ref="ingresos_por_ventas"/>
+        </record>  
+        
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
