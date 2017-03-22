@@ -16,7 +16,7 @@
 
 
 <openerp>
-    <data>
+    <data noupdate="1">
     	
         <!-- CREACION DE TIPOS DE COMPROBANTES DE AFIP -->
         

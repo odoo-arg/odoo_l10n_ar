@@ -1,0 +1,446 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+
+        <record id='partner_document_type_0' model='partner.document.type'>
+            <field name='name'>CI Policia Federal</field>
+        </record>
+
+        <record id='partner_document_type_1' model='partner.document.type'>
+            <field name='name'>CI Buenos Aires</field>
+        </record>
+        
+        <record id='partner_document_type_2' model='partner.document.type'>
+            <field name='name'>CI Catamarca</field>
+        </record>
+        
+        <record id='partner_document_type_3' model='partner.document.type'>
+            <field name='name'>CI Cordoba</field>
+        </record>
+        
+        <record id='partner_document_type_4' model='partner.document.type'>
+            <field name='name'>CI Corrientes</field>
+        </record>
+        
+        <record id='partner_document_type_5' model='partner.document.type'>
+            <field name='name'>CI Entre Rios</field>
+        </record>
+        
+        <record id='partner_document_type_6' model='partner.document.type'>
+            <field name='name'>CI Jujuy</field>
+        </record>
+        
+        <record id='partner_document_type_7' model='partner.document.type'>
+            <field name='name'>CI Mendoza</field>
+        </record>
+        
+        <record id='partner_document_type_8' model='partner.document.type'>
+            <field name='name'>CI La Rioja</field>
+        </record>
+        
+        <record id='partner_document_type_9' model='partner.document.type'>
+            <field name='name'>CI Salta</field>
+        </record>
+        
+        <record id='partner_document_type_10' model='partner.document.type'>
+            <field name='name'>CI San Juan</field>
+        </record>
+        
+        <record id='partner_document_type_11' model='partner.document.type'>
+            <field name='name'>CI San Luis</field>
+        </record>
+        
+        <record id='partner_document_type_12' model='partner.document.type'>
+            <field name='name'>CI Santa Fe</field>
+        </record>
+        
+        <record id='partner_document_type_13' model='partner.document.type'>
+            <field name='name'>CI Santiago del Estero</field>
+        </record>
+        
+        <record id='partner_document_type_14' model='partner.document.type'>
+            <field name='name'>CI Tucuman</field>
+        </record>
+        
+        <record id='partner_document_type_16' model='partner.document.type'>
+            <field name='name'>CI Chaco</field>
+        </record>
+        
+        <record id='partner_document_type_17' model='partner.document.type'>
+            <field name='name'>CI Chubut</field>
+        </record>
+        
+        <record id='partner_document_type_18' model='partner.document.type'>
+            <field name='name'>CI Formosa</field>
+        </record>
+        
+        <record id='partner_document_type_19' model='partner.document.type'>
+            <field name='name'>CI Misiones</field>
+        </record>
+        
+        <record id='partner_document_type_20' model='partner.document.type'>
+            <field name='name'>CI Neuquan</field>
+        </record>
+        
+        <record id='partner_document_type_21' model='partner.document.type'>
+            <field name='name'>CI La Pampa</field>
+        </record>
+        
+        <record id='partner_document_type_22' model='partner.document.type'>
+            <field name='name'>CI Rio Negro</field>
+        </record>
+        
+        <record id='partner_document_type_23' model='partner.document.type'>
+            <field name='name'>CI Santa Cruz</field>
+        </record>
+        
+        <record id='partner_document_type_24' model='partner.document.type'>
+            <field name='name'>CI Tierra del Fuego</field>
+        </record>
+        
+        <record id='partner_document_type_80' model='partner.document.type'>
+            <field name='name'>CUIT</field>
+            <field name='verification_required'>True</field>
+        </record>
+        
+        <record id='partner_document_type_86' model='partner.document.type'>
+            <field name='name'>CUIL</field>
+            <field name='verification_required'>True</field>
+        </record>
+        
+        <record id='partner_document_type_87' model='partner.document.type'>
+            <field name='name'>CDI</field>
+        </record>
+        
+        <record id='partner_document_type_89' model='partner.document.type'>
+            <field name='name'>LE</field>
+        </record>
+        
+        <record id='partner_document_type_90' model='partner.document.type'>
+            <field name='name'>LC</field>
+        </record>
+        
+        <record id='partner_document_type_91' model='partner.document.type'>
+            <field name='name'>CI extranjera</field>
+        </record>
+        
+        <record id='partner_document_type_92' model='partner.document.type'>
+            <field name='name'>en tramite</field>
+        </record>
+        
+        <record id='partner_document_type_93' model='partner.document.type'>
+            <field name='name'>Acta nacimiento</field>
+        </record>
+        
+        <record id='partner_document_type_94' model='partner.document.type'>
+            <field name='name'>Pasaporte</field>
+        </record>
+        
+        <record id='partner_document_type_95' model='partner.document.type'>
+            <field name='name'>CI Bs. As. RNP</field>
+        </record>
+        
+        <record id='partner_document_type_96' model='partner.document.type'>
+            <field name='name'>DNI</field>
+        </record>
+        
+        <record id='partner_document_type_99' model='partner.document.type'>
+            <field name='name'>Sin identificar/venta global diaria</field>
+        </record>
+        
+        <record id='partner_document_type_30' model='partner.document.type'>
+            <field name='name'>Certificado de Migracion</field>
+        </record>
+        
+        <record id='partner_document_type_88' model='partner.document.type'>
+            <field name='name'>Usado por Anses para Padron</field>
+        </record>
+
+        <!-- CREACION DE LA RELACION CON CODES_MODELS -->
+        
+        <record id='codes_models_afip_partner_document_type_0' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_0'/>
+            <field name='code'>0</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_1' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_1'/>
+            <field name='code'>1</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_2' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_2'/>
+            <field name='code'>2</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_3' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_3'/>
+            <field name='code'>3</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_4' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_4'/>
+            <field name='code'>4</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_5' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_5'/>
+            <field name='code'>5</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_6' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_6'/>
+            <field name='code'>6</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_7' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_7'/>
+            <field name='code'>7</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_8' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_8'/>
+            <field name='code'>8</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_9' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_9'/>
+            <field name='code'>9</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_10' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_10'/>
+            <field name='code'>10</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_11' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_11'/>
+            <field name='code'>11</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_12' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_12'/>
+            <field name='code'>12</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_13' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_13'/>
+            <field name='code'>13</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_14' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_14'/>
+            <field name='code'>14</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_16' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_16'/>
+            <field name='code'>16</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_17' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_17'/>
+            <field name='code'>17</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_18' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_18'/>
+            <field name='code'>18</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_19' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_19'/>
+            <field name='code'>19</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_20' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_20'/>
+            <field name='code'>20</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_21' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_21'/>
+            <field name='code'>21</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_22' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_22'/>
+            <field name='code'>22</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_23' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_23'/>
+            <field name='code'>23</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_24' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_24'/>
+            <field name='code'>24</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_80' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_80'/>
+            <field name='code'>80</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_86' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_86'/>
+            <field name='code'>86</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_87' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_87'/>
+            <field name='code'>87</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_89' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_89'/>
+            <field name='code'>89</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_90' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_90'/>
+            <field name='code'>90</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_91' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_91'/>
+            <field name='code'>91</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_92' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_92'/>
+            <field name='code'>92</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_93' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_93'/>
+            <field name='code'>93</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_94' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_94'/>
+            <field name='code'>94</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_95' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_95'/>
+            <field name='code'>95</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_96' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_96'/>
+            <field name='code'>96</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_99' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_99'/>
+            <field name='code'>99</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_30' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_30'/>
+            <field name='code'>30</field>
+        </record>
+        
+        <record id='codes_models_afip_partner_document_type_88' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>partner.document.type</field>
+            <field name='id_model' ref='partner_document_type_88'/>
+            <field name='code'>88</field>
+        </record>
+
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

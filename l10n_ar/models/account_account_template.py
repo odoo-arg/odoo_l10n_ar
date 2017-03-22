@@ -18,15 +18,16 @@
 
 from openerp import models, fields
 
-class AfipVoucherType(models.Model):
+class AccountTaxTemplate(models.Model):
 
-    _name = 'afip.voucher.type'
+    _inherit = 'account.tax.template'
 
-    name = fields.Char('Denominacion')
-    code = fields.Integer('Codigo', required=True)
+    is_exempt = fields.Boolean('Es exento?')
     
-    _sql_constraints = [
-        ('Unique code', 'unique(code)', "Ya existe un registro con ese codigo")
-    ]
-     
+    def _get_tax_vals(self, company):
+        val = super(AccountTaxTemplate, self)._get_tax_vals(company)    
+        val['is_exempt'] = self.is_exempt
+    
+        return val
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

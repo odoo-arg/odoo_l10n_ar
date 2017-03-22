@@ -18,15 +18,10 @@
 
 from openerp import models, fields
 
-class AfipVoucherType(models.Model):
+class AccountTax(models.Model):
 
-    _name = 'afip.voucher.type'
+    _inherit = 'account.tax'
 
-    name = fields.Char('Denominacion')
-    code = fields.Integer('Codigo', required=True)
+    is_exempt = fields.Boolean('Exento')
     
-    _sql_constraints = [
-        ('Unique code', 'unique(code)', "Ya existe un registro con ese codigo")
-    ]
-     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

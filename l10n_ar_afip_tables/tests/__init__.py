@@ -16,41 +16,6 @@
 #
 ##############################################################################
 
-{
-
-    'name': 'l10n_ar_afip_tables',
-
-    'version': '1.0',
-
-    'summary': 'Datas of tables of afip V.0 25082010-5',
-
-    'description': """ Datas of tables of afip V.0 25082010-5,
-mapped with models using l10n_ar_codes application
-""",
-
-    'author': 'OPENPYME S.R.L.',
-
-    'website': 'http://www.openpyme.com.ar',
-
-    'category': 'base',
-
-    'depends': [
-        'l10n_ar',
-        'l10n_ar_codes',
-        'base_vat_ar'
-    ],
-
-    'data': [
-        'data/res_country_state.xml',
-        'data/afip_voucher_type.xml',
-        'data/partner_document_type.xml',
-        'data/account_tax.xml',
-    ],
-
-    'active': False,
-
-    'installable': True,
-
-}
+import test_voucher_type
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
