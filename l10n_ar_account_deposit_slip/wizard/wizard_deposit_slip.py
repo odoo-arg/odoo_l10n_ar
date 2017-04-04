@@ -20,8 +20,7 @@ from openerp import models, fields, api, _
 import time
 from openerp.exceptions import Warning
 from openerp import netsvc
-import logging
-_logger = logging.getLogger(__name__)
+
 
 class WizardAccountDepositSlip(models.TransientModel):
 
@@ -51,7 +50,7 @@ class WizardAccountDepositSlip(models.TransientModel):
         res = check_config_obj.search([('company_id', '=', company_id)])
 
         if not res:
-            raise Warning('No hay configuraciÃ³n de cheques para esta companÃ­a!')
+            raise Warning('No hay configuración de cheques para esta companía!')
 
         return res[0].account_id
 
