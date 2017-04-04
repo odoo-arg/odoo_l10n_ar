@@ -41,10 +41,12 @@ mapped with models using l10n_ar_codes application
     ],
 
     'data': [
+        'views/afip_tables_configuration.xml',
         'data/res_country_state.xml',
         'data/afip_voucher_type.xml',
         'data/partner_document_type.xml',
         'data/account_tax.xml',
+        'data/afip_concept.xml'
     ],
 
     'active': False,

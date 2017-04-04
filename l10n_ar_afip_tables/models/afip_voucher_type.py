@@ -22,11 +22,6 @@ class AfipVoucherType(models.Model):
 
     _name = 'afip.voucher.type'
 
-    name = fields.Char('Denominacion')
-    code = fields.Integer('Codigo', required=True)
-    
-    _sql_constraints = [
-        ('Unique code', 'unique(code)', "Ya existe un registro con ese codigo")
-    ]
-     
+    name = fields.Char('Denominacion', required=True)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
