@@ -19,7 +19,6 @@
 from openerp import models, fields, api, _
 import time
 from openerp.exceptions import Warning
-from dateutil import parser
 from openerp import netsvc
 import logging
 _logger = logging.getLogger(__name__)
@@ -28,17 +27,22 @@ class WizardAccountDepositSlip(models.TransientModel):
 
     _name = "wizard.account.deposit.slip"
 
+    def get_total(self):
+        checks = self.env['account.third.check'].browse(self.env.context.get('active_ids', []))
+        
+        return sum(check.amount for check in checks)
+            
     name = fields.Char(string='Boleta de deposito numero')
     date = fields.Date('Fecha', required=True)
     bank_account_id = fields.Many2one('res.partner.bank', 'Cuenta bancaria', required=True)
     company_id = fields.Many2one('res.company', 'Compania', required=True)
     journal_id = fields.Many2one('account.journal', 'Diario', domain=[('type','in',('cash', 'bank'))], required=True)
-
+    total = fields.Float('Total', default=get_total)
+    
     _defaults = {
 
         'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self,cr,uid,c: self.pool.get('res.users').browse(cr, uid, uid, c).company_id.id,
-
     }
 
     def _get_source_account_check(self, company_id):
@@ -74,7 +78,7 @@ class WizardAccountDepositSlip(models.TransientModel):
         company_id = self.company_id.id
         check_objs = third_check_obj.browse(active_ids)
 
-        deposit_slip_amount = 0
+        deposit_slip_amount = self.total
         checks = []
 
         for check in check_objs:
@@ -86,8 +90,6 @@ class WizardAccountDepositSlip(models.TransientModel):
                 raise Warning("No se puede depositar el cheque " +check.number+ " la fecha del cheque es mayor que la de la boleta.", )
 
             account_check_id = self._get_source_account_check(company_id)
-
-            deposit_slip_amount += check.amount
 
             check_vals = {'deposit_bank_id': self.bank_account_id.id, 'deposit_date': deposit_date}
             check.write(check_vals)

@@ -250,7 +250,7 @@
                     <field name="destiny_partner_id"/>
                     <field name="endorsement_date"/>
                     <field name="bank_id"/>
-                    <field name="amount"/>
+                    <field name="amount" sum="Total"/>
                     <field name="deposit_bank_id"/>
                     <field name="type"/>
                     <field name="state"/>
