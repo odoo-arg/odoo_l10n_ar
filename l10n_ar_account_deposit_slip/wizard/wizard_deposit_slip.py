@@ -50,7 +50,7 @@ class WizardAccountDepositSlip(models.TransientModel):
         res = check_config_obj.search([('company_id', '=', company_id)])
 
         if not res:
-            raise Warning('No hay configuración de cheques para esta companía!')
+            raise Warning('No hay configuracion de cheques para esta compania!')
 
         return res[0].account_id
 
