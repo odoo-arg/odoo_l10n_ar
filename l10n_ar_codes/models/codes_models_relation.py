@@ -21,9 +21,9 @@ from openerp.exceptions import Warning
 
 class CodesModelsRelation(models.Model):
     """ 
-    Intermediate table to asign models, code and apllication
+    Intermediate table to assign models, code and application
     so every application that needs a specific code of a model
-    doesnt have to write on the model table.
+    doesn't have to write on the model table.
     """
     
     _name = 'codes.models.relation'

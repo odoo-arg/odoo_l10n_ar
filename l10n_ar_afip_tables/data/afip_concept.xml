@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+        
+        <!-- CREACION DE CONCEPTOS DE AFIP -->
+        <record id='afip_concept_1' model='afip.concept'>
+            <field name='name'>Productos</field>
+        </record>
+    
+        <record id='afip_concept_2' model='afip.concept'>
+            <field name='name'>Servicios</field>
+        </record>
+    
+        <record id='afip_concept_3' model='afip.concept'>
+            <field name='name'>Productos y Servicios</field>
+        </record>
+    
+        <record id='afip_concept_4' model='afip.concept'>
+            <field name='name'>Otro</field>
+        </record>
+
+        <!-- CREACION DE CONCEPTOS DE CATEGORIAS DE PRODUCTOS -->
+        
+        <record id='afip_concept_category_products' model='product.concept.category'>
+            <field name='name'>Productos</field>
+            <field name='afip_concept_ids' eval="[(6,0,[ref('afip_concept_1'), ref('afip_concept_3')])]"/>                        
+        </record>
+    
+        <record id='afip_concept_category_services' model='product.concept.category'>
+            <field name='name'>Servicios</field>
+            <field name='afip_concept_ids' eval="[(6,0,[ref('afip_concept_2'), ref('afip_concept_3')])]"/>            
+        </record>
+            
+        <!-- CREACION DE CONCEPTOS DE PRODUCTOS -->
+            
+        <record id='product_concept_service' model='product.concept'>
+            <field name='name'>Servicios</field>
+            <field name='type'>service</field>
+            <field name='product_concept_category_id' ref='afip_concept_category_services'/>
+        </record>
+
+        <record id='product_concept_consu' model='product.concept'>
+            <field name='name'>Consumible</field>
+            <field name='type'>consu</field>
+            <field name='product_concept_category_id' ref='afip_concept_category_products'/>
+        </record>
+
+        <record id='product_concept_product' model='product.concept'>
+            <field name='name'>Almacenable</field>
+            <field name='type'>product</field>
+            <field name='product_concept_category_id' ref='afip_concept_category_products'/>
+        </record>
+                        
+        <!-- CREACION DE LA RELACION CON CODES_MODELS -->
+        <record id='codes_models_afip_concept_1' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>afip.concept</field>
+            <field name='id_model' ref='afip_concept_1'/>
+            <field name='code'>1</field>
+        </record>
+        
+        <record id='codes_models_afip_concept_2' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>afip.concept</field>
+            <field name='id_model' ref='afip_concept_2'/>
+            <field name='code'>2</field>
+        </record>
+        
+        <record id='codes_models_afip_concept_3' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>afip.concept</field>
+            <field name='id_model' ref='afip_concept_3'/>
+            <field name='code'>3</field>
+        </record>
+        
+        <record id='codes_models_afip_concept_4' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>afip.concept</field>
+            <field name='id_model' ref='afip_concept_4'/>
+            <field name='code'>4</field>
+        </record>
+      
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

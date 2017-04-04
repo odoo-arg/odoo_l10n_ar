@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+        
+        <record model="ir.ui.view" id="afip_concept_tree_view">
+            <field name="name">Afip concept tree view</field>
+            <field name="model">afip.concept</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="afip_concept_form_view">
+            <field name="name">Afip concept form view</field>
+            <field name="model">afip.concept</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="product_concept_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="afip_voucher_type_tree_view">
+            <field name="name">Afip voucher type tree view</field>
+            <field name="model">afip.concept</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="afip_voucher_type_form_view">
+            <field name="name">Afip voucher type form view</field>
+            <field name="model">afip.concept</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+                
+        <!-- ACCIONES -->
+        
+        <record id="action_afip_concept_view" model="ir.actions.act_window">
+            <field name="name">Conceptos</field>
+            <field name="res_model">afip.concept</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_afip_voucher_type_view" model="ir.actions.act_window">
+            <field name="name">Tipos de comprobantes</field>
+            <field name="res_model">afip.voucher.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- MENUES -->
+        
+        <menuitem
+            id="afip_configuration_menu"
+            name="Configuracion AFIP"
+            parent="base.menu_ir_property"
+            groups="base.group_system"
+        />
+
+        <menuitem
+            id="afip_concept_menu"
+            name="Conceptos"
+            parent="afip_configuration_menu"
+            action="action_afip_concept_view"
+            groups="base.group_system"
+        />
+
+        <menuitem
+            id="afip_voucher_type_menu"
+            name="Tipos de comprobantes"
+            action="action_afip_voucher_type_view"            
+            parent="afip_configuration_menu"
+            groups="base.group_system"
+        />        
+    
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

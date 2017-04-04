@@ -34,6 +34,7 @@
 
     'depends': [
         'base_vat_ar',
+        'account'
     ],
 
     'data': [
