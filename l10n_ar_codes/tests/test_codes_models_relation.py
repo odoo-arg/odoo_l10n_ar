@@ -17,6 +17,7 @@
 ##############################################################################
 
 from odoo.tests import common
+from openerp.exceptions import Warning
 
 class TestCodesModelsRelation(common.TransactionCase): 
 
@@ -40,7 +41,7 @@ class TestCodesModelsRelation(common.TransactionCase):
 
     def test_invalid_record_id(self):
         self.test_codes_models_country.id_model = -1
-        with self.assertRaises(Exception):
+        with self.assertRaises(Warning):
             record = self.test_codes_models_country.get_record()
             record.name
             
