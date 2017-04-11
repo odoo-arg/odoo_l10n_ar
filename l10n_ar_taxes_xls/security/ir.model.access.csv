@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_taxes_report_xls_manager,taxes_report_xls manager,model_taxes_report_xls,account.group_account_manager,1,1,1,1
-access_taxes_report_xls_user,taxes_report_xls user,model_taxes_report_xls,account.group_account_user,1,0,0,0

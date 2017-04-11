@@ -1,4 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_payment_mode_receipt_accountant","payment.mode.receipt accountant","model_payment_mode_receipt","account.group_account_user",1,1,1,0
-"access_payment_mode_receipt_line_accountant","payment.mode.receipt.line accountant","model_payment_mode_receipt_line","account.group_account_user",1,1,1,1
-"access_payment_mode_receipt_manager","payment.mode.receipt manager","model_payment_mode_receipt","account.group_account_manager",1,1,1,1

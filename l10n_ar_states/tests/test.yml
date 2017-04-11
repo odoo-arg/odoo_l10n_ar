@@ -1,6 +1,0 @@
--
- Testeo si existe CABA en la base de datos
--
- !assert {model: res.country.state, id: l10n_ar_states.CABA, string: Check if CABA exists }:
-   - code == "C"
-

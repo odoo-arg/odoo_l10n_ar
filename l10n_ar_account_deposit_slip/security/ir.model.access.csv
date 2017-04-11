@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_deposit_slip_account_deposit_slip,account_deposit_slip,model_account_deposit_slip,account.group_account_user,1,1,1,0
