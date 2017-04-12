@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <!-- INGRESOS BRUTOS A PAGAR -->
+
+         <record id="l10n_ar_chart_of_account.ingresos_brutos_a_pagar" model="account.tax.code">
+            <field name="name">Ingresos Brutos a pagar</field>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA</field>
+            <field name="code">401</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_a_pagar"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba_ventas" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA (Débitos)</field>
+            <field name="code">4011</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_pba_compras" model="account.tax.code">
+            <field name="name">Ingresos Brutos PBA (Créditos)</field>
+            <field name="code">4012</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA</field>
+            <field name="code">402</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_a_pagar"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba_ventas" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA (Débitos)</field>
+            <field name="code">4021</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ingresos_brutos_caba_compras" model="account.tax.code">
+            <field name="name">Ingresos Brutos CABA (Créditos)</field>
+            <field name="code">4022</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_ingresos_brutos_pba_realizadas" model="account.tax.code">
+            <field name="name">Percepciones Ingresos Brutos PBA realizadas</field>
+            <field name="code">40111</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba_ventas"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_ingresos_brutos_pba_sufridas" model="account.tax.code">
+            <field name="name">Percepciones Ingresos Brutos PBA sufridas</field>
+            <field name="code">40121</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_pba_compras"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_ingresos_brutos_caba_realizadas" model="account.tax.code">
+            <field name="name">Percepciones Ingresos Brutos CABA realizadas</field>
+            <field name="code">40211</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba_ventas"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_ingresos_brutos_caba_sufridas" model="account.tax.code">
+            <field name="name">Percepciones Ingresos Brutos CABA sufridas</field>
+            <field name="code">40221</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba_compras"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <!-- GANANCIAS A PAGAR -->
+        <record id="l10n_ar_chart_of_account.ganancias_a_pagar" model="account.tax.code">
+            <field name="name">Ganancias a pagar</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ingresos_brutos_caba"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ganancias_debitos" model="account.tax.code">
+            <field name="name">Ganancias (Débitos)</field>
+            <field name="code">501</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.ganancias_creditos" model="account.tax.code">
+            <field name="name">Ganancias (Créditos)</field>
+            <field name="code">502</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_a_pagar"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_ganancias_sufridas" model="account.tax.code">
+            <field name="name">Percepciones Ganancias sufridas</field>
+            <field name="code">5021</field>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.ganancias_creditos"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <!-- PERCEPCIONES DE IVA -->
+
+        <record id="percepciones_iva_efectuadas" model="account.tax.code">
+            <field name="name">Percepciones IVA efectuadas</field>
+            <field name="code">0191</field>
+            <field name="parent_id" search="[('name', '=', 'IVA Ventas')]"/>
+            <field name="sign">1.0</field>
+        </record>
+
+        <record id="percepciones_iva_sufridas" model="account.tax.code">
+            <field name="name">Percepciones IVA sufridas</field>
+            <field name="code">0291</field>
+            <field name="parent_id" search="[('name', '=', 'IVA Compras')]"/>
+            <field name="sign">1.0</field>
+        </record>
+
+
+        <!-- CUENTAS DE PRECEPCIONES ACTIVO -->
+        <record model="account.account" id="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp">
+            <field name="type">view</field>
+            <field name="code">1140*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">CRÉDITOS POR IIGG Y GMP</field>
+            <field name="parent_id" search="[('code', '=', '113*')]"/>
+        </record>
+
+        <record id="l10n_ar_chart_of_account.anticipo_iigg_y_gmp" model="account.account">
+            <field name="code">1140.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp"/>
+            <field name="type">other</field>
+            <field name="name">Anticipo IIGG y GMP</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="percepcion_sufridas_iigg" model="account.account">
+            <field name="code">1140.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iigg_y_gmp"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones Sufridas IIGG</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record model="account.account" id="l10n_ar_chart_of_account.creditos_por_iibb">
+            <field name="type">view</field>
+            <field name="code">1142*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">CRÉDITOS POR IIBB</field>
+            <field name="parent_id" search="[('code', '=', '113*')]"/>
+        </record>
+
+        <record id="percepcion_iibb_pba_sufrida" model="account.account">
+            <field name="code">1142.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iibb"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IIBB PBA sufrida</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="percepcion_iibb_caba_sufrida" model="account.account">
+            <field name="code">1142.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.creditos_por_iibb"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IIBB CABA sufrida</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="percepcion_iva_sufrida" model="account.account">
+            <field name="code">1141.10</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" search="[('code', '=', '1141*')]"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IVA sufrida</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <!-- CUENTAS DE PRECEPCIONES PASIVO -->
+
+        <record model="account.account" id="l10n_ar_chart_of_account.iibb_a_pagar">
+            <field name="type">view</field>
+            <field name="code">2153*</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_view"/>
+            <field name="name">IIBB A PAGAR</field>
+            <field name="parent_id" search="[('code', '=', '215*')]"/>
+        </record>
+
+        <record id="percepcion_iibb_pba_efectuada" model="account.account">
+            <field name="code">2153.01</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.iibb_a_pagar"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IIBB PBA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="percepcion_iibb_caba_efectuada" model="account.account">
+            <field name="code">2153.02</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" ref="l10n_ar_chart_of_account.iibb_a_pagar"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IIBB CABA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <record id="percepcion_iva_efectuada" model="account.account">
+            <field name="code">2151.10</field>
+            <field name="reconcile" eval="True"/>
+            <field name="parent_id" search="[('code', '=', '2151*')]"/>
+            <field name="type">other</field>
+            <field name="name">Percepciones IVA efectuada</field>
+            <field name="user_type" ref="l10n_ar_chart_of_account.account_type_tax"/>
+        </record>
+
+        <!-- *** IMPUESTOS *** -->
+
+        <record id="tax_percepcion_ganancia_sufrida" model="account.tax">
+            <field name="name">Percepciones Ganancias Sufrida</field>
+            <field name="description">Percepciones Ganancias Sufrida</field>
+            <field name="sequence">29</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_sufridas_iigg"/>
+            <field name="account_paid_id" ref="percepcion_sufridas_iigg"/>
+            <field name="tax_code_id" ref="percepciones_ganancias_sufridas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_ganancias_sufridas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="tax_percepcion_iva_sufrida" model="account.tax">
+            <field name="name">Percepciones IVA Sufrida</field>
+            <field name="description">Percepciones IVA Sufrida</field>
+            <field name="sequence">30</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iva_sufrida"/>
+            <field name="account_paid_id" ref="percepcion_iva_sufrida"/>
+            <field name="tax_code_id" ref="percepciones_iva_sufridas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_iva_sufridas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="tax_percepcion_iva_efectuada" model="account.tax">
+            <field name="name">Percepciones IVA Efectuada</field>
+            <field name="description">Percepciones IVA Efectuada</field>
+            <field name="sequence">31</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iva_efectuada"/>
+            <field name="account_paid_id" ref="percepcion_iva_efectuada"/>
+            <field name="tax_code_id" ref="percepciones_iva_efectuadas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_iva_efectuadas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="tax_percepcion_iibb_caba_sufrida" model="account.tax">
+            <field name="name">Percepciones IIBB CABA Sufrida</field>
+            <field name="description">Percepiones IIBB CABA Sufrida</field>
+            <field name="sequence">32</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iibb_caba_sufrida"/>
+            <field name="account_paid_id" ref="percepcion_iibb_caba_sufrida"/>
+            <field name="tax_code_id" ref="percepciones_ingresos_brutos_caba_sufridas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_ingresos_brutos_caba_sufridas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="tax_percepcion_iibb_caba_efectuada" model="account.tax">
+            <field name="name">Percepciones IIBB CABA Efectuada</field>
+            <field name="description">Percepciones IIBB CABA Efectuada</field>
+            <field name="sequence">33</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iibb_caba_efectuada"/>
+            <field name="account_paid_id" ref="percepcion_iibb_caba_efectuada"/>
+            <field name="tax_code_id" ref="percepciones_ingresos_brutos_caba_realizadas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_ingresos_brutos_caba_realizadas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="tax_percepcion_iibb_pba_sufrida" model="account.tax">
+            <field name="name">Percepciones IIBB PBA Sufrida</field>
+            <field name="description">Percepciones IIBB PBA Sufrida</field>
+            <field name="sequence">34</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iibb_pba_sufrida"/>
+            <field name="account_paid_id" ref="percepcion_iibb_pba_sufrida"/>
+            <field name="tax_code_id" ref="percepciones_ingresos_brutos_pba_sufridas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_ingresos_brutos_pba_sufridas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="tax_percepcion_iibb_pba_efectuada" model="account.tax">
+            <field name="name">Percepciones IIBB PBA Efectuada</field>
+            <field name="description">Percepciones IIBB PBA Efectuada</field>
+            <field name="sequence">35</field>
+            <field name="type">none</field>
+            <field name="tax_group">perception</field>
+            <field name="account_collected_id" ref="percepcion_iibb_pba_efectuada"/>
+            <field name="account_paid_id" ref="percepcion_iibb_pba_efectuada"/>
+            <field name="tax_code_id" ref="percepciones_ingresos_brutos_pba_realizadas"/>
+            <field eval="1.0" name="tax_sign"/>
+            <field eval="1.0" name="base_sign"/>
+            <field name="ref_tax_code_id" ref="percepciones_ingresos_brutos_pba_realizadas"/>
+            <field eval="-1.0" name="ref_tax_sign"/>
+            <field eval="-1.0" name="ref_base_sign"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+
+        <!-- Configuracion de Percepciones (perception.perception) -->
+
+        <record id="perception_perception_iva_efectuada" model="perception.perception">
+            <field name="name">Percepcion IVA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">vat</field>
+            <field name="jurisdiccion">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_iva_efectuada" />
+        </record>
+
+        <record id="perception_perception_iva_sufrida" model="perception.perception">
+            <field name="name">Percepcion IVA Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">vat</field>
+            <field name="jurisdiccion">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_iva_sufrida"/>
+        </record>
+
+        <record id="perception_perception_iibb_caba_efectuada" model="perception.perception">
+            <field name="name">Percepcion IIBB CABA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiccion">provincial</field>
+            <field name="state_id" ref="l10n_ar_states.CABA"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_caba_efectuada"/>
+        </record>
+
+        <record id="perception_perception_iibb_caba_sufrida" model="perception.perception">
+            <field name="name">Percepcion IIBB CABA Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiccion">provincial</field>
+            <field name="state_id" ref="l10n_ar_states.CABA"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
+        </record>
+
+        <record id="perception_perception_iibb_pba_efectuada" model="perception.perception">
+            <field name="name">Percepcion IIBB PBA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiccion">provincial</field>
+            <field name="state_id" ref="l10n_ar_states.B"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_pba_efectuada"/>
+        </record>
+
+        <record id="perception_perception_ganancias_sufrida" model="perception.perception">
+            <field name="name">Percepcion Ganancias Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">profit</field>
+            <field name="jurisdiccion">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_ganancia_sufrida"/>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

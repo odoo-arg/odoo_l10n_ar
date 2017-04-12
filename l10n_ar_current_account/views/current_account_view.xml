@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!-- VIEW DEFINITION OF CURRENT ACCOUNT -->
+        <record model="ir.ui.view" id="current_account_tree_view">
+            <field name="name">current.account.tree.view</field>
+            <field name="model">current.account</field>
+            <field name="arch" type="xml">
+                <tree edit="false" create="false" delete="false">
+                    <field name="partner_id"/>
+                    <field name="doc_type"/>
+                    <field name="denomination"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="due_date"/>
+                    <field name="residual" sum="Total"/>
+                    <field name="subtotal" sum="Total"/>
+                    <field name="total" sum="Total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- SEARCH DEFINITION OF CURRENT ACCOUNT -->
+        <record model="ir.ui.view" id="current_account_search_view">
+            <field name="name">current.account.search.view</field>
+            <field name="model">current.account</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="partner_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Agrupar">
+                        <filter name="group_by_partner_id" string="Partner" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_type" string="Tipo" context="{'group_by':'doc_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ACTION TO RAISE WIZARD -->
+        <record id="action_current_account_conciliate" model="ir.actions.server">
+            <field name="name">Conciliate</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="l10n_ar_current_account.model_current_account"/>
+            <field name="code">
+                if obj.raise_imputation_wizard():
+                    action = {
+                        "type": "ir.actions.act_window",
+                        "res_model": 'current.account.imputation.wizard',
+                        "view_mode": "form",
+                        "target": "new",
+                        "res_id": obj.wizard_id,
+                    }
+            </field>
+        </record>
+
+        <record model="ir.values" id="ir_current_account_conciliate">
+            <field name="name">ir.current.account.conciliate</field>
+            <field name="action_id" ref="action_current_account_conciliate"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_current_account_conciliate'))"/>
+            <field name="key">action</field>
+            <field name="model_id" ref="l10n_ar_current_account.model_current_account"/>
+            <field name="model">current.account</field>
+            <field name="key2">client_action_multi</field>
+        </record>
+   
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

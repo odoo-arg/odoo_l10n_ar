@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record id="view_pos_fiscal_position_form" model="ir.ui.view">
+            <field name="name">account.fiscal.position.form.inherit</field>
+            <field name="model">account.fiscal.position</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_account_position_form"/>
+            <field name="arch" type="xml">
+                <separator string="Taxes Mapping" position="before">
+                    <group string="Denominations">
+                        <field name="denomination_id" string="Invoice Denomination"/>
+                        <field name="denom_supplier_id" string="Supplier Denomination"/>
+                    </group>
+                </separator>
+                <field name="name" position="after">
+                    <field name="afip_code"/>
+                    <field name="has_country_cuit"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_pos_fiscal_position_tree" model="ir.ui.view">
+            <field name="name">account.fiscal.position.tree.inherit</field>
+            <field name="model">account.fiscal.position</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="account.view_account_position_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="afip_code"/>
+                    <field name="denomination_id" string="Invoice Denomination"/>
+                    <field name="denom_supplier_id" string="Supplier Denomination"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

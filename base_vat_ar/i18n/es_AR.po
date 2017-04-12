@@ -1,0 +1,91 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* base_vat_ar
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-98bd673\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-31 17:18+0000\n"
+"PO-Revision-Date: 2015-03-31 17:18+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: base_vat_ar
+#: view:res.partner:base_vat_ar.view_partner_document_type_form
+msgid "Document Number"
+msgstr "Numero Documento"
+
+#. module: base_vat_ar
+#: field:res.document.type,afip_code:0
+msgid "Afip code"
+msgstr "Código AFIP"
+
+#. module: base_vat_ar
+#: field:res.document.type,company_id:0
+msgid "Company"
+msgstr "Empresa"
+
+#. module: base_vat_ar
+#: field:res.document.type,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: base_vat_ar
+#: field:res.document.type,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: base_vat_ar
+#: model:ir.actions.act_window,name:base_vat_ar.action_res_document_type
+#: model:ir.model,name:base_vat_ar.model_res_document_type
+#: view:res.document.type:base_vat_ar.view_res_document_type_form
+#: view:res.document.type:base_vat_ar.view_res_document_type_tree
+#: field:res.document.type,name:0
+#: field:res.partner,document_type_id:0
+msgid "Document type"
+msgstr "Tipo de documento"
+
+#. module: base_vat_ar
+#: model:ir.ui.menu,name:base_vat_ar.menu_document_type
+msgid "Document types"
+msgstr "Tipos de documento"
+
+#. module: base_vat_ar
+#: field:res.document.type,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: base_vat_ar
+#: field:res.document.type,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultima actualización por"
+
+#. module: base_vat_ar
+#: field:res.document.type,write_date:0
+msgid "Last Updated on"
+msgstr "Ultima actualizacion en"
+
+#. module: base_vat_ar
+#: code:addons/base_vat_ar/partner.py:128
+#: constraint:res.partner:0
+#, python-format
+msgid "That Vat already exist for other partner."
+msgstr "El vat ya existe para otro partner."
+
+#. module: base_vat_ar
+#: code:addons/base_vat_ar/partner.py:127
+#: constraint:res.partner:0
+#, python-format
+msgid "The Vat does not seems to be correct."
+msgstr "El documento no parece ser correcto."
+
+#. module: base_vat_ar
+#: field:res.document.type,verification_required:0
+msgid "Verification required"
+msgstr "Requiere verificación"
+

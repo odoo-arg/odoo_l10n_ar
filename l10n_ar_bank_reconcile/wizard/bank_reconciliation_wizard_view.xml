@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+
+    <data>
+
+        <record id="wizard_bank_statement_form" model="ir.ui.view">
+            <field name="name">bank.reconciliation.wizard.form</field>
+            <field name="model">bank.reconciliation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Select Period" version="7.0">
+                    <group>
+                        <field name="period_id"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="create_conciliation" string="Create conciliation" icon="gtk-ok"/>
+                        or
+                        <button type="special" special="cancel" string="cancel" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!-- WIZARD TO IMPUTE -->
+        <record model="ir.ui.view" id="current_account_imputation_wizard_form_view">
+            <field name="name">current.account.imputation.wizard.form.view</field>
+            <field name="model">current.account.imputation.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group String="Documentos a imputar">
+                        <field name="credit_residual"/>
+                    </group>
+                    <group>
+                        <field name="imputation_credit_lines" nolabel="1">
+                            <tree editable="bottom" create="false">
+                                <field name="document"/>
+                                <field name="document_number"/>
+                                <field name="amount_total"/>
+                                <field name="residual"/>
+                                <field name="amount_to_concile"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <group String="Documentos a ser imputados">
+                        <field name="debit_residual"/>
+                    </group>
+                    <group>
+                        <field name="imputation_debit_lines" nolabel="1">
+                            <tree editable="bottom" create="false">
+                                <field name="document"/>
+                                <field name="document_number"/>
+                                <field name="amount_total"/>
+                                <field name="residual"/>
+                                <field name="amount_to_concile"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <footer>
+                        <button string="Reoncile" name="concile_documents" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

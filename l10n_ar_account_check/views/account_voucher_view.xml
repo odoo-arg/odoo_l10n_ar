@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!-- Payment -->
+        <record id="view_voucher_check_form" model="ir.ui.view">
+            <field name="name">account.voucher.check.form.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="l10n_ar_account_payment.view_vendor_l10n_ar_payment_form"/>
+            <field name="arch" type="xml">
+                <page string="Payment Information" position="after">
+                    <page string="Checks">
+                        <field name="third_check_receipt_ids" invisible="1" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                        <field name="issued_check_ids" string="Issued Checks" nolabel="1" colspan="4">
+                            <tree string="Issued Checks">
+                                <field name="number"/>
+                                <field name="type"/>
+                                <field name="issue_date"/>
+                                <field name="payment_date"/>
+                                <field name="bank_id"/>
+                                <field name="amount" sum="Total Amount" />
+                            </tree>
+                            <form string="Issued Checks">
+                                <group>
+                                    <group>
+                                        <field name="number" attrs="{'readonly': [('issued','=',True)]}"/>
+                                        <field name="type" attrs="{'readonly': [('issued','=',True)]}"/>
+                                        <field name="amount" attrs="{'readonly': [('issued','=',True)]}"/>
+                                        <field name="bank_id" attrs="{'readonly': [('issued','=',True)]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="issue_date" attrs="{'readonly': [('issued','=',True)]}"/>
+                                        <field name="payment_date" attrs="{'invisible': [('type', '=', 'common')]}"/>
+                                        <field name="account_bank_id" domain="[('bank', '=', bank_id)]" required="1" attrs="{'readonly': [('issued','=',True)]}"/>
+                                        <field name="clearing"/>
+                                        <field name="signatory"/>
+                                        <field name="origin"/>
+                                    </group>
+                                </group>
+                                <field name="issued" invisible="1"/>
+                                <field name="receiving_partner_id" invisible="1"/>
+                            </form>
+                        </field>
+                        <label for="third_check_ids"/>
+                        <field name="third_check_ids" string="Third Checks" nolabel="1" colspan="4" domain="[('state', '=', 'wallet'), ('not_to_order', '=', False)]" attrs="{'readonly': [('state', '=', 'posted')]}">
+                            <tree string="Third Checks">
+                                <field name="number"/>
+                                <field name="source_partner_id"/>
+                                <field name="issue_date"/>
+                                <field name="payment_date"/>
+                                <field name="bank_id"/>
+                                <field name="origin"/>
+                                <field name="amount" sum="Total"/>
+                                <field name="state" invisible="1"/>
+                            </tree>
+                         </field>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <!-- Receipt -->
+        <record id="view_vendor_receipt_check_form" model="ir.ui.view">
+            <field name="name">account.voucher.form.receipt.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="l10n_ar_account_payment.view_vendor_l10n_ar_receipt_form"/>
+            <field name="arch" type="xml">
+                <page string="Payment Information" position="after">
+                    <page string="Checks">
+                        <!-- Fields to use on the on_changes -->
+                        <field name="issued_check_ids" invisible="1"/>
+                        <field name="third_check_ids" invisible="1"/>
+                        <field name="checks_quantity" invisible="1"/>
+                        <field name="third_check_receipt_ids" string="Third Checks" nolabel="1" attrs="{'readonly': [('state','!=','draft')]}" context="{'checks_quantity': checks_quantity}" colspan="4">
+                            <tree string="Third Checks" colors="red: close_to_due == True">
+                                <field name="close_to_due" invisible="1"/>
+                                <field name="internal_number"/>
+                                <field name="number"/>
+                                <field name="receipt_date"/>
+                                <field name="issue_date"/>
+                                <field name="payment_date"/>
+                                <field name="bank_id"/>
+                                <field name="type"/>
+                                <field name="amount" sum="Total"/>
+                                <field name="state"/>
+                            </tree>
+                            <form string="Third Checks">
+                                <group>
+                                    <group>
+                                        <field name="source_partner_id" invisible="1"/>
+                                        <field name="state" invisible="1" readonly="False"/>
+                                        <field name="number"/>
+                                        <field name="type"/>
+                                        <field name="amount"/>
+                                        <field name="bank_id"/>
+                                        <field name="internal_number"/>
+                                    </group>
+                                    <group>
+                                        <field name="receipt_date"/>
+                                        <field name="issue_date"/>
+                                        <field name="payment_date" attrs="{'invisible': [('type', '=', 'common')],
+                                                                           'required': [('type','=','postdated')]}"/>
+                                        <field name="clearing"/>
+                                        <field name="signatory"/>
+                                        <field name="signatory_vat"/>
+                                        <field name="not_to_order"/>                                        
+                                    </group>
+                                    <group string="Fotos del cheque">
+                                        <field name="image" widget="image"/>
+                                        <field name="image_dorso" widget="image"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                   </page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

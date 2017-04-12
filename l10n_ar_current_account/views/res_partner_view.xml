@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+
+        <!-- BUTTONS TO THE CURRENT ACCOUNT, ONE FOR CUSTOMERS AND ONE FOR SUPPLIERS -->
+        <record model="ir.ui.view" id="current_account_partner_form_view">
+            <field name="name">current.account.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button class="oe_inline oe_stat_button"
+                            icon="fa-cc"
+                            type="object"
+                            name="get_customer_current_account"
+                            attrs="{'invisible':[('customer','=', False )]}">
+                            <div><strong><field name="credit" string="Customer" widget="monetary" 
+                            attrs="{'invisible':[('customer','=', False )]}"/></strong><br/>Cliente</div>
+                    </button>
+                </xpath>
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button class="oe_inline oe_stat_button"
+                            icon="fa-cc"
+                            type="object"
+                            name="get_supplier_current_account"
+                            attrs="{'invisible':[('supplier','=', False )]}">
+                            <div><strong><field name="debit" string="Supplier" widget="monetary"
+                             attrs="{'invisible':[('supplier','=', False )]}"/></strong><br/>Proveedor</div>
+                    </button>
+                </xpath>
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button class="oe_inline oe_stat_button"
+                            icon="fa-check"
+                            type="object"
+                            attrs="{'invisible': [('supplier', '=', False), ('customer', '=', False)]}"
+                            name="get_partner_imputation_documents">
+                            <field String="Imputaciones" name="count_imputations" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- REPLACING OLD CREDIT AND DEBIT FIELDS TO SHOW ON THE NEW BUTTONS -->
+        <record model="ir.ui.view" id="credit_and_debit_current_account_form_view">
+            <field name="name">credit.and.debit.current.account.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="credit" position="replace"/>
+                <field name="debit" position="replace"/>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

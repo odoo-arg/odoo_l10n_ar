@@ -1,0 +1,291 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* l10n_ar_current_account
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20150519\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-10 16:46+0000\n"
+"PO-Revision-Date: 2015-09-10 16:46+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard.credit.line,amount_to_concile:0
+#: field:current.account.imputation.wizard.debit.line,amount_to_concile:0
+msgid "Importe a imputar"
+msgstr "Importe a imputar"
+
+#. module: l10n_ar_current_account
+#: view:current.account.imputation.wizard:l10n_ar_current_account.current_account_imputation_wizard_form_view
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,state:0
+msgid "Conciled"
+msgstr "Conciliado"
+
+#. module: l10n_ar_current_account
+#: model:ir.actions.server,name:l10n_ar_current_account.action_current_account_conciliate
+msgid "Conciliate"
+msgstr "Conciliar"
+
+#. module: l10n_ar_current_account
+#: field:current.account,create_uid:0
+#: field:current.account.imputation.wizard,create_uid:0
+#: field:current.account.imputation.wizard.credit.line,create_uid:0
+#: field:current.account.imputation.wizard.debit.line,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ar_current_account
+#: field:current.account,create_date:0
+#: field:current.account.imputation.wizard,create_date:0
+#: field:current.account.imputation.wizard.credit.line,create_date:0
+#: field:current.account.imputation.wizard.debit.line,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/res_partner.py:141
+#: code:addons/l10n_ar_current_account/res_partner.py:261
+#, python-format
+msgid "Current Account"
+msgstr "Cuenta Corriente"
+
+#. module: l10n_ar_current_account
+#: view:res.partner:l10n_ar_current_account.current_account_partner_form_view
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: l10n_ar_current_account
+#: field:current.account,date:0
+msgid "Date"
+msgstr "Fecha"
+
+#. module: l10n_ar_current_account
+#: field:current.account,denomination:0
+msgid "Denomination"
+msgstr "Denominacion"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard.credit.line,document:0
+#: field:current.account.imputation.wizard.debit.line,document:0
+msgid "Document"
+msgstr "Documento"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/current_account.py:73
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "FCC"
+msgstr "FCC"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "FCP"
+msgstr "FCP"
+
+#. module: l10n_ar_current_account
+#: field:current.account,id:0
+#: field:current.account.imputation.wizard,id:0
+#: field:current.account.imputation.wizard.credit.line,id:0
+#: field:current.account.imputation.wizard.debit.line,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard,imputation_credit_lines:0
+msgid "Imputation credit lines"
+msgstr "Lineas de imputacion de creditos"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard,imputation_debit_lines:0
+msgid "Imputation debit lines"
+msgstr "Lineas de imputacion de debitos"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard.credit.line,imputation_id:0
+#: field:current.account.imputation.wizard.debit.line,imputation_id:0
+msgid "Imputation id"
+msgstr "Imputation id"
+
+#. module: l10n_ar_current_account
+#: field:current.account,invoice_id:0
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: l10n_ar_current_account
+#: field:current.account,write_uid:0
+#: field:current.account.imputation.wizard,write_uid:0
+#: field:current.account.imputation.wizard.credit.line,write_uid:0
+#: field:current.account.imputation.wizard.debit.line,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultima actualizacion por"
+
+#. module: l10n_ar_current_account
+#: field:current.account,write_date:0
+#: field:current.account.imputation.wizard,write_date:0
+#: field:current.account.imputation.wizard.credit.line,write_date:0
+#: field:current.account.imputation.wizard.debit.line,write_date:0
+msgid "Last Updated on"
+msgstr "Ultima actualizacion en"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "NCC"
+msgstr "NCC"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "NCP"
+msgstr "NCP"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "NDC"
+msgstr "NDC"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "NDP"
+msgstr "NDP"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:109
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:157
+#, python-format
+msgid "Negative amounts are not allowed"
+msgstr "No se permiten importes negativos"
+
+#. module: l10n_ar_current_account
+#: field:current.account,name:0
+#: field:current.account.imputation.wizard.credit.line,document_number:0
+#: field:current.account.imputation.wizard.debit.line,document_number:0
+msgid "Number"
+msgstr "Numero"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "OP"
+msgstr "OP"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/current_account.py:73
+#, python-format
+msgid "One of the documents is already conciled, please unconcile first!"
+msgstr "Uno de los documentos ya esta imputado, por favor, desimputar primero!"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,state:0
+msgid "Open"
+msgstr "Abierto"
+
+#. module: l10n_ar_current_account
+#: field:current.account,partner_id:0
+#: model:ir.model,name:l10n_ar_current_account.model_res_partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: l10n_ar_current_account
+#: selection:current.account,doc_type:0
+msgid "REC"
+msgstr "REC"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard,debit_residual:0
+msgid "Remaining to concile"
+msgstr "Restante a imputar"
+
+#. module: l10n_ar_current_account
+#: view:current.account.imputation.wizard:l10n_ar_current_account.current_account_imputation_wizard_form_view
+msgid "Reoncile"
+msgstr "Conciliar"
+
+#. module: l10n_ar_current_account
+#: field:current.account,residual:0
+#: field:current.account.imputation.wizard.credit.line,residual:0
+#: field:current.account.imputation.wizard.debit.line,residual:0
+msgid "Residual"
+msgstr "Restante"
+
+#. module: l10n_ar_current_account
+#: field:current.account,state:0
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_ar_current_account
+#: field:current.account,subtotal:0
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#. module: l10n_ar_current_account
+#: view:res.partner:l10n_ar_current_account.current_account_partner_form_view
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: l10n_ar_current_account
+#: field:current.account,total:0
+#: field:current.account.imputation.wizard.credit.line,amount_total:0
+#: field:current.account.imputation.wizard.debit.line,amount_total:0
+msgid "Total"
+msgstr "Total"
+
+#. module: l10n_ar_current_account
+#: field:current.account.imputation.wizard,credit_residual:0
+msgid "Total to concile"
+msgstr "Total a imputar"
+
+#. module: l10n_ar_current_account
+#: field:current.account,doc_type:0
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:100
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:109
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:119
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:148
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:157
+#, python-format
+msgid "User Error!"
+msgstr "Error de usuario!"
+
+#. module: l10n_ar_current_account
+#: field:current.account,voucher_id:0
+msgid "Voucher"
+msgstr "Recibo"
+
+#. module: l10n_ar_current_account
+#: field:current.account,wizard_id:0
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:100
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:148
+#, python-format
+msgid "You are trying to concile more than the residual of the document"
+msgstr "Esta intentando imputar mas que lo restante del documento"
+
+#. module: l10n_ar_current_account
+#: code:addons/l10n_ar_current_account/wizard/current_account_imputation_wizard.py:119
+#, python-format
+msgid "You dont have that amount to concile"
+msgstr "No hay esa cantidad para imputar"
+
+#. module: l10n_ar_current_account
+#: view:current.account.imputation.wizard:l10n_ar_current_account.current_account_imputation_wizard_form_view
+msgid "or"
+msgstr "o"

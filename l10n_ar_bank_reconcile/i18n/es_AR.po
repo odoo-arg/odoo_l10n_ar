@@ -1,0 +1,207 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* l10n_ar_bank_reconcile
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20150519\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-13 15:46+0000\n"
+"PO-Revision-Date: 2015-08-13 15:46+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconciliation_wizard.py:94
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconsilation_wizard.py:86
+#, python-format
+msgid "A period higher or equal than the one selected already exists for a concilation"
+msgstr "Ya existe un periodo mayor o igual que el seleccionado para conciliar!"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,account_id:0
+#: field:bank.reconciliation.wizard,bank_reconcile_id:0
+msgid "Account"
+msgstr "Cuenta"
+
+#. module: l10n_ar_bank_reconcile
+#: view:account.bank.reconcile:l10n_ar_bank_reconcile.bank_reconcile_form_view
+msgid "Bank information"
+msgstr "Informacion bancaria"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile.line,bank_reconcile_id:0
+#: model:ir.actions.act_window,name:l10n_ar_bank_reconcile.action_bank_reconcile
+msgid "Bank reconcile"
+msgstr "Conciliacion bancaria"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.move.line,bank_reconcile_line_id:0
+msgid "Bank reconcile line"
+msgstr "Linea de conciliacion bancaria"
+
+#. module: l10n_ar_bank_reconcile
+#: model:ir.ui.menu,name:l10n_ar_bank_reconcile.menu_bank_reconcile
+msgid "Bank reconciles"
+msgstr "Conciliaciones bancarias"
+
+#. module: l10n_ar_bank_reconcile
+#: model:ir.actions.act_window,name:l10n_ar_bank_reconcile.create_bank_reconciliation_wizard
+msgid "Bank reconciliation"
+msgstr "Conciliación bancaria"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/account_bank_reconcile.py:45
+#, python-format
+msgid "Bank statement to reconcile"
+msgstr "Movimientos bancarios a conciliar"
+
+#. module: l10n_ar_bank_reconcile
+#: view:account.bank.reconcile:l10n_ar_bank_reconcile.bank_reconcile_form_view
+#: field:account.bank.reconcile,bank_reconcile_line_ids:0
+msgid "Conciliations"
+msgstr "Conciliaciones"
+
+#. module: l10n_ar_bank_reconcile
+#: view:bank.reconciliation.wizard:l10n_ar_bank_reconcile.wizard_bank_statement_form
+msgid "Create conciliation"
+msgstr "Crear conciliacion"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,create_uid:0
+#: field:account.bank.reconcile.line,create_uid:0
+#: field:bank.reconciliation.wizard,create_uid:0
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,create_date:0
+#: field:account.bank.reconcile.line,create_date:0
+#: field:bank.reconciliation.wizard,create_date:0
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile.line,current_balance:0
+msgid "Current Balance"
+msgstr "Balance actual"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/account_bank_reconcile.py:57
+#: code:addons/l10n_ar_bank_reconcile/account_bank_reconcile_line.py:43
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconciliation_wizard.py:52
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconciliation_wizard.py:94
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconsilation_wizard.py:86
+#, python-format
+msgid "Error!"
+msgstr "Error!"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,id:0
+#: field:account.bank.reconcile.line,id:0
+#: field:bank.reconciliation.wizard,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.move.line,is_reconciled:0
+msgid "Is reconciled"
+msgstr "Esta conciliado"
+
+#. module: l10n_ar_bank_reconcile
+#: model:ir.model,name:l10n_ar_bank_reconcile.model_account_move_line
+msgid "Journal Items"
+msgstr "Apuntes contables"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile.line,last_balance:0
+msgid "Last Balance"
+msgstr "Ultimo balance"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,write_uid:0
+#: field:account.bank.reconcile.line,write_uid:0
+#: field:bank.reconciliation.wizard,write_uid:0
+msgid "Last Updated by"
+msgstr "Ultima actualizacion por"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,write_date:0
+#: field:account.bank.reconcile.line,write_date:0
+#: field:bank.reconciliation.wizard,write_date:0
+msgid "Last Updated on"
+msgstr "Ultima actualizacion en"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile.line,move_line_ids:0
+msgid "Move lines"
+msgstr "Asientos contables"
+
+#. module: l10n_ar_bank_reconcile
+#: view:account.bank.reconcile.line:l10n_ar_bank_reconcile.bank_reconcile_line_form_view
+msgid "Movements"
+msgstr "Movimientos"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile,unreconciled_count:0
+msgid "Unreconciled elements"
+msgstr "Elementos sin conciliar"
+
+#. module: l10n_ar_bank_reconcile
+#: view:account.bank.reconcile:l10n_ar_bank_reconcile.bank_reconcile_form_view
+msgid "Not conciled"
+msgstr "No conciliado"
+
+#. module: l10n_ar_bank_reconcile
+#: field:account.bank.reconcile.line,period_id:0
+#: field:bank.reconciliation.wizard,period_id:0
+msgid "Period"
+msgstr "Periodo"
+
+#. module: l10n_ar_bank_reconcile
+#: view:bank.reconciliation.wizard:l10n_ar_bank_reconcile.wizard_bank_statement_form
+msgid "Select Period"
+msgstr "Seleccionar periodo"
+
+#. module: l10n_ar_bank_reconcile
+#: sql_constraint:account.bank.reconcile:0
+msgid "You are already using that account for a conciliation!"
+msgstr "Ya se esta utilizando esta cuenta para una conciliacion!"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/wizard/bank_reconciliation_wizard.py:52
+#, python-format
+msgid "You cant create a concilation for more than one account"
+msgstr "No se puede crear una conciliacion para mas que una cuenta"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/account_bank_reconcile_line.py:43
+#, python-format
+msgid "You cant delete a period that is not the higher!"
+msgstr "No se puede borrar un periodo el cual no es el mayor!"
+
+#. module: l10n_ar_bank_reconcile
+#: code:addons/l10n_ar_bank_reconcile/account_bank_reconcile.py:57
+#, python-format
+msgid "You cant delete an account that already has conciliations, please delete the conciliations first"
+msgstr "No se puede borrar una cuenta que ya tiene conciliaciones, por favor, borrar las conciliaciones primero"
+
+#. module: l10n_ar_bank_reconcile
+#: view:bank.reconciliation.wizard:l10n_ar_bank_reconcile.wizard_bank_statement_form
+msgid "cancel"
+msgstr "cancelar"
+
+#. module: l10n_ar_bank_reconcile
+#: view:bank.reconciliation.wizard:l10n_ar_bank_reconcile.wizard_bank_statement_form
+msgid "or"
+msgstr "o"
+

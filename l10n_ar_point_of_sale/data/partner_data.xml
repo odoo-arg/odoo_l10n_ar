@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <record id="denomination_A" model="invoice.denomination">
+            <field name="name">A</field>
+            <field name="desc">Denominacion A</field>
+            <field name="vat_discriminated">1</field>
+        </record>
+
+        <record id="denomination_B" model="invoice.denomination">
+            <field name="name">B</field>
+            <field name="desc">Denominacion B</field>
+        </record>
+
+        <record id="denomination_C" model="invoice.denomination">
+            <field name="name">C</field>
+            <field name="desc">Denominacion C</field>
+        </record>
+
+        <record id="denomination_E" model="invoice.denomination">
+            <field name="name">E</field>
+            <field name="desc">Denominacion E</field>
+        </record>
+
+        <record id="denomination_I" model="invoice.denomination">
+            <field name="name">I</field>
+            <field name="desc">Denominacion I</field>
+        </record>
+
+        <record id="denomination_M" model="invoice.denomination">
+            <field name="name">M</field>
+            <field name="desc">Denominacion M</field>
+        </record>
+
+        <record id="fiscal_position_ri" model="account.fiscal.position">
+            <field name="name">Responsable Inscripto</field>
+            <field name="afip_code">01</field>
+            <field name="denomination_id" ref="denomination_A"/>
+            <field name="denom_supplier_id" ref="denomination_A"/>
+        </record>
+
+        <record id="fiscal_position_rni" model="account.fiscal.position">
+            <field name="name">Responsable No Inscripto</field>
+            <field name="afip_code">02</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_nr" model="account.fiscal.position">
+            <field name="name">No Responsable</field>
+            <field name="afip_code">03</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_exempt" model="account.fiscal.position">
+            <field name="name">Exento</field>
+            <field name="afip_code">04</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_cf" model="account.fiscal.position">
+            <field name="name">Consumidor Final</field>
+            <field name="afip_code">05</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_mono" model="account.fiscal.position">
+            <field name="name">Monotributo</field>
+            <field name="afip_code">06</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_nocateg" model="account.fiscal.position">
+            <field name="name">No Categorizado</field>
+            <field name="afip_code">07</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_pe" model="account.fiscal.position">
+            <field name="name">Proveedor del Exterior</field>
+            <field name="afip_code">08</field>
+            <field name="denomination_id" ref="denomination_E"/>
+            <field name="denom_supplier_id" ref="denomination_I"/>
+            <field name="has_country_cuit">True</field>            
+        </record>
+
+        <record id="fiscal_position_ce" model="account.fiscal.position">
+            <field name="name">Cliente del Exterior</field>
+            <field name="afip_code">09</field>
+            <field name="denomination_id" ref="denomination_E"/>
+            <field name="denom_supplier_id" ref="denomination_I"/>
+            <field name="has_country_cuit">True</field>
+        </record>
+
+        <record id="fiscal_position_il" model="account.fiscal.position">
+            <field name="name">IVA Liberado</field>
+            <field name="afip_code">10</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_riap" model="account.fiscal.position">
+            <field name="name">Responsable Inscripto - Agente Percepcion</field>
+            <field name="afip_code">11</field>
+            <field name="denomination_id" ref="denomination_A"/>
+            <field name="denom_supplier_id" ref="denomination_A"/>
+        </record>
+
+        <record id="fiscal_position_contribe" model="account.fiscal.position">
+            <field name="name">Contribuyente Eventual</field>
+            <field name="afip_code">12</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_monos" model="account.fiscal.position">
+            <field name="name">Monotributista Social</field>
+            <field name="afip_code">13</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+        <record id="fiscal_position_contribes" model="account.fiscal.position">
+            <field name="name">Contribuyente Eventual Social</field>
+            <field name="afip_code">14</field>
+            <field name="denomination_id" ref="denomination_B"/>
+            <field name="denom_supplier_id" ref="denomination_C"/>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
