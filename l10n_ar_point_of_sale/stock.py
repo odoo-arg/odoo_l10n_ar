@@ -57,6 +57,10 @@ class stock_picking(osv.osv):
 
                         res_pos = pos_ar_obj.search(cr, uid,[('warehouse_id', '=', order_to_pick.warehouse_id.id), ('denomination_id', '=', denom_id.id)])
 
+                        if not res_pos:
+                            raise osv.except_osv(_('Error'),
+                                                 _('No hay punto de venta para este deposito.'))
+
                         vals = {'denomination_id' : denom_id.id , 'pos_ar_id': res_pos[0] }
 
                         inv.write(vals)
