@@ -18,36 +18,36 @@
 
 {
 
-    'name': 'l10n_ar_afip_tables',
+    'name': 'l10n_ar_point_of_sale',
 
     'version': '1.0',
 
-    'summary': 'Datas of tables of afip V.0 25082010-5',
+    'summary': 'Punto de venta para Argentina',
 
-    'description': """ Datas of tables of afip V.0 25082010-5,
-mapped with models using l10n_ar_codes application
-""",
+    'description': """
+Modulo encargado de manejar talonarios, puntos de venta y mapeo
+entre posiciones fiscales y denominaciones.
+    """,
 
     'author': 'OPENPYME S.R.L.',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'base',
+    'category': 'Accounting',
 
     'depends': [
         'l10n_ar',
-        'l10n_ar_codes',
-        'base_vat_ar'
     ],
 
     'data': [
-        'views/afip_tables_configuration.xml',
-        'data/res_country_state.xml',
-        'data/afip_voucher_type.xml',
-        'data/partner_document_type.xml',
-        'data/account_tax.xml',
-        'data/account_fiscal_position.xml',
-        'data/afip_concept.xml'
+        'views/account_denomination_view.xml',
+        'views/document_book_view.xml',
+        'views/account_fiscal_position.xml',
+        'views/pos_ar_view.xml',
+        'views/menu.xml',
+        'views/account_invoice_view.xml',
+        'data/document_book_type.xml',
+        'security/ir.model.access.csv'
     ],
 
     'active': False,
