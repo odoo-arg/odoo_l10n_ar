@@ -30,11 +30,12 @@
                                 <field name="name"/>
                                 <field name="category"/>
                                 <field name="denomination_id" />
+                                <field name="sequence"/>
                             </group>
                             <group>
                                 <field name="pos_ar_id"/>
                                 <field name="book_type_id" domain="[('category', '=', category)]"/>
-                                <field name="sequence"/>
+                                <field name="document_type_id" domain="[('document_book_type_id', '=', book_type_id)]"/>
                             </group>
                         </group>
                     </sheet>

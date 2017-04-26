@@ -38,6 +38,7 @@ class DocumentBookType(models.Model):
         'Categoria',
         required=True
     )
+    document_type_ids = fields.One2many('document.book.document.type', 'document_book_type_id', 'Tipos de documento')
 
     _sql_constraints = [(
         'unique_name_categ',

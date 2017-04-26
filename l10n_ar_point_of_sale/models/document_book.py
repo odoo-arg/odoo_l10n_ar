@@ -33,7 +33,13 @@ class DocumentBook(models.Model):
         'Categoria',
         required=True
     )
-    book_type_id = fields.Many2one('document.book.type', 'Tipo', required=True)
+    book_type_id = fields.Many2one('document.book.type', 'Tipo de talonario', required=True)
+    document_type_id = fields.Many2one(
+        'document.book.document.type',
+        'Tipo de documento',
+        help="En los casos qe se utilice el mismo punto de venta para distintos documentos\n"
+             "Por ejemplo, facturas y notas de credito/debito"
+    )
     denomination_id = fields.Many2one('account.denomination', 'Denominacion', required=True)
     sequence = fields.Integer('Secuencia', help='Por default, se eligirá el que menos secuencia tiene')
 

@@ -16,8 +16,9 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
-from openerp.exceptions import UserError
+from openerp import models, fields, api, _
+from openerp.exceptions import UserError, ValidationError
+import re
 
 
 class AccountInvoice(models.Model):
@@ -27,6 +28,32 @@ class AccountInvoice(models.Model):
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta')
     denomination_id = fields.Many2one('account.denomination', 'Denominacion')
 
+    def check_invoice_duplicity(self, additional_domains=None):
+        """
+        Valida que la factura no este duplicada. Agregamos un parametro de domains adicionales
+        para considerar el caso de notas de debito u otros domains de negocio que se puedan agregar
+        a futuro.
+        :param additional_domains: domain inicial
+        """
+
+        domain = [] if not additional_domains else additional_domains
+
+        for invoice in self:
+
+            domain.extend([
+                ('denomination_id', '=', invoice.denomination_id.id),
+                ('pos_ar_id', '=', invoice.pos_ar_id.id),
+                ('name', '=', invoice.name),
+                ('type', '=', invoice.type),
+                ('state', 'not in', ['draft', 'cancel'])
+            ])
+
+            if invoice.type in ['in_invoice', 'in_refund']:
+                domain.append(('partner_id', '=', invoice.partner_id.id))
+
+            if self.search_count(domain) > 1:
+                raise ValidationError("Ya existe un documento con ese número!")
+
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         """
@@ -35,16 +62,14 @@ class AccountInvoice(models.Model):
 
         if self.partner_id:
 
+            vals = {}
             denomination = self.get_invoice_denomination()
-            document_book = self.env['document.book'].search([
-                ('category', '=', 'invoice'),
-                ('denomination_id', '=', denomination.id)
-            ], order="sequence asc", limit=1)
+            vals['denomination_id'] = denomination.id
 
-            self.update({
-                'pos_ar_id': document_book.pos_ar_id.id,
-                'denomination_id': denomination.id
-            })
+            if self.type in ['out_invoice', 'out_refund']:
+                vals['pos_ar_id'] = self.env['pos.ar'].get_pos('invoice', denomination).id
+
+            self.update(vals)
 
         else:
             self.update({
@@ -53,9 +78,8 @@ class AccountInvoice(models.Model):
             })
 
     def get_invoice_denomination(self):
-        """
-        Busca la denominacion en base a las posiciones fiscales del partner y la empresa
-        """
+        """ Busca la denominacion en base a las posiciones fiscales del partner y la empresa """
+
         issue_fiscal_position = self.get_issue_fiscal_position()
         receipt_fiscal_position = self.get_receipt_fiscal_position()
 
@@ -92,13 +116,61 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_move_create(self):
-        res = super(AccountInvoice, self).action_move_create()
 
         for invoice in self:
-            invoice._validate_fiscal_position_and_denomination()
-            invoice.name = invoice._get_next_number()
 
-        return res
+            # Validamos posiciones fiscales y denominacion
+            invoice._validate_fiscal_position_and_denomination()
+
+            # Obtenemos el proximo numero o validamos su estructura
+            if invoice.type in ['out_invoice', 'out_refund']:
+                invoice.name = invoice._get_next_number()
+            else:
+                invoice._validate_supplier_invoice_number()
+
+            invoice.check_invoice_duplicity()
+
+        return super(AccountInvoice, self).action_move_create()
+
+    @api.multi
+    def name_get(self, types=None):
+        """ Utilizamos la idea original, pero cambiando los parametros """
+
+        types = {} if not types else types
+
+        types.update({
+            'out_invoice': 'FCC',
+            'in_invoice': 'FCP',
+            'out_refund': 'NCC',
+            'in_refund': 'NCP',
+        })
+
+        result = []
+
+        for inv in self:
+            invoice_type = types.get(self.type)
+
+            # EJ FC A 0001-00000001
+            result.append((inv.id, "%s %s %s" % (
+                invoice_type or '',
+                inv.denomination_id.name or '',
+                inv.name or inv.number or ''))
+            )
+
+        return result
+
+    @api.model
+    def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):
+        """ Override, agregamos a las notas de credito creadas originalmente el punto de venta y la denominacion """
+
+        values = super(AccountInvoice, self)._prepare_refund(invoice, date_invoice, date, description, journal_id)
+
+        values['pos_ar_id'] = invoice.pos_ar_id.id
+        values['denomination_id'] = invoice.denomination_id.id
+        values['name'] = None
+        values['origin'] = invoice.name_get()[0][1]
+
+        return values
 
     def _validate_fiscal_position_and_denomination(self):
         """
@@ -169,5 +241,32 @@ class AccountInvoice(models.Model):
                             + self.pos_ar_id.name_get()[0][1] + ' y la denominacion ' + self.denomination_id.name)
 
         return document_book.next_number()
+
+    def _validate_supplier_invoice_number(self):
+        """
+        Validamos el numero de factura
+        :raise UserError: Si no cumple con el formato xxxx-xxxxxxxx, y debe tener solo enteros
+        """
+        if not self.name:
+            raise UserError('El documento no tiene numero!')
+
+        if self.denomination_id.validate_supplier:
+            invoice_number = self.name.split('-')
+            error_msg = "Formato invalido, el documento debe tener el formato 'xxxx-xxxxxxxx' y contener solo números!"
+
+            # Nos aseguramos que contenga '-' para separar punto de venta de numero
+            if len(invoice_number) != 2:
+                raise UserError(error_msg)
+
+            # Rellenamos con 0s los valores necesarios
+            point_of_sale = invoice_number[0].zfill(4)
+            number = invoice_number[1].zfill(8)
+            invoice_number = point_of_sale+'-'+number
+
+            # Validamos el formato y se lo ponemos a la factura
+            if not re.match('^[0-9]{4}-[0-9]{8}$', invoice_number):
+                raise UserError(error_msg)
+
+            self.name = invoice_number
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -17,6 +17,8 @@
 <openerp>
     <data>
 
+        <!-- CLIENTE -->
+
         <record model="ir.ui.view" id="invoice_pos_ar_form">
             <field name="name">Invoice pos.ar form</field>
             <field name="model">account.invoice</field>
@@ -27,6 +29,53 @@
                 </field>
                 <field name="user_id" position="after">
                     <field name="denomination_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+                <field name="name" position="replace">
+                    <field name="number" readonly="1"/>
+                </field>
+                <field name="number" position="replace">
+                    <field name="name" readonly="1" class="oe_inline" attrs="{'invisible': [('state','in',('draft',))]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="invoice_pos_ar_tree">
+            <field name="name">Invoice pos.ar tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <field name="number" position="replace">
+                    <field name="name" string="Número"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- PROVEEDOR -->
+
+        <record model="ir.ui.view" id="invoice_pos_ar_supplier_form">
+            <field name="name">Invoice pos.ar supplier form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="reference" position="after">
+                    <field name="denomination_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+                <xpath expr="//notebook/page[2]/group/group/field[@name='name']" position="replace">
+                    <field name="number" invisible="1"/>
+                </xpath>
+                <field name="number" position="replace">
+                    <field name="name" class="oe_inline"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="invoice_pos_ar_supplier_tree">
+            <field name="name">Invoice pos.ar supplier tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+            <field name="arch" type="xml">
+                <field name="number" position="replace">
+                    <field name="name" string="Número"/>
                 </field>
             </field>
         </record>

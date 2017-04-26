@@ -22,6 +22,7 @@ import account_fiscal_position
 import denomination_fiscal_position
 import document_book
 import document_book_type
+import document_book_document_type
 import pos_ar
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

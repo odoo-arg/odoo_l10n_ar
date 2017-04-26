@@ -16,20 +16,16 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
 
-class AccountDenomination(models.Model):
+class DocumentBookDocumentType(models.Model):
 
-    _name = 'account.denomination'
+    _name = 'document.book.document.type'
 
-    name = fields.Char('Nombre', required=True, size=1)
-    description = fields.Char('Descripcion')
-    validate_supplier = fields.Boolean(
-        'Validar numeracion?',
-        help="Valida numeracion con el formato 'xxxx-xxxxxxxx' para los documentos de proveedores"
-    )
-
-    _sql_constraints = [('name_unique', 'unique(name)', 'El nombre debe ser unico por denominacion')]
+    name = fields.Char('Nombre', required=True)
+    type = fields.Char('Tipo', required=True)
+    document_book_type_id = fields.Many2one('document.book.type', 'Tipo de talonario')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

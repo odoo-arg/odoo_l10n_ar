@@ -32,6 +32,18 @@
             <field name='category'>voucher</field>
         </record>
 
+        <record id='document_type_invoice' model='document.book.document.type'>
+            <field name='type'>'out_invoice'</field>
+            <field name='name'>Factura</field>
+            <field name="document_book_type_id" ref="document_book_type_preprint_invoice"/>
+        </record>
+
+        <record id='document_type_refund' model='document.book.document.type'>
+            <field name='type'>'out_refund'</field>
+            <field name='name'>Nota de credito</field>
+            <field name="document_book_type_id" ref="document_book_type_preprint_invoice"/>
+        </record>
+
     </data>
 </openerp>
 

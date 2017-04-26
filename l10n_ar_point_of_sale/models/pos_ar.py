@@ -49,6 +49,24 @@ class PosAr(models.Model):
             name_get.append((name[0], name[1].zfill(4)))
         return name_get
 
+    def get_pos(self, category, denomination):
+        """
+        Busca el punto de venta con mas prioridad para esa categoria y denominacion
+        :param category: categoria (invoice, receipt, picking)
+        :param denomination: account.denomination
+        :return: Punto de venta prioritario
+        """
+        document_book = self.env['document.book'].search([
+            ('category', '=', category),
+            ('denomination_id', '=', denomination.id)
+        ], order="sequence asc", limit=1)
+
+        if not document_book:
+            raise ValidationError('No se encontro un talonario para esa denominacion y categoria\n'
+                                  'por favor, configurar uno')
+
+        return document_book.pos_ar_id
+
     _sql_constraints = [
         ('type_unique', 'unique(name)', 'Ya existe un punto de venta con ese nombre')
     ]
