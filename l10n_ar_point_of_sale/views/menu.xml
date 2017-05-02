@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <menuitem
+            id="document_books_main_menu"
+            name="Talonarios"
+            parent="account.menu_finance_configuration"
+        />
+
+        <menuitem
+            id="pos_ar_menu"
+            name="Puntos de venta"
+            action="action_pos_ar_view"
+            parent="document_books_main_menu"
+        />
+
+        <menuitem
+            id="document_book_menu"
+            name="Talonarios"
+            action="action_document_book_view"
+            parent="document_books_main_menu"
+        />
+
+        <menuitem
+            id="account_denomination_menu"
+            name="Denominaciones"
+            action="action_denomination_view"
+            parent="account.account_account_menu"
+        />
+            
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

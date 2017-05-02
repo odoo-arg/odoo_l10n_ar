@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+
+        <record id='document_book_type_preprint_invoice' model='document.book.type'>
+            <field name='type'>preprint</field>
+            <field name='category'>invoice</field>
+        </record>
+
+        <record id='document_book_type_preprint_picking' model='document.book.type'>
+            <field name='type'>preprint</field>
+            <field name='category'>picking</field>
+        </record>
+
+        <record id='document_book_type_preprint_voucher' model='document.book.type'>
+            <field name='type'>preprint</field>
+            <field name='category'>voucher</field>
+        </record>
+
+        <record id='document_type_invoice' model='document.book.document.type'>
+            <field name='type'>out_invoice</field>
+            <field name='name'>Factura</field>
+            <field name="document_book_type_id" ref="document_book_type_preprint_invoice"/>
+        </record>
+
+        <record id='document_type_refund' model='document.book.document.type'>
+            <field name='type'>out_refund</field>
+            <field name='name'>Nota de credito</field>
+            <field name="document_book_type_id" ref="document_book_type_preprint_invoice"/>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
