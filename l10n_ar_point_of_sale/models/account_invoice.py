@@ -38,21 +38,19 @@ class AccountInvoice(models.Model):
 
         domain = [] if not additional_domains else additional_domains
 
-        for invoice in self:
+        domain.extend([
+            ('denomination_id', '=', self.denomination_id.id),
+            ('pos_ar_id', '=', self.pos_ar_id.id),
+            ('name', '=', self.name),
+            ('type', '=', self.type),
+            ('state', 'not in', ['draft', 'cancel'])
+        ])
 
-            domain.extend([
-                ('denomination_id', '=', invoice.denomination_id.id),
-                ('pos_ar_id', '=', invoice.pos_ar_id.id),
-                ('name', '=', invoice.name),
-                ('type', '=', invoice.type),
-                ('state', 'not in', ['draft', 'cancel'])
-            ])
+        if self.type in ['in_invoice', 'in_refund']:
+            domain.append(('partner_id', '=', self.partner_id.id))
 
-            if invoice.type in ['in_invoice', 'in_refund']:
-                domain.append(('partner_id', '=', invoice.partner_id.id))
-
-            if self.search_count(domain) > 1:
-                raise ValidationError("Ya existe un documento con ese número!")
+        if self.search_count(domain) > 0:
+            raise ValidationError("Ya existe un documento con ese número!")
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -124,7 +122,7 @@ class AccountInvoice(models.Model):
 
             # Obtenemos el proximo numero o validamos su estructura
             if invoice.type in ['out_invoice', 'out_refund']:
-                invoice.name = invoice._get_next_number()
+                invoice.name = invoice.get_next_number()
             else:
                 invoice._validate_supplier_invoice_number()
 
@@ -132,23 +130,51 @@ class AccountInvoice(models.Model):
 
         return super(AccountInvoice, self).action_move_create()
 
+    def get_next_number(self, additional_domains=None):
+        """
+        Busca el proximo valor del documento en base al talonario obtenido del punto de venta y denominacion.
+        Agregamos un parametro de domains adicionales
+        para considerar el caso de notas de debito u otros domains de negocio que se puedan agregar
+        a futuro.
+        :return: Numero a utilizar del talonario
+        :raise UserError: No esta seteado el punto de venta o la denominacion
+        :raise UserError: No hay configurado un talonario para ese punto de venta y denominacion
+        """
+
+        domain = [('document_type_id.type', '=', self.type)] if not additional_domains else additional_domains
+
+        domain.extend([
+            ('denomination_id', '=', self.denomination_id.id),
+            ('pos_ar_id', '=', self.pos_ar_id.id),
+            ('category', '=', 'invoice'),
+        ])
+
+        if not (self.pos_ar_id and self.denomination_id):
+            raise UserError('El documento debe tener punto de venta y denominacion para ser validado')
+
+        document_book = self.env['document.book'].search(domain, limit=1)
+
+        if not document_book:
+            raise UserError('No existe talonario configurado para el punto de venta '
+                            + self.pos_ar_id.name_get()[0][1] + ' y la denominacion ' + self.denomination_id.name)
+
+        return document_book.next_number()
+
     @api.multi
-    def name_get(self, types=None):
+    def name_get(self):
         """ Utilizamos la idea original, pero cambiando los parametros """
 
-        types = {} if not types else types
-
-        types.update({
+        types = {
             'out_invoice': 'FCC',
             'in_invoice': 'FCP',
             'out_refund': 'NCC',
             'in_refund': 'NCP',
-        })
+        }
 
         result = []
 
         for inv in self:
-            invoice_type = types.get(self.type)
+            invoice_type = types.get(inv.type)
 
             # EJ FC A 0001-00000001
             result.append((inv.id, "%s %s %s" % (
@@ -218,30 +244,6 @@ class AccountInvoice(models.Model):
 
         if denomination != self.denomination_id:
             raise UserError('La denominacion de la factura no es la misma que la configurada en las posiciones fiscales')
-
-    def _get_next_number(self):
-        """
-        Busca el proximo valor del documento en base al talonario obtenido del punto de venta y denominacion
-        :return: Numero a utilizar del talonario
-        :raise UserError: No esta seteado el punto de venta o la denominacion
-        :raise UserError: No hay configurado un talonario para ese punto de venta y denominacion
-        """
-
-        if not (self.pos_ar_id and self.denomination_id):
-            raise UserError('El documento debe tener punto de venta y denominacion para ser validado')
-
-        document_book = self.env['document.book'].search([
-            ('denomination_id', '=', self.denomination_id.id),
-            ('pos_ar_id', '=', self.pos_ar_id.id),
-            ('category', '=', 'invoice'),
-            ('document_type_id.type', '=', self.type)
-        ], limit=1)
-
-        if not document_book:
-            raise UserError('No existe talonario configurado para el punto de venta '
-                            + self.pos_ar_id.name_get()[0][1] + ' y la denominacion ' + self.denomination_id.name)
-
-        return document_book.next_number()
 
     def _validate_supplier_invoice_number(self):
         """
