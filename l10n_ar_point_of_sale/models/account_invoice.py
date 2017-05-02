@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 from openerp.exceptions import UserError, ValidationError
 import re
 
@@ -233,7 +233,8 @@ class AccountInvoice(models.Model):
         document_book = self.env['document.book'].search([
             ('denomination_id', '=', self.denomination_id.id),
             ('pos_ar_id', '=', self.pos_ar_id.id),
-            ('category', '=', 'invoice')
+            ('category', '=', 'invoice'),
+            ('document_type_id.type', '=', self.type)
         ], limit=1)
 
         if not document_book:

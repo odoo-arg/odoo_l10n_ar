@@ -51,10 +51,20 @@ class DocumentBook(models.Model):
         except Exception:
             raise ValidationError('El nombre debe contener solo números enteros')
 
+    @api.multi
+    def name_get(self):
+
+        name_get = []
+        name_list = super(DocumentBook, self).name_get()
+        for name in name_list:
+            name_get.append((name[0], name[1].zfill(8)))
+        return name_get
+
+
     _sql_constraints = [
-        ('denomination_pos_ar_unique', 'unique(denomination_id, pos_ar_id, category)',
-         'El talonario debe ser unico por la combinacion punto de venta/denominacion/categoria'),
-        ('sequence_uniq', 'unique(category, sequence)', 'La secuencia debe ser unica por categoria')
+        ('denomination_pos_ar_unique', 'unique(document_type_id, denomination_id, pos_ar_id, category)',
+         'El talonario debe ser unico por la combinacion punto de venta/denominacion/categoria/tipo de documento'),
+        ('sequence_uniq', 'unique(category, sequence, document_type_id)', 'La secuencia debe ser unica por categoria')
     ]
 
     def next_number(self):

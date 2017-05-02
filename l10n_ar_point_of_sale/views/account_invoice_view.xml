@@ -64,7 +64,7 @@
                     <field name="number" invisible="1"/>
                 </xpath>
                 <field name="number" position="replace">
-                    <field name="name" class="oe_inline"/>
+                    <field name="name" placeholder="XXXX-XXX" class="oe_inline"/>
                 </field>
             </field>
         </record>
