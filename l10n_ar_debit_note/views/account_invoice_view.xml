@@ -24,9 +24,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <field name="number" position="after">
+                <xpath expr="//notebook/page[2]/group/group/field[@name='name']" position="after">
                     <field name="is_debit_note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                </field>
+                </xpath>
             </field>
         </record>
 

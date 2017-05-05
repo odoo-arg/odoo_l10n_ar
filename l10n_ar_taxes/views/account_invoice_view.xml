@@ -28,6 +28,17 @@
            </field>
         </record>
 
+        <record model="ir.ui.view" id="l10n_ar_amounts_invoice_supplier_form">
+           <field name="name">L10n ar amounts invoice supplier form</field>
+           <field name="model">account.invoice</field>
+           <field name="inherit_id" ref="account.invoice_supplier_form"/>
+           <field name="arch" type="xml">
+               <field name="amount_untaxed" position="before">
+                   <field name="amounts_widget" colspan="2" nolabel="1" widget="amountinfo"/>
+               </field>
+           </field>
+        </record>
+
     </data>
 </openerp>
 

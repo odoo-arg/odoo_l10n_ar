@@ -37,6 +37,7 @@
     'data': [
         'views/account_invoice_view.xml',
         'views/account.xml',
+        'views/taxes_menu_view.xml'
     ],
     'qweb': [
         "static/src/xml/account_info.xml",
