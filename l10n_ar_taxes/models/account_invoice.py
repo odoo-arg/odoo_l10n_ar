@@ -26,7 +26,7 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     """
-    Comentario general: Los campos de improtes de las facturas tienen el campo replicado con "signed"
+    Comentario general: Los campos de importes de las facturas tienen el campo replicado con "signed"
     esto significa que muestra los campos en el signo que corresponda (si es nc en negativo, si no positivo).
     Considero que no es necesario hacerlo para estos campos ya que no se suelen utilizar de esa manera.
     """
