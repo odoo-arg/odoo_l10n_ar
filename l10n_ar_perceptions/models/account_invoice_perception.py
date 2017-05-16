@@ -17,8 +17,6 @@
 ##############################################################################
 
 from openerp import models, fields, api
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class AccountInvoicePerception(models.Model):
@@ -37,7 +35,6 @@ class AccountInvoicePerception(models.Model):
     @api.onchange('perception_id')
     def onchange_perception_id(self):
         if self.perception_id:
-            _logger.info('PONIENDO NAME')
             self.update({
                 'name': self.perception_id.name,
                 'jurisdiction': self.perception_id.jurisdiction,
