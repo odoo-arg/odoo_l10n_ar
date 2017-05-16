@@ -35,7 +35,9 @@
     ],
 
     'data': [
-        'views/perception_perception_view.xml'
+        'views/perception_perception_view.xml',
+        'views/account_invoice_view.xml',
+        'security/ir.model.access.csv'
     ],
 
     'installable': True,

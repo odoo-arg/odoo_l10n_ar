@@ -22,10 +22,10 @@
             <field name="model">perception.perception</field>
             <field name="arch" type="xml">
                 <form>
-                    <div class="oe_title">
-                        <h1><field name="name" placeholder="Nombre"/></h1>
-                    </div>
                     <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Nombre"/></h1>
+                        </div>
                         <group string="Configuracion">
                             <group>
                                 <field name="tax_id"/>
@@ -66,7 +66,7 @@
             id="perception_perception_main_menu"
             name="Percepciones"
             action="action_perception_perception_view"
-            parent="account.menu_action_tax_form"
+            parent="l10n_ar_taxes.taxes_main_menu"
         />
 
     </data>

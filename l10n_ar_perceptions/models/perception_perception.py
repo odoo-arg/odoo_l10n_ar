@@ -16,13 +16,15 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields
 
 
 class PerceptionPerception(models.Model):
 
     _name = 'perception.perception'
+
+    def _get_country_ar(self):
+        return [('country_id', '=', self.env.ref('base.ar').id)]
 
     name = fields.Char(string='Nombre', required=True)
     tax_id = fields.Many2one('account.tax', string='Impuesto', required=True)
@@ -47,7 +49,6 @@ class PerceptionPerception(models.Model):
         required=True,
         default='nacional'
     )
-    state_id = fields.Many2one('res.country.state', string="Provincia")
-
+    state_id = fields.Many2one('res.country.state', string="Provincia", domain=_get_country_ar)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
