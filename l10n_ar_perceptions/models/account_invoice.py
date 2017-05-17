@@ -76,4 +76,13 @@ class AccountInvoice(models.Model):
 
         return vals
 
+    @api.model
+    def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):
+        """ Agregamos las percepciones a las facturas que se cancelan con nota de credito """
+
+        values = super(AccountInvoice, self)._prepare_refund(invoice, date_invoice, date, description, journal_id)
+        values['perception_ids'] = self._refund_cleanup_lines(invoice.perception_ids)
+
+        return values
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
