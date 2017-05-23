@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_invoice_perception_line_form">
+            <field name="name">Account invoice perception line form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <group class="oe_subtotal_footer oe_right" position="replace">
+                    <group>
+                        <group>
+                            <div class="oe_inline">
+                                <field name="perception_ids" nolabel="1">
+                                    <tree editable="bottom" string="Percepciones">
+                                        <field name="perception_id"/>
+                                        <field name="base"/>
+                                        <field name="amount"/>
+                                        <field name="name" invisible="1"/>
+                                        <field name="jurisdiction" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amounts_widget" colspan="2" nolabel="1" widget="amountinfo"/>
+                            <field name="amount_untaxed"/>
+                            <field name="amount_tax"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                            <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
+                            <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                            <field name="reconciled" invisible="1"/>
+                            <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment" attrs="{'invisible': [('state', 'not in', 'open')]}"/>
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_invoice_supplier_perception_line_form">
+            <field name="name">Account invoice supplier perception line form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="tax_line_ids" position="before">
+                    <field name="perception_ids" nolabel="1">
+                        <tree editable="bottom" string="Percepciones">
+                            <field name="perception_id"/>
+                            <field name="base"/>
+                            <field name="amount"/>
+                            <field name="name" invisible="1"/>
+                            <field name="jurisdiction" invisible="1"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
