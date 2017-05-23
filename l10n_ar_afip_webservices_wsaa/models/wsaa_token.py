@@ -41,7 +41,7 @@ class WsaaToken(models.Model):
         if self.expiration_time:
             expiration_time = datetime.strptime(self.expiration_time, '%Y-%m-%d %H:%M:%S')
 
-            # Renovamos el ticket si faltan 10 minutos o menos para que expire
+            # Si faltan mas de 10 minutos para que el ticket expire no se lo renueva
             if datetime.now() + timedelta(minutes=10) < expiration_time:
                 renew = False
 
