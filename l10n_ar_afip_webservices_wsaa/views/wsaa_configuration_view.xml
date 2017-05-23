@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+   
+        <record model="ir.ui.view" id="wsaa_configuration_form">
+            <field name="name">Wsaa configuration form</field>
+            <field name="model">wsaa.configuration</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1><field name="name" placeholder="Nombre..."/></h1>
+                        <group>
+                            <group>
+                                <field name="type"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Tokens">
+                                <field name="wsaa_token_ids">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="expiration_time" readonly="True"/>
+                                        <button name="action_renew"
+                                                string="Renovar TRA"
+                                                type="object"
+                                                icon="fa-ticket"
+                                        />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Claves">
+                                <div style="margin: 10px 0px;text-align: center">
+                                    <button name="generate_private_key" string="Generar Clave Privada"
+                                            type="object"
+                                            confirm="Esta seguro? Esto eliminar la clave anterior, la solicitud y certificado."
+                                            class="btn btn-primary btn-sm"
+                                    />
+                                </div>
+                                <separator string="Clave Privada"/>
+                                <field name="private_key" placeholder="Clave privada..." nolabel="1"/>
+                            </page>
+                            <page string="Certificados">
+                                <div style="margin: 10px 0px;text-align: center">
+                                    <button name="generate_certificate_request"
+                                            string="Generar solicitud de certificado"
+                                            type="object"
+                                            confirm="Esta seguro?"
+                                            class="btn btn-primary btn-sm"
+                                    />
+                                </div>
+                                <separator string="Solicitud de certificado"/>
+                                <field name="certificate_request" placeholder="Solicitud de certificado..." nolabel="1"/>
+                                <separator string="Certificado"/>
+                                <field name="certificate" placeholder="Certificado..." nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="wsaa_configuration_tree">
+            <field name="name">Wsaa configuration tree</field>
+            <field name="model">wsaa.configuration</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_wsaa_configuration_view" model="ir.actions.act_window">
+            <field name="name">Configuracion WSAA</field>
+            <field name="res_model">wsaa.configuration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="wsaa_configuration_menu"
+            name="Configuracion WSAA"
+            action="action_wsaa_configuration_view"
+            parent="l10n_ar_afip_tables.afip_configuration_menu"
+        />
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
