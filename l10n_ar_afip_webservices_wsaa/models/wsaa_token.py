@@ -34,15 +34,15 @@ class WsaaToken(models.Model):
     sign = fields.Text('Sign', readonly=True)
     wsaa_configuration_id = fields.Many2one('wsaa.configuration', 'Configuracion', required=True)
 
-    def action_renew(self):
+    def action_renew(self, delta_time_for_expiration=10):
         """ Renueva o crea el ticket de acceso si esta vencido o no creado """
 
         renew = True
         if self.expiration_time:
             expiration_time = datetime.strptime(self.expiration_time, '%Y-%m-%d %H:%M:%S')
 
-            # Si faltan mas de 10 minutos para que el ticket expire no se lo renueva
-            if datetime.now() + timedelta(minutes=10) < expiration_time:
+            # Si faltan mas de X minutos para que el ticket expire no se lo renueva
+            if datetime.now() + timedelta(minutes=delta_time_for_expiration) < expiration_time:
                 renew = False
 
         if renew:
