@@ -47,6 +47,8 @@ entre posiciones fiscales y denominaciones.
         'views/menu.xml',
         'views/account_invoice_view.xml',
         'data/document_book_type.xml',
+        'data/account_denomination.xml',
+        'data/afip_voucher_type.xml',
         'security/ir.model.access.csv'
     ],
 

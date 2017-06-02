@@ -122,7 +122,12 @@ class AccountInvoice(models.Model):
 
             # Obtenemos el proximo numero o validamos su estructura
             if invoice.type in ['out_invoice', 'out_refund']:
-                invoice.name = invoice.get_next_number()
+                document_book = invoice.get_document_book()
+                invoice.name = document_book.next_number()
+
+                # Llamamos a la funcion a ejecutarse desde el tipo de talonario, de esta forma, hará lo correspondiente
+                # para distintos casos (preimpreso, electronica, fiscal, etc.)
+                getattr(invoice, document_book.book_type_id.foo)()
             else:
                 invoice._validate_supplier_invoice_number()
 
@@ -130,18 +135,22 @@ class AccountInvoice(models.Model):
 
         return super(AccountInvoice, self).action_move_create()
 
-    def get_next_number(self, additional_domains=None):
+    def get_document_book(self, additional_domains=None):
         """
-        Busca el proximo valor del documento en base al talonario obtenido del punto de venta y denominacion.
+        Busca el talonario obtenido del punto de venta y denominacion.
         Agregamos un parametro de domains adicionales
         para considerar el caso de notas de debito u otros domains de negocio que se puedan agregar
         a futuro.
-        :return: Numero a utilizar del talonario
+        :return: Talonario a utilizar
         :raise UserError: No esta seteado el punto de venta o la denominacion
         :raise UserError: No hay configurado un talonario para ese punto de venta y denominacion
         """
 
-        domain = [('document_type_id.type', '=', self.type)] if not additional_domains else additional_domains
+        if not additional_domains:
+            invoice_type = 'invoice' if self.type == 'out_invoice' else 'refund'
+            domain = [('document_type_id.type', '=', invoice_type)]
+        else:
+            domain = additional_domains
 
         domain.extend([
             ('denomination_id', '=', self.denomination_id.id),
@@ -158,7 +167,7 @@ class AccountInvoice(models.Model):
             raise UserError('No existe talonario configurado para el punto de venta '
                             + self.pos_ar_id.name_get()[0][1] + ' y la denominacion ' + self.denomination_id.name)
 
-        return document_book.next_number()
+        return document_book
 
     @api.multi
     def name_get(self):
@@ -184,6 +193,10 @@ class AccountInvoice(models.Model):
             )
 
         return result
+
+    def action_preprint(self):
+        """ Funcion para ejecutarse al validar una factura con talonario preimpreso """
+        return
 
     @api.model
     def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):

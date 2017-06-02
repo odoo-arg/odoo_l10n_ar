@@ -47,7 +47,7 @@ mapped with models using l10n_ar_codes application
         'data/partner_document_type.xml',
         'data/account_tax.xml',
         'data/account_fiscal_position.xml',
-        'data/afip_concept.xml'
+        'data/afip_concept.xml',
     ],
 
     'active': False,

@@ -16,38 +16,8 @@
 #
 ##############################################################################
 
-{
-
-    'name': 'l10n_ar_debit_note',
-
-    'version': '1.0',
-
-    'summary': 'Notas de debito para Argentina',
-
-    'description': """
-Modulo encargado de manejar notas de debito y su relacion con punto de venta
-    """,
-
-    'author': 'OPENPYME S.R.L.',
-
-    'website': 'http://www.openpyme.com.ar',
-
-    'category': 'Accounting',
-
-    'depends': [
-        'l10n_ar_point_of_sale',
-    ],
-
-    'data': [
-        'data/document_book_type.xml',
-        'data/afip_voucher_type.xml',
-        'views/account_invoice_view.xml'
-    ],
-
-    'active': False,
-
-    'installable': True,
-
-}
+import wsfe_configuration
+import document_book_type
+import account_invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

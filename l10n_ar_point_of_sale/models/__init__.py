@@ -24,5 +24,6 @@ import document_book
 import document_book_type
 import document_book_document_type
 import pos_ar
+import afip_voucher_type
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

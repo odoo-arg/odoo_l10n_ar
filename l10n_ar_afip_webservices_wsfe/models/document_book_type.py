@@ -16,22 +16,13 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields
 
 
-class DocumentBookDocumentType(models.Model):
+class DocumentBookType(models.Model):
 
-    _name = 'document.book.document.type'
+    _inherit = 'document.book.type'
 
-    name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
-        ('picking', 'Remito')],
-        'Categoria',
-        required=True
-    )
+    type = fields.Selection(selection_add=[('electronic', 'Electronico')])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

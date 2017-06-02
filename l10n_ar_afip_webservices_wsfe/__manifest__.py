@@ -18,36 +18,43 @@
 
 {
 
-    'name': 'l10n_ar_debit_note',
+    'name': 'AFIP: Web service de factura electrónica',
 
     'version': '1.0',
 
-    'summary': 'Notas de debito para Argentina',
+    'category': 'Localization',
 
-    'description': """
-Modulo encargado de manejar notas de debito y su relacion con punto de venta
-    """,
+    'summary': 'AFIP: Factura electrónica',
 
-    'author': 'OPENPYME S.R.L.',
+    'author': 'OPENPYME S.R.L',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'Accounting',
-
     'depends': [
-        'l10n_ar_point_of_sale',
+        'l10n_ar_afip_webservices_wsaa',
+        'l10n_ar_perceptions'
     ],
 
     'data': [
+        'views/wsfe_configuration_view.xml',
         'data/document_book_type.xml',
-        'data/afip_voucher_type.xml',
-        'views/account_invoice_view.xml'
+        'security/ir.model.access.csv'
     ],
-
-    'active': False,
 
     'installable': True,
 
+    'auto_install': False,
+
+    'application': True,
+
+    'description': """
+AFIP: Webservices de factura electrónica
+==================================
+    Factura electrónica.\n
+    Configuración de puntos de venta para factura electrónica.
+    """,
+
 }
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

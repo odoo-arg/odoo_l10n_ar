@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+
+        <record id="account_denomination_a" model="account.denomination">
+            <field name="name">A</field>
+            <field name="validate_supplier">True</field>
+            <field name="description">Comprobantes tipo A</field>
+        </record>
+
+        <record id="account_denomination_b" model="account.denomination">
+            <field name="name">B</field>
+            <field name="validate_supplier">True</field>
+            <field name="description">Comprobantes tipo B</field>
+        </record>
+
+        <record id="account_denomination_c" model="account.denomination">
+            <field name="name">C</field>
+            <field name="validate_supplier">True</field>
+            <field name="description">Comprobantes tipo C</field>
+        </record>
+
+        <record id="account_denomination_d" model="account.denomination">
+            <field name="name">D</field>
+            <field name="validate_supplier">False</field>
+            <field name="description">Despachos de importacion</field>
+        </record>
+
+        <record id="account_denomination_e" model="account.denomination">
+            <field name="name">E</field>
+            <field name="validate_supplier">False</field>
+            <field name="description">Documentos de exportacion</field>
+        </record>
+
+        <record id="account_denomination_i" model="account.denomination">
+            <field name="name">I</field>
+            <field name="validate_supplier">False</field>
+            <field name="description">Documentos de importacion</field>
+        </record>
+
+        <record id="account_denomination_m" model="account.denomination">
+            <field name="name">M</field>
+            <field name="validate_supplier">True</field>
+            <field name="description">Comprobantes tipo M</field>
+        </record>
+
+        <record id="account_denomination_o" model="account.denomination">
+            <field name="name">O</field>
+            <field name="validate_supplier">False</field>
+            <field name="description">Otros comprobantes</field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
