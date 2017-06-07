@@ -68,6 +68,7 @@ class AccountInvoice(models.Model):
                     if hasattr(response.FeDetResp.FECAEDetResponse[0], 'Observaciones') else ''
                 raise ValidationError('Hubo un error al intentar validar el documento\n{0}'.format(errores))
 
+            _logger.info('RESPONSE %s', response)
             # Commitiamos para que no halla inconsistencia con la AFIP
             self.env.cr.commit()
 
@@ -150,7 +151,7 @@ class AccountInvoice(models.Model):
         _logger.info('ULTIMO NUMERO ODOO? %s', self.get_document_book().name)
 
         if last_number.zfill(8) != self.get_document_book().name.zfill(8):
-            raise ValidationError('<html><b>El ultimo numero del talonario no coincide con el de la afip</b></html>')
+            raise ValidationError('El ultimo numero del talonario no coincide con el de la afip')
 
 
     def _get_wsfe(self):
