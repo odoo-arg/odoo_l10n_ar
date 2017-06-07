@@ -37,6 +37,7 @@
     'data': [
         'views/perception_perception_view.xml',
         'views/account_invoice_view.xml',
+        'data/perception_data.xml',
         'security/ir.model.access.csv'
     ],
 
