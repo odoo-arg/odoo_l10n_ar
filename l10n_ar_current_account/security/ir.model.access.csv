@@ -1,5 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_res_partner_document_imputation,res_partner_document_imputation,model_res_partner_document_imputation,account.group_account_invoice,1,1,1,0
 access_res_partner_imputation,res_partner_imputation,model_res_partner_imputation,account.group_account_invoice,1,1,1,0
-access_res_partner_imputation_salesperson,access_res_partner_imputation_salesperson,model_res_partner_imputation,base.group_sale_salesman,1,0,0,0
-
+access_res_partner_imputation_all,access_res_partner_imputation_all,model_res_partner_imputation,base.group_user,1,0,0,0
