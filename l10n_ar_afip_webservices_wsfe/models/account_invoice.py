@@ -93,7 +93,7 @@ class AccountInvoice(models.Model):
             self.env.cr.commit()
 
     def write_wsfe_response(self, invoice_detail, response):
-        """ Escibe el envio y respuesta de un envio a AFIP """
+        """ Escribe el envio y respuesta de un envio a AFIP """
         self.ensure_one()
 
         # Nos traemos el offset de la zona horaria para dejar en la base en UTC como corresponde
