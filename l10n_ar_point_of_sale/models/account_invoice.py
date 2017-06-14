@@ -122,12 +122,13 @@ class AccountInvoice(models.Model):
 
             # Obtenemos el proximo numero o validamos su estructura
             if invoice.type in ['out_invoice', 'out_refund']:
+
                 document_book = invoice.get_document_book()
-                invoice.name = document_book.next_number()
 
                 # Llamamos a la funcion a ejecutarse desde el tipo de talonario, de esta forma, hará lo correspondiente
                 # para distintos casos (preimpreso, electronica, fiscal, etc.)
-                getattr(invoice, document_book.book_type_id.foo)()
+                getattr(invoice, document_book.book_type_id.foo)(document_book)
+
             else:
                 invoice._validate_supplier_invoice_number()
 
@@ -194,9 +195,10 @@ class AccountInvoice(models.Model):
 
         return result
 
-    def action_preprint(self):
+    def action_preprint(self, document_book):
         """ Funcion para ejecutarse al validar una factura con talonario preimpreso """
-        return
+        self.name = document_book.next_number()
+
 
     @api.model
     def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):

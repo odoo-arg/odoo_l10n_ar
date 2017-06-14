@@ -19,5 +19,7 @@
 import wsfe_configuration
 import document_book_type
 import account_invoice
+import perception_perception
+import wsfe_request_detail
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

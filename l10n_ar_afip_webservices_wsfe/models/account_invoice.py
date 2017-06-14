@@ -16,13 +16,13 @@
 #
 ##############################################################################
 
+import pytz
 from datetime import datetime
 from odoo_openpyme_api import documents
-from openerp import models, fields
+from dateutil.relativedelta import relativedelta
 from odoo_openpyme_api.afip_webservices import wsfe, wsaa
+from openerp import models, fields
 from openerp.exceptions import ValidationError
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class AccountInvoice(models.Model):
@@ -31,29 +31,40 @@ class AccountInvoice(models.Model):
 
     date_service_from = fields.Date('Fecha servicio inicial', help='Fecha inicial del servicio brindado')
     date_service_to = fields.Date('Fecha servicio final', help='Fecha final del servicio brindado')
-    cae = fields.Char('Cae', readonly=True)
+    cae = fields.Char('CAE', readonly=True, copy=False)
+    cae_due_date = fields.Date('Vencimiento CAE', readonly=True, copy=False)
     afip_concept_id = fields.Many2one('afip.concept', 'Concepto')
+    wsfe_request_detail_ids = fields.One2many('wsfe.request.detail', 'invoice_id', 'Detalles Wsfe')
 
-    def action_electronic(self):
+    def action_electronic(self, document_book):
         """
-
+        Realiza el envio a AFIP de la factura y escribe en la misma el CAE y su fecha de vencimiento.
+        :raises ValidationError: Si el talonario configurado no tiene la misma numeracion que en AFIP.
+                                 Si hubo algun error devuelto por afip al momento de enviar los datos.
         """
         afip_wsfe = self._get_wsfe()
 
         for invoice in self:
 
+            # Si tiene cae no se re-envia
+            if invoice.cae:
+                continue
+
             # Validamos los campos
             invoice._validate_required_electronic_fields()
 
             # Obtenemos el codigo de comprobante
-            document_type_id = invoice.get_document_book().document_type_id.id
+            document_type_id = document_book.document_type_id.id
             document_afip_code = int(self.env['codes.models.relation'].get_code('afip.voucher.type', document_type_id))
 
             # Validamos la numeracion
-            invoice._action_wsfe_number(afip_wsfe, document_afip_code)
+            invoice._action_wsfe_number(document_book, afip_wsfe, document_afip_code)
 
             # Armamos la factura
             electronic_invoice = invoice._set_electronic_invoice_details(document_afip_code)
+
+            # Guardamos el detalle del json enviado
+            invoice_detail = afip_wsfe._set_FECAERequest(electronic_invoice, invoice.pos_ar_id.name)
 
             # Chequeamos el status de los servidores y enviamos la factura a AFIP.
             try:
@@ -62,15 +73,40 @@ class AccountInvoice(models.Model):
             except Exception, e:
                 raise ValidationError(e.message)
 
+            invoice.write_wsfe_response(invoice_detail, response)
+
             if response.FeCabResp.Resultado == 'R':
                 # Traemos el conjunto de errores
                 errores = '\n'.join(obs.Msg for obs in response.FeDetResp.FECAEDetResponse[0].Observaciones.Obs)\
                     if hasattr(response.FeDetResp.FECAEDetResponse[0], 'Observaciones') else ''
                 raise ValidationError('Hubo un error al intentar validar el documento\n{0}'.format(errores))
 
-            _logger.info('RESPONSE %s', response)
-            # Commitiamos para que no halla inconsistencia con la AFIP
+            # Escribimos el CAE y su fecha de vencimiento
+            invoice.write({
+                'cae': response.FeDetResp.FECAEDetResponse[0].CAE,
+                'cae_due_date': datetime.strptime(response.FeDetResp.FECAEDetResponse[0].CAEFchVto, '%Y%m%d'),
+                'name': document_book.next_number()
+            })
+
+            # Commitiamos para que no halla inconsistencia con la AFIP. Como ya tenemos el CAE escrito en la factura
+            # Al validarla nuevamente, no vuelve a ir a la AFIP y se va a mantener la numeracion correctamente
             self.env.cr.commit()
+
+    def write_wsfe_response(self, invoice_detail, response):
+        """ Escibe el envio y respuesta de un envio a AFIP """
+        self.ensure_one()
+
+        # Nos traemos el offset de la zona horaria para dejar en la base en UTC como corresponde
+        offset = datetime.now(pytz.timezone('America/Argentina/Buenos_Aires')).utcoffset().total_seconds() / 3600
+        fch_proceso = datetime.strptime(response.FeCabResp.FchProceso, '%Y%m%d%H%M%S') - relativedelta(hours=offset)
+
+        self.wsfe_request_detail_ids.create({
+            'invoice_id': self.id,
+            'request_sent': invoice_detail,
+            'request_received': response,
+            'result': response.FeCabResp.Resultado,
+            'date': fch_proceso
+        })
 
     def _set_electronic_invoice_details(self, document_afip_code):
         """ Mapea los valores de ODOO al objeto ElectronicInvoice"""
@@ -125,7 +161,6 @@ class AccountInvoice(models.Model):
         """ Agrega los impuestos que son percepciones """
 
         group_vat = self.env.ref('l10n_ar.tax_group_vat')
-        codes_models_proxy = self.env['codes.models.relation']
         perception_perception_proxy = self.env['perception.perception']
 
         for tax in self.tax_line_ids:
@@ -135,22 +170,21 @@ class AccountInvoice(models.Model):
                 if not perception:
                     raise ValidationError("Percepcion no encontrada para el impuesto %s", tax.tax_id.name)
 
-                code = int(codes_models_proxy.get_code('perception.perception', perception.id))
+                code = perception.get_afip_code()
                 tribute_aliquot = round(tax.amount / tax.base if tax.base else 0, 2)
                 electronic_invoice.add_tribute(documents.tax.Tribute(code, tax.amount, tax.base, tribute_aliquot))
 
-    def _action_wsfe_number(self, afip_wsfe, document_afip_code):
+    def _action_wsfe_number(self, document_book, afip_wsfe, document_afip_code):
         """
         Valida que el ultimo numero del talonario sea el correcto en comparacion con el de la AFIP.
+        :param document_book: Talonario del documento.
         :param afip_wsfe: instancia Wsfe.
         :param document_afip_code: Codigo de afip del documento.
         """
 
         last_number = str(afip_wsfe.get_last_number(self.pos_ar_id.name, document_afip_code) + 1)
-        _logger.info('ULTIMO NUMERO? %s', last_number)
-        _logger.info('ULTIMO NUMERO ODOO? %s', self.get_document_book().name)
 
-        if last_number.zfill(8) != self.get_document_book().name.zfill(8):
+        if last_number.zfill(8) != document_book.name.zfill(8):
             raise ValidationError('El ultimo numero del talonario no coincide con el de la afip')
 
 
@@ -213,7 +247,6 @@ class AccountInvoice(models.Model):
                 code = '1'
 
         return self.env['codes.models.relation'].get_record_from_code('afip.concept', code)
-
 
     @staticmethod
     def _get_access_token(wsfe_config):
