@@ -192,6 +192,9 @@ class invoice(models.Model):
         denomination_id = self.denomination_id and self.denomination_id.id
         if self.type in ('out_invoice', 'out_refund', 'out_debit'):
 
+            if self.date_invoice and self.date_due and self.date_due < self.date_invoice:
+                raise ValidationError(_('Fecha Vto no puede se menor a Fecha Factura'))
+
             if not denomination_id:
                 raise ValidationError(_('Denomination not set in invoice'))
 
