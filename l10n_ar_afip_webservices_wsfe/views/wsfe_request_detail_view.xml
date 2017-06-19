@@ -15,12 +15,21 @@
 -->
 
 <openerp>
-    <data noupdate="1">
+    <data>
 
-        <record id='document_type_debit_note' model='document.book.document.type'>
-            <field name='type'>debit_note</field>
-            <field name='name'>Nota de debito</field>
-            <field name='category'>invoice</field>
+        <record model="ir.ui.view" id="wsfe_request_detail_form">
+            <field name="name">Wsfe request detail form</field>
+            <field name="model">wsfe.request.detail</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="date"/>
+                        <field name="result"/>
+                        <field name="request_sent" widget="html"/>
+                        <field name="request_received" widget="html"/>
+                    </group>
+                </form>
+            </field>
         </record>
 
     </data>

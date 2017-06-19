@@ -17,10 +17,10 @@
 <openerp>
     <data noupdate="1">
 
-        <record id='document_type_debit_note' model='document.book.document.type'>
-            <field name='type'>debit_note</field>
-            <field name='name'>Nota de debito</field>
+        <record id='document_book_type_electronic_invoice' model='document.book.type'>
+            <field name='type'>electronic</field>
             <field name='category'>invoice</field>
+            <field name='foo'>action_electronic</field>
         </record>
 
     </data>

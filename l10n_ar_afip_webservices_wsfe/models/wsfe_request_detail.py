@@ -16,22 +16,17 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields
 
 
-class DocumentBookDocumentType(models.Model):
+class WsfeRequestDetail(models.Model):
 
-    _name = 'document.book.document.type'
+    _name = 'wsfe.request.detail'
 
-    name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
-        ('picking', 'Remito')],
-        'Categoria',
-        required=True
-    )
+    request_sent = fields.Text('Request enviado', required=True)
+    request_received = fields.Text('Request recibido', required=True)
+    invoice_id = fields.Many2one('account.invoice', 'Documento', required=True)
+    result = fields.Char('Resultado')
+    date = fields.Datetime('Fecha')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

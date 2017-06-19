@@ -63,9 +63,9 @@ class AccountInvoice(models.Model):
 
         return result
 
-    def get_next_number(self, additional_domains=None):
+    def get_document_book(self, additional_domains=None):
         if self.is_debit_note:
             additional_domains = [('document_type_id.type', '=', 'debit_note')]
-        return super(AccountInvoice, self).get_next_number(additional_domains)
+        return super(AccountInvoice, self).get_document_book(additional_domains)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

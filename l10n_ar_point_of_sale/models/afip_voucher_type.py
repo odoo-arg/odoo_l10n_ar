@@ -20,18 +20,11 @@ from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 
 
-class DocumentBookDocumentType(models.Model):
+class AfipVoucherType(models.Model):
 
-    _name = 'document.book.document.type'
+    _inherit = 'afip.voucher.type'
 
-    name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
-        ('picking', 'Remito')],
-        'Categoria',
-        required=True
-    )
+    denomination_id = fields.Many2one('account.denomination', 'Denominacion')
+    document_type_id = fields.Many2one('document.book.document.type', 'Tipo de documento')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -16,22 +16,23 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models
 
 
-class DocumentBookDocumentType(models.Model):
+class PerceptionPerception(models.Model):
 
-    _name = 'document.book.document.type'
+    _inherit = 'perception.perception'
 
-    name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
-        ('picking', 'Remito')],
-        'Categoria',
-        required=True
-    )
+    def get_afip_code(self):
+        """ Devuelve el codigo de AFIP en base a la jurisdiccion """
+        self.ensure_one()
+
+        codes = {
+            'nacional': 1,
+            'provincial': 2,
+            'municipal': 3,
+        }
+
+        return codes.get(self.jurisdiction)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
