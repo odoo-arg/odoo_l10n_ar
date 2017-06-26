@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!--HEADER-->
+        <template id="report_electronic_invoice_header">
+            <div class="header">
+            <style type="text/css">
+                td
+                {
+                    text-transform:uppercase;
+                }
+            </style>
+            <div style="border: 1px solid black; border-radius: 3px 3px 0px 0px !important;">
+                <!-- TIPO DE FACTURA, CODIGO Y DENOMINACION-->
+                <div style="border-bottom: 1px solid black">
+                    <div style="width: 100%;text-align:center"><t t-esc="type"/></div>
+                </div>
+                
+                <div style="display: table; margin: -1px auto 0 auto; height: 25mm;
+                    border: 1px solid black; padding: 0px 8px 3px 8px">
+                    <div style="padding: 15px 0; text-align:center">
+                        <div style="font-size: 25px"><b><span t-field="o.denomination_id.name"/></b><br/></div>
+                        <div style="font-size: 10px">COD. <span t-esc="o.get_voucher_code()"/><br/></div>
+                    </div>
+                </div>
+                
+                <div style="width: 100%; overflow: auto">
+
+                  <!--DATOS DE LA EMPRESA Y LOGO-->
+                  <div style="width: 50%;float: left;">
+                    <div style="width: 100%;">
+                      <img t-att-src="'data:image/png;base64,%s' % res_company.logo"
+                        style="left:10%;top: 40px;display:block;margin:auto;max-width: 200px;
+                        max-height: 20mm;position:absolute;" /> 
+                        
+                      <div style="width: 100%;">
+                        <div style="padding: 15px; font-size:12px; border-right: 1px solid black">
+                          <table cellspacing="0" cellpadding="0" align="center" width="100%">
+                            <tr><td><b>COMPANY NAME: </b><span t-field="res_company.name"/></td></tr>
+                            <tr><td><b>ADDRESS: </b><span t-field="res_company.street"/> - <span t-field="res_company.city"/></td></tr>
+                            <tr><td><b>VAT CONDITION: </b><span t-field="res_company.partner_id.property_account_position_id"/></td></tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div style="width: 50%;float: right;">
+                    <div style="width: 100%;">
+                      <div style="position:absolute; width:50%;top: 40px">
+                        <div style="width: 100%; text-align: center; margin:0 auto;font-size: 20px;margin-top:2px;"><b><span t-esc="o.get_voucher_type_string()"/></b></div>
+                        <div style="width: 100%; text-align: center; margin:0 auto;font-size: 17px;margin-top:2px;"><b><span t-field="o.name"/></b></div>
+                      </div>
+                    <div style="margin-left: -2px; padding: 15px; font-size:12px; border-left: 1px solid black">
+                      <table cellspacing="0" cellpadding="0" width="100%">
+                        <tr><td><b>DATE: </b><span t-field="o.date_invoice" t-options='{"format": "dd/MM/yyyy"}'/></td></tr>
+                        <tr><td><b>C.U.I.T.: </b><span t-field="res_company.partner_id.vat"/></td></tr>
+                        <tr><td><b>GROSS INCOME: </b><span t-field="res_company.iibb_number"/></td></tr>
+                        <tr><td><b>ACTIVITY START DATE: </b><span t-field="res_company.start_date" t-options='{"format": "dd/MM/yyyy"}'/></td></tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                
+                </div>
+
+                <!--DATOS DEL COMPROBANTE-->
+                <div style="font-size:12px;border-top:1px solid black">
+                  <div style="width: 100%">
+                    <div style="padding: 10px 0px 10px 20px">
+                      <table width="100%">
+                        <tr>
+                          <td width="50%"><b>INVOICED PERIOD - FROM: </b><span t-field="o.date_service_from" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                          <td><b>TO: </b><span t-field="o.date_service_to" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                        </tr>
+                        <tr>
+                            <t t-if="o.date_due">
+                                <td><b>DUE DATE: </b><span t-field="o.date_due" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                            </t>
+                            <t t-if="o.payment_term_id">
+                                <td><b>SALE CONDITION: </b><span t-field="o.payment_term_id"/></td>
+                            </t>                          
+                        </tr>
+                        <t t-if="o.origin">
+                            <tr>
+                                <td colspan="2"><b>SOURCE DOCUMENT: </b><span t-field="o.origin"/></td>
+                            </tr>
+                        </t>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                                                  
+            </div>
+
+            <!--DATOS DE CLIENTE-->
+            <div style="font-size:12px;padding:10px 0px 0px 0px">
+              <div style="border:1px solid black;border-radius: 0px 0px 3px 3px !important;padding: 10px 0px 10px 20px">
+                <table width="100%">
+                  <tr>
+                    <td style="font-size:15px" width="60%"><b>CUSTOMER: </b><span t-field="o.partner_id.name"/></td>
+                    <td style="font-size:15px"><b>CUIT: </b><span t-field="o.partner_id.vat"/></td>                             
+                  </tr>
+                  <tr>
+                    <t t-if="o.partner_id.street">
+                        <td style="padding: 10px 0px 0px 0px">
+                            <b>ADDRESS: </b><span t-field="o.partner_id.street"/>
+                            <t t-if="o.partner_id.zip"> (<span t-field="o.partner_id.zip"/>)</t>
+                            <t t-if="o.partner_id.city"> <span t-field="o.partner_id.city"/>, </t>                         
+                            <t t-if="o.partner_id.state_id"> <span t-field="o.partner_id.state_id"/></t>
+                        </td>
+                    </t>
+                    <t>
+                        <td style="padding: 10px 0px 0px 0px">
+                            <b>VAT CONDITION: </b>
+                            <span t-field="o.partner_id.property_account_position_id"/>
+                        </td>
+                    </t>
+                  </tr>
+                </table>
+              </div>
+            </div>
+                            
+            </div>
+        </template>
+
+        <!--FOOTER-->
+        <template id="report_electronic_invoice_footer">
+
+            <div class="footer" style="font-size: 12px">
+                <div style="overflow:auto;border: 1px solid black; border-radius: 3px !important;">
+                <!-- SECCION DE CAE -->
+                    <t t-if="o.cae">
+
+                      <!--CODIGO DE BARRAS-->
+                      <t t-set="barcode" t-value="o.get_bar_code()"/>
+                      <t t-set="barcode_verificator_number" t-value="o.get_verification_code(barcode)"/>
+                      <div style="width: 60%;text-align:center;float:left">
+                        <div style="padding: 10px 0px 10px 0px">
+                          <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'
+                               % ('I2of5', barcode+barcode_verificator_number, 500, 60)"
+                               style="width:500px;height:60px"/>
+                          <div style="font-size:10px;text-align:center">
+                              <span t-esc="barcode"/><span t-esc="barcode_verificator_number"/>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!--CAE Y FECHA DE VENCIMIENTO DE CAE-->
+                      <div style="width: 40%;float:left;font-size: 12px;padding: 13px 0px;padding: 10px 0px 10px 0px" >
+                        <table style="width:100%;border-collapse:separate;border-spacing: 10px 4px">
+                            <tr>
+                                <td style="text-align: right"><b>CAE N°:</b></td>
+                                <td><span t-field="o.cae"/></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right"><b>CAE DUE DATE:</b></td>
+                                <td> <span t-field="o.cae_due_date" t-options='{"format": "dd/MM/yyyy"}'/></td>
+                            </tr>
+                        </table>
+                      </div>
+                      
+                   </t>
+                </div>
+                
+                <div style="text-align:center;float:left;width: 100%">
+                    <div style="width: 100%;text-align:center">Page <span class="page"/> of <span class="topage"/></div>
+                </div>
+        
+            </div>
+            
+        </template>
+
+        <!--LAYOUT-->
+        <template id="report_electronic_invoice_layout">
+            <t t-name="report.electronic_invoice_layout">              
+                <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_header"/>
+                <t t-raw="0"/>
+                <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_footer"/>
+            </t>
+        </template>
+
+        <!--CUERPO-->
+        <template id="report_electronic_invoice_body">
+            <div class="page" style="font-size:12px;padding: 15px">
+                <style type="text/css">
+                    th
+                    {
+                        border-bottom: 1.5px solid;
+                        border-color: #99aa99;
+                        text-align: center;
+                    }
+                    #underlined td
+                    {
+                        vertical-align: middle;
+                        border-bottom:1px solid;
+                        border-color: #c5c5c5;
+                        text-align: center;
+                    }
+                </style>
+                <table cellspacing="0" cellpadding="0" align="center" width="100%">
+                    <thead>
+                        <tr>
+                            <th style="padding: 5px 0px;width:35%;text-align: left">DESCRIPTION</th>
+                            <th style="width:7%">QUANTITY</th>
+                            <th style="width:8%">UOM</th>
+                            <th style="width:12%">UNIT PRICE</th>
+                            <th style="width:7%">DISC %</th>
+                            <t t-if="o.denomination_id.vat_discriminated">
+                                <th style="width:7%">VAT</th>
+                            </t>
+                            <t t-if="o.denomination_id.vat_discriminated">
+                                <th style="width:12%">SUBTOTAL</th>
+                            </t>
+                            <th style="width:12%;text-align: right">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="underlined">
+                        <tr t-foreach="o.invoice_line_ids" t-as="line">
+                            <td style="padding: 5px 0px;width:35%;text-align: left"><span t-field="line.name"/></td>
+                            <td style="width:7%"><span t-field="line.quantity"/></td>
+                            <td style="width:8%"><span t-field="line.uom_id.name"/></td>
+                            <t t-if="o.denomination_id.vat_discriminated">
+                                <td style="width:12%;">
+                                    <span t-field="line.price_unit"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </t>
+                            <t t-if="not o.denomination_id.vat_discriminated">
+                                <td style="width:12%">
+                                    <span t-esc="sum(tax.compute_all(line.price_unit, o.currency_id, line.quantity).get('total_included')
+                                               for tax in line.invoice_line_tax_ids)"
+                                           t-esc-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                </td>
+                            </t>
+                            <td style="width:7%"><span t-field="line.discount"/></td>
+                            <t t-if="o.denomination_id.vat_discriminated">
+                                <td style="width:7%">
+                                    <span t-esc="', '.join([ str(tax.amount)+'%' for tax in
+                                    line.invoice_line_tax_ids if tax.tax_group_id == env.ref('l10n_ar.tax_group_vat')])"/>
+                                </td>
+                            </t>
+                            <t t-if="o.denomination_id.vat_discriminated">
+                                <td style="width:12%">
+                                    <span t-field="line.price_subtotal"
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </t>
+                            <td style="width:12%;text-align: right">
+                                <span t-esc="sum(tax.compute_all(line.price_subtotal, o.currency_id).get('total_included')
+                                   for tax in line.invoice_line_tax_ids if tax.tax_group_id == env.ref('l10n_ar.tax_group_vat'))"
+                                       t-esc-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+
+                <!-- TOTALES, IMPUESTOS Y NOTA -->
+                <div style="width: 60%;text-align:left;float:left;padding: 40px 0px 0px 0px">
+                    <span t-field="o.comment"/>
+                </div>
+
+                <div style="width: 50%;text-align:center;float:right">
+
+                    <div style="width: auto; float:right; font-size: 14px;padding: 40px 0px 0px 0px">
+                      <table style="text-align:right;border-spacing: 10px 4px;border-collapse: separate">
+
+                        <!--EN LOS CASOS QUE NO HAYA QUE DISCRIMNAR EL IVA EL SUBTOTAL E IVA NO SE MUESTRA-->
+                        <t t-if="o.denomination_id.vat_discriminated">
+                            <tr>
+                              <td style="text-align: right"><b>SUBTOTAL:</b></td>
+                              <td><span t-field="o.amount_untaxed"
+                                         t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                              </td>
+                            </tr>
+                            <t t-foreach="o.tax_line_ids" t-as="tax">
+                              <t t-if="tax.tax_id.tax_group_id == env.ref('l10n_ar.tax_group_vat')">
+                                  <tr>
+                                      <td style="text-align: right;text-transform:uppercase;">
+                                          <b><span t-esc="tax.tax_id.get_tax_description()"/></b>
+                                      </td>
+                                      <td>
+                                          <span t-field="tax.amount"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                      </td>
+                                  </tr>
+                              </t>
+                            </t>
+                        </t>
+
+                        <t t-if="o.perception_ids">
+                          <tr t-foreach="o.perception_ids" t-as="perception">
+                              <td style="text-align: right;text-transform:uppercase;">
+                                  <b><span t-esc="perception.perception_id.name"/>:</b>
+                              </td>
+                              <td>
+                                  <span t-field="perception.amount"
+                                         t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                              </td>
+                          </tr>
+                        </t>
+
+                        <tr>
+                          <td style="text-align: right"><b>TOTAL:</b></td>
+                          <td style="border-top:1px solid;border-color: #c5c5c5">
+                              <span t-field="o.amount_total"
+                                     t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                          </td>
+                        </tr>
+
+                      </table>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+
+        <template id="report_electronic_invoice_template">
+            <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_layout">
+                <t t-set="type">ORIGINAL</t>
+                <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_body" />
+            </t>
+            <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_layout">
+                <t t-set="type">DUPLICADO</t>
+                <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_body"/>
+            </t>
+
+        </template>
+
+        <template id="report_electronic_invoice">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="l10n_ar_electronic_invoice_report.report_electronic_invoice_template" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+
+        </template>
+
+
+    </data>
+
+</openerp>
