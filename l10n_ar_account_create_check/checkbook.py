@@ -131,8 +131,8 @@ class account_issued_check(osv.osv):
 
     _columns = {
 
-        'check_id': fields.many2one('account.checkbook.check', 'Check'),
         'checkbook_id': fields.many2one('account.checkbook', 'Checkbook'),
+        'check_id': fields.many2one('account.checkbook.check', 'Check'),
         'number': fields.char('Check Number', size=20),
         'account_id': fields.many2one('account.account', 'Cuenta', required=True),
         'rejected': fields.boolean('Rechazado'),
@@ -153,6 +153,17 @@ class account_issued_check(osv.osv):
             'views': [[False, "form"]],
             'target': 'new',
         }
+
+    def on_change_checkbook_id(self, cr, uid, ids, checkbook_id, context=None):
+        if context is None:
+            context = {}
+
+        if not checkbook_id:
+            return {'value':{'check_id': None,
+                             'account_bank_id': None,
+                             'bank_id': None,
+                             'number': False,
+                             }}
 
     def on_change_check_id(self, cr, uid, ids, check_id, context=None):
         if context is None:
