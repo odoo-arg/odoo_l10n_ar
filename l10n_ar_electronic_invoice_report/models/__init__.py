@@ -18,7 +18,6 @@
 
 import account_invoice
 import account_tax
-#import perception_perception
 import account_denomination
 import res_company
 
