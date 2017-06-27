@@ -24,7 +24,7 @@ class AccountDenomination(models.Model):
     _inherit = 'account.denomination'
 
     vat_discriminated = fields.Boolean(
-        string='Discrimina iva?',
+        string='Discrimina IVA?',
         help='Discriminacion de IVA en reporte de factura electronica'
     )
 
