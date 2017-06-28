@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+    	
+    	<record id="codes_models_convenio_multilateral_res_country_state_ar_a" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_a"/>
+            <field name="code">917</field>
+        </record>
+
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_b" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_b"/>  
+            <field name="code">902</field>
+        </record>
+
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_c" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_c"/> 
+            <field name="code">901</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_d" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_d"/>  
+            <field name="code">919</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_e" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_e"/> 
+            <field name="code">908</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_f" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_f"/>
+            <field name="code">912</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_g" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_g"/>
+            <field name="code">922</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_h" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_h"/>
+            <field name="code">906</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_j" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_j"/>
+            <field name="code">918</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_k" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_k"/>
+            <field name="code">903</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_l" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_l"/>
+            <field name="code">911</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_m" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_m"/>
+            <field name="code">913</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_n" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_n"/>
+            <field name="code">914</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_p" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_p"/>
+            <field name="code">909</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_q" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_q"/>
+            <field name="code">915</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_r" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_r"/>
+            <field name="code">916</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_s" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_s"/>
+            <field name="code">921</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_t" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_t"/>
+            <field name="code">924</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_u" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_u"/>
+            <field name="code">907</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_v" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_v"/>
+            <field name="code">923</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_w" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_w"/> 
+            <field name="code">905</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_x" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_x"/>
+            <field name="code">904</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_y" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_y"/>
+            <field name="code">910</field>
+        </record>
+        
+        <record id="codes_models_convenio_multilateral_res_country_state_ar_z" model="codes.models.relation">
+            <field name="name">ConvenioMultilateral</field>
+            <field name="name_model">res.country.state</field>
+            <field name="id_model" ref="base.state_ar_z"/> 
+            <field name="code">920</field>
+        </record>
+        
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

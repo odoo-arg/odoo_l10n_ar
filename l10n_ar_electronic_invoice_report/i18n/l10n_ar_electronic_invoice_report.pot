@@ -1,0 +1,262 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* l10n_ar_electronic_invoice_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-26 13:12+0000\n"
+"PO-Revision-Date: 2017-06-26 13:12+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>ACTIVITY START DATE: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>ADDRESS: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>C.U.I.T.: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_footer
+msgid "<b>CAE DUE DATE:</b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_footer
+msgid "<b>CAE N°:</b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>COMPANY NAME: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>CUIT: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>CUSTOMER: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>DATE: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>DUE DATE: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>GROSS INCOME: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>INVOICED PERIOD - FROM: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>SALE CONDITION: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>SOURCE DOCUMENT: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "<b>SUBTOTAL:</b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>TO: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "<b>TOTAL:</b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "<b>VAT CONDITION: </b>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_header
+msgid "COD."
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: code:addons/l10n_ar_electronic_invoice_report/models/account_invoice.py:91
+#, python-format
+msgid "CREDIT NOTE"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model,name:l10n_ar_electronic_invoice_report.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: code:addons/l10n_ar_electronic_invoice_report/models/account_invoice.py:89
+#, python-format
+msgid "DEBIT NOTE"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "DESCRIPTION"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "DISC %"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice
+msgid "DUPLICATE"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_account_denomination_vat_discriminated
+msgid "Discrimina iva?"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,help:l10n_ar_electronic_invoice_report.field_account_denomination_vat_discriminated
+msgid "Discriminacion de IVA en reporte de factura electronica"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_report_electronic_invoice_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.actions.report.xml,name:l10n_ar_electronic_invoice_report.action_electronic_invoice
+msgid "Factura electronica"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_res_company_start_date
+msgid "Fecha Inicio Actividad"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_report_electronic_invoice_id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: code:addons/l10n_ar_electronic_invoice_report/models/account_invoice.py:89
+#, python-format
+msgid "INVOICE"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model,name:l10n_ar_electronic_invoice_report.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_report_electronic_invoice___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: code:addons/l10n_ar_electronic_invoice_report/models/account_invoice.py:86
+#, python-format
+msgid "NO FISCAL"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model.fields,field_description:l10n_ar_electronic_invoice_report.field_res_company_iibb_number
+msgid "Numero IIBB"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice
+msgid "ORIGINAL"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_footer
+msgid "Page <span class=\"page\"/> of <span class=\"topage\"/>"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "QUANTITY"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "SUBTOTAL"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "TOTAL"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model,name:l10n_ar_electronic_invoice_report.model_account_tax
+msgid "Tax"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "UNIT PRICE"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "UOM"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.ui.view,arch_db:l10n_ar_electronic_invoice_report.report_electronic_invoice_body
+msgid "VAT"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: code:addons/l10n_ar_electronic_invoice_report/models/account_tax.py:30
+#, python-format
+msgid "VAT "
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model,name:l10n_ar_electronic_invoice_report.model_account_denomination
+msgid "account.denomination"
+msgstr ""
+
+#. module: l10n_ar_electronic_invoice_report
+#: model:ir.model,name:l10n_ar_electronic_invoice_report.model_report_l10n_ar_electronic_invoice_report_report_electronic_invoice
+msgid "report.l10n_ar_electronic_invoice_report.report_electronic_invoice"
+msgstr ""
+

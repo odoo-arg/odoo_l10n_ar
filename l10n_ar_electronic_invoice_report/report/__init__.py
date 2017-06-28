@@ -16,41 +16,6 @@
 #
 ##############################################################################
 
-{
-
-    'name': 'l10n_ar_perceptions',
-
-    'version': '1.0',
-
-    'category': 'Accounting',
-
-    'summary': 'Percepciones para Argentina',
-
-    'author': 'OPENPYME S.R.L',
-
-    'website': 'http://www.openpyme.com.ar',
-
-    'depends': [
-        'l10n_ar_taxes',
-        'l10n_ar_debit_note'
-    ],
-
-    'data': [
-        'views/perception_perception_view.xml',
-        'views/account_invoice_view.xml',
-        'data/perception_data.xml',
-        'data/codes_modes_relation.xml',
-        'security/ir.model.access.csv'
-    ],
-
-    'installable': True,
-
-    'auto_install': False,
-
-    'application': True,
-
-    'description': 'Contempla percepciones en la carga de facturas',
-
-}
+import report_electronic_invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

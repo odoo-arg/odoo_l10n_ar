@@ -18,7 +18,7 @@
 
 import json
 from openerp import models, fields, api
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class AccountInvoice(models.Model):
@@ -57,7 +57,7 @@ class AccountInvoice(models.Model):
         for invoice in self:
             group_vat = self.env.ref('l10n_ar.tax_group_vat')
             if not group_vat:
-                raise Warning('Grupo de impuesto de IVA no encontrado en la configuracion de impuestos')
+                raise ValidationError('Grupo de impuesto de IVA no encontrado en la configuracion de impuestos')
 
             amount_exempt = sum(line.base for line in invoice.tax_line_ids
                                 if line.tax_id.tax_group_id == group_vat and line.tax_id.is_exempt)
@@ -70,5 +70,15 @@ class AccountInvoice(models.Model):
             invoice.amount_exempt = amount_exempt
 
         return res
+
+    @api.constrains('invoice_line_ids')
+    def check_more_than_one_vat_in_line(self):
+        """ Se asegura que no haya mas de un impuesto tipo IVA en las lineas de factura """
+        group_vat = self.env.ref('l10n_ar.tax_group_vat')
+
+        for invoice in self:
+            for line in invoice.invoice_line_ids:
+                if len(line.invoice_line_tax_ids.filtered(lambda r: r.tax_group_id == group_vat)) > 1:
+                    raise ValidationError("No puede haber mas de un impuesto de tipo IVA en una linea!")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

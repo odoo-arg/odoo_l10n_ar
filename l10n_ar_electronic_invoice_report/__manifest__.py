@@ -18,38 +18,36 @@
 
 {
 
-    'name': 'l10n_ar_perceptions',
+    'name': 'Reporte de Facturacion Electronica',
 
     'version': '1.0',
 
+    'description': 'Reporte para facturación electrónica',
+
+    'author': 'OPENPYME S.R.L.',
+
+    'summary': 'Reporte para facturación electrónica',
+
     'category': 'Accounting',
 
-    'summary': 'Percepciones para Argentina',
-
-    'author': 'OPENPYME S.R.L',
-
-    'website': 'http://www.openpyme.com.ar',
-
     'depends': [
-        'l10n_ar_taxes',
-        'l10n_ar_debit_note'
+
+        'l10n_ar_afip_webservices_wsfe',
+        'l10n_ar_perceptions',
+        #'report_custom_filename' TODO: mirar v10 de este modulo, es para que el reporte tenga el nombre del numero de doc
     ],
 
     'data': [
-        'views/perception_perception_view.xml',
-        'views/account_invoice_view.xml',
-        'data/perception_data.xml',
-        'data/codes_modes_relation.xml',
-        'security/ir.model.access.csv'
+
+        'report/account_invoice_report.xml',
+        'report/report_electronic_invoice.xml',
+        'views/res_company_view.xml',
+        'views/account_denomination_view.xml'
     ],
 
+    'active': False,
+
     'installable': True,
-
-    'auto_install': False,
-
-    'application': True,
-
-    'description': 'Contempla percepciones en la carga de facturas',
 
 }
 
