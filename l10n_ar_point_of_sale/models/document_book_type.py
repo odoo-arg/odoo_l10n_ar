@@ -33,7 +33,7 @@ class DocumentBookType(models.Model):
     type = fields.Selection([('preprint', 'Preimpreso')], 'Tipo', required=True)
     category = fields.Selection([
         ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
+        ('payment', 'Pago'),
         ('picking', 'Remito')],
         'Categoria',
         required=True
