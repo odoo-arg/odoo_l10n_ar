@@ -16,8 +16,26 @@
 #
 ##############################################################################
 
-import account_payment
-import account_payment_type
-import account_payment_type_line
+from openerp import models, api
+
+
+class AccountRegisterPaymnets(models.TransientModel):
+
+    _inherit = 'account.register.payments'
+
+    def get_payment_vals(self):
+
+        res = super(AccountRegisterPaymnets, self).get_payment_vals()
+
+        res['pos_ar_id'] = self.pos_ar_id.id
+        res['payment_type_line_ids'] = [(4, payment) for payment in self.payment_type_line_ids.ids]
+
+        return res
+
+    @api.multi
+    def create_payment_l10n_ar(self):
+        payment = self.env['account.payment'].create(self.get_payment_vals())
+        payment.post_l10n_ar()
+        return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

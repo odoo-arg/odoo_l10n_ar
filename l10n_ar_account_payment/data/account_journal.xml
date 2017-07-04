@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+
+        <record id="seq_journal_cobros_y_pagos" model="ir.sequence">
+            <field name="name">Cobros y Pagos</field>
+            <field name="code">journal.cyp</field>
+            <field name="prefix">CYP/%(range_year)s/</field>
+            <field name="padding">4</field>
+        </record>
+
+        <record model="account.journal" id="l10n_ar.journal_cobros_y_pagos">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="name">Cobros y Pagos</field>
+            <field name="code">CYP</field>
+            <field name="sequence_id" ref="seq_journal_cobros_y_pagos"/>
+            <field name="type">bank</field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

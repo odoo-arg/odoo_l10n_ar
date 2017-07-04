@@ -16,8 +16,30 @@
 #
 ##############################################################################
 
-import account_payment
-import account_payment_type
-import account_payment_type_line
+from openerp import models, fields
 
+
+class AccountPaymentType(models.Model):
+
+    _name = 'account.payment.type'
+
+    name = fields.Char('Nombre', required=True)
+    account_id = fields.Many2one(
+        'account.account',
+        'Cuenta',
+        domain=[('deprecated', '=', False)],
+        required=True
+    )
+    currency_id = fields.Many2one(
+        'res.currency',
+        'Moneda',
+        required=True,
+        default=lambda self: self.company_id.currency_id.id
+    )
+    company_id = fields.Many2one(
+        'res.company',
+        'Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

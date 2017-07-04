@@ -16,8 +16,6 @@
 #
 ##############################################################################
 
-import account_payment
-import account_payment_type
-import account_payment_type_line
+import account_register_payments
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

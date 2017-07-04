@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+   
+        <record model="ir.ui.view" id="l10n_ar_account_register_payments_wizard_form">
+            <field name="name">Account register payments wizard form AR localization</field>
+            <field name="model">account.register.payments</field>
+            <field name="inherit_id" ref="account.view_account_payment_from_invoices"/>
+            <field name="arch" type="xml">
+                <field name="payment_date" position="after">
+                    <field name="pos_ar_id"/>
+                </field>
+                <field name="communication" position="after">
+                    <field name="total_invoices_amount" attrs="{'invisible': [('total_invoices_amount', '=', 0.0)]}"/>
+                </field>
+                <form position="inside">
+                    <notebook>
+                        <page string="Lineas de pago">
+                            <field name="payment_type_line_ids">
+                                <tree editable="bottom">
+                                    <field name="account_payment_type_id"
+                                           widget="selection" domain="[('currency_id','=', parent.currency_id)]"/>
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+                <button name="create_payment" position="attributes">
+                    <attribute name="name">create_payment_l10n_ar</attribute>
+                </button>
+            </field>
+        </record>
+    
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

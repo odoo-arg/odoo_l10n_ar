@@ -31,11 +31,15 @@
     'website': 'http://www.openpyme.com.ar',
 
     'depends': [
-        'l10n_ar_point_of_sale'
+        'l10n_ar_point_of_sale',
     ],
 
     'data': [
-        'views/account_payment_view.xml'
+        'views/account_payment_view.xml',
+        'views/account_payment_type_view.xml',
+        'wizard/account_register_payments_view.xml',
+        'data/account_journal.xml',
+        'security/ir.model.access.csv'
     ],
 
     'installable': True,

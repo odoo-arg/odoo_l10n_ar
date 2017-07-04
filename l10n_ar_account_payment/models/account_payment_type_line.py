@@ -16,8 +16,35 @@
 #
 ##############################################################################
 
-import account_payment
-import account_payment_type
-import account_payment_type_line
+from openerp import models, fields, api
+from openerp.exceptions import ValidationError
+
+
+class AccountPaymentTypeLine(models.Model):
+
+    _name = 'account.payment.type.line'
+
+    account_payment_type_id = fields.Many2one(
+        'account.payment.type',
+        'Linea de metodo de pago',
+        required=True,
+    )
+    payment_id = fields.Many2one(
+        'account.abstract.payment',
+        'Pago',
+        required=True,
+        ondelete='cascade'
+    )
+    amount = fields.Monetary('Importe', required=True)
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Moneda',
+        related='account_payment_type_id.currency_id'
+    )
+
+    @api.constrains('amount')
+    def constraint_amount(self):
+        if self.amount <= 0:
+            raise ValidationError('El importe de la linea de pago debe ser mayor a 0')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
