@@ -33,6 +33,13 @@ class AccountAbstractPayment(models.AbstractModel):
         return pos
 
     def _get_total_invoices_amount_default(self):
+        """
+        Funcion utilizada para obtener el monto total de facturas a pagar al crear un nuevo pago
+        Resulta que como dicho valor no depende de ningun campo del modulo en particular
+        no se puede generar un @api.depends el valor se obtiene a partir de registros
+        que se obtienen por medio del context
+        :return: Monto total de facturas a pagar
+        """
         active_model = self.env.context.get('active_model')
         active_ids = self.env.context.get('active_ids')
         if active_model and active_ids:
@@ -40,6 +47,12 @@ class AccountAbstractPayment(models.AbstractModel):
             return sum(inv.residual for inv in invoices)
 
     def _get_total_invoices_amount(self):
+        """
+        Funcion utilizada para obtener el monto total de facturas a pagar.
+        Esto es simplemente utilizado como un hack dado que el valor nunca cambia
+        luego de que el pago se crea y tampoco tiene sentido que el valor se guarde
+        en la tabla.
+        """
         self.total_invoices_amount = self._get_total_invoices_amount_default()
 
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta', default=_get_default_pos)
