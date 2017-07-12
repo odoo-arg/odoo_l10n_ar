@@ -16,12 +16,20 @@
 #
 ##############################################################################
 
-from openerp import models, api
+from openerp import models, api, fields
 
 
 class AccountRegisterPaymnets(models.TransientModel):
 
     _inherit = 'account.register.payments'
+
+    payment_type_line_ids = fields.Many2many(
+        'account.payment.type.line',
+        'register_payment_payment_line_rel',
+        'payment_id',
+        'line_id',
+        'Lineas de pagos'
+    )
 
     def get_payment_vals(self):
 

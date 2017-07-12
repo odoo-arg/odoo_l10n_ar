@@ -27,15 +27,23 @@
                 </button>
                 <field name="payment_type" position="attributes">
                     <attribute name="attrs">{
-                        'readonly': ['|', ('state', '!=', 'draft'), ('has_number','=',True)]}</attribute>
+                        'readonly': ['|', ('state', '!=', 'draft'), ('has_number','=',True)],
+                        'invisible': True
+                        }
+                    </attribute>
                 </field>
                 <field name="partner_type" position="attributes">
                     <attribute name="attrs">{
                         'readonly': ['|', ('state', '!=', 'draft'), ('has_number','=',True)],
                         'required': [('payment_type', 'in', ('inbound', 'outbound'))],
-                        'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))],
+                        'invisible': True,
                     }
                     </attribute>
+                    <attribute name="nolabel"/>
+                </field>
+                <!--Seteamos los labels de vuelta porque modifican el colspan por mas que el campo este invisible-->
+                <field name="partner_id" position="attributes">
+                    <attribute name="nolabel"/>
                 </field>
                 <field name="payment_date" position="after">
                     <field name="has_number" invisible="1"/>
