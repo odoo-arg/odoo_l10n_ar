@@ -16,22 +16,30 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields
 
 
-class DocumentBookDocumentType(models.Model):
+class AccountPaymentType(models.Model):
 
-    _name = 'document.book.document.type'
+    _name = 'account.payment.type'
 
     name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('payment', 'Pago'),
-        ('picking', 'Remito')],
-        'Categoria',
+    account_id = fields.Many2one(
+        'account.account',
+        'Cuenta',
+        domain=[('deprecated', '=', False)],
         required=True
     )
-
+    currency_id = fields.Many2one(
+        'res.currency',
+        'Moneda',
+        required=True,
+        default=lambda self: self.company_id.currency_id.id
+    )
+    company_id = fields.Many2one(
+        'res.company',
+        'Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

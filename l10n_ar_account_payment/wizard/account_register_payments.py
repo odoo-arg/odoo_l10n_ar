@@ -16,22 +16,26 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, api
 
 
-class DocumentBookDocumentType(models.Model):
+class AccountRegisterPaymnets(models.TransientModel):
 
-    _name = 'document.book.document.type'
+    _inherit = 'account.register.payments'
 
-    name = fields.Char('Nombre', required=True)
-    type = fields.Char('Tipo', required=True)
-    category = fields.Selection([
-        ('invoice', 'Factura'),
-        ('payment', 'Pago'),
-        ('picking', 'Remito')],
-        'Categoria',
-        required=True
-    )
+    def get_payment_vals(self):
+
+        res = super(AccountRegisterPaymnets, self).get_payment_vals()
+
+        res['pos_ar_id'] = self.pos_ar_id.id
+        res['payment_type_line_ids'] = [(4, payment) for payment in self.payment_type_line_ids.ids]
+
+        return res
+
+    @api.multi
+    def create_payment_l10n_ar(self):
+        payment = self.env['account.payment'].create(self.get_payment_vals())
+        payment.post_l10n_ar()
+        return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

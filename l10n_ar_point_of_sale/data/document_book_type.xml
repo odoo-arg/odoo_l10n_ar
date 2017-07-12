@@ -30,7 +30,7 @@
 
         <record id='document_book_type_preprint_voucher' model='document.book.type'>
             <field name='type'>preprint</field>
-            <field name='category'>voucher</field>
+            <field name='category'>payment</field>
         </record>
 
         <record id='document_type_invoice' model='document.book.document.type'>
@@ -43,6 +43,18 @@
             <field name='type'>refund</field>
             <field name='name'>Nota de credito</field>
             <field name='category'>invoice</field>
+        </record>
+
+        <record id='document_type_inbound' model='document.book.document.type'>
+            <field name='type'>inbound</field>
+            <field name='name'>Recibo</field>
+            <field name='category'>payment</field>
+        </record>
+
+        <record id='document_type_outbound' model='document.book.document.type'>
+            <field name='type'>outbound</field>
+            <field name='name'>Orden de pago</field>
+            <field name='category'>payment</field>
         </record>
 
     </data>
