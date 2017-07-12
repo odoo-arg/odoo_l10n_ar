@@ -16,17 +16,20 @@
 #
 ##############################################################################
 
+
 {
 
-    'name': 'l10n_ar_point_of_sale',
+    'name': 'l10n_ar_account_check',
 
     'version': '1.0',
 
-    'summary': 'Punto de venta para Argentina',
+    'summary': 'Cheques propios y de terceros',
 
     'description': """
-Modulo encargado de manejar talonarios, puntos de venta y mapeo
-entre posiciones fiscales y denominaciones.
+Cheques
+==================================
+    Cheques propios desde pagos.\n
+    Cheques de terceros para cobros y pagos.
     """,
 
     'author': 'OPENPYME S.R.L.',
@@ -36,21 +39,19 @@ entre posiciones fiscales y denominaciones.
     'category': 'Accounting',
 
     'depends': [
-        'l10n_ar',
+        'l10n_ar_account_payment',
     ],
 
     'data': [
-        'views/account_denomination_view.xml',
-        'views/document_book_view.xml',
-        'views/account_fiscal_position.xml',
-        'views/pos_ar_view.xml',
-        'views/menu.xml',
-        'views/account_invoice_view.xml',
+        'security/treasury_security.xml',
+        'security/ir.model.access.csv',
+        'views/account_check_view.xml',
         'views/res_company_view.xml',
-        'data/document_book_type.xml',
-        'data/account_denomination.xml',
-        'data/afip_voucher_type.xml',
-        'security/ir.model.access.csv'
+        'views/account_payment_view.xml',
+        'views/account_checkbook_view.xml',
+        'views/menu.xml',
+        'wizard/account_register_payments_view.xml',
+        'data/res_company.xml'
     ],
 
     'active': False,
@@ -58,5 +59,4 @@ entre posiciones fiscales y denominaciones.
     'installable': True,
 
 }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
