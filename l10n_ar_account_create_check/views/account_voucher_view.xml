@@ -26,7 +26,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='issued_check_ids']/form/group/group/field[@name='number']" position="before">
-                        <field name="checkbook_id" domain="[('issued_check_ids', '=', False)]" on_change="on_change_checkbook_id(checkbook_id)"/>
+                        <field name="checkbook_id" domain="[('check_ids.state', '=', 'draft')]" on_change="on_change_checkbook_id(checkbook_id)"/>
                         <field name="check_id" attrs="{'readonly': [('issued','=',True)]}" on_change="on_change_check_id(check_id)" domain="[('state', '=', 'draft'), ('checkbook_id', '=', checkbook_id)]"/>
                         <field name="account_id" invisible="1"/>
                     </xpath>
