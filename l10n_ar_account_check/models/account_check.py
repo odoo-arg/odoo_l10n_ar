@@ -48,11 +48,6 @@ class AccountAbstractCheck(models.AbstractModel):
         if not self.name.isdigit():
             raise UserError("El numero del cheque debe contener solo numeros")
 
-    @api.constrains('amount')
-    def constraint_amount(self):
-        if self.amount <= 0.0:
-            raise ValidationError("El importe del cheque debe ser mayor a 0")
-
     @api.constrains('payment_date', 'issue_date', 'payment_type')
     def constraint_dates(self):
         if self.payment_date and self.payment_date < self.issue_date:
