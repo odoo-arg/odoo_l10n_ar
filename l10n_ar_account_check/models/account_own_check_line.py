@@ -18,8 +18,6 @@
 
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class AccountOwnCheckLine(models.Model):
