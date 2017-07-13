@@ -38,6 +38,7 @@
         'views/account_payment_view.xml',
         'views/account_payment_type_view.xml',
         'wizard/account_register_payments_view.xml',
+        'views/menu.xml',
         'data/account_journal.xml',
         'security/ir.model.access.csv'
     ],

@@ -30,7 +30,7 @@ class AccountPaymentTypeLine(models.Model):
         required=True,
     )
     payment_id = fields.Many2one(
-        'account.abstract.payment',
+        'account.payment',
         'Pago',
         required=True,
         ondelete='cascade'
