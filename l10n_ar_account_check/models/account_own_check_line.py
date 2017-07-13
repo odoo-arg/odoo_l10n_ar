@@ -18,6 +18,8 @@
 
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class AccountOwnCheckLine(models.Model):
@@ -44,13 +46,29 @@ class AccountOwnCheckLine(models.Model):
         string='Estado',
         related='own_check_id.state'
     )
-    payment_id = fields.Many2one('account.payment', 'Pago', required=True, ondelete="cascade")
+    payment_id = fields.Many2one('account.payment', 'Pago', ondelete="cascade")
     amount = fields.Float('Importe', required=True)
+
+    @api.multi
+    def post_payment(self, payment):
+        """ Lo que deberia pasar con el cheque cuando se valida el pago.. """
+
+        for own_check_line in self:
+            payment_date = own_check_line.issue_date if own_check_line.payment_type == 'common' \
+                else own_check_line.payment_date
+            vals = {
+                'amount': own_check_line.amount,
+                'payment_date': payment_date,
+                'issue_date': own_check_line.issue_date,
+                'destination_payment_id': payment.id,
+                'currency_id': payment.currency_id.id
+            }
+            own_check_line.own_check_id.post_payment(vals)
 
     @api.constrains('own_check_id')
     def constraint_own_check(self):
         """ Evitamos que validen dos pagos con el mismo cheque (o dupliquen el cheque en el pago) """
-        if self.search_count([('own_check_id', '=', self.own_check_id.id)]) > 1:
+        if self.search_count([('own_check_id', '=', self.own_check_id.id), ('payment_id', '!=', False)]) > 1:
             raise ValidationError("El cheque "+self.own_check_id.name+" ya existe en un pago")
 
     @api.onchange('checkbook_id')

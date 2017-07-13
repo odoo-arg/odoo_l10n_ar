@@ -48,6 +48,11 @@ class AccountAbstractCheck(models.AbstractModel):
         if not self.name.isdigit():
             raise UserError("El numero del cheque debe contener solo numeros")
 
+    @api.constrains('amount')
+    def constraint_amount(self):
+        if self.amount < 0.0:
+            raise ValidationError("El importe del cheque debe ser mayor a 0")
+
     @api.constrains('payment_date', 'issue_date', 'payment_type')
     def constraint_dates(self):
         if self.payment_date and self.payment_date < self.issue_date:
@@ -60,6 +65,24 @@ class AccountAbstractCheck(models.AbstractModel):
     def onchange_payment_type(self):
         if self.payment_type == 'common' and self.issue_date:
             self.payment_date = self.issue_date
+
+
+THIRD_CHECK_NEXT_STATES = {
+    'draft': 'wallet',
+    'wallet_deposited': 'deposited',
+    'wallet_handed': 'handed',
+    'wallet_rejected': 'rejected',
+    'handed': 'rejected',
+    'deposited': 'rejected',
+}
+THIRD_CHECK_CANCEL_STATES = {
+    'wallet': 'draft',
+    'handed': 'wallet',
+    'deposited': 'wallet',
+    'rejected_wallet': 'wallet',
+    'rejected_handed': 'handed',
+    'rejected_deposited': 'deposited',
+}
 
 
 class AccountThirdCheck(models.Model):
@@ -87,8 +110,65 @@ class AccountThirdCheck(models.Model):
     )
     issue_name = fields.Char('Nombre emisor')
 
+    @api.multi
+    def post_receipt(self, currency_id):
+        """ Lo que deberia pasar con el cheque cuando se valida un recibo.. """
+        if any(check.state != 'draft' for check in self):
+            raise ValidationError("Los cheques de terceros recibidos deben estar en estado borrador")
+        self.write({'currency_id': currency_id})
+        self.next_state('draft')
 
-class AccountIssuedCheck(models.Model):
+    @api.multi
+    def post_payment(self):
+        """ Lo que deberia pasar con el cheque cuando se valida un pago.. """
+        if any(check.state != 'wallet' for check in self):
+            raise ValidationError("Los cheques de terceros entregados deben estar en cartera")
+        self.next_state('wallet_handed')
+
+    @api.multi
+    def cancel_receipt(self):
+        """ Lo que deberia pasar con el cheque cuando se cancela un recibo.. """
+        if any(check.state != 'wallet' for check in self):
+            raise ValidationError("Los cheques de terceros recibidos deben estar en cartera para cancelar el pago")
+        self.cancel_state('wallet')
+
+    @api.multi
+    def cancel_payment(self):
+        """ Lo que deberia pasar con el cheque cuando se cancela una orden de pago.. """
+        if any(check.state != 'handed' for check in self):
+            raise ValidationError("Los cheques de terceros deben estar en estado entregado para cancelar el pago")
+        self.cancel_state('handed')
+
+    @api.multi
+    def cancel_state(self, state):
+        """ Vuelve a un estado anterior del flow del cheque si corresponde """
+        cancel_state = THIRD_CHECK_CANCEL_STATES.get(state)
+        if not cancel_state:
+            raise ValidationError("No se puede cancelar el estado del cheque")
+        self.write({'state': cancel_state})
+
+    @api.multi
+    def next_state(self, state):
+        """ Avanza al siguiente estado del flow del cheque si corresponde """
+        next_state = THIRD_CHECK_NEXT_STATES.get(state)
+        if not next_state:
+            raise ValidationError("No se puede avanzar el estado del cheque")
+        self.write({'state': next_state})
+
+
+OWN_CHECK_NEXT_STATES = {
+    'draft_handed': 'handed',
+    'draft_canceled': 'canceled',
+    'handed': 'rejected',
+}
+OWN_CHECK_CANCEL_STATES = {
+    'canceled': 'draft',
+    'handed': 'draft',
+    'rejected': 'handed'
+}
+
+
+class AccountOwnCheck(models.Model):
 
     _inherit = 'account.abstract.check'
     _name = 'account.own.check'
@@ -110,11 +190,39 @@ class AccountIssuedCheck(models.Model):
         required=True,
         ondelete='cascade'
     )
-    account_own_check_line_ids = fields.One2many(
-        'account.own.check.line',
-        'own_check_id',
-        'Lineas de pago',
-        readonly=True
-    )
+
+    @api.multi
+    def post_payment(self, vals):
+        """ Lo que deberia pasar con el cheque cuando se valida el pago.. """
+        if any(check.state != 'draft' for check in self):
+            raise ValidationError("Los cheques propios entregados deben estar en estado borrador")
+
+        vals = vals if vals else {}
+        self.write(vals)
+        self.next_state('draft_handed')
+
+    @api.multi
+    def cancel_payment(self):
+        """ Lo que deberia pasar con el cheque cuando se cancela el pago.. """
+        if any(check.state != 'handed' for check in self):
+            raise ValidationError("Los cheques propios deben estar en estado entregado para cancelar el pago")
+        self.cancel_state('handed')
+        self.write({'destination_payment_id': None})
+
+    @api.multi
+    def cancel_state(self, state):
+        """ Vuelve a un estado anterior del flow del cheque si corresponde """
+        cancel_state = OWN_CHECK_CANCEL_STATES.get(state)
+        if not cancel_state:
+            raise ValidationError("No se puede cancelar el estado del cheque")
+        self.write({'state': cancel_state})
+
+    @api.multi
+    def next_state(self, state):
+        """ Avanza al siguiente estado del flow del cheque si corresponde """
+        next_state = OWN_CHECK_NEXT_STATES.get(state)
+        if not next_state:
+            raise ValidationError("No se puede avanzar el estado del cheque")
+        self.write({'state': next_state})
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

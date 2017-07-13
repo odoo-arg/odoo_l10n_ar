@@ -16,12 +16,36 @@
 #
 ##############################################################################
 
-from openerp import models
+from openerp import models, fields
 
 
 class AccountRegisterPaymnets(models.TransientModel):
 
     _inherit = 'account.register.payments'
+
+    # Cheques recibidos
+    account_third_check_ids = fields.Many2many(
+        'account.third.check',
+        'third_check_wizard_payment_rel',
+        'source_payment_id',
+        'third_check_id',
+        'Cheques de terceros'
+    )
+    # Cheques entregados
+    account_third_check_sent_ids = fields.Many2many(
+        'account.third.check',
+        'sent_third_check_wizard_payment_rel',
+        'destination_payment_id',
+        'third_check_id',
+        'Cheques de terceros'
+    )
+    account_own_check_line_ids = fields.Many2many(
+        'account.own.check.line',
+        'own_check_wizard_payment_rel',
+        'payment_id',
+        'own_check_id',
+        'Cheques propios'
+    )
 
     def get_payment_vals(self):
 
