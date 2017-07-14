@@ -16,8 +16,32 @@
 #
 ##############################################################################
 
-import account_invoice
-import account_tax_ar
-import account_document_tax
+from openerp import models, fields, api
+
+
+class AccountAbstractPayment(models.AbstractModel):
+
+    _inherit = 'account.abstract.payment'
+
+    retention_ids = fields.One2many(
+        'account.payment.retention',
+        'payment_id',
+        'Retenciones'
+    )
+
+    @api.onchange('retention_ids')
+    def onchange_retention_ids(self):
+        self.recalculate_amount()
+
+    def set_payment_methods_vals(self):
+
+        vals = super(AccountAbstractPayment, self).set_payment_methods_vals()
+
+        retentions = [
+            {'amount': retention.amount, 'account_id': retention.retention_id.tax_id.account_id.id}
+            for retention in self.retention_ids
+        ]
+
+        return vals+retentions
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -19,40 +19,35 @@
 from openerp import models, fields, api
 
 
-class AccountInvoicePerception(models.Model):
+class AccountPaymentRetention(models.Model):
     """
-    Percepciones cargadas en invoices. Tener en cuenta que hay datos necesarios que se deberian tomar
-    de la invoice: Cuit, Moneda, Fecha, Tipo (Proveedor/Cliente)
+    Retenciones cargadas en pagos. Tener en cuenta que hay datos necesarios que se deberian desde
+    el pago: Cuit, Moneda, Fecha, Tipo (Proveedor/Cliente)
     """
 
     _inherit = 'account.document.tax'
-    _name = 'account.invoice.perception'
+    _name = 'account.payment.retention'
 
-    def _get_signed_amount(self):
-        for perception in self:
-            sign = 1 if perception.invoice_id.type != 'out_refund' else -1
-            perception.amount_signed = perception.amount * sign
+    payment_id = fields.Many2one('account.payment', 'Pago')
+    currency_id = fields.Many2one(related='payment_id.currency_id', readonly=True)
+    retention_id = fields.Many2one(
+        'retention.retention',
+        'Retencion',
+        ondelete='restrict',
+        required=True
+    )
 
-    @api.onchange('perception_id')
-    def onchange_perception_id(self):
-        if self.perception_id:
+    @api.onchange('retention_id')
+    def onchange_retention_id(self):
+        if self.retention_id:
             self.update({
-                'name': self.perception_id.name,
-                'jurisdiction': self.perception_id.jurisdiction,
+                'name': self.retention_id.name,
+                'jurisdiction': self.retention_id.jurisdiction,
             })
         else:
             self.update({
                 'name': None,
                 'jurisdiction': None,
             })
-
-    invoice_id = fields.Many2one('account.invoice', 'Documento', required=True)
-    currency_id = fields.Many2one(related='invoice_id.currency_id')
-    perception_id = fields.Many2one(
-        'perception.perception',
-        'Percepcion',
-        ondelete='restrict',
-        required=True
-    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -16,8 +16,25 @@
 #
 ##############################################################################
 
-import account_invoice
-import account_tax_ar
-import account_document_tax
+from openerp import models, fields
+
+
+class AccountRegisterPaymnets(models.TransientModel):
+
+    _inherit = 'account.register.payments'
+
+    retention_ids = fields.Many2many(
+        'account.payment.retention',
+        'register_payment_retention_rel',
+        'payment_id',
+        'retention_id',
+        'Retenciones'
+    )
+
+    def get_payment_vals(self):
+        res = super(AccountRegisterPaymnets, self).get_payment_vals()
+        res['retention_ids'] = [(4, retention) for retention in self.retention_ids.ids]
+
+        return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

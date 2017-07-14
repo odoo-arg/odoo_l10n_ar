@@ -16,8 +16,25 @@
 #
 ##############################################################################
 
-import account_invoice
-import account_tax_ar
-import account_document_tax
+from openerp import models, fields
+
+
+class AccountDocumentTax(models.AbstractModel):
+
+    _name = 'account.document.tax'
+
+    currency_id = fields.Many2one('res.currency')
+    amount = fields.Monetary('Importe', currency_field='currency_id', required=True)
+    base = fields.Monetary('Base', currency_field='currency_id')
+    jurisdiction = fields.Selection(
+        [
+            ('nacional', 'Nacional'),
+            ('provincial', 'Provincial'),
+            ('municipal', 'Municipal')
+        ],
+        string='Jurisdiccion',
+        required=True,
+    )
+    name = fields.Char('Nombre', required=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

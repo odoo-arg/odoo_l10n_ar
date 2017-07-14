@@ -18,38 +18,38 @@
 
 {
 
-    'name': 'l10n_ar_taxes',
+    'name': 'l10n_ar_retentions',
 
     'version': '1.0',
 
     'category': 'Accounting',
 
-    'summary': 'Manejo de importes de impuestos para Argentina',
+    'summary': 'Retenciones para Argentina',
 
     'author': 'OPENPYME S.R.L',
 
     'website': 'http://www.openpyme.com.ar',
 
     'depends': [
-        'l10n_ar_point_of_sale'
+        'l10n_ar_account_payment',
+        'l10n_ar_taxes'
     ],
 
     'data': [
-        'views/account_invoice_view.xml',
-        'views/account.xml',
-        'views/taxes_menu_view.xml',
-        'data/codes_modes_relation.xml'
+        'views/retention_retention_view.xml',
+        'views/account_payment_view.xml',
+        'wizard/account_register_payments_wizard.xml',
+        'data/retention_data.xml',
+        'security/ir.model.access.csv'
     ],
-    'qweb': [
-        "static/src/xml/account_info.xml",
-    ],
+
     'installable': True,
 
     'auto_install': False,
 
     'application': True,
 
-    'description': 'Manejo de importes de impuestos para Argentina',
+    'description': 'Contempla retenciones en la carga de pagos',
 
 }
 
