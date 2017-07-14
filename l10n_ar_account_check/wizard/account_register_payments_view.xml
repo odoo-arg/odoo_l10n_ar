@@ -25,7 +25,7 @@
                 <notebook position="inside">
                     <page string="Cheques">
                         <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}">
-                            <field name="account_third_check_ids" nolabel="1">
+                            <field name="account_third_check_ids" nolabel="1" widget="one2many">
                                 <form>
                                     <group>
                                         <group>
@@ -56,7 +56,7 @@
                         </group>
 
                         <group string="Cheques propios" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
-                            <field name="account_own_check_line_ids" nolabel="1">
+                            <field name="account_own_check_line_ids" nolabel="1" widget="one2many">
                                 <tree editable="bottom">
                                     <field name="checkbook_id" domain="[('account_draft_own_check_ids', '=', [])]"/>
                                     <field name="own_check_id"
@@ -72,7 +72,6 @@
 
                         <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
                             <field name="account_third_check_sent_ids" nolabel="1"
-                                    widget="many2many"
                                     options="{'no_create': True}"
                                     domain="[('state', '=', 'wallet'), ('destination_payment_id', '=', False)]"
                             >

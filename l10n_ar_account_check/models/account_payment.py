@@ -106,23 +106,9 @@ class AccountPayment(models.Model):
         """ Heredamos la funcion para cambiar los estados de los cheques """
 
         for payment in self:
-            payment._validate_check_states_post()
-            payment.account_third_check_ids.write({
-                'state': 'wallet',
-                'currency_id': payment.currency_id.id
-            })
-            payment.account_third_check_sent_ids.write({'state': 'handed'})
-            for own_check_line in payment.account_own_check_line_ids:
-                payment_date = own_check_line.issue_date if own_check_line.payment_type == 'common'\
-                    else own_check_line.payment_date
-                own_check_line.own_check_id.write({
-                    'state': 'handed',
-                    'amount': own_check_line.amount,
-                    'payment_date': payment_date,
-                    'issue_date': own_check_line.issue_date,
-                    'destination_payment_id': payment.id,
-                    'currency_id': payment.currency_id.id
-                })
+            payment.account_third_check_ids.post_receipt(currency_id=payment.currency_id.id)
+            payment.account_third_check_sent_ids.post_payment()
+            payment.account_own_check_line_ids.post_payment(payment)
 
         return super(AccountPayment, self).post_l10n_ar()
 
@@ -130,38 +116,10 @@ class AccountPayment(models.Model):
         """ Heredamos la funcion para cambiar los estados de los cheques """
 
         for payment in self:
-            payment._validate_check_states_cancel()
-            payment.account_third_check_ids.write({'state': 'draft'})
-            payment.account_third_check_sent_ids.write({'state': 'wallet'})
-            payment.account_own_check_line_ids.mapped('own_check_id').write({
-                'state': 'draft',
-                'destination_payment_id': None,
-            })
+            payment.account_third_check_ids.cancel_receipt()
+            payment.account_third_check_sent_ids.cancel_payment()
+            payment.account_own_check_line_ids.mapped('own_check_id').cancel_payment()
 
         return super(AccountPayment, self).cancel()
-
-    def _validate_check_states_cancel(self):
-        """ Valida que los cheques esten en los estados correspondientes antes de cancelar el pago """
-
-        if any(check.state != 'wallet' for check in self.account_third_check_ids):
-            raise ValidationError("Los cheques de terceros recibidos deben estar en cartera para cancelar el pago")
-
-        if any(check.state != 'handed' for check in self.account_third_check_sent_ids):
-            raise ValidationError("Los cheques de terceros deben estar en estado entregado para cancelar el pago")
-
-        if any(line.own_check_id.state != 'handed' for line in self.account_own_check_line_ids):
-            raise ValidationError("Los cheques propios deben estar en estado entregado para cancelar el pago")
-
-    def _validate_check_states_post(self):
-        """ Valida que los cheques esten en los estados correspondientes antes de validar el pago """
-
-        if any(check.state != 'draft' for check in self.account_third_check_ids):
-            raise ValidationError("Los cheques de terceros recibidos deben estar en estado borrador")
-
-        if any(check.state != 'wallet' for check in self.account_third_check_sent_ids):
-            raise ValidationError("Los cheques de terceros entregados deben estar en cartera")
-
-        if any(line.own_check_id.state != 'draft' for line in self.account_own_check_line_ids):
-            raise ValidationError("Los cheques propios entregados deben estar en estado borrador")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
