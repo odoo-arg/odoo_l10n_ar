@@ -39,6 +39,12 @@ class AccountTaxAr(models.AbstractModel):
         required=True,
         default='gross_income'
     )
+    type_tax_use = fields.Selection(
+        [('sale', 'Sales'),
+         ('purchase', 'Purchases'),
+         ('none', 'None')],
+        related='tax_id.type_tax_use'
+    )
     jurisdiction = fields.Selection(
         [
             ('nacional', 'Nacional'),

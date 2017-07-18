@@ -23,8 +23,8 @@
             <field name="inherit_id" ref="l10n_ar_account_payment.l10n_ar_account_payment_view_form"/>
             <field name="arch" type="xml">
                 <notebook position="inside">
-                    <page string="Retenciones">
-                        <field name="retention_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                    <page name="retentions" string="Retenciones">
+                        <field name="retention_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                             <tree editable="bottom" string="Retenciones">
                                 <field name="currency_id" invisible="1"/>
                                 <field name="retention_id"/>
