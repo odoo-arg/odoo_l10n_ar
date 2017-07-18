@@ -16,20 +16,12 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models
 
 
 class RetentionRetention(models.Model):
 
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
-
-    type_tax_use = fields.Selection(
-        [('sale', 'Sales'),
-         ('purchase', 'Purchases'),
-         ('none', 'None')],
-        'Tipo de impuesto',
-        related='tax_id.type_tax_use',
-    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

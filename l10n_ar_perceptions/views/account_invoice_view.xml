@@ -29,7 +29,7 @@
                                 <field name="perception_ids" nolabel="1">
                                     <tree editable="bottom" string="Percepciones">
                                         <field name="currency_id" invisible="1"/>
-                                        <field name="perception_id"/>
+                                        <field name="perception_id" domain="[('type_tax_use', '=', 'sale')]"/>
                                         <field name="base"/>
                                         <field name="amount"/>
                                         <field name="name" invisible="1"/>
@@ -61,7 +61,7 @@
                 <field name="tax_line_ids" position="before">
                     <field name="perception_ids" nolabel="1">
                         <tree editable="bottom" string="Percepciones">
-                            <field name="perception_id"/>
+                            <field name="perception_id" domain="[('type_tax_use', '=', 'purchase')]"/>
                             <field name="base"/>
                             <field name="amount"/>
                             <field name="name" invisible="1"/>
