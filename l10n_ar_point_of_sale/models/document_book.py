@@ -28,7 +28,7 @@ class DocumentBook(models.Model):
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta', required=True)
     category = fields.Selection([
         ('invoice', 'Factura'),
-        ('voucher', 'Recibo'),
+        ('payment', 'Recibo'),
         ('picking', 'Remito')],
         'Categoria',
         required=True

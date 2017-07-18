@@ -28,7 +28,7 @@
             <field name='category'>picking</field>
         </record>
 
-        <record id='document_book_type_preprint_voucher' model='document.book.type'>
+        <record id='document_book_type_preprint_payment' model='document.book.type'>
             <field name='type'>preprint</field>
             <field name='category'>payment</field>
         </record>
