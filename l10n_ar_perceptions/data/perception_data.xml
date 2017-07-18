@@ -24,17 +24,10 @@
 
         <!-- CUENTAS DE PRECEPCIONES ACTIVO -->
 
-        <record model="account.account" id="l10n_ar.creditos_por_iigg_y_gmp">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
-            <field name="reconcile" eval="True"/>
-            <field name="code">1142.01</field>
-            <field name="name">CRÉDITOS POR IIGG Y GMP</field>
-        </record>
-
         <record model="account.account" id="l10n_ar.percepciones_sufridas_iigg">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
-            <field name="code">1142.02</field>
+            <field name="code">1142.01</field>
             <field name="name">Percepciones Sufridas IIGG</field>
         </record>
 
@@ -129,8 +122,8 @@
         </record>
 
         <record id="tax_percepcion_iibb_caba_efectuada" model="account.tax">
-            <field name="name">Percepciones IIBB CABA efectuada</field>
-            <field name="description">Percepciones IIBB CABA efectuada</field>
+            <field name="name">Percepciones IIBB CABA Efectuada</field>
+            <field name="description">Percepciones IIBB CABA Efectuada</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
             <field name="account_id" ref="l10n_ar.percepciones_iibb_caba_efectuada"/>
@@ -151,8 +144,8 @@
         </record>
 
         <record id="tax_percepcion_iibb_pba_efectuada" model="account.tax">
-            <field name="name">Percepciones IIBB PBA efectuada</field>
-            <field name="description">Percepciones IIBB PBA efectuada</field>
+            <field name="name">Percepciones IIBB PBA Efectuada</field>
+            <field name="description">Percepciones IIBB PBA Efectuada</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
             <field name="account_id" ref="l10n_ar.percepciones_iibb_pba_efectuada"/>

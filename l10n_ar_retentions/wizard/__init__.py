@@ -16,8 +16,6 @@
 #
 ##############################################################################
 
-import account_invoice
-import account_tax_ar
-import account_document_tax
+import account_register_payments
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

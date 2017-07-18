@@ -16,39 +16,12 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models
 
 
 class PerceptionPerception(models.Model):
 
+    _inherit = 'account.tax.ar'
     _name = 'perception.perception'
-
-    def _get_country_ar(self):
-        return [('country_id', '=', self.env.ref('base.ar').id)]
-
-    name = fields.Char(string='Nombre', required=True)
-    tax_id = fields.Many2one('account.tax', string='Impuesto', required=True)
-    type = fields.Selection(
-        [
-            ('vat', 'Iva'),
-            ('gross_income', 'Ingresos brutos'),
-            ('profit', 'Ganancias'),
-            ('other', 'Otro')
-        ],
-        string='Tipo',
-        required=True,
-        default='gross_income'
-    )
-    jurisdiction = fields.Selection(
-        [
-            ('nacional', 'Nacional'),
-            ('provincial', 'Provincial'),
-            ('municipal', 'Municipal')
-        ],
-        string='Jurisdiccion',
-        required=True,
-        default='nacional'
-    )
-    state_id = fields.Many2one('res.country.state', string="Provincia", domain=_get_country_ar)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
