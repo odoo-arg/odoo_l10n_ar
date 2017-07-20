@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!-- VISTA TREE -->
+        <record id="account_deposit_slip_tree" model="ir.ui.view">
+            <field name="name">account.deposit.slip.tree</field>
+            <field name="model">account.deposit.slip</field>
+            <field name="arch" type="xml">
+                <tree string="Boleta de deposito" create="false" colors="green:state == 'deposited'; gray:state== 'canceled'" delete="false">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- VISTA FORM -->
+        <record id="account_deposit_slip_form" model="ir.ui.view">
+            <field name="name">account.deposit.slip.form</field>
+            <field name="model">account.deposit.slip</field>
+            <field name="arch" type="xml">
+                <form string="Boleta de deposito" create="false" edit="false" delete="false">
+                    <header>
+                        <button name="cancel_deposit_slip" type="object" string="Anular Boleta" confirm="Está seguro?" attrs="{'invisible': [('state', '=', 'canceled')]}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="state" invisible="1"/>
+                                <field name="name"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="move_id" attrs="{'invisible': [('state', '=', 'canceled')]}"/>
+                                <field name="journal_id"/>
+                            </group>
+                        </group>
+                        <newline/>
+                        <group string="Cheques">
+                            <field name="checks_ids" nolabel="1">
+                                <tree>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="source_payment_id"/>
+                                    <field name="bank_id"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACCIÓN  -->
+        <record  id="account_deposit_slip_action" model="ir.actions.act_window">
+            <field name="name">Boletas de deposito</field>
+            <field name="res_model">account.deposit.slip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- BÚSQUEDAS Y AGRUPACIONES-->
+        <record model="ir.ui.view" id="account_deposit_slip_search" >
+            <field name="name">commission.collector.search</field>
+            <field name="model">account.deposit.slip</field>
+            <field name="arch" type="xml">
+                <search string="Boletas de deposito">
+                    <field name="name" string="Name"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- MENÚ  -->
+        <menuitem
+            id="account_deposit_slip_menu"
+            action="account_deposit_slip_action"
+            name="Boletas de deposito"
+            parent="l10n_ar_account_check.treasury_third_checks_main_menu"
+            sequence="20"
+        />
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

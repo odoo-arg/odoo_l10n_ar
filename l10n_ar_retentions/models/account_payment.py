@@ -80,7 +80,7 @@ class AccountAbstractPayment(models.AbstractModel):
                             if invoice:
                                 payment_type = 'outbound' if invoice.type in ['in_invoice', 'out_refund'] else 'inbound'
 
-                if payment_type:
+                if payment_type and payment_type in ['outbound', 'inbound']:
                     node.set('domain', "[('type_tax_use', '=','"+PAYMENT_TYPE.get(payment_type)+"')]")
                     res['fields']['retention_ids']['views']['tree']['arch'] = etree.tostring(doc)
 
