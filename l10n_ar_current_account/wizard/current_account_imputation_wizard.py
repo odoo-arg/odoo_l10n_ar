@@ -100,6 +100,10 @@ class current_account_imputation_wizard(models.TransientModel):
 
         return imputation
 
+    #Verifica si estan en un rango corto los numeros para validaciones
+    def isclose(self, a, b, rel_tol=1e-09, abs_tol=0.0):
+        return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
     @api.one
     def _create_moves(self, imputation):
 
@@ -121,7 +125,7 @@ class current_account_imputation_wizard(models.TransientModel):
         for debit in self.imputation_debit_lines:
             total_conciled += debit.amount_to_concile
 
-        if total_to_concile != total_conciled:
+        if not self.isclose(total_to_concile, total_conciled):
             raise Warning('Todavia queda restante a imputar a los documentos')
 
         move_line_proxy = self.env['account.move.line']
