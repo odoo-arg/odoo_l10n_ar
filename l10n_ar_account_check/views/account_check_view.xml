@@ -23,7 +23,7 @@
             <field name="arch" type="xml">
                 <form create="false" delete="false">
                     <header>
-                        <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,delivered"/>
+                        <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,handed"/>
                     </header>
                     <sheet>
                         <h1>
@@ -59,7 +59,7 @@
             <field name="arch" type="xml">
                 <form create="false" delete="false">
                     <header>
-                        <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,delivered"/>
+                        <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,handed"/>
                     </header>
                     <sheet>
                         <h1>
