@@ -165,14 +165,6 @@
             <field name="chart_template_id" ref="ar_chart_template"/>
         </record>
 
-        <record model="account.account.template" id="anticipo_iigg_y_gmp">
-            <field name="parent_id" ref="creditos_por_iigg_y_gmp"/>
-            <field name="reconcile" eval="True"/>
-            <field name="code">1140.01</field>
-            <field name="name">Anticipo IIGG y GMP</field>
-            <field name="chart_template_id" ref="ar_chart_template"/>
-        </record>
-
         <record model="account.account.template" id="iva_saldo_a_favor">
             <field name="user_type_id" ref="account_type_tax"/>
             <field name="reconcile" eval="True"/>
