@@ -24,18 +24,6 @@ class Bank(models.Model):
     _inherit = 'res.bank'
 
     @api.model
-    def name_search(self, name, args, domain=None, operator='ilike', limit=80):
-        ids = []
-
-        if name:
-            ids = self.search([('bic', operator, name)] + args, limit=limit)
-
-        if not ids:
-            ids = self.search([('name', operator, name)] + args, limit=limit)
-
-        return self.name_get(ids)
-
-    @api.model
     def create_banks(self):
         # Traigo los bancos desde AFIP
         BanksClass = banks.Banks
