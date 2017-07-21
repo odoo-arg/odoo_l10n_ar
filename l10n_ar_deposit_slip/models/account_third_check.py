@@ -53,7 +53,6 @@ class AccountThirdCheck(models.Model):
     def cancel_deposit_slip(self):
         if any(check.state != 'deposited' for check in self):
             raise ValidationError("Para cancelar la boleta de deposito todos los cheques deben estar depositados")
-        self.write({'deposit_slip_id': None})
         self.cancel_state('deposited')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

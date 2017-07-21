@@ -17,20 +17,25 @@
 ##############################################################################
 
 from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 
 class AccountDepositSlip(models.Model):
 
     _name = "account.deposit.slip"
 
+    @api.depends('check_ids')
+    def _get_checks_total(self):
+        self.amount = sum(check.amount for check in self.check_ids)
+
     name = fields.Char(
         string='Boleta de deposito',
         required=True,
-        readonly=True,
+        readonly=True
     )
     date = fields.Date(
         'Fecha',
-        readonly=True
+        required=True
     )
     journal_id = fields.Many2one(
         'account.journal',
@@ -39,23 +44,23 @@ class AccountDepositSlip(models.Model):
     )
     amount = fields.Monetary(
         'Importe total',
-        readonly=True
+        compute='_get_checks_total'
     )
     currency_id = fields.Many2one(
         'res.currency',
         'Moneda',
-        required=True,
     )
-    checks_ids = fields.One2many(
+    check_ids = fields.One2many(
         'account.third.check',
         'deposit_slip_id',
         string='Cheques',
-        readonly=True
     )
     state = fields.Selection(
         [('canceled', 'Cancelada'),
+         ('draft', 'Borrador'),
          ('deposited', 'Depositada')],
-        string='Estado'
+        string='Estado',
+        default='draft'
     )
     move_id = fields.Many2one(
         'account.move',
@@ -67,7 +72,35 @@ class AccountDepositSlip(models.Model):
 
     _order = "date desc, name desc"
 
+    @api.constrains('check_ids')
+    def check_currency(self):
+        """ Valida que no haya cheques con distintas monedas """
+        currency = self.check_ids.mapped('currency_id')
+        if len(currency) > 1:
+            raise ValidationError("No se pueden depositar cheques de distintas monedas"
+                                  " en la misma boleta de deposito")
+
     @api.multi
+    def post(self):
+        """ Confirma la boleta de deposito cambiando el estado de los cheques y crea el asiento correspondiente """
+        for deposit_slip in self:
+            if not self.check_ids:
+                raise ValidationError("No se puede validar una boleta sin cheques")
+
+            move = deposit_slip._create_move(deposit_slip.name)
+            deposit_slip.write({
+                'move_id': move.id,
+                # Ya validamos en el constraint que la moneda es unica
+                'currency_id': deposit_slip.check_ids.mapped('currency_id').id,
+                'state': 'deposited'
+            })
+            deposit_slip.check_ids.post_deposit_slip()
+
+    def cancel_to_draft(self):
+        """ Vuelve una boleta a estado borrador """
+        self.ensure_one()
+        self.state = 'draft'
+
     def cancel_deposit_slip(self):
         """ Cancela la boleta de deposito y elimina el asiento """
 
@@ -77,8 +110,69 @@ class AccountDepositSlip(models.Model):
         self.move_id.unlink()
 
         # Revertimos el estado de los cheques
-        self.checks_ids.cancel_deposit_slip()
+        self.check_ids.cancel_deposit_slip()
 
         self.state = 'canceled'
+
+    @api.model
+    def create(self, values):
+        values['name'] = self.env['ir.sequence'].next_by_code('account.deposit.slip.sequence')
+        return super(AccountDepositSlip, self).create(values)
+
+    def _create_move(self, name):
+        """
+        Crea el asiento de la boleta de deposito
+        :param name: Nombre del asiento
+        :return: account.move creado
+        """
+
+        vals = {
+            'name': name,
+            'date': self.date,
+            'ref': 'Boleta de deposito: ' + name,
+            'journal_id': self.journal_id.id,
+        }
+        move = self.env['account.move'].create(vals)
+
+        # Hacemos el computo multimoneda
+        company = self.env.user.company_id
+        debit, credit, amount_currency, currency_id = self.env['account.move.line'].with_context(date=self.date).\
+            compute_amount_fields(self.amount, self.currency_id, company.currency_id)
+
+        # Creamos los las lineas de los asientos
+        self._create_move_lines(move, amount_currency, debit=debit)
+        self._create_move_lines(move, -amount_currency, credit=debit)
+        move.post()
+        return move
+
+    def _create_move_lines(self, move, amount_currency, debit=0.0, credit=0.0):
+        """
+        Crea una move line de la boleta de deposito y las asocia al move
+        :param move: account.move - Asiento a relacionar las move_lines creadas
+        :param debit: Importe en el haber de la move line
+        :param credit: Importe en el haber de la move line
+        :return: account.move.line creada
+        """
+
+        check_account_id = self.env.user.company_id.third_check_account_id
+        account_id = self.journal_id.default_debit_account_id.id if debit else check_account_id.id
+        company_currency = self.env.user.company_id.currency_id
+
+        if not account_id:
+            raise ValidationError("Falta configurar la cuenta de deposito en la cuenta bancaria"
+                                  " o la de cheques de terceros en la compania")
+
+        move_line_vals = {
+            'move_id': move.id,
+            'debit': debit,
+            'credit': credit,
+            'amount_currency': amount_currency,
+            'name': move.name,
+            'account_id': account_id,
+            'journal_id': self.journal_id.id,
+            'currency_id': self.currency_id != company_currency and self.currency_id.id or False,
+            'ref': 'Boleta de deposito: ' + move.name
+        }
+        return self.env['account.move.line'].with_context(check_move_validity=False).create(move_line_vals)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
