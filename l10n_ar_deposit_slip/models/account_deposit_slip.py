@@ -54,7 +54,7 @@ class AccountDepositSlip(models.Model):
     )
     state = fields.Selection(
         [('canceled', 'Cancelada'),
-         ('deposited', 'Depositado')],
+         ('deposited', 'Depositada')],
         string='Estado'
     )
     move_id = fields.Many2one(
