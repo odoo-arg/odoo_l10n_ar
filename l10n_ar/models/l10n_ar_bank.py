@@ -25,15 +25,15 @@ class Bank(models.Model):
 
     @api.model
     def create_banks(self):
-        # Traigo los bancos desde AFIP
+        """ Actualiza o crea los bancos de argentina segun los registros de AFIP """
         BanksClass = banks.Banks
         data_get = BanksClass.get_values(BanksClass.get_banks_list())
         afip_banks = {element.get('code'): element.get('name') for element in data_get}
 
         # Traigo los bancos de Argentina de la base
-        ar_country_id = self.env.ref('base.ar')
+        ar_country = self.env.ref('base.ar')
         bank_proxy = self.env['res.bank']
-        base_banks = bank_proxy.search([('country', '=', ar_country_id.id)])
+        base_banks = bank_proxy.search([('country', '=', ar_country.id)])
 
         # Recorro el diccionario de bancos. Si encuentro el codigo en los que existen en el
         # sistema, sobreescribo el nombre, sino lo creo.
@@ -42,6 +42,6 @@ class Bank(models.Model):
             if bank_to_update:
                 bank_to_update.write({'name': value})
             else:
-                bank_proxy.create({'name': value, 'bic': key, 'country': ar_country_id.id})
+                bank_proxy.create({'name': value, 'bic': key, 'country': ar_country.id})
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
