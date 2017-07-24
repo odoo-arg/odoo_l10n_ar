@@ -18,9 +18,9 @@
 
     <data>
         <record id="ir_action_bank_update" model="ir.actions.act_window">
-            <field name="name">ir_action_bank_update</field>
+            <field name="name">Actualizar bancos</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">update_banks_wizard</field>
+            <field name="res_model">update.banks.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

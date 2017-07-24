@@ -20,7 +20,7 @@
 
         <record id="update_banks_wizard" model="ir.ui.view">
             <field name="name">update_banks_wizard</field>
-            <field name="model">update_banks_wizard</field>
+            <field name="model">update.banks.wizard</field>
             <field name="arch" type="xml">
                 <form string="Actualizar bancos">
                     <group>

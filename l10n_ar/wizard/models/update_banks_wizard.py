@@ -21,7 +21,7 @@ from openerp import models, fields, api
 
 class UpdateBanksWizard(models.Model):
 
-    _name = 'update_banks_wizard'
+    _name = 'update.banks.wizard'
 
     name = fields.Char()
 
