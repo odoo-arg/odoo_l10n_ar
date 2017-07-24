@@ -139,7 +139,7 @@ class AccountDepositSlip(models.Model):
         debit, credit, amount_currency, currency_id = self.env['account.move.line'].with_context(date=self.date).\
             compute_amount_fields(self.amount, self.currency_id, company.currency_id)
 
-        # Creamos los las lineas de los asientos
+        # Creamos las lineas de los asientos
         self._create_move_lines(move, amount_currency, debit=debit)
         self._create_move_lines(move, -amount_currency, credit=debit)
         move.post()
