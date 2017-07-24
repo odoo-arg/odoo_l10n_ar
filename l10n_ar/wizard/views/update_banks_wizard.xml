@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record id="update_banks_wizard" model="ir.ui.view">
+            <field name="name">update_banks_wizard</field>
+            <field name="model">update.banks.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Actualizar bancos">
+                    <group>
+                        <div class="alert alert-warning" role="alert" colspan="2">
+                            <span><strong> Aviso</strong>:</span>
+                            <p>
+                                Presionando el botón Actualizar se descargará la lista de bancos desde el servidor
+                                de AFIP. En caso de que ocurra un problema, el sistema dará un aviso, de modo que
+                                pueda intentarlo de nuevo más tarde.
+                            </p>
+                            <ul colspan="2">
+                                <li style="font-size: 15px;color: #b52020;">
+                                    <strong>Procure que la conexión a internet se encuentre activa</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </group>
+                    <footer>
+                        <button name="action_update" class="oe_highlight" icon="fa-line-chart" string="Actualizar" type="object"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
