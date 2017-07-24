@@ -44,7 +44,9 @@
         'data/account_tax_data.xml',
         'data/account_chart_template_data.yml',
         'data/bank_update.xml',
-        'views/account_tax_view.xml'
+        'views/account_tax_view.xml',
+        'views/res_bank.xml',
+        'wizard/views/update_banks_wizard.xml'
         
     ],
 

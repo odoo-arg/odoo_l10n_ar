@@ -17,6 +17,7 @@
 ##############################################################################
 
 from openerp import models, api
+from openerp.exceptions import Warning
 from odoo_openpyme_api.padron import banks
 
 
@@ -24,10 +25,24 @@ class Bank(models.Model):
     _inherit = 'res.bank'
 
     @api.model
-    def create_banks(self):
+    def update_module(self):
+        try:
+            self.update_banks()
+        except:
+            pass
+
+    def update_banks(self):
         """ Actualiza o crea los bancos de argentina segun los registros de AFIP """
         BanksClass = banks.Banks
-        data_get = BanksClass.get_values(BanksClass.get_banks_list())
+        try:
+            data_get = BanksClass.get_values(BanksClass.get_banks_list())
+        except:
+            raise Warning("ERROR\nSe ha producido un error al intentar descargar los "
+                          "bancos desde el servidor de AFIP. Inténtelo más tarde")
+
+        if not data_get:
+            raise Warning("ERROR\nLa última conexión no obtuvo ningún banco del servidor.")
+
         afip_banks = {element.get('code'): element.get('name') for element in data_get}
 
         # Traigo los bancos de Argentina de la base

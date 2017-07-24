@@ -17,8 +17,20 @@
 <openerp>
 
     <data>
+        <record id="ir_action_bank_update" model="ir.actions.act_window">
+            <field name="name">ir_action_bank_update</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update_banks_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
 
-        <function model="res.bank" name="update_module"/>
+        <menuitem id="bank_update_menu"
+                  name="Actualizar bancos"
+                  parent="sales_team.menu_config_bank_accounts"
+                  sequence="10"
+                  action="l10n_ar.ir_action_bank_update"
+        />
 
     </data>
 
