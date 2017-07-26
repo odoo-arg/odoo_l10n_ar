@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_third_check_deposit_slip_form">
+            <field name="name">Account third check deposit slip form</field>
+            <field name="model">account.third.check</field>
+            <field name="inherit_id" ref="l10n_ar_account_check.account_third_check_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_type" position="after">
+                    <field name="deposit_slip_id" attrs="{'invisible': [('deposit_slip_id', '=', False)]}"/>
+                </field>
+                <field name="payment_date" position="after">
+                    <field name="deposit_date" attrs="{'invisible': [('deposit_slip_id', '=', False)]}"/>
+                    <field name="deposit_bank_id" attrs="{'invisible': [('deposit_slip_id', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

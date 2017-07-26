@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+l10n_ar_deposit_slip_account_deposit_slip_user,l10n_ar_deposit_slip.account_deposit_slip.user,model_account_deposit_slip,l10n_ar_account_check.group_account_treasury_user,1,0,0,0
+l10n_ar_deposit_slip_account_deposit_slip_manager,l10n_ar_deposit_slip.account_deposit_slip.manager,model_account_deposit_slip,l10n_ar_account_check.group_account_treasury_manager,1,1,1,1
