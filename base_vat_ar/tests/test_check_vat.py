@@ -19,6 +19,7 @@
 from odoo.tests import common
 from openerp.exceptions import ValidationError
 
+
 class TestCheckVat(common.TransactionCase): 
 
     def setUp(self):
@@ -38,7 +39,13 @@ class TestCheckVat(common.TransactionCase):
 
     def test_vat_ar(self):
         self.partner.check_vat()
-        
+
+    def test_vat_no_ar(self):
+        """ Testeamos que no rompimos el super """
+        self.partner.country_id = self.env.ref('base.uy').id
+        self.partner.vat = 'UY30709653543'
+        self.partner.check_vat()
+
     def test_invalid_vat(self):
         with self.assertRaises(ValidationError):
             self.partner.vat = '30709653542'
@@ -49,5 +56,10 @@ class TestCheckVat(common.TransactionCase):
         self.partner_document_type.verification_required = False
         self.partner.vat = '30703542'
         self.partner.check_vat()
-        
+
+    def test_prefix(self):
+        self.env['res.country'].set_ar_no_prefix()
+        assert self.env.ref('base.ar').no_prefix
+        assert not self.env.ref('base.uy').no_prefix
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
