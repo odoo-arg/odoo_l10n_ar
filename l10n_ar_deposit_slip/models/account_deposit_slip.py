@@ -23,6 +23,7 @@ from openerp.exceptions import ValidationError
 class AccountDepositSlip(models.Model):
 
     _name = "account.deposit.slip"
+    _inherit = ['mail.thread']
 
     @api.depends('check_ids')
     def _get_checks_total(self):
@@ -31,41 +32,48 @@ class AccountDepositSlip(models.Model):
     name = fields.Char(
         string='Boleta de deposito',
         required=True,
-        readonly=True
+        readonly=True,
+        track_visibility='onchange'
     )
     date = fields.Date(
         'Fecha',
-        required=True
+        required=True,
+        track_visibility='onchange'
     )
     journal_id = fields.Many2one(
         'account.journal',
         'Cuenta Bancaria',
-        required=True
+        required=True,
+        track_visibility='onchange'
     )
     amount = fields.Monetary(
         'Importe total',
-        compute='_get_checks_total'
+        compute='_get_checks_total',
+        track_visibility='onchange'
     )
     currency_id = fields.Many2one(
         'res.currency',
         'Moneda',
+        track_visibility='onchange'
     )
     check_ids = fields.One2many(
         'account.third.check',
         'deposit_slip_id',
-        string='Cheques',
+        string='Cheques'
     )
     state = fields.Selection(
         [('canceled', 'Cancelada'),
          ('draft', 'Borrador'),
          ('deposited', 'Depositada')],
         string='Estado',
-        default='draft'
+        default='draft',
+        track_visibility='onchange'
     )
     move_id = fields.Many2one(
         'account.move',
         'Asiento contable',
-        readonly=True
+        readonly=True,
+        track_visibility='onchange'
     )
 
     _sql_constraints = [('name_uniq', 'unique(name)', 'El nombre de la boleta de deposito debe ser unico')]
