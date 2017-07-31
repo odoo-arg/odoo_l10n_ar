@@ -41,6 +41,11 @@ class AccountThirdCheck(models.Model):
         readonly=True
     )
 
+    @api.constrains('deposit_slip_id')
+    def check_state_on_deposit_slip_assignation(self):
+        if any(check.state != 'wallet' for check in self):
+            raise ValidationError('Solo se puede modificar la boleta de deposito de un cheque en cartera.')
+
     @api.multi
     def post_deposit_slip(self):
         if any(check.state != 'wallet' for check in self):

@@ -31,7 +31,6 @@ class AccountDepositSlip(models.Model):
 
     name = fields.Char(
         string='Boleta de deposito',
-        required=True,
         readonly=True,
         track_visibility='onchange'
     )
