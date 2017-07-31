@@ -1,3 +1,4 @@
+
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
@@ -16,23 +17,21 @@
 #
 ##############################################################################
 
-from odoo.tests import common
+from openerp.exceptions import UserError
+from test_document_book import TestDocumentBook
 
-class TestVoucherType(common.TransactionCase): 
+
+class TestPos(TestDocumentBook):
 
     def setUp(self):
-        super(TestVoucherType, self).setUp()
-        self.voucher_type_test = self.env['afip.voucher.type'].create({
-            'name': 'Denominacion',
-            'code': '1832'
-        })
-        
-    def test_unique_voucher_type(self):
-        self.assertRaises(
-            Exception, 
-            self.env['afip.voucher.type'].create, 
-            {'code': '1832'}
-        )
+        super(TestPos, self).setUp()
 
-            
+    def test_get_denomination(self):
+        iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
+        iva_ext = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_cliente_ext')
+        assert iva_ri.get_denomination(iva_ri) == self.env.ref('l10n_ar_point_of_sale.account_denomination_a')
+        assert iva_ri.get_denomination(iva_ext) == self.env.ref('l10n_ar_point_of_sale.account_denomination_e')
+        with self.assertRaises(UserError):
+            iva_ri.get_denomination(self.env.ref('l10n_ar_point_of_sale.account_denomination_i')).get_denomination()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

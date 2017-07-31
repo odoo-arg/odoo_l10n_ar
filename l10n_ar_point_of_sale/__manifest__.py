@@ -50,6 +50,7 @@ entre posiciones fiscales y denominaciones.
         'data/document_book_type.xml',
         'data/account_denomination.xml',
         'data/afip_voucher_type.xml',
+        'data/denomination_fiscal_position.xml',
         'security/ir.model.access.csv'
     ],
 

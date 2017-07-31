@@ -63,9 +63,8 @@ class AccountInvoice(models.Model):
             vals = {}
             denomination = self.get_invoice_denomination()
             vals['denomination_id'] = denomination.id
-
-            if self.type in ['out_invoice', 'out_refund']:
-                vals['pos_ar_id'] = self.env['pos.ar'].get_pos('invoice', denomination).id
+            vals['pos_ar_id'] = self.env['pos.ar'].get_pos('invoice', denomination).id\
+                if self.type in ['out_invoice', 'out_refund'] else None
 
             self.update(vals)
 
@@ -199,7 +198,6 @@ class AccountInvoice(models.Model):
         """ Funcion para ejecutarse al validar una factura con talonario preimpreso """
         self.name = document_book.next_number()
 
-
     @api.model
     def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):
         """ Override, agregamos a las notas de credito creadas originalmente el punto de venta y la denominacion """
@@ -265,6 +263,7 @@ class AccountInvoice(models.Model):
         Validamos el numero de factura
         :raise UserError: Si no cumple con el formato xxxx-xxxxxxxx, y debe tener solo enteros
         """
+
         if not self.name:
             raise UserError('El documento no tiene numero!')
 
