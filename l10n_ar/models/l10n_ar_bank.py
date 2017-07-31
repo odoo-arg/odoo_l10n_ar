@@ -33,15 +33,12 @@ class Bank(models.Model):
 
     def update_banks(self):
         """ Actualiza o crea los bancos de argentina segun los registros de AFIP """
-        BanksClass = banks.Banks
+        banks_class = banks.Banks
         try:
-            data_get = BanksClass.get_values(BanksClass.get_banks_list())
+            data_get = banks_class.get_values(banks_class.get_banks_list())
         except:
             raise Warning("ERROR\nSe ha producido un error al intentar descargar los "
                           "bancos desde el servidor de AFIP. Inténtelo más tarde")
-
-        if not data_get:
-            raise Warning("ERROR\nLa última conexión no obtuvo ningún banco del servidor.")
 
         afip_banks = {element.get('code'): element.get('name') for element in data_get}
 
