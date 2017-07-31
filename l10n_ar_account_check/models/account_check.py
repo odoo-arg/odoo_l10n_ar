@@ -23,24 +23,27 @@ from openerp.exceptions import ValidationError, UserError
 class AccountAbstractCheck(models.AbstractModel):
 
     _name = 'account.abstract.check'
+    _inherit = ['mail.thread']
 
-    name = fields.Char('Numero', required=True)
-    bank_id = fields.Many2one('res.bank', 'Banco', required=True)
+    name = fields.Char('Numero', required=True, track_visibility='onchange')
+    bank_id = fields.Many2one('res.bank', 'Banco', required=True, track_visibility='onchange')
     payment_type = fields.Selection(
         [('common', 'Comun'),
          ('postdated', 'Diferido')],
         string="Tipo",
         required=True,
-        default='common'
+        default='common',
+        track_visibility='onchange'
     )
-    amount = fields.Monetary('Importe')
-    currency_id = fields.Many2one('res.currency', 'Moneda')
-    issue_date = fields.Date('Fecha de emision')
-    payment_date = fields.Date('Fecha de pago')
+    amount = fields.Monetary('Importe', track_visibility='onchange')
+    currency_id = fields.Many2one('res.currency', 'Moneda', track_visibility='onchange')
+    issue_date = fields.Date('Fecha de emision', track_visibility='onchange')
+    payment_date = fields.Date('Fecha de pago', track_visibility='onchange')
     destination_payment_id = fields.Many2one(
         'account.payment',
         'Pago destino',
-        help="Pago donde se utilizo el cheque"
+        help="Pago donde se utilizo el cheque",
+        track_visibility='onchange'
     )
 
     @api.constrains('name')
@@ -94,7 +97,8 @@ class AccountThirdCheck(models.Model):
         'account.payment',
         'Recibo',
         help="Cobro desde donde se recibio el cheque",
-        ondelete="cascade"
+        ondelete="cascade",
+        track_visibility='onchange'
     )
     state = fields.Selection(
         [
@@ -106,9 +110,10 @@ class AccountThirdCheck(models.Model):
         ],
         string='Estado',
         required=True,
-        default='draft'
+        default='draft',
+        track_visibility='onchange'
     )
-    issue_name = fields.Char('Nombre emisor')
+    issue_name = fields.Char('Nombre emisor', track_visibility='onchange')
 
     @api.multi
     def post_receipt(self, currency_id):
@@ -182,13 +187,15 @@ class AccountOwnCheck(models.Model):
         ],
         string='Estado',
         required=True,
-        default='draft'
+        default='draft',
+        track_visibility='onchange'
     )
     checkbook_id = fields.Many2one(
         'account.checkbook',
         'Chequera',
         required=True,
-        ondelete='cascade'
+        ondelete='cascade',
+        track_visibility='onchange'
     )
 
     @api.multi

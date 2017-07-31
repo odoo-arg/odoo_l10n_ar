@@ -23,6 +23,7 @@ from openerp.exceptions import ValidationError, UserError
 class AccountCheckbook(models.Model):
 
     _name = 'account.checkbook'
+    _inherit = ['mail.thread']
 
     @api.depends('account_own_check_ids')
     def _get_checks(self):
@@ -37,24 +38,27 @@ class AccountCheckbook(models.Model):
         recs = self.env['account.own.check'].search([('state', '=', 'draft')]).mapped('checkbook_id')
         return [('id', 'in', recs.ids)]
 
-    name = fields.Char('Referencia', required=True)
+    name = fields.Char('Referencia', required=True, track_visibility='onchange')
     account_id = fields.Many2one(
         'account.account',
         'Cuenta',
-        help="Seleccionar una cuenta contable si no se desea utilizar la de la cuenta bancaria"
+        help="Seleccionar una cuenta contable si no se desea utilizar la de la cuenta bancaria",
+        track_visibility='onchange'
     )
     payment_type = fields.Selection(
         [('common', 'Comun'),
          ('postdated', 'Diferido')],
         string="Tipo",
         required=True,
-        default='common'
+        default='common',
+        track_visibility='onchange'
     )
     journal_id = fields.Many2one(
         'account.journal',
         'Cuenta bancaria',
         domain=[('type', '=', 'bank')],
-        required=True
+        required=True,
+        track_visibility='onchange'
     )
     account_own_check_ids = fields.One2many(
         'account.own.check',
@@ -75,8 +79,10 @@ class AccountCheckbook(models.Model):
         compute=_get_checks
 
     )
-    number_from = fields.Char('Desde', required=True)
-    number_to = fields.Char('Hasta', required=True)
+    number_from = fields.Char('Desde', required=True, track_visibility='onchange')
+    number_to = fields.Char('Hasta', required=True, track_visibility='onchange')
+
+    active = fields.Boolean(string='Activo', default=True, track_visibility='onchange')
 
     @api.constrains('number_from', 'number_to')
     def constraint_numbers(self, max_checks=100):
