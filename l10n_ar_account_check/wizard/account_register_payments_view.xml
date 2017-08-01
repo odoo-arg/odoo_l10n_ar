@@ -73,7 +73,7 @@
                         <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
                             <field name="account_third_check_sent_ids" nolabel="1"
                                     options="{'no_create': True}"
-                                    domain="[('state', '=', 'wallet'), ('destination_payment_id', '=', False)]"
+                                    domain="[('state', '=', 'wallet'), ('account_payment_ids', '=', False)]"
                             >
                                 <form>
                                     <group>

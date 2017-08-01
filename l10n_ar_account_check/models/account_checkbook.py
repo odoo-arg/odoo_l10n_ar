@@ -120,6 +120,6 @@ class AccountCheckbook(models.Model):
 
     def _validate_checkbook_fields(self):
         if not self.journal_id.bank_id:
-            raise ValidationError("Falta configurar el banco en el diario de la chequera")
+            raise ValidationError("Falta configurar el banco en la cuenta bancaria de la chequera")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

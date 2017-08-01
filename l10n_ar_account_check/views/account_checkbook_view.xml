@@ -37,7 +37,7 @@
                         <group>
                             <group>
                                 <field name="number_from" attrs="{'readonly': [('account_used_own_check_ids', '!=', [])]}"/>
-                                <field name="journal_id"/>
+                                <field name="journal_id" domain="[('type', '=', 'bank')]" context="{'form_view_ref': 'account.view_account_bank_journal_form'}"/>
                                 <field name="payment_type"/>
                             </group>
                             <group>

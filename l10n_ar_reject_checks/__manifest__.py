@@ -19,7 +19,7 @@
 
 {
 
-    'name': 'l10n_ar_account_check',
+    'name': 'l10n_ar_reject_checks',
 
     'version': '1.0',
 
