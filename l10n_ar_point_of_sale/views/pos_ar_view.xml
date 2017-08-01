@@ -52,7 +52,7 @@
         </record>
 
         <record model="ir.ui.view" id="pos_ar_tree">
-            <field name="name">Punto de Venta</field>
+            <field name="name">Puntos de Venta</field>
             <field name="model">pos.ar</field>
             <field name="arch" type="xml">
                 <tree>
