@@ -67,4 +67,10 @@ class TestDocumentBook(common.TransactionCase):
         self.document_book.book_type_id._get_name()
         assert self.document_book.book_type_id.name == 'Preimpreso'
 
+    def test_onchange_category(self):
+        document_book = self.document_book.new(self.document_book.read()[0])
+        document_book.onchange_category()
+        assert not (document_book.book_type_id or document_book.document_type_id
+                    or document_book.denomination_id)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

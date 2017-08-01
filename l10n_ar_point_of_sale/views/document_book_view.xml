@@ -42,7 +42,7 @@
                             <group>
                                 <field name="pos_ar_id"/>
                                 <field name="book_type_id" domain="[('category', '=', category)]"/>
-                                <field name="document_type_id" domain="[('category', '=', category)]"/>
+                                <field name="document_type_id" widget="selection" domain="[('category', '=', category)]"/>
                             </group>
                         </group>
                     </sheet>

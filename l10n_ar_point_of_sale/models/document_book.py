@@ -44,6 +44,14 @@ class DocumentBook(models.Model):
     sequence = fields.Integer('Secuencia', help='Por default, se eligirá el que menos secuencia tiene')
     active = fields.Boolean('Activo', default=True)
 
+    @api.onchange('category')
+    def onchange_category(self):
+        self.update({
+            'book_type_id': None,
+            'document_type_id': None,
+            'denomination_id': None,
+        })
+
     @api.one
     @api.constrains('name')
     def check_name(self):
