@@ -236,7 +236,6 @@ class AccountOwnCheck(models.Model):
             raise ValidationError("Los cheques propios entregados deben estar en estado borrador")
 
         vals = vals if vals else {}
-        _logger.info('Valores cheque propio?? %s', vals)
         self.write(vals)
         self.next_state('draft_handed')
 
