@@ -81,9 +81,13 @@ class AccountAbstractPayment(models.AbstractModel):
         """
         Busca el talonario predeterminado para el tipo de pago
         :return: Talonario a utilizar
-        :raise UserError: No hay configurado un talonario para ese punto de venta y tipo de comprobante
+        :raise ValidationError: No hay configurado punto de venta
+        :raise ValidationError: No hay configurado un talonario para ese punto de venta y tipo de comprobante
         """
         self.ensure_one()
+
+        if not self.pos_ar_id:
+            raise ValidationError("Por favor, configurar punto de venta primero")
 
         domain = ([
             ('pos_ar_id', '=', self.pos_ar_id.id),
