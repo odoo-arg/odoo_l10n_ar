@@ -26,7 +26,7 @@
                     <field name="name"/>
                     <field name="journal_id"/>
                     <field name="destination_journal_id"/>
-                    <field name="amount" sum="Amount"/>
+                    <field name="amount" sum='Total'/>
                     <field name="state"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="currency_id" invisible="1"/>
