@@ -86,8 +86,15 @@ class AccountCheckbook(models.Model):
 
     @api.constrains('number_from', 'number_to')
     def constraint_numbers(self, max_checks=100):
+
         if not (self.number_from.isdigit() or self.number_to.isdigit()):
             raise UserError("La numeracion debe contener solo numeros")
+
+        if int(self.number_from) <= 0 or int(self.number_to) <= 0:
+            raise UserError("La numeracion debe ser mayor a cero.")
+
+        if int(self.number_from) > int(self.number_to):
+            raise UserError("Numeracion Desde no puede ser mayor a Hasta.")
 
         if len(range(int(self.number_from), int(self.number_to))) > max_checks:
             raise ValidationError("El rango de cheques de la chequera es muy grande.\n"
@@ -97,6 +104,10 @@ class AccountCheckbook(models.Model):
         """ Crea todos los cheques faltantes de cada chequera seleccionada """
 
         for checkbook in self:
+
+            if self.account_used_own_check_ids:
+                raise ValidationError("Solo se pueden generar cheques en una chequera no utilizada.")
+
             total_numbers = range(int(checkbook.number_from), int(checkbook.number_to)+1)
 
             checkbook._validate_checkbook_fields()
