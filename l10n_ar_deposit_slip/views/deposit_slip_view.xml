@@ -23,7 +23,13 @@
             <field name="name">account.deposit.slip.tree</field>
             <field name="model">account.deposit.slip</field>
             <field name="arch" type="xml">
-                <tree string="Boleta de deposito" colors="blue:state == 'draft';green:state == 'deposited'; gray:state== 'canceled'" delete="false">
+                <tree
+                    string="Boleta de deposito"
+                    delete="false"
+                    decoration-info="state=='draft'"
+                    decoration-muted="state=='canceled'"
+                    decoration-success="state=='deposited'"
+                >
                     <field name="name"/>
                     <field name="date"/>
                     <field name="state"/>
@@ -70,7 +76,7 @@
                                     <field name="name"/>
                                     <field name="source_payment_id"/>
                                     <field name="bank_id"/>
-                                    <field name="amount" sum="Total"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>

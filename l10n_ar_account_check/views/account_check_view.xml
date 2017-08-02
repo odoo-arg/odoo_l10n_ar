@@ -103,14 +103,20 @@
             <field name="name">Account third check tree</field>
             <field name="model">account.third.check</field>
             <field name="arch" type="xml">
-                <tree create="false" delete="false">
+                <tree
+                    create="false"
+                    delete="false"
+                    decoration-info="state=='draft'"
+                    decoration-danger="state=='rejected'"
+                    decoration-success="state in ['handed','deposited']"
+                >
                     <field name="name"/>
                     <field name="issue_date"/>
                     <field name="payment_date"/>
                     <field name="bank_id"/>
                     <field name="payment_type"/>
                     <field name="currency_id" invisible="1"/>
-                    <field name="amount"/>
+                    <field name="amount" sum='Total'/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -120,14 +126,21 @@
             <field name="name">Account own check tree</field>
             <field name="model">account.own.check</field>
             <field name="arch" type="xml">
-                <tree create="false" delete="false">
+                <tree
+                    create="false"
+                    delete="false"
+                    decoration-info="state=='draft'"
+                    decoration-muted="state=='canceled'"
+                    decoration-danger="state=='rejected'"
+                    decoration-success="state=='handed'"
+                >
+                    <field name="checkbook_id"/>
                     <field name="name"/>
+                    <field name="payment_type"/>
                     <field name="issue_date"/>
                     <field name="payment_date"/>
-                    <field name="payment_type"/>
-                    <field name="checkbook_id"/>
                     <field name="currency_id" invisible="1"/>
-                    <field name="amount"/>
+                    <field name="amount" sum='Total'/>
                     <field name="state"/>
                 </tree>
             </field>

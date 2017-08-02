@@ -70,7 +70,7 @@
                                             <field name="name"/>
                                             <field name="issue_date"/>
                                             <field name="payment_date"/>
-                                            <field name="amount"/>
+                                            <field name="amount" sum='Total'/>
                                             <field name="destination_payment_id"/>
                                             <field name="state"/>
                                         </tree>

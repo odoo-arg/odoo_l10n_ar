@@ -34,7 +34,7 @@ class AccountAbstractCheck(models.AbstractModel):
         default='common',
         track_visibility='onchange'
     )
-    amount = fields.Monetary('Importe', track_visibility='onchange')
+    amount = fields.Monetary('Importe', track_visibility='onchange', group_operator="sum")
     currency_id = fields.Many2one('res.currency', 'Moneda', track_visibility='onchange')
     issue_date = fields.Date('Fecha de emision', track_visibility='onchange')
     payment_date = fields.Date('Fecha de pago', track_visibility='onchange')

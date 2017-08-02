@@ -51,7 +51,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>
@@ -67,7 +67,7 @@
                                     <field name="issue_date"/>
                                     <field name="payment_date" attrs="{'readonly': [('payment_type', '=', 'common')]}"/>
                                     <field name="payment_type" readonly="1"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state" readonly="1"/>
                                 </tree>
                             </field>
@@ -101,7 +101,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>
@@ -143,7 +143,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>
@@ -158,7 +158,7 @@
                                     <field name="issue_date"/>
                                     <field name="payment_date" attrs="{'readonly': [('payment_type', '=', 'common')]}"/>
                                     <field name="payment_type" readonly="1"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state" readonly="1"/>
                                 </tree>
                             </field>
@@ -191,7 +191,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>
