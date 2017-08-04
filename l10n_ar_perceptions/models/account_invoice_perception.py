@@ -28,11 +28,6 @@ class AccountInvoicePerception(models.Model):
     _inherit = 'account.document.tax'
     _name = 'account.invoice.perception'
 
-    def _get_signed_amount(self):
-        for perception in self:
-            sign = 1 if perception.invoice_id.type != 'out_refund' else -1
-            perception.amount_signed = perception.amount * sign
-
     @api.onchange('perception_id')
     def onchange_perception_id(self):
         if self.perception_id:
