@@ -40,8 +40,17 @@ class DocumentBook(models.Model):
         help="En los casos qe se utilice el mismo punto de venta para distintos documentos\n"
              "Por ejemplo, facturas y notas de credito/debito"
     )
-    denomination_id = fields.Many2one('account.denomination', 'Denominacion', required=True)
+    denomination_id = fields.Many2one('account.denomination', 'Denominacion')
     sequence = fields.Integer('Secuencia', help='Por default, se eligirá el que menos secuencia tiene')
+    active = fields.Boolean('Activo', default=True)
+
+    @api.onchange('category')
+    def onchange_category(self):
+        self.update({
+            'book_type_id': None,
+            'document_type_id': None,
+            'denomination_id': None,
+        })
 
     @api.one
     @api.constrains('name')
@@ -59,7 +68,6 @@ class DocumentBook(models.Model):
         for name in name_list:
             name_get.append((name[0], name[1].zfill(8)))
         return name_get
-
 
     _sql_constraints = [
         ('denomination_pos_ar_unique', 'unique(document_type_id, denomination_id, pos_ar_id, category)',

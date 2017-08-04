@@ -16,6 +16,9 @@
 #
 ##############################################################################
 
-#from . import test_invoice
+import test_document_book
+import test_pos
+import test_fiscal_position
+import test_invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -31,6 +31,7 @@ class PosAr(models.Model):
         'pos_ar_id',
         'Talonarios'
     )
+    active = fields.Boolean('Activo', default=True)
 
     @api.one
     @api.constrains('name')
