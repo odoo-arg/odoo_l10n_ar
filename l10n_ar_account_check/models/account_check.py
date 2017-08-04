@@ -23,7 +23,6 @@ from openerp.exceptions import ValidationError, UserError
 class AccountAbstractCheck(models.AbstractModel):
 
     _name = 'account.abstract.check'
-    _inherit = ['mail.thread']
 
     name = fields.Char('Numero', required=True, track_visibility='onchange')
     bank_id = fields.Many2one('res.bank', 'Banco', required=True, track_visibility='onchange')
@@ -35,16 +34,10 @@ class AccountAbstractCheck(models.AbstractModel):
         default='common',
         track_visibility='onchange'
     )
-    amount = fields.Monetary('Importe', track_visibility='onchange')
+    amount = fields.Monetary('Importe', track_visibility='onchange', group_operator="sum")
     currency_id = fields.Many2one('res.currency', 'Moneda', track_visibility='onchange')
     issue_date = fields.Date('Fecha de emision', track_visibility='onchange')
     payment_date = fields.Date('Fecha de pago', track_visibility='onchange')
-    destination_payment_id = fields.Many2one(
-        'account.payment',
-        'Pago destino',
-        help="Pago donde se utilizo el cheque",
-        track_visibility='onchange'
-    )
 
     @api.constrains('name')
     def constraint_name(self):
@@ -53,7 +46,7 @@ class AccountAbstractCheck(models.AbstractModel):
 
     @api.constrains('amount')
     def constraint_amount(self):
-        if self.amount < 0.0:
+        if self.amount <= 0.0:
             raise ValidationError("El importe del cheque debe ser mayor a 0")
 
     @api.constrains('payment_date', 'issue_date', 'payment_type')
@@ -90,8 +83,13 @@ THIRD_CHECK_CANCEL_STATES = {
 
 class AccountThirdCheck(models.Model):
 
-    _inherit = 'account.abstract.check'
+    _inherit = ['account.abstract.check', 'mail.thread']
     _name = 'account.third.check'
+
+    @api.depends('account_payment_ids')
+    def set_destination_payment_id(self):
+        for check in self:
+            check.destination_payment_id = check.account_payment_ids[0].id if check.account_payment_ids else None
 
     source_payment_id = fields.Many2one(
         'account.payment',
@@ -114,6 +112,33 @@ class AccountThirdCheck(models.Model):
         track_visibility='onchange'
     )
     issue_name = fields.Char('Nombre emisor', track_visibility='onchange')
+    account_payment_ids = fields.Many2many(
+        'account.payment',
+        'third_check_account_payment_rel',
+        'third_check_id',
+        'payment_id',
+        'Pagos'
+    )
+    destination_payment_id = fields.Many2one(
+        'account.payment',
+        'Pago destino',
+        help="Pago donde se utilizo el cheque",
+        compute=set_destination_payment_id
+    )
+
+    @api.constrains('account_payment_ids')
+    def constraint_payments(self):
+        for check in self:
+            if len(check.account_payment_ids) > 1:
+                raise ValidationError("El cheque "+check.name+" ya se encuentra en otro pago")
+
+    @api.multi
+    def unlink(self):
+        for check in self:
+            if check.state != 'draft':
+                raise ValidationError("Solo se pueden borrar cheques en estado borrador")
+
+        super(AccountThirdCheck, self).unlink()
 
     @api.multi
     def post_receipt(self, currency_id):
@@ -175,7 +200,7 @@ OWN_CHECK_CANCEL_STATES = {
 
 class AccountOwnCheck(models.Model):
 
-    _inherit = 'account.abstract.check'
+    _inherit = ['account.abstract.check', 'mail.thread']
     _name = 'account.own.check'
 
     state = fields.Selection(
@@ -195,6 +220,12 @@ class AccountOwnCheck(models.Model):
         'Chequera',
         required=True,
         ondelete='cascade',
+        track_visibility='onchange'
+    )
+    destination_payment_id = fields.Many2one(
+        'account.payment',
+        'Pago destino',
+        help="Pago donde se utilizo el cheque",
         track_visibility='onchange'
     )
 

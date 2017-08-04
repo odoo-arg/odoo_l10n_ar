@@ -31,9 +31,11 @@ class AccountAbstractPayment(models.AbstractModel):
         'Cheques de terceros'
     )
     # Cheques entregados
-    account_third_check_sent_ids = fields.One2many(
+    account_third_check_sent_ids = fields.Many2many(
         'account.third.check',
-        'destination_payment_id',
+        'third_check_account_payment_rel',
+        'payment_id',
+        'third_check_id',
         'Cheques de terceros'
     )
     account_own_check_line_ids = fields.One2many(
@@ -52,6 +54,8 @@ class AccountAbstractPayment(models.AbstractModel):
         elif self.payment_type in ['inbound', 'transfer'] and\
                 (self.account_own_check_line_ids or self.account_third_check_sent_ids):
             raise ValidationError("No puede haber cheques propios o endosados en este tipo de pago")
+
+        self.account_third_check_sent_ids.constraint_payments()
 
     @api.onchange('account_third_check_ids', 'account_own_check_line_ids', 'account_third_check_sent_ids')
     def onchange_account_third_check_ids(self):

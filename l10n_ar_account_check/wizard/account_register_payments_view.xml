@@ -49,7 +49,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>
@@ -64,7 +64,7 @@
                                     <field name="issue_date"/>
                                     <field name="payment_date" attrs="{'readonly': [('payment_type', '=', 'common')]}"/>
                                     <field name="payment_type" readonly="1"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state" readonly="1"/>
                                 </tree>
                             </field>
@@ -73,7 +73,7 @@
                         <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
                             <field name="account_third_check_sent_ids" nolabel="1"
                                     options="{'no_create': True}"
-                                    domain="[('state', '=', 'wallet'), ('destination_payment_id', '=', False)]"
+                                    domain="[('state', '=', 'wallet'), ('account_payment_ids', '=', False)]"
                             >
                                 <form>
                                     <group>
@@ -97,7 +97,7 @@
                                     <field name="payment_date"/>
                                     <field name="bank_id"/>
                                     <field name="payment_type"/>
-                                    <field name="amount" sum="amount"/>
+                                    <field name="amount" sum='Total'/>
                                     <field name="state"/>
                                 </tree>
                             </field>

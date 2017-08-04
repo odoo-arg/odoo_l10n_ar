@@ -55,9 +55,11 @@ class AccountDepositSlip(models.Model):
         'Moneda',
         track_visibility='onchange'
     )
-    check_ids = fields.One2many(
+    check_ids = fields.Many2many(
         'account.third.check',
+        'third_check_deposit_slip_rel',
         'deposit_slip_id',
+        'third_check_id',
         string='Cheques'
     )
     state = fields.Selection(
@@ -82,10 +84,13 @@ class AccountDepositSlip(models.Model):
     @api.constrains('check_ids')
     def check_currency(self):
         """ Valida que no haya cheques con distintas monedas """
-        currency = self.check_ids.mapped('currency_id')
-        if len(currency) > 1:
-            raise ValidationError("No se pueden depositar cheques de distintas monedas"
-                                  " en la misma boleta de deposito")
+        for deposit_slip in self:
+            currency = deposit_slip.check_ids.mapped('currency_id')
+            if len(currency) > 1:
+                raise ValidationError("No se pueden depositar cheques de distintas monedas"
+                                      " en la misma boleta de deposito")
+
+            deposit_slip.check_ids.deposit_slip_contraints()
 
     @api.multi
     def post(self):

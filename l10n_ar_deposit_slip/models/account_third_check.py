@@ -24,10 +24,22 @@ class AccountThirdCheck(models.Model):
 
     _inherit = 'account.third.check'
 
+    @api.depends('deposit_slip_ids')
+    def get_deposit_slip_id(self):
+        for check in self:
+            check.deposit_slip_id = check.deposit_slip_ids[0].id if check.deposit_slip_ids else None
+
+    deposit_slip_ids = fields.Many2many(
+        'account.deposit.slip',
+        'third_check_deposit_slip_rel',
+        'third_check_id',
+        'deposit_slip_id',
+        string='Boletas de deposito'
+    )
     deposit_slip_id = fields.Many2one(
         'account.deposit.slip',
         'Boleta de deposito',
-        readonly=True
+        compute='get_deposit_slip_id',
     )
     deposit_bank_id = fields.Many2one(
         'account.journal',
@@ -41,10 +53,13 @@ class AccountThirdCheck(models.Model):
         readonly=True
     )
 
-    @api.constrains('deposit_slip_id')
-    def check_state_on_deposit_slip_assignation(self):
+    @api.constrains('deposit_slip_ids')
+    def deposit_slip_contraints(self):
         if any(check.state != 'wallet' for check in self):
             raise ValidationError('Solo se puede modificar la boleta de deposito de un cheque en cartera.')
+        for check in self:
+            if len(check.deposit_slip_ids) > 1:
+                raise ValidationError("El cheque "+check.name+" ya se encuentra en una boleta de deposito")
 
     @api.multi
     def post_deposit_slip(self):
@@ -56,8 +71,9 @@ class AccountThirdCheck(models.Model):
 
     @api.multi
     def cancel_deposit_slip(self):
-        if any(check.state != 'deposited' for check in self):
-            raise ValidationError("Para cancelar la boleta de deposito todos los cheques deben estar depositados")
+        if any(check.state not in ('deposited', 'wallet') for check in self):
+            raise ValidationError("Para cancelar la boleta de deposito"
+                                  " los cheques deben estar depositados o en cartera")
         self.cancel_state('deposited')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
