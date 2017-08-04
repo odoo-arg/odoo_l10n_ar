@@ -55,7 +55,7 @@ class AccountInvoice(models.Model):
         res = super(AccountInvoice, self)._compute_amount()
 
         for invoice in self:
-            group_vat = self.env.ref('l10n_ar.tax_group_vat')
+            group_vat = self.env.ref('l10n_ar.tax_group_vat', False)
             if not group_vat:
                 raise ValidationError('Grupo de impuesto de IVA no encontrado en la configuracion de impuestos')
 
