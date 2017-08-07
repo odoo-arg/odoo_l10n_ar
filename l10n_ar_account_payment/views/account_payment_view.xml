@@ -73,7 +73,7 @@
                                 <tree editable="bottom">
                                     <field name="account_payment_type_id"
                                            widget="selection" domain="[('currency_id','=', parent.currency_id)]"/>
-                                    <field name="amount"/>
+                                    <field name="amount" sum='Total'/>
                                 </tree>
                             </field>
                         </page>
@@ -101,7 +101,7 @@
                                 <tree editable="bottom">
                                     <field name="account_payment_type_id"
                                            widget="selection" domain="[('currency_id','=', parent.currency_id)]"/>
-                                    <field name="amount"/>
+                                    <field name="amount" sum='Total'/>
                                 </tree>
                             </field>
                         </page>

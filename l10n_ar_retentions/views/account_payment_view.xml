@@ -28,8 +28,8 @@
                             <tree editable="bottom" string="Retenciones">
                                 <field name="currency_id" invisible="1"/>
                                 <field name="retention_id"/>
-                                <field name="base"/>
-                                <field name="amount"/>
+                                <field name="base" sum='Total'/>
+                                <field name="amount" sum='Total'/>
                                 <field name="name" invisible="1"/>
                                 <field name="jurisdiction" invisible="1"/>
                             </tree>
@@ -50,8 +50,8 @@
                             <tree editable="bottom" string="Retenciones">
                                 <field name="currency_id" invisible="1"/>
                                 <field name="retention_id"/>
-                                <field name="base"/>
-                                <field name="amount"/>
+                                <field name="base" sum='Total'/>
+                                <field name="amount" sum='Total'/>
                                 <field name="name" invisible="1"/>
                                 <field name="jurisdiction" invisible="1"/>
                             </tree>
