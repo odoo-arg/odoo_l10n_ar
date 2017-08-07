@@ -22,7 +22,7 @@
             <field name="name">update_banks_wizard</field>
             <field name="model">update.banks.wizard</field>
             <field name="arch" type="xml">
-                <form string="Actualizar bancos">
+                <form string="Actualizar Bancos">
                     <group>
                         <div class="alert alert-warning" role="alert" colspan="2">
                             <span><strong> Aviso</strong>:</span>
@@ -31,21 +31,35 @@
                                 de AFIP. En caso de que ocurra un problema, el sistema dará un aviso, de modo que
                                 pueda intentarlo de nuevo más tarde.
                             </p>
-                            <ul colspan="2">
-                                <li style="font-size: 15px;color: #b52020;">
-                                    <strong>Procure que la conexión a internet se encuentre activa</strong>
-                                </li>
-                            </ul>
+                            <p>
+                                <strong>Procure que la conexión a internet se encuentre activa</strong>
+                            </p>
                         </div>
                     </group>
                     <footer>
-                        <button name="action_update" class="oe_highlight" icon="fa-line-chart" string="Actualizar" type="object"/>
+                        <button name="action_update" class="oe_highlight" string="Actualizar" type="object"/>
                         o
                         <button string="Cancelar" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
+
+
+        <record id="ir_action_banks_update" model="ir.actions.act_window">
+            <field name="name">Actualizar Bancos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.banks.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="bank_update_menu"
+                  name="Actualizar Bancos"
+                  parent="account.account_account_menu"
+                  sequence="10"
+                  action="l10n_ar.ir_action_banks_update"
+        />
 
     </data>
 

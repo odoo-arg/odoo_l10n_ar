@@ -19,7 +19,7 @@
 from openerp import models, fields, api
 
 
-class UpdateBanksWizard(models.Model):
+class UpdateBanksWizard(models.TransientModel):
 
     _name = 'update.banks.wizard'
 
