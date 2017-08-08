@@ -32,17 +32,24 @@
                         </div>
                         <group string="Detalles">
                             <group>
+                                <field name="sequence"/>
                                 <field name="name"/>
                                 <field name="category"/>
                                 <field name="denomination_id"
+                                       widget="selection"
                                        attrs="{'required': [('category', '=', 'invoice')],
                                                'invisible': [('category', '!=', 'invoice')]}"/>
-                                <field name="sequence"/>
                             </group>
                             <group>
-                                <field name="pos_ar_id"/>
-                                <field name="book_type_id" domain="[('category', '=', category)]"/>
-                                <field name="document_type_id" widget="selection" domain="[('category', '=', category)]"/>
+                                <field name="pos_ar_id" widget="selection"/>
+                                <field name="book_type_id" domain="[('category', '=', category)]" widget="selection"/>
+                                <field
+                                    name="document_type_id"
+                                    widget="selection"
+                                    domain="[('category', '=', category)]"
+                                    attrs="{'required': [('category', 'in', ['invoice', 'payment'])],
+                                            'invisible': [('category', 'not in', ['invoice', 'payment'])]}"
+                                />
                             </group>
                         </group>
                     </sheet>
@@ -55,12 +62,13 @@
             <field name="model">document.book</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
+                    <field name="sequence" widget="handle"/>
                     <field name="pos_ar_id"/>
-                    <field name="denomination_id"/>
                     <field name="category"/>
+                    <field name="document_type_id"/>
                     <field name="book_type_id"/>
-                    <field name="sequence"/>
+                    <field name="denomination_id"/>
+                    <field name="name"/>
                 </tree>
             </field>
         </record>
