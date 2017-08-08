@@ -36,13 +36,13 @@ mapped with models using l10n_ar_codes application
 
     'depends': [
         'l10n_ar',
-        'l10n_ar_codes',
-        'base_vat_ar'
     ],
 
     'data': [
         'views/afip_tables_configuration.xml',
+        'views/account_denomination_view.xml',
         'data/res_country_state.xml',
+        'data/account_denomination.xml',
         'data/afip_voucher_type.xml',
         'data/partner_document_type.xml',
         'data/account_tax.xml',

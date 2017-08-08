@@ -18,6 +18,8 @@
 
 import account_tax
 import account_account_template
+import res_partner
+import res_company
 import l10n_ar_bank
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

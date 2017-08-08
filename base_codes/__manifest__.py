@@ -18,28 +18,30 @@
 
 {
 
-    'name': 'Reporte de Facturacion Electronica',
+    'name': 'base_codes',
 
     'version': '1.0',
 
-    'description': 'Reporte para facturación electrónica',
+    'summary': 'References of codes and aplication with models',
+
+    'description': """Creation of table to reference models with codes and
+    application, to use them on every need, for example, electronic invoice,
+    reports, etc.
+    """,
 
     'author': 'OPENPYME S.R.L.',
 
-    'summary': 'Reporte para facturación electrónica',
+    'website': 'http://www.openpyme.com.ar',
 
-    'category': 'Accounting',
+    'category': 'base',
 
     'depends': [
-
-        'l10n_ar_afip_webservices_wsfe',
-        #'report_custom_filename' TODO: mirar v10 de este modulo, es para que el reporte tenga el nombre del numero de doc
+        'base',
     ],
 
     'data': [
-
-        'report/account_invoice_report.xml',
-        'report/report_electronic_invoice.xml',
+        'views/codes_modes_relation_view.xml',
+        'security/ir.model.access.csv'
     ],
 
     'active': False,

@@ -18,28 +18,30 @@
 
 {
 
-    'name': 'Reporte de Facturacion Electronica',
+    'name': 'l10n_ar_all',
 
     'version': '1.0',
 
-    'description': 'Reporte para facturación electrónica',
+    'summary': 'Localizacion Argentina',
+
+    'description': """
+Modulo encargado de instalar todos los modulos requeridos para la localizacion Argentina.
+    """,
 
     'author': 'OPENPYME S.R.L.',
 
-    'summary': 'Reporte para facturación electrónica',
+    'website': 'http://www.openpyme.com.ar',
 
-    'category': 'Accounting',
+    'category': 'Localization',
 
     'depends': [
-
-        'l10n_ar_afip_webservices_wsfe',
-        #'report_custom_filename' TODO: mirar v10 de este modulo, es para que el reporte tenga el nombre del numero de doc
+        'l10n_ar_reject_checks',
+        'l10n_ar_retentions',
+        'l10n_ar_electronic_invoice_report'
     ],
 
     'data': [
 
-        'report/account_invoice_report.xml',
-        'report/report_electronic_invoice.xml',
     ],
 
     'active': False,

@@ -16,36 +16,6 @@
 #
 ##############################################################################
 
-{
-
-    'name': 'Reporte de Facturacion Electronica',
-
-    'version': '1.0',
-
-    'description': 'Reporte para facturación electrónica',
-
-    'author': 'OPENPYME S.R.L.',
-
-    'summary': 'Reporte para facturación electrónica',
-
-    'category': 'Accounting',
-
-    'depends': [
-
-        'l10n_ar_afip_webservices_wsfe',
-        #'report_custom_filename' TODO: mirar v10 de este modulo, es para que el reporte tenga el nombre del numero de doc
-    ],
-
-    'data': [
-
-        'report/account_invoice_report.xml',
-        'report/report_electronic_invoice.xml',
-    ],
-
-    'active': False,
-
-    'installable': True,
-
-}
+import codes_models_relation
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

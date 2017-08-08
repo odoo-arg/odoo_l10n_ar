@@ -18,6 +18,6 @@
 
 import afip_voucher_type
 import afip_concept
-import account_invoice
+import account_denomination
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -39,7 +39,6 @@
         'views/perception_perception_view.xml',
         'views/account_invoice_view.xml',
         'data/perception_data.xml',
-        'data/codes_modes_relation.xml',
         'security/ir.model.access.csv'
     ],
 
