@@ -160,7 +160,7 @@
             <field name="name">Percepcion IVA Efectuada</field>
             <field name="type_tax_use">sale</field>
             <field name="type">vat</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_percepcion_iva_efectuada" />
         </record>
 
@@ -168,7 +168,7 @@
             <field name="name">Percepcion IVA Sufrida</field>
             <field name="type_tax_use">purchase</field>
             <field name="type">vat</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_percepcion_iva_sufrida"/>
         </record>
 
@@ -176,7 +176,7 @@
             <field name="name">Percepcion IIBB CABA Efectuada</field>
             <field name="type_tax_use">sale</field>
             <field name="type">gross_income</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_c"/>
             <field name="tax_id" ref="tax_percepcion_iibb_caba_efectuada"/>
         </record>
@@ -185,7 +185,7 @@
             <field name="name">Percepcion IIBB CABA Sufrida</field>
             <field name="type_tax_use">purchase</field>
             <field name="type">gross_income</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_c"/>
             <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
         </record>
@@ -194,7 +194,7 @@
             <field name="name">Percepcion IIBB PBA Efectuada</field>
             <field name="type_tax_use">sale</field>
             <field name="type">gross_income</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_b"/>
             <field name="tax_id" ref="tax_percepcion_iibb_pba_efectuada"/>
         </record>
@@ -203,7 +203,7 @@
             <field name="name">Percepcion IIBB PBA Sufrida</field>
             <field name="type_tax_use">purchase</field>
             <field name="type">gross_income</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_c"/>
             <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
         </record>
@@ -212,7 +212,7 @@
             <field name="name">Percepcion Ganancias Sufrida</field>
             <field name="type_tax_use">purchase</field>
             <field name="type">profit</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_percepcion_ganancia_sufrida"/>
         </record>
 
