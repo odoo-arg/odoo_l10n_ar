@@ -38,6 +38,7 @@
                             </group>
                         </group>
                         <group string="Archivos">
+                            <field name="generation_time" readonly="1"/>
                             <field name="header_file" filename="header_filename"/>
                             <field name="header_filename" invisible="True"/>
                             <field name="sale_file" filename="sale_filename"/>

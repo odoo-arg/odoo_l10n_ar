@@ -19,6 +19,7 @@ import base64
 
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
+from datetime import datetime
 from unidecode import unidecode
 
 
@@ -36,6 +37,7 @@ class AccountInvoicePresentation(models.Model):
         reginfo_zip_file = self.generate_reginfo_zip_file()
 
         self.write({
+            'generation_time': datetime.now(),
             'header_filename': 'A.txt',
             'header_file': header_file,
             'sale_filename': 'B.txt',
@@ -81,6 +83,10 @@ class AccountInvoicePresentation(models.Model):
     name = fields.Char(
         string="Nombre",
         required=True,
+    )
+
+    generation_time = fields.Datetime(
+        string="Fecha y hora de generacion",
     )
 
     date_from = fields.Date(
