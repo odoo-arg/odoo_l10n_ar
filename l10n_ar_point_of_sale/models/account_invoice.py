@@ -57,7 +57,6 @@ class AccountInvoice(models.Model):
         """
         Seteamos el punto de venta y la denominacion del talonario mas prioritario
         """
-
         if self.partner_id:
 
             vals = {}

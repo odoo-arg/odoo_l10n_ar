@@ -54,12 +54,15 @@ class AccountInvoice(models.Model):
             else:
                 invoice_type = types.get(inv.type)
 
+            name_get = [invoice_type]
+            if inv.denomination_id:
+                name_get.append(inv.denomination_id.name)
+
+            if inv.name or inv.number:
+                name_get.append(inv.name or inv.number)
+
             # EJ FC A 0001-00000001
-            result.append((inv.id, "%s %s %s" % (
-                invoice_type or '',
-                inv.denomination_id.name or '',
-                inv.name or inv.number or ''))
-            )
+            result.append((inv.id, " ".join(name_get)))
 
         return result
 
