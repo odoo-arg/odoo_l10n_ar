@@ -55,7 +55,12 @@ class AccountInvoice(models.Model):
 
             # Obtenemos el codigo de comprobante
             document_type_id = document_book.document_type_id.id
-            document_afip_code = int(self.env['codes.models.relation'].get_code('afip.voucher.type', document_type_id))
+            voucher_type = self.env['afip.voucher.type'].search([
+                ('document_type_id', '=', document_type_id),
+                ('denomination_id', '=', invoice.denomination_id.id)],
+                limit=1
+            )
+            document_afip_code = int(self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
 
             # Validamos la numeracion
             invoice._action_wsfe_number(document_book, afip_wsfe, document_afip_code)
@@ -90,7 +95,7 @@ class AccountInvoice(models.Model):
 
             # Commitiamos para que no halla inconsistencia con la AFIP. Como ya tenemos el CAE escrito en la factura
             # Al validarla nuevamente, no vuelve a ir a la AFIP y se va a mantener la numeracion correctamente
-            self.env.cr.commit()
+            self._commit()
 
     def write_wsfe_response(self, invoice_detail, response):
         """ Escribe el envio y respuesta de un envio a AFIP """
@@ -107,6 +112,9 @@ class AccountInvoice(models.Model):
             'result': response.FeCabResp.Resultado,
             'date': fch_proceso
         })
+
+    def _commit(self):
+        self.env.cr.commit()
 
     def _set_electronic_invoice_details(self, document_afip_code):
         """ Mapea los valores de ODOO al objeto ElectronicInvoice"""
@@ -168,7 +176,7 @@ class AccountInvoice(models.Model):
                 perception = perception_perception_proxy.search([('tax_id', '=', tax.tax_id.id)], limit=1)
 
                 if not perception:
-                    raise ValidationError("Percepcion no encontrada para el impuesto %s", tax.tax_id.name)
+                    raise ValidationError("Percepcion no encontrada para el impuesto %s" + tax.tax_id.name)
 
                 code = perception.get_afip_code()
                 tribute_aliquot = round(tax.amount / tax.base if tax.base else 0, 2)
@@ -187,10 +195,9 @@ class AccountInvoice(models.Model):
         if last_number.zfill(8) != document_book.name.zfill(8):
             raise ValidationError('El ultimo numero del talonario no coincide con el de la afip')
 
-
     def _get_wsfe(self):
         """
-        Crea el objeto de wsfe para utilizar sus servicios
+        Busca el objeto de wsfe para utilizar sus servicios
         :return: instancia de Wsfe
         """
         wsfe_config = self.env['wsfe.configuration'].search([
