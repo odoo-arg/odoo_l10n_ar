@@ -56,7 +56,7 @@ class WsaaToken(models.Model):
 
         # Traemos el timezone
         user = self.env['res.users'].sudo().browse(SUPERUSER_ID)
-        tz = pytz.timezone(user.partner_id.tz) or pytz.utc
+        tz = pytz.timezone(user.partner_id.tz) if user.partner_id.tz else pytz.utc
 
         # Creamos el token nuevo para el servicio especificado y lo firmamos con la clave y certificado
         token = wsaa.tokens.AccessRequerimentToken(self.name, tz)
