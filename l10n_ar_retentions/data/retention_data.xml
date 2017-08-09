@@ -205,21 +205,21 @@
             <field name="name">Retencion IVA Sufrida</field>
             <field name="type_tax_use">sale</field>
             <field name="type">vat</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_retencion_iva_sufrida" />
         </record>
 
        <record id="retention_retention_iva_efectuada" model="retention.retention">
             <field name="name">Retencion IVA Efectuada</field>
             <field name="type_tax_use">purchase</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="type">vat</field>
             <field name="tax_id" ref="tax_retencion_iva_efectuada" />
         </record>
 
         <record id="retention_retention_iibb_caba_sufrida" model="retention.retention">
             <field name="name">Retencion IIBB CABA Sufrida</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="type_tax_use">sale</field>
             <field name="state_id" ref="base.state_ar_c"/>
             <field name="type">gross_income</field>
@@ -230,7 +230,7 @@
             <field name="name">Retencion IIBB CABA Efectuada</field>
             <field name="type">gross_income</field>
             <field name="type_tax_use">purchase</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_c"/>
             <field name="tax_id" ref="tax_retencion_iibb_caba_efectuada" />
         </record>
@@ -239,7 +239,7 @@
             <field name="name">Retencion IIBB PBA Sufrida</field>
             <field name="type">gross_income</field>
             <field name="type_tax_use">sale</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_b"/>
             <field name="tax_id" ref="tax_retencion_iibb_pba_sufrida" />
         </record>
@@ -248,7 +248,7 @@
             <field name="name">Retencion IIBB PBA Efectuada</field>
             <field name="type">gross_income</field>
             <field name="type_tax_use">purchase</field>
-            <field name="jurisdiccion">provincial</field>
+            <field name="jurisdiction">provincial</field>
             <field name="state_id" ref="base.state_ar_b"/>
             <field name="tax_id" ref="tax_retencion_iibb_pba_efectuada" />
         </record>
@@ -257,7 +257,7 @@
             <field name="name">Retencion Ganancias Sufrida</field>
             <field name="type">profit</field>
             <field name="type_tax_use">sale</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_retencion_ganancias_sufrida" />
         </record>
 
@@ -265,7 +265,7 @@
             <field name="name">Retencion Ganancias Efectuada</field>
             <field name="type">profit</field>
             <field name="type_tax_use">purchase</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_retencion_ganancias_efectuada" />
         </record>
 
@@ -273,7 +273,7 @@
             <field name="name">Retencion SUSS Sufrida</field>
             <field name="type">other</field>
             <field name="type_tax_use">sale</field>
-            <field name="jurisdiccion">nacional</field>
+            <field name="jurisdiction">nacional</field>
             <field name="tax_id" ref="tax_retencion_suss_sufrida" />
         </record>
 
