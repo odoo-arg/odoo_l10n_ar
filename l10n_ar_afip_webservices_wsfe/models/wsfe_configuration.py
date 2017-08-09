@@ -44,8 +44,8 @@ class WsfeConfiguration(models.Model):
         if self.search_count([('wsaa_token_id', '=', self.wsaa_token_id.id)]) > 1:
             raise ValidationError('Ya existe una configuracion de factura electronica asociado a ese token')
 
-    @api.onchange('wsfe_configuration_id')
-    def onchange_wsfe_configuration(self):
+    @api.onchange('wsaa_configuration_id')
+    def onchange_wsaa_configuration(self):
         self.wsaa_token_id = None
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
