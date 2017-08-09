@@ -25,6 +25,7 @@
             <field name="arch" type="xml">
 
                 <field name="vat" position="after">
+                    <field name="account_position_id"/>
                     <field name="iibb_number"/>
                     <field name="start_date"/>
                 </field>
