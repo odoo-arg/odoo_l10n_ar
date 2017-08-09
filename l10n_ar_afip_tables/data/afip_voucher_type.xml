@@ -100,12 +100,12 @@
         
         <record id='afip_voucher_type_020' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO POR OPERACIONES CON EL EXTERIOR</field>
-            <field name='denomination_id' ref='account_denomination_c'/>
+            <field name='denomination_id' ref='account_denomination_e'/>
         </record>
         
         <record id='afip_voucher_type_021' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO POR OPERACIONES CON EL EXTERIOR</field>
-            <field name='denomination_id' ref='account_denomination_c'/>
+            <field name='denomination_id' ref='account_denomination_e'/>
         </record>
         
         <record id='afip_voucher_type_022' model='afip.voucher.type'>
@@ -221,7 +221,7 @@
         
         <record id='afip_voucher_type_066' model='afip.voucher.type'>
             <field name='name'>DESPACHO DE IMPORTACION</field>
-            <field name='denomination_id' ref='account_denomination_m'/>
+            <field name='denomination_id' ref='account_denomination_i'/>
         </record>
         
         <record id='afip_voucher_type_067' model='afip.voucher.type'>
