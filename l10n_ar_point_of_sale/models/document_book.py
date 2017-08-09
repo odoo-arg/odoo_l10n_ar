@@ -75,12 +75,19 @@ class DocumentBook(models.Model):
         ('sequence_uniq', 'unique(category, sequence, document_type_id)', 'La secuencia debe ser unica por categoria')
     ]
 
-    def next_number(self):
+    def _next_number(self):
         """
         Suma uno al ultimo valor del talonario y lo devuelve
         :return: Numero para ser utilizado
         """
         self.name = int(self.name) + 1
         return self.pos_ar_id.name.zfill(4) + '-' + self.name.zfill(8)
+
+    def next_number(self):
+        """
+        Saltea permisos para ejecutar la funcion que avanza la numeracion
+        :return: Numero para ser utilizado
+        """
+        return self.sudo()._next_number()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

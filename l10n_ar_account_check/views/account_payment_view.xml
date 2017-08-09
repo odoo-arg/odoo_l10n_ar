@@ -23,7 +23,7 @@
             <field name="inherit_id" ref="l10n_ar_account_payment.l10n_ar_account_payment_view_form"/>
             <field name="arch" type="xml">
                 <notebook position="inside">
-                    <page string="Cheques" name="checks" groups="l10n_ar_account_check.group_account_treasury_user">
+                    <page string="Cheques" name="checks">
                         <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}">
                             <field name="account_third_check_ids" nolabel="1"
                                     attrs="{'readonly': [('state', '!=', 'draft')]}"
