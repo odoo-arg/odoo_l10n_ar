@@ -52,10 +52,10 @@ class TestWsfe(common.TransactionCase):
                 'wsaa_token_id': self.wsaa_token.id,
             })
 
-    def test_onchange_wsfe_configuration(self):
+    def test_onchange_wsaa_configuration(self):
         new_wsfe = self.env['wsfe.configuration'].new(self.wsfe.read()[0])
         assert new_wsfe.wsaa_token_id
-        new_wsfe.onchange_wsfe_configuration()
+        new_wsfe.onchange_wsaa_configuration()
         assert not new_wsfe.wsaa_token_id
 
     def test_code_perception(self):
