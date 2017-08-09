@@ -44,7 +44,7 @@ class TestInvoice(common.TransactionCase):
             'category': 'invoice',
             'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
             'document_type_id': self.env.ref('l10n_ar_debit_note.document_type_debit_note').id,
-            'denomination_id': self.env.ref('l10n_ar_point_of_sale.account_denomination_a').id,
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
         })
         self.debit_note = self.env['account.invoice'].create({
             'partner_id': self.partner_ri.id,
@@ -64,9 +64,10 @@ class TestInvoice(common.TransactionCase):
 
     def setUp(self):
         super(TestInvoice, self).setUp()
-        self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
         self.iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
         self.iva_cf = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_cf')
+        self.env.user.company_id.partner_id.property_account_position_id = self.iva_ri
+        self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
         # Clientes y proveedores
         self._create_partners()
 

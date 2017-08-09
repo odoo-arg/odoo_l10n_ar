@@ -29,9 +29,9 @@ class TestPos(TestDocumentBook):
     def test_get_denomination(self):
         iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
         iva_ext = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_cliente_ext')
-        assert iva_ri.get_denomination(iva_ri) == self.env.ref('l10n_ar_point_of_sale.account_denomination_a')
-        assert iva_ri.get_denomination(iva_ext) == self.env.ref('l10n_ar_point_of_sale.account_denomination_e')
+        assert iva_ri.get_denomination(iva_ri) == self.env.ref('l10n_ar_afip_tables.account_denomination_a')
+        assert iva_ri.get_denomination(iva_ext) == self.env.ref('l10n_ar_afip_tables.account_denomination_e')
         with self.assertRaises(UserError):
-            iva_ri.get_denomination(self.env.ref('l10n_ar_point_of_sale.account_denomination_i')).get_denomination()
+            iva_ri.get_denomination(self.env.ref('l10n_ar_afip_tables.account_denomination_i')).get_denomination()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

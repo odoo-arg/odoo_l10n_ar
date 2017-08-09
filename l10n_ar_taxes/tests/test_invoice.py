@@ -42,7 +42,7 @@ class TestInvoice(common.TransactionCase):
             'category': 'invoice',
             'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
             'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_invoice').id,
-            'denomination_id': self.env.ref('l10n_ar_point_of_sale.account_denomination_a').id,
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
         })
         self.invoice = self.env['account.invoice'].create({
             'partner_id': self.partner_ri.id,

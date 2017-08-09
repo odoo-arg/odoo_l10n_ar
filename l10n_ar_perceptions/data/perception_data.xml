@@ -24,28 +24,28 @@
 
         <!-- CUENTAS DE PRECEPCIONES ACTIVO -->
 
-        <record model="account.account" id="l10n_ar.percepciones_sufridas_iigg">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_sufridas_iigg">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1142.01</field>
             <field name="name">Percepciones Sufridas IIGG</field>
         </record>
 
-        <record model="account.account" id="l10n_ar.percepciones_iibb_pba_sufrida">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_sufrida">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1143.01</field>
             <field name="name">Percepciones IIBB PBA sufrida</field>
         </record>
 
-        <record model="account.account" id="l10n_ar.percepciones_iibb_caba_sufrida">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_sufrida">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1143.02</field>
             <field name="name">Percepciones IIBB CABA sufrida</field>
         </record>
 
-        <record model="account.account" id="l10n_ar.percepciones_iva_sufrida">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_sufrida">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1144.01</field>
@@ -54,21 +54,21 @@
 
         <!-- CUENTAS DE PRECEPCIONES PASIVO -->
 
-        <record model="account.account" id="l10n_ar.percepciones_iibb_pba_efectuada">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_efectuada">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2153.01</field>
             <field name="name">Percepciones IIBB PBA efectuada</field>
         </record>
 
-        <record model="account.account" id="l10n_ar.percepciones_iibb_caba_efectuada">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_efectuada">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2153.02</field>
             <field name="name">Percepciones IIBB CABA efectuada</field>
         </record>
 
-        <record model="account.account" id="l10n_ar.percepciones_iva_efectuada">
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_efectuada">
             <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2154.01</field>
@@ -82,8 +82,8 @@
             <field name="description">Percepciones Ganancias Sufrida</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_sufridas_iigg"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_sufridas_iigg"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_sufridas_iigg"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_sufridas_iigg"/>
             <field name="type_tax_use">purchase</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -93,8 +93,8 @@
             <field name="description">Percepciones IVA Sufrida</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iva_sufrida"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iva_sufrida"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iva_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iva_sufrida"/>
             <field name="type_tax_use">purchase</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -104,8 +104,8 @@
             <field name="description">Percepciones IVA Efectuada</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iva_efectuada"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iva_efectuada"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iva_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iva_efectuada"/>
             <field name="type_tax_use">sale</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -115,8 +115,8 @@
             <field name="description">Percepciones IIBB CABA Sufrida</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iibb_caba_sufrida"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iibb_caba_sufrida"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_sufrida"/>
             <field name="type_tax_use">purchase</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -126,8 +126,8 @@
             <field name="description">Percepciones IIBB CABA Efectuada</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iibb_caba_efectuada"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iibb_caba_efectuada"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_efectuada"/>
             <field name="type_tax_use">sale</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -137,8 +137,8 @@
             <field name="description">Percepciones IIBB PBA Sufrida</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iibb_pba_sufrida"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iibb_pba_sufrida"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_sufrida"/>
             <field name="type_tax_use">purchase</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>
@@ -148,8 +148,8 @@
             <field name="description">Percepciones IIBB PBA Efectuada</field>
             <field eval="0" name="amount"/>
             <field name="amount_type">percent</field>
-            <field name="account_id" ref="l10n_ar.percepciones_iibb_pba_efectuada"/>
-            <field name="refund_account_id" ref="l10n_ar.percepciones_iibb_pba_efectuada"/>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_efectuada"/>
             <field name="type_tax_use">sale</field>
             <field name="tax_group_id" ref="tax_group_perception"/>
         </record>

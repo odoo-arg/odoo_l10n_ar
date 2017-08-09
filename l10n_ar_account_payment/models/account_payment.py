@@ -56,7 +56,7 @@ class AccountAbstractPayment(models.AbstractModel):
         self.total_invoices_amount = self._get_total_invoices_amount_default()
 
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta', default=_get_default_pos)
-    journal_id = fields.Many2one(default=lambda self: self.env.ref('l10n_ar.journal_cobros_y_pagos').id)
+    journal_id = fields.Many2one(default=lambda self: self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id)
     payment_type_line_ids = fields.One2many('account.payment.type.line', 'payment_id', 'Lineas de pagos')
     total_invoices_amount = fields.Monetary(
         'Total documentos',

@@ -71,7 +71,7 @@
 
         <!--OTROS COMPROBANTES-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_099' model='afip.voucher.type'>
-            <field name='document_type' ref='document_type_invoice'/>
+            <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
     </data>

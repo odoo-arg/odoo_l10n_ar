@@ -40,8 +40,8 @@ class TestPos(TestDocumentBook):
             self.pos.name = 'pos'
 
     def test_get_pos(self):
-        self.pos_proxy.get_pos('invoice', self.env.ref('l10n_ar_point_of_sale.account_denomination_a'))
+        self.pos_proxy.get_pos('invoice', self.env.ref('l10n_ar_afip_tables.account_denomination_a'))
         with self.assertRaises(ValidationError):
-            self.pos_proxy.get_pos('payment', self.env.ref('l10n_ar_point_of_sale.account_denomination_i'))
+            self.pos_proxy.get_pos('payment', self.env.ref('l10n_ar_afip_tables.account_denomination_i'))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

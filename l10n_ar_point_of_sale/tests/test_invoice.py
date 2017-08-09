@@ -89,11 +89,11 @@ class TestInvoice(TestDocumentBook):
         self.onchange_no_partner()
 
     def test_get_invoice_denomination(self):
-        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_point_of_sale.account_denomination_a')
+        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_afip_tables.account_denomination_a')
         self.partner_ri.property_account_position_id = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ex')
-        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_point_of_sale.account_denomination_b')
+        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_afip_tables.account_denomination_b')
         self.onchange_partner_in_invoice()
-        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_point_of_sale.account_denomination_c')
+        assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_afip_tables.account_denomination_c')
 
     def test_invalid_fiscal_positions(self):
         company_fiscal_position = self.company_fiscal_position
@@ -114,7 +114,7 @@ class TestInvoice(TestDocumentBook):
             self.invoice.action_invoice_open()
 
     def test_invalid_invoice_denomination(self):
-        self.invoice.denomination_id = self.env.ref('l10n_ar_point_of_sale.account_denomination_b')
+        self.invoice.denomination_id = self.env.ref('l10n_ar_afip_tables.account_denomination_b')
         with self.assertRaises(UserError):
             self.invoice.action_invoice_open()
 
@@ -175,7 +175,7 @@ class TestInvoice(TestDocumentBook):
     def test_name_get(self):
         self.invoice.onchange_partner_id()
         name_get = self.invoice.name_get()[0][1]
-        assert name_get == 'FCC A '
+        assert name_get == 'FCC A'
         self.invoice.action_invoice_open()
         name_get = self.invoice.name_get()[0][1]
         assert name_get == 'FCC A '+self.invoice.name

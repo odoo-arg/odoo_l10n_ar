@@ -26,9 +26,9 @@ class SetUp(common.TransactionCase):
     """
 
     def _set_up_company(self):
-        self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
         self.env.user.company_id.partner_id.property_account_position_id = \
             self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari').id
+        self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
 
     def _create_document_books(self):
         pos_proxy = self.env['pos.ar']
@@ -42,14 +42,14 @@ class SetUp(common.TransactionCase):
             'pos_ar_id': self.pos.id,
             'book_type_id': self.env.ref('l10n_ar_afip_webservices_wsfe.document_book_type_electronic_invoice').id,
             'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_invoice').id,
-            'denomination_id': self.env.ref('l10n_ar_point_of_sale.account_denomination_a').id
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id
         }
         self.document_book_fc_a = document_book_proxy.create(vals)
         vals['document_type_id'] = self.env.ref('l10n_ar_point_of_sale.document_type_refund').id
-        vals['denomination_id'] = self.env.ref('l10n_ar_point_of_sale.account_denomination_b').id
+        vals['denomination_id'] = self.env.ref('l10n_ar_afip_tables.account_denomination_b').id
         self.document_book_nc_b = document_book_proxy.create(vals)
         vals['document_type_id'] = self.env.ref('l10n_ar_debit_note.document_type_debit_note').id
-        vals['denomination_id'] = self.env.ref('l10n_ar_point_of_sale.account_denomination_c').id
+        vals['denomination_id'] = self.env.ref('l10n_ar_afip_tables.account_denomination_c').id
         self.document_book_nd_c = document_book_proxy.create(vals)
 
     def _create_partners(self):

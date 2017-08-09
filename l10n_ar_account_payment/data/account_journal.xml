@@ -24,8 +24,7 @@
             <field name="padding">4</field>
         </record>
 
-        <record model="account.journal" id="l10n_ar.journal_cobros_y_pagos">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+        <record model="account.journal" id="l10n_ar_account_payment.journal_cobros_y_pagos">
             <field name="name">Cobros y Pagos</field>
             <field name="code">CYP</field>
             <field name="sequence_id" ref="seq_journal_cobros_y_pagos"/>
