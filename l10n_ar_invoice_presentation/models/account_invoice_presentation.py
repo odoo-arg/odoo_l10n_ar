@@ -22,11 +22,15 @@ from openerp.exceptions import ValidationError
 from datetime import datetime
 from unidecode import unidecode
 
+from odoo_openpyme_api.presentations import presentation
+
 
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
 
     def generate_files(self):
+        base_name = "REGINFO_CV_{}"+self.get_period()+".{}"
+
         header_file = self.generate_header_file()
         sale_file = self.generate_sale_file()
         sale_vat_file = self.generate_sale_vat_file()
@@ -38,21 +42,21 @@ class AccountInvoicePresentation(models.Model):
 
         self.write({
             'generation_time': datetime.now(),
-            'header_filename': 'A.txt',
-            'header_file': header_file,
-            'sale_filename': 'B.txt',
+            'header_filename': base_name.format("CABECERA_", "txt"),
+            'header_file': header_file.get_encoded_string(),
+            'sale_filename': base_name.format("VENTAS_CBTE_", "txt"),
             'sale_file': sale_file,
-            'sale_vat_filename': 'C.txt',
+            'sale_vat_filename': base_name.format("VENTAS_ALICUOTAS_", "txt"),
             'sale_vat_file': sale_vat_file,
-            'purchase_filename': 'D.txt',
+            'purchase_filename': base_name.format("COMPRAS_CBTE_", "txt"),
             'purchase_file': purchase_file,
-            'purchase_vat_filename': 'E.txt',
+            'purchase_vat_filename': base_name.format("COMPRAS_ALICUOTAS_", "txt"),
             'purchase_vat_file': purchase_vat_file,
-            'purchase_imports_filename': 'F.txt',
+            'purchase_imports_filename': base_name.format("COMPRAS_IMPORT_", "txt"),
             'purchase_imports_file': purchase_imports_file,
-            'fiscal_credit_service_import_filename': 'G.txt',
+            'fiscal_credit_service_import_filename': base_name.format("CRED_FISCAL_IMP_SERV_", "txt"),
             'fiscal_credit_service_import_file': fiscal_credit_service_import_file,
-            'reginfo_zip_filename': 'H.txt',
+            'reginfo_zip_filename': base_name.format("", "zip"),
             'reginfo_zip_file': reginfo_zip_file,
         })
 
