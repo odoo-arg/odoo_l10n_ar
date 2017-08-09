@@ -41,8 +41,8 @@ class DocumentBookType(models.Model):
     foo = fields.Char('Funcion', help='Funcion a ejecutarse al utilizar tipo de talonario')
 
     _sql_constraints = [(
-        'unique_name_categ',
-        'unique(name, category)',
+        'unique_type_categ',
+        'unique(type, category)',
         'Ya existe ese tipo de talonario para esa categoría'
     )]
 
