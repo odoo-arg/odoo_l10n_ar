@@ -37,8 +37,18 @@
                                 <field name="with_prorate"/>
                             </group>
                         </group>
-                        <group string="Archivos">
+                        <group>
                             <field name="generation_time" readonly="1" attrs="{'invisible':[('generation_time', '=', False)]}"/>
+                            <field name="reginfo_zip_file" filename="reginfo_zip_filename"/>
+                            <field name="reginfo_zip_filename" invisible="True"/>
+                            <button name="generate_files"
+                                    type="object"
+                                    string="Generar"
+                                    icon="fa-gear"
+                                    colspan="1"
+                            />
+                        </group>
+                        <group string="Archivos">
                             <field name="header_file" filename="header_filename"/>
                             <field name="header_filename" invisible="True"/>
                             <field name="sale_file" filename="sale_filename"/>
@@ -53,14 +63,6 @@
                             <field name="purchase_imports_filename" invisible="True"/>
                             <field name="fiscal_credit_service_import_file" filename="fiscal_credit_service_import_filename"/>
                             <field name="fiscal_credit_service_import_filename" invisible="True"/>
-                            <field name="reginfo_zip_file" filename="reginfo_zip_filename"/>
-                            <field name="reginfo_zip_filename" invisible="True"/>
-                            <button name="generate_files"
-                                    type="object"
-                                    string="Generar"
-                                    icon="fa-gear"
-                                    colspan="1"
-                            />
                         </group>
                     </sheet>
                 </form>
