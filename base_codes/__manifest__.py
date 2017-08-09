@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'l10n_ar_codes',
+    'name': 'base_codes',
 
     'version': '1.0',
 

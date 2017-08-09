@@ -33,7 +33,6 @@
     'depends': [
 
         'l10n_ar_afip_webservices_wsfe',
-        'l10n_ar_perceptions',
         #'report_custom_filename' TODO: mirar v10 de este modulo, es para que el reporte tenga el nombre del numero de doc
     ],
 
@@ -41,8 +40,6 @@
 
         'report/account_invoice_report.xml',
         'report/report_electronic_invoice.xml',
-        'views/res_company_view.xml',
-        'views/account_denomination_view.xml'
     ],
 
     'active': False,

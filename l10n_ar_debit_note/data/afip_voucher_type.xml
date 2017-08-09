@@ -21,31 +21,26 @@
 
         <!--DOCUMENTOS TIPO A-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_002' model='afip.voucher.type'>
-            <field name='denomination_id' ref='l10n_ar_point_of_sale.account_denomination_a'/>
             <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <!--DOCUMENTOS TIPO B-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_007' model='afip.voucher.type'>
-            <field name='denomination_id' ref='l10n_ar_point_of_sale.account_denomination_b'/>
             <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <!--DOCUMENTOS TIPO C-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_012' model='afip.voucher.type'>
-            <field name='denomination_id' ref='l10n_ar_point_of_sale.account_denomination_c'/>
             <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <!--EXPORTACION-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_020' model='afip.voucher.type'>
-            <field name='denomination_id' ref='l10n_ar_point_of_sale.account_denomination_c'/>
             <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <!--DOCUMENTOS TIPO M-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_052' model='afip.voucher.type'>
-            <field name='denomination_id' ref='l10n_ar_point_of_sale.account_denomination_m'/>
             <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 

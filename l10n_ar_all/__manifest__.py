@@ -18,37 +18,30 @@
 
 {
 
-    'name': 'l10n_ar_afip_tables',
+    'name': 'l10n_ar_all',
 
     'version': '1.0',
 
-    'summary': 'Datas of tables of afip V.0 25082010-5',
+    'summary': 'Localizacion Argentina',
 
-    'description': """ Datas of tables of afip V.0 25082010-5,
-mapped with models using l10n_ar_codes application
-""",
+    'description': """
+Modulo encargado de instalar todos los modulos requeridos para la localizacion Argentina.
+    """,
 
     'author': 'OPENPYME S.R.L.',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'base',
+    'category': 'Localization',
 
     'depends': [
-        'l10n_ar',
+        'l10n_ar_reject_checks',
+        'l10n_ar_retentions',
+        'l10n_ar_electronic_invoice_report'
     ],
 
     'data': [
-        'views/afip_tables_configuration.xml',
-        'views/account_denomination_view.xml',
-        'data/res_country_state.xml',
-        'data/account_denomination.xml',
-        'data/afip_voucher_type.xml',
-        'data/partner_document_type.xml',
-        'data/account_tax.xml',
-        'data/account_fiscal_position.xml',
-        'data/afip_concept.xml',
-        'security/ir.model.access.csv',
+
     ],
 
     'active': False,

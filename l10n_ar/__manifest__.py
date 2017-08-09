@@ -34,7 +34,8 @@
 
     'depends': [
         'base_vat_ar',
-        'account'
+        'account',
+        'base_codes'
     ],
 
     'data': [
@@ -46,6 +47,8 @@
         'data/bank_update.xml',
         'views/account_tax_view.xml',
         'views/res_bank.xml',
+        'views/res_company_view.xml',
+        'views/res_partner_view.xml',
         'wizard/views/update_banks_wizard.xml'
         
     ],

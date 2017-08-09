@@ -16,14 +16,5 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
-
-
-class AfipVoucherType(models.Model):
-
-    _inherit = 'afip.voucher.type'
-
-    document_type_id = fields.Many2one('document.book.document.type', 'Tipo de documento')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -21,68 +21,56 @@
 
         <!--DOCUMENTOS TIPO A-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_001' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_a'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_003' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_a'/>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
 
         <!--DOCUMENTOS TIPO B-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_006' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_b'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_008' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_b'/>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
 
         <!--DOCUMENTOS TIPO C-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_011' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_c'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_013' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_c'/>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
 
         <!--EXPORTACION-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_019' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_e'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_021' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_c'/>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
 
         <!--DOCUMENTOS TIPO M-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_051' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_m'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_053' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_m'/>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
 
         <!--DESPACHO DE IMPORTACION-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_066' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_m'/>
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
         <!--OTROS COMPROBANTES-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_099' model='afip.voucher.type'>
-            <field name='denomination_id' ref='account_denomination_o'/>
             <field name='document_type' ref='document_type_invoice'/>
         </record>
 

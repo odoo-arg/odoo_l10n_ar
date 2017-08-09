@@ -18,18 +18,21 @@
 <openerp>
     <data noupdate="1">
     	
-        <!-- CREACION DE TIPOS DE COMPROBANTES DE AFIP -->
-        
+        <!--TIPOS DE DOCUMENTO DE AFIP Y SUS RELACIONES CON DENOMINACIONES Y TIPOS DE DOCUMENTO-->
+
         <record id='afip_voucher_type_001' model='afip.voucher.type'>
             <field name='name'>FACTURAS A</field>
+            <field name='denomination_id' ref='account_denomination_a'/>
         </record>
         
         <record id='afip_voucher_type_002' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO A</field>
+            <field name='denomination_id' ref='account_denomination_a'/>
         </record>
         
         <record id='afip_voucher_type_003' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO A</field>
+            <field name='denomination_id' ref='account_denomination_a'/>
         </record>
         
         <record id='afip_voucher_type_004' model='afip.voucher.type'>
@@ -42,14 +45,17 @@
         
         <record id='afip_voucher_type_006' model='afip.voucher.type'>
             <field name='name'>FACTURAS B</field>
+            <field name='denomination_id' ref='account_denomination_b'/>
         </record>
         
         <record id='afip_voucher_type_007' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO B</field>
+            <field name='denomination_id' ref='account_denomination_b'/>
         </record>
         
         <record id='afip_voucher_type_008' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO B</field>
+            <field name='denomination_id' ref='account_denomination_b'/>
         </record>
         
         <record id='afip_voucher_type_009' model='afip.voucher.type'>
@@ -62,14 +68,17 @@
         
         <record id='afip_voucher_type_011' model='afip.voucher.type'>
             <field name='name'>FACTURAS C</field>
+            <field name='denomination_id' ref='account_denomination_c'/>
         </record>
         
         <record id='afip_voucher_type_012' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO C</field>
+            <field name='denomination_id' ref='account_denomination_c'/>
         </record>
         
         <record id='afip_voucher_type_013' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO C</field>
+            <field name='denomination_id' ref='account_denomination_c'/>
         </record>
         
         <record id='afip_voucher_type_014' model='afip.voucher.type'>
@@ -86,14 +95,17 @@
         
         <record id='afip_voucher_type_019' model='afip.voucher.type'>
             <field name='name'>FACTURAS DE EXPORTACION</field>
+            <field name='denomination_id' ref='account_denomination_e'/>
         </record>
         
         <record id='afip_voucher_type_020' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO POR OPERACIONES CON EL EXTERIOR</field>
+            <field name='denomination_id' ref='account_denomination_e'/>
         </record>
         
         <record id='afip_voucher_type_021' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO POR OPERACIONES CON EL EXTERIOR</field>
+            <field name='denomination_id' ref='account_denomination_e'/>
         </record>
         
         <record id='afip_voucher_type_022' model='afip.voucher.type'>
@@ -150,14 +162,17 @@
         
         <record id='afip_voucher_type_051' model='afip.voucher.type'>
             <field name='name'>FACTURAS M</field>
+            <field name='denomination_id' ref='account_denomination_m'/>
         </record>
         
         <record id='afip_voucher_type_052' model='afip.voucher.type'>
             <field name='name'>NOTAS DE DEBITO M</field>
+            <field name='denomination_id' ref='account_denomination_m'/>
         </record>
         
         <record id='afip_voucher_type_053' model='afip.voucher.type'>
             <field name='name'>NOTAS DE CREDITO M</field>
+            <field name='denomination_id' ref='account_denomination_m'/>
         </record>
         
         <record id='afip_voucher_type_054' model='afip.voucher.type'>
@@ -206,6 +221,7 @@
         
         <record id='afip_voucher_type_066' model='afip.voucher.type'>
             <field name='name'>DESPACHO DE IMPORTACION</field>
+            <field name='denomination_id' ref='account_denomination_i'/>
         </record>
         
         <record id='afip_voucher_type_067' model='afip.voucher.type'>
@@ -310,6 +326,7 @@
         
         <record id='afip_voucher_type_099' model='afip.voucher.type'>
             <field name='name'>OTROS COMP  QUE NO CUMPLEN CON LA R G  3419 Y SUS MODIF </field>
+            <field name='denomination_id' ref='account_denomination_o'/>
         </record>
         
         <record id='afip_voucher_type_101' model='afip.voucher.type'>

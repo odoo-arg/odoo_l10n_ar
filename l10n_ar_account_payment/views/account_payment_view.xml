@@ -63,6 +63,7 @@
                                ('payment_type', '=', 'outbound'),
                                ('partner_type', '=', 'customer'),
                            ]}"
+                           widget="selection"
                     />
                     <!-- transfer or (inbound and supplier) or (outbound and customer) -->
                 </field>
@@ -89,7 +90,7 @@
             <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
             <field name="arch" type="xml">
                 <field name="payment_date" position="after">
-                    <field name="pos_ar_id"/>
+                    <field name="pos_ar_id" widget="selection"/>
                 </field>
                 <field name="communication" position="after">
                     <field name="total_invoices_amount" attrs="{'invisible': [('total_invoices_amount', '=', 0.0)]}"/>

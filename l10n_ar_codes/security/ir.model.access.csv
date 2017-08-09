@@ -1,2 +1,0 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-l10n_ar_codes_codes_models_relation_administration,l10n_ar_codes.codes_models_relation.administration,l10n_ar_codes.model_codes_models_relation,base.group_system,1,1,1,1

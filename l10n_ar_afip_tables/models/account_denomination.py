@@ -16,14 +16,24 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields
 
 
-class AfipVoucherType(models.Model):
+class AccountDenomination(models.Model):
 
-    _inherit = 'afip.voucher.type'
+    _name = 'account.denomination'
 
-    document_type_id = fields.Many2one('document.book.document.type', 'Tipo de documento')
+    name = fields.Char('Nombre', required=True, size=1)
+    description = fields.Char('Descripcion')
+    validate_supplier = fields.Boolean(
+        'Validar numeracion?',
+        help="Valida numeracion con el formato 'xxxx-xxxxxxxx' para los documentos de proveedores"
+    )
+    vat_discriminated = fields.Boolean(
+        string='Discrimina IVA?',
+        help='Discriminacion de IVA en reporte'
+    )
+
+    _sql_constraints = [('name_unique', 'unique(name)', 'El nombre debe ser unico por denominacion')]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
