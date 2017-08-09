@@ -25,5 +25,6 @@ class ResCompany(models.Model):
 
     iibb_number = fields.Char(related='partner_id.iibb_number', string="Numero IIBB")
     start_date = fields.Date(related='partner_id.start_date', string="Fecha Inicio Actividad")
+    account_position_id = fields.Many2one('account.fiscal.position', related='partner_id.property_account_position_id', string="Posicion Fiscal")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
