@@ -45,6 +45,8 @@ entre posiciones fiscales y denominaciones.
         'views/pos_ar_view.xml',
         'views/menu.xml',
         'views/account_invoice_view.xml',
+        'data/ir_actions_act_window.xml',
+        'data/ir_ui_menu.xml',
         'views/res_company_view.xml',
         'data/document_book_type.xml',
         'data/afip_voucher_type.xml',

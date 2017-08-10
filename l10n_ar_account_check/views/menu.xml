@@ -64,6 +64,22 @@
             sequence="10"
         />
 
+        <!--TRANSFERENCIAS INTERNAS-->
+        <menuitem
+            id="treasury_movements_main_menu"
+            name="Movimientos"
+            parent="treasury_main_menu"
+            sequence="20"
+        />
+
+        <menuitem
+            id="treasury_movements_internal_payment_menu"
+            name="Transferencias internas"
+            action="action_internal_transfers"
+            parent="treasury_movements_main_menu"
+            sequence="0"
+        />
+
     </data>
 </openerp>
 

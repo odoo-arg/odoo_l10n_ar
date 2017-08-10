@@ -23,10 +23,10 @@
             <field name="inherit_id" ref="l10n_ar_account_check.account_own_check_form"/>
             <field name="arch" type="xml">
                 <header position="inside">
-                    <button name="reject_check" type="object" string="Rechazar" confirm="Está seguro?" states="handed"/>
-                    <button name="revert_reject" type="object" string="Revertir rechazo" states="rejected"/>
-                    <button name="cancel_check" type="object" string="Anular" confirm="Está seguro?" states="draft"/>
-                    <button name="revert_canceled_check" type="object" string="Revertir anulacion" states="canceled"/>
+                    <button name="reject_check" type="object" string="Rechazar" confirm="Está seguro?" states="handed" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                    <button name="revert_reject" type="object" string="Revertir rechazo" states="rejected" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                    <button name="cancel_check" type="object" string="Anular" confirm="Está seguro?" states="draft" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                    <button name="revert_canceled_check" type="object" string="Revertir anulacion" states="canceled" groups="l10n_ar_account_check.group_account_treasury_manager"/>
                 </header>
             </field>
         </record>
