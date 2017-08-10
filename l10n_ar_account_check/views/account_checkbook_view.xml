@@ -37,11 +37,11 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="generate_checks" type="object" string="Generar Cheques"/>
+                        <button name="generate_checks" type="object" string="Generar Cheques" groups="l10n_ar_account_check.group_account_treasury_manager"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="l10n_ar_account_check.group_account_treasury_manager">
                                 <field name="active" widget="boolean_button" options="{'terminology':'archive'}"/>
                             </button>
                         </div>

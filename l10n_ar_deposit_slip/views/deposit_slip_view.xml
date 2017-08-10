@@ -44,9 +44,9 @@
             <field name="arch" type="xml">
                 <form string="Boleta de deposito" delete="false">
                     <header>
-                        <button name="post" type="object" string="Validar" states="draft"/>
-                        <button name="cancel_deposit_slip" type="object" string="Anular Boleta" confirm="Está seguro?" states="deposited,draft"/>
-                        <button name="cancel_to_draft" type="object" string="Volver a borrador" states="canceled"/>
+                        <button name="post" type="object" string="Validar" states="draft" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        <button name="cancel_deposit_slip" type="object" string="Anular Boleta" confirm="Está seguro?" states="deposited,draft" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        <button name="cancel_to_draft" type="object" string="Volver a borrador" states="canceled" groups="l10n_ar_account_check.group_account_treasury_manager"/>
                         <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,deposited"/>
                     </header>
                     <sheet>

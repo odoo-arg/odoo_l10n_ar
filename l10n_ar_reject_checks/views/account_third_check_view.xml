@@ -23,9 +23,18 @@
             <field name="inherit_id" ref="l10n_ar_account_check.account_third_check_form"/>
             <field name="arch" type="xml">
                 <header position="inside">
-                    <button name="button_reject_check" type="object" string="Rechazar" confirm="Está seguro?"
-                            states="deposited,wallet,handed"/>
-                    <button name="button_revert_reject" type="object" string="Revertir rechazo" states="rejected"/>
+                    <button name="button_reject_check"
+                            type="object" string="Rechazar"
+                            confirm="Está seguro?"
+                            states="deposited,wallet,handed"
+                            groups="l10n_ar_account_check.group_account_treasury_manager"
+                    />
+                    <button name="button_revert_reject"
+                            type="object"
+                            string="Revertir rechazo"
+                            states="rejected"
+                            groups="l10n_ar_account_check.group_account_treasury_manager"
+                    />
                 </header>
             </field>
         </record>

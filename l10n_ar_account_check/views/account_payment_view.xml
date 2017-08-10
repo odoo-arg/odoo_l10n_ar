@@ -201,6 +201,43 @@
             </field>
         </record>
 
+        <!-- TRANSFERENCIAS INTERNAS -->
+        <record id="view_internal_transfers_tree" model="ir.ui.view">
+            <field name="name">Internal transfers tree</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state=='draft'" decoration-muted="state=='reconciled'" edit="false">
+                    <field name="payment_date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="destination_journal_id"/>
+                    <field name="amount" sum='Total'/>
+                    <field name="state"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="partner_type" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_internal_transfers" model="ir.actions.act_window">
+            <field name="name">Transferencias internas</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'default_payment_type': 'transfer'}</field>
+            <field name="domain">[('payment_type', '=', 'transfer')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Haga click para registrar una transferencia interna
+                </p><p>
+                  Las tranferencias internas se utilizan para registrar movimientos entre cuentras de liquidez
+                </p>
+            </field>
+        </record>
+
+
+
     </data>
 </openerp>
 
