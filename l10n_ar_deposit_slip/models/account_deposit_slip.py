@@ -27,7 +27,8 @@ class AccountDepositSlip(models.Model):
 
     @api.depends('check_ids')
     def _get_checks_total(self):
-        self.amount = sum(check.amount for check in self.check_ids)
+        for each in self:
+            each.amount = sum(check.amount for check in each.check_ids)
 
     name = fields.Char(
         string='Boleta de deposito',
