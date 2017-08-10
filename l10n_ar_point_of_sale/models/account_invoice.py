@@ -285,4 +285,11 @@ class AccountInvoice(models.Model):
 
             self.name = invoice_number
 
+    @api.depends('number', 'denomination_id', 'type', 'name')
+    def get_full_name(self):
+        for inv in self:
+            inv.full_name = inv.name_get()[0][1]
+
+    full_name = fields.Char(compute='get_full_name', string="Numero")
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -45,7 +45,8 @@
             <field name="inherit_id" ref="account.invoice_tree"/>
             <field name="arch" type="xml">
                 <field name="number" position="replace">
-                    <field name="name" string="Número"/>
+                    <field name="name" string="Número" invisible="1"/>
+                    <field name="full_name" string="Número"/>
                 </field>
             </field>
         </record>
@@ -75,7 +76,8 @@
             <field name="inherit_id" ref="account.invoice_supplier_tree"/>
             <field name="arch" type="xml">
                 <field name="number" position="replace">
-                    <field name="name" string="Número"/>
+                    <field name="name" string="Número" invisible="1"/>
+                    <field name="full_name" string="Número"/>
                 </field>
             </field>
         </record>
