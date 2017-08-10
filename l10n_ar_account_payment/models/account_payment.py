@@ -163,7 +163,7 @@ class AccountPayment(models.Model):
 
         raise ValidationError("Funcion de validacion de pago estandar deshabilitada")
 
-        return super(AccountPayment, self).post()
+        # return super(AccountPayment, self).post() - La funcion se heredo, solo que nunca va a llegar al super
 
     @api.multi
     def unlink(self):
