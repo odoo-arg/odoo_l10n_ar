@@ -72,7 +72,7 @@ class DocumentBook(models.Model):
     _sql_constraints = [
         ('denomination_pos_ar_unique', 'unique(document_type_id, denomination_id, pos_ar_id, category)',
          'El talonario debe ser unico por la combinacion punto de venta/denominacion/categoria/tipo de documento'),
-        ('sequence_uniq', 'unique(category, sequence, document_type_id)', 'La secuencia debe ser unica por categoria')
+        ('sequence_uniq', 'unique(category, sequence, document_type_id, denomination_id)', 'La secuencia debe ser unica por categoria, tipo de documento y denominacion')
     ]
 
     def _next_number(self):
