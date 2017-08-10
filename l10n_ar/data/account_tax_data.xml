@@ -21,7 +21,10 @@
         <record id="tax_group_vat" model="account.tax.group">
             <field name="name">Iva</field>
         </record>
-                
+        <record id="tax_group_internal" model="account.tax.group">
+            <field name="name">Impuestos internos</field>
+        </record>
+
         <!-- Impuesto a las ventas -->
         <!-- IVA 21% -->
         <record id="vat_21_ventas" model="account.tax.template">
