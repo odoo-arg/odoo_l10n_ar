@@ -71,7 +71,7 @@ class AccountInvoicePresentation(models.Model):
         cabecera = presentation.Presentation("ventasCompras", "cabecera")
         line = cabecera.create_line()
 
-        line.cuit = self.company_id.vat
+        line.cuit = self.company_id.vat or 0
         line.periodo = self.get_period()
         line.secuencia = self.sequence
         line.sinMovimiento = 'S'
