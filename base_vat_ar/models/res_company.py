@@ -16,9 +16,13 @@
 #
 ##############################################################################
 
-import partner_document_type
-import res_partner
-import res_country
-import res_company
+from openerp import models, fields
+
+
+class ResCompany(models.Model):
+
+    _inherit = "res.company"
+
+    partner_document_type_id = fields.Many2one('partner.document.type', related='partner_id.partner_document_type_id', string='Tipo de documento')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
