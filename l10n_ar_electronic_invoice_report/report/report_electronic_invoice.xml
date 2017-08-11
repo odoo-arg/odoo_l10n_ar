@@ -226,6 +226,7 @@
                                 <td style="width:12%;">
                                     <span t-field="line.price_unit"
                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                 </td>
                             </t>
                             <t t-if="not o.denomination_id.vat_discriminated">

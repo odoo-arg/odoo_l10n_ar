@@ -36,6 +36,7 @@ class AccountPaymentRetention(models.Model):
         ondelete='restrict',
         required=True
     )
+    certificate_no = fields.Char(string='Numero de certificado')
 
     @api.onchange('retention_id')
     def onchange_retention_id(self):
