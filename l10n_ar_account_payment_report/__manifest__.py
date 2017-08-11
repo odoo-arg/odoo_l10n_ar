@@ -33,6 +33,8 @@
     'depends': [
 
         'l10n_ar_account_payment',
+        'l10n_ar_account_check',
+        'l10n_ar_retentions',
        ],
 
     'data': [
