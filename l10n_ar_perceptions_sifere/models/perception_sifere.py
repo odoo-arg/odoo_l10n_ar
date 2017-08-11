@@ -59,21 +59,22 @@ class PerceptionSifere(models.Model):
 
         for p in perceptions:
 
+            code = self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id, 'ConvenioMultilateral')
+
             if not p.invoice_id.partner_id.vat:
                 missing_vats.add(p.invoice_id.name)
 
-            # le puse 13 porque en V10 tenes que anexar el codigo de pais
-            elif len(p.invoice_id.partner_id.vat) < 13:
+            elif len(p.invoice_id.partner_id.vat) < 11:
                 invalid_vats.add(p.invoice_id.name)
 
-            if not p.perception_id.state_id.code:
+            if not code:
                 missing_codes.add(p.perception_id.state_id.name)
 
             # si ya encontro algun error, que no siga con el resto del loop porque el archivo no va a salir
             if missing_vats or invalid_vats or missing_codes:
                 continue
 
-            buffer_string += str(p.perception_id.state_id.code).zfill(3)
+            buffer_string += str(code).zfill(3)
             buffer_string += p.invoice_id.partner_id.vat[2:4] + '-' + p.invoice_id.partner_id.vat[
                                                                       4:12] + '-' + p.invoice_id.partner_id.vat[-1:]
             buffer_string += datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
