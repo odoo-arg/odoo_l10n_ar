@@ -21,6 +21,8 @@ from datetime import datetime
 from openerp import models, fields
 from openerp.exceptions import Warning
 
+from odoo_openpyme_api.presentations import presentation
+
 
 class PerceptionSifere(models.Model):
     _name = 'perception.sifere'
@@ -36,11 +38,28 @@ class PerceptionSifere(models.Model):
 
         return rate
 
+    def _get_tipo(self, p):
+        if p.invoice_id.type == 'in_invoice':
+            if p.invoice_id.is_debit_note:
+                return 'D'
+            else:
+                return 'F'
+        else:
+            return 'C'
+
     def _get_invalid_denomination(self):
         d_denomination = self.env.ref('l10n_ar_afip_tables.account_denomination_d')
         return d_denomination.name
 
+    def _get_importe(self, p, currency_rate):
+        importe = str(format(p.amount * currency_rate))[:-2].zfill(10)
+        importe_parts = [importe[:len(importe) % 3]]
+        importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
+        return importe_parts
+
     def generate_file(self):
+
+        lines = presentation.Presentation("sifere", "percepciones")
 
         perceptions = self.env['account.invoice.perception'].search([
             ('create_date', '>=', self.date_from),
@@ -50,8 +69,6 @@ class PerceptionSifere(models.Model):
             ('invoice_id.state', 'in', ['open', 'paid']),
             ('perception_id.type_tax_use', '=', 'purchase')
         ]).sorted(key=lambda r: (r.create_date, r.id))
-
-        buffer_string = ''
 
         missing_vats = set()
         invalid_vats = set()
@@ -74,32 +91,18 @@ class PerceptionSifere(models.Model):
             if missing_vats or invalid_vats or missing_codes:
                 continue
 
-            buffer_string += str(code).zfill(3)
-            buffer_string += p.invoice_id.partner_id.vat[2:4] + '-' + p.invoice_id.partner_id.vat[
-                                                                      4:12] + '-' + p.invoice_id.partner_id.vat[-1:]
-            buffer_string += datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
-            buffer_string += p.invoice_id.name[0:4]
-            buffer_string += p.invoice_id.name[5:]
-
             currency_rate = self._get_invoice_currency_rate(p.invoice_id)
 
-            if p.invoice_id.type == 'in_invoice':
-                if p.invoice_id.is_debit_note:
-                    buffer_string += 'D'
-                else:
-                    buffer_string += 'F'
-            else:
-                buffer_string += 'C'
-
-            buffer_string += p.invoice_id.denomination_id.name
-
-            if p.invoice_id.type == 'in_refund':
-                buffer_string += '-'
-            else:
-                buffer_string += '0'
-
-            buffer_string += str('{0:.2f}'.format(p.amount * currency_rate)).zfill(10).replace('.', ',')
-            buffer_string += '\r\n'
+            line = lines.create_line()
+            line.jurisdiccion = code
+            line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-'\
+                        + p.invoice_id.partner_id.vat[-1:]
+            line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+            line.puntoDeVenta = p.invoice_id.name[0:4]
+            line.numeroComprobante = p.invoice_id.name[5:]
+            line.tipo = self._get_tipo(p)
+            line.letra = p.invoice_id.denomination_id.name
+            line.importe = ",".join(self._get_importe(p, currency_rate))
 
         if missing_vats or invalid_vats or missing_codes:
             errors = []
@@ -114,7 +117,7 @@ class PerceptionSifere(models.Model):
                 errors.extend(missing_codes)
             raise Warning("\n".join(errors))
         else:
-            self.file = base64.encodestring(buffer_string)
+            self.file = lines.get_encoded_string()
             self.filename = 'per_iibb_' + str(self.date_from).replace('-', '') + '_' + str(self.date_to).replace('-',
                                                                                                                  '') + '.txt'
 
