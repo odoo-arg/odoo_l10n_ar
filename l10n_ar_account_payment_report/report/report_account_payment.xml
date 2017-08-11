@@ -65,8 +65,8 @@
                                                           t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'/>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span t-field="i.amount"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                    <span t-esc="i.amount_currency or i.amount"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'
                                                     />
                                                 </td>
                                             </t>
@@ -84,36 +84,22 @@
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').amount_total"
-                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'/>
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').residual"
                                                           t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'/>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span t-field="i.amount"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    <span t-esc="i.amount_currency or i.amount"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'
+                                                    />
                                                 </td>
                                             </t>
                                         </tr>
                                     </t>
                                 </tbody>
                             </table>
-                            <!--Total de documentos imputados-->
-                            <div class="row">
-                                <div class="col-xs-4 pull-right">
-                                    <table class="table table-condensed">
-                                        <tr class="border-black">
-                                            <td><strong>Total</strong></td>
-                                            <td class="text-right">
-                                                <t t-set="total" t-value="sum(invoice.amount for invoice in o._get_partial_ids())"/>
-                                                <span t-esc="total"
-                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
                         </t>
 
                         <!-- Detalles de formas de pago -->
@@ -149,6 +135,20 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <t t-set="total_payment_method" t-value="sum(payment.amount for payment in o.payment_type_line_ids)"/>
+                                                <span t-esc="total_payment_method"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </t>
 
                         <!-- Cheques -->
@@ -170,6 +170,7 @@
                                     </tr>
                                 </thead>
                                 <t t-if="o.account_third_check_ids">
+                                    <t t-set="total_check" t-value="0"/>
                                     <tbody class="invoice_tbody">
                                         <tr t-foreach="o.account_third_check_ids" t-as="l">
                                             <td>
@@ -190,6 +191,7 @@
                                             <td class="text-right">
                                                 <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
                                                        t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -215,6 +217,7 @@
                                             <td class="text-right">
                                                 <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
                                                        t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -240,11 +243,25 @@
                                             <td class="text-right">
                                                 <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
                                                        t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </t>
                             </table>
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-esc="total_check"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </t>
 
                         <!-- Retenciones -->
@@ -282,6 +299,21 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <t t-set="total_ret" t-value="sum(ret.amount for ret in o.retention_ids)"/>
+                                                <span t-esc="total_ret"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </t>
 
                         <!-- TOTAL PAGO-->
