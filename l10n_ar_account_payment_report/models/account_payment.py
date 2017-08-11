@@ -16,20 +16,11 @@
 #
 ##############################################################################
 
-from openerp.exceptions import ValidationError
-from openerp import models, api
-import logging
-_logger = logging.getLogger(__name__)
+from openerp import models
 
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
-
-    @api.multi
-    def check_state(self, payments):
-        for payment in payments:
-            if payment.state == 'draft':
-                raise ValidationError('No se puede imprimir en estado borrador.')
 
     def _get_partial_ids(self):
         move_line_proxy = self.env['account.move.line']
