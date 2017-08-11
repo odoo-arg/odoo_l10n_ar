@@ -2,8 +2,8 @@
 <openerp>
     <data>
         <template id="report_account_payment">
-            <t t-call="report.external_layout">
-                <t t-foreach="docs" t-as="o">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
                     <div class="page">
 
                         <h3 class="col-xs-offset-3">

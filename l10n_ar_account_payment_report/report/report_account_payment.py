@@ -48,5 +48,7 @@ class ReportAccountPayment(models.AbstractModel):
         """
         if doc.state == 'draft':
             raise ValidationError("No se puede imprimir un documento en estado borrador")
+        if doc.payment_type == 'transfer':
+            raise ValidationError("No hay impresion para este tipo de documento.")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
