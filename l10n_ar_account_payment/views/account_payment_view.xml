@@ -70,7 +70,7 @@
                 <sheet position="inside">
                     <notebook attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
                         <page string="Lineas de pago">
-                            <field name="payment_type_line_ids">
+                            <field name="payment_type_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                                 <tree editable="bottom">
                                     <field name="account_payment_type_id"
                                            widget="selection" domain="[('currency_id','=', parent.currency_id)]"/>
@@ -98,7 +98,7 @@
                 <sheet position="inside">
                     <notebook>
                         <page string="Lineas de pago">
-                            <field name="payment_type_line_ids">
+                            <field name="payment_type_line_ids" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}">
                                 <tree editable="bottom">
                                     <field name="account_payment_type_id"
                                            widget="selection" domain="[('currency_id','=', parent.currency_id)]"/>
