@@ -180,6 +180,11 @@ class TestInvoice(TestDocumentBook):
         name_get = self.invoice.name_get()[0][1]
         assert name_get == 'FCC A '+self.invoice.name
 
+    def test_get_full_name(self):
+        self.invoice.onchange_partner_id()
+        self.invoice.action_invoice_open()
+        assert self.invoice.full_name == 'FCC A '+self.invoice.name
+
     def test_refund(self):
         values = self.invoice._prepare_refund(self.invoice)
         assert values['pos_ar_id'] == self.invoice.pos_ar_id.id
