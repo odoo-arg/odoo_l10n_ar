@@ -40,15 +40,16 @@ class AccountInvoice(models.Model):
 
     @api.depends('amount_to_tax', 'amount_not_taxable', 'amount_exempt')
     def _get_amount_info_JSON(self):
-        info = {'title': 'Informacion de importes', 'outstanding': False, 'content': []}
-        info['content'].append({
-            'amount_to_tax': self.amount_to_tax,
-            'amount_not_taxable': self.amount_not_taxable,
-            'amount_exempt': self.amount_exempt,
-            'currency': self.currency_id.symbol,
-            'position': self.currency_id.position,
-        })
-        self.amounts_widget = json.dumps(info)
+        for inv in self:
+            info = {'title': 'Informacion de importes', 'outstanding': False, 'content': []}
+            info['content'].append({
+                'amount_to_tax': inv.amount_to_tax,
+                'amount_not_taxable': inv.amount_not_taxable,
+                'amount_exempt': inv.amount_exempt,
+                'currency': inv.currency_id.symbol,
+                'position': inv.currency_id.position,
+            })
+            inv.amounts_widget = json.dumps(info)
 
     def _compute_amount(self):
 
