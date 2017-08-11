@@ -36,13 +36,17 @@ class PerceptionSifere(models.Model):
 
         return rate
 
+    def _get_invalid_denomination(self):
+        d_denomination = self.env.ref('l10n_ar_afip_tables.account_denomination_d')
+        return d_denomination.name
+
     def generate_file(self):
 
         perceptions = self.env['account.invoice.perception'].search([
             ('create_date', '>=', self.date_from),
             ('create_date', '<=', self.date_to),
             ('perception_id.type', '=', 'gross_income'),
-            ('invoice_id.denomination_id.name', 'not in', ['D', 'X']),
+            ('invoice_id.denomination_id.name', '!=', self._get_invalid_denomination()),
             ('invoice_id.state', 'in', ['open', 'paid']),
             ('perception_id.type_tax_use', '=', 'purchase')
         ]).sorted(key=lambda r: (r.create_date, r.id))
