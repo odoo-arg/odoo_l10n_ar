@@ -120,13 +120,14 @@ class AccountInvoice(models.Model):
         """ Mapea los valores de ODOO al objeto ElectronicInvoice"""
 
         self._set_empty_invoice_details()
+        denomination_c = self.env.ref('l10n_ar_afip_tables.account_denomination_c')
         codes_models_proxy = self.env['codes.models.relation']
 
         # Seteamos los campos generales de la factura
         electronic_invoice = wsfe.invoice.ElectronicInvoice(document_afip_code)
         electronic_invoice.taxed_amount = self.amount_to_tax
-        electronic_invoice.untaxed_amount = self.amount_not_taxable
-        electronic_invoice.exempt_amount = self.amount_exempt
+        electronic_invoice.untaxed_amount = self.amount_not_taxable if self.denomination_id != denomination_c else 0
+        electronic_invoice.exempt_amount = self.amount_exempt if self.denomination_id != denomination_c else 0
         electronic_invoice.document_date = datetime.strptime(
             self.date_invoice or fields.Date.context_today(self),
             '%Y-%m-%d'
@@ -190,7 +191,7 @@ class AccountInvoice(models.Model):
         :param document_afip_code: Codigo de afip del documento.
         """
 
-        last_number = str(afip_wsfe.get_last_number(self.pos_ar_id.name, document_afip_code) + 1)
+        last_number = str(afip_wsfe.get_last_number(self.pos_ar_id.name, document_afip_code))
 
         if last_number.zfill(8) != document_book.name.zfill(8):
             raise ValidationError('El ultimo numero del talonario no coincide con el de la afip')
