@@ -40,7 +40,6 @@
                                         <button name="action_renew"
                                                 string="Renovar TRA"
                                                 type="object"
-                                                icon="fa-ticket"
                                         />
                                     </tree>
                                 </field>

@@ -17,7 +17,7 @@
 ##############################################################################
 import pytz
 
-from openerp import models, fields
+from openerp import models, fields, api
 from datetime import datetime, timedelta
 from odoo_openpyme_api.afip_webservices import wsaa
 from openerp.exceptions import ValidationError
@@ -34,25 +34,28 @@ class WsaaToken(models.Model):
     sign = fields.Text('Sign', readonly=True)
     wsaa_configuration_id = fields.Many2one('wsaa.configuration', 'Configuracion', required=True)
 
-    def action_renew(self, delta_time_for_expiration=10):
+    @api.multi
+    def action_renew(self, context=None, delta_time_for_expiration=10):
         """ Renueva o crea el ticket de acceso si esta vencido o no creado """
 
-        renew = True
-        if self.expiration_time:
-            expiration_time = datetime.strptime(self.expiration_time, '%Y-%m-%d %H:%M:%S')
+        for token in self:
 
-            # Si faltan mas de X minutos para que el ticket expire no se lo renueva
-            if datetime.now() + timedelta(minutes=delta_time_for_expiration) < expiration_time:
-                renew = False
+            renew = True
+            if token.expiration_time:
+                expiration_time = datetime.strptime(token.expiration_time, '%Y-%m-%d %H:%M:%S')
 
-        if renew:
-            self._renew_ticket()
+                # Si faltan mas de X minutos para que el ticket expire no se lo renueva
+                if datetime.now() + timedelta(minutes=delta_time_for_expiration) < expiration_time:
+                    renew = False
+
+            if renew:
+                token._renew_ticket()
 
     def _renew_ticket(self):
         """ Renueva o crea el ticket de acceso si esta vencido o no creado """
 
         if not (self.wsaa_configuration_id.certificate and self.wsaa_configuration_id.private_key):
-            raise ValidationError("Falta configurar certificado y clave privada")
+            raise ValidationError("Falta configurar certificado o clave privada")
 
         # Traemos el timezone
         user = self.env['res.users'].sudo().browse(SUPERUSER_ID)
