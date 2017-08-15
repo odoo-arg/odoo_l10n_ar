@@ -26,6 +26,7 @@
             <field name="arch" type="xml">
                 <field name="payment_term_id" position="after">
                     <field name="pos_ar_id" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="selection"/>
+                    <field name="document_book_type" invisible="1"/>
                 </field>
                 <field name="user_id" position="after">
                     <field name="denomination_id" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="selection"/>

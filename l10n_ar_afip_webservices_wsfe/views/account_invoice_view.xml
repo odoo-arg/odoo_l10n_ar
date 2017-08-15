@@ -23,8 +23,8 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <field name="outstanding_credits_debits_widget" position="after">
-                    <field name="cae"/>
-                    <field name="cae_due_date"/>
+                    <field name="cae" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}"/>
+                    <field name="cae_due_date" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}"/>
                 </field>
                 <field name="fiscal_position_id" position="before">
                     <field name="date_service_from"
@@ -35,7 +35,7 @@
                            attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}"/>
                 </field>
                 <notebook position="inside">
-                    <page string="Solicitudes AFIP">
+                    <page string="Solicitudes AFIP" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}" groups="base.group_no_one">
                         <field name="wsfe_request_detail_ids">
                             <tree>
                                 <field name="date"/>

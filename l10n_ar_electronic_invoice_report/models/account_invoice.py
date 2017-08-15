@@ -16,13 +16,25 @@
 #
 ##############################################################################
 
-from openerp import models, _
+from openerp import models, api, _
 from openerp.exceptions import ValidationError
 
 
 class AccountInvoice(models.Model):
 
     _inherit = 'account.invoice'
+
+    @api.multi
+    def invoice_print(self):
+        """
+        En el caso de que la factura tenga un talonario del tipo electronico
+        se imprime el reporte de factura electronica.
+        """
+        res = super(AccountInvoice, self).invoice_print()
+        self.ensure_one()
+        if self.document_book_type == 'electronic':
+            res = self.env['report'].get_action(self, 'l10n_ar_electronic_invoice_report.report_electronic_invoice')
+        return res
 
     def get_voucher_code(self):
         """ Devuelve el codigo de AFIP del documento """
