@@ -51,9 +51,9 @@ class AccountRegisterPaymnets(models.TransientModel):
 
         res = super(AccountRegisterPaymnets, self).get_payment_vals()
 
-        res['account_third_check_ids'] = [(4, payment) for payment in self.account_third_check_ids.ids]
-        res['account_third_check_sent_ids'] = [(4, payment) for payment in self.account_third_check_sent_ids.ids]
-        res['account_own_check_line_ids'] = [(4, payment) for payment in self.account_own_check_line_ids.ids]
+        res['account_third_check_ids'] = [(4, third_check) for third_check in self.account_third_check_ids.ids]
+        res['account_third_check_sent_ids'] = [(4, sent_check) for sent_check in self.account_third_check_sent_ids.ids]
+        res['account_own_check_line_ids'] = [(4, own_check) for own_check in self.account_own_check_line_ids.ids]
 
         return res
 

@@ -197,7 +197,7 @@ class TestAccountPayment(set_up.SetUp):
         self.customer_payment.write({
             'pos_ar_id': self.pos_inbound.id,
             'payment_type': 'transfer',
-            'destination_journal_id': self.env.ref('l10n_ar.journal_cobros_y_pagos').id
+            'destination_journal_id': self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id
         })
         self.customer_payment.post_l10n_ar()
         sequence_code = 'account.payment.transfer'
@@ -217,7 +217,7 @@ class TestAccountPayment(set_up.SetUp):
         self.customer_payment.write({
             'pos_ar_id': self.pos_outbound.id,
             'payment_type': 'outbound',
-            'destination_journal_id': self.env.ref('l10n_ar.journal_cobros_y_pagos').id
+            'destination_journal_id': self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id
         })
         self.customer_payment.post_l10n_ar()
         sequence_code = 'account.payment.customer.refund'
@@ -233,7 +233,7 @@ class TestAccountPayment(set_up.SetUp):
         self.supplier_payment.write({
             'pos_ar_id': self.pos_inbound.id,
             'payment_type': 'inbound',
-            'destination_journal_id': self.env.ref('l10n_ar.journal_cobros_y_pagos').id
+            'destination_journal_id': self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id
         })
         self.payment_line.payment_id = self.supplier_payment.id
         self.supplier_payment.post_l10n_ar()
