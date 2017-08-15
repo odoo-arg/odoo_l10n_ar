@@ -15,7 +15,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import base64
 from datetime import datetime
 
 from openerp import models, fields
@@ -118,8 +117,10 @@ class PerceptionSifere(models.Model):
             raise Warning("\n".join(errors))
         else:
             self.file = lines.get_encoded_string()
-            self.filename = 'per_iibb_' + str(self.date_from).replace('-', '') + '_' + str(self.date_to).replace('-',
-                                                                                                                 '') + '.txt'
+            self.filename = 'per_iibb_{}_{}.txt'.format(
+                str(self.date_from).replace('-', ''),
+                str(self.date_to).replace('-', '')
+            )
 
     name = fields.Char(string='Nombre', required=True)
 
