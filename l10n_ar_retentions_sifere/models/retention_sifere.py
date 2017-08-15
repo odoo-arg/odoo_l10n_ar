@@ -15,23 +15,81 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import base64
-
+from datetime import datetime
 from openerp import models, fields
+
+from odoo_openpyme_api.presentations import presentation
 
 
 class RetentionSifere(models.Model):
     _name = 'retention.sifere'
 
+    def _get_importe(self, r):
+        importe = str(format(r.amount))[:-2].zfill(10)
+        importe_parts = [importe[:len(importe) % 3]]
+        importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
+        return importe_parts
+
     def generate_file(self):
 
-        buffer_string = ' '
+        lines = presentation.Presentation("sifere", "retenciones")
 
-        self.file = base64.encodestring(buffer_string)
-        self.filename = 'ret_iibb_{}_{}.txt'.format(
-            str(self.date_from).replace('-', ''),
-            str(self.date_to).replace('-', ''),
-        )
+        retentions = self.env['account.payment.retention'].search([
+            ('create_date', '>=', self.date_from),
+            ('create_date', '<=', self.date_to),
+            ('retention_id.type', '=', 'gross_income'),
+            ('payment_id.state', '=', 'posted'),
+            ('payment_id.payment_type', '=', 'inbound')
+        ]).sorted(key=lambda r: (r.create_date, r.id))
+
+        missing_vats = set()
+        invalid_vats = set()
+        missing_codes = set()
+
+        for r in retentions:
+
+            code = self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
+                                                              'ConvenioMultilateral')
+
+            if not r.payment_id.partner_id.vat:
+                missing_vats.add(r.payment_id.name)
+
+            elif len(r.payment_id.partner_id.vat) < 11:
+                invalid_vats.add(r.payment_id.name)
+
+            if not code:
+                missing_codes.add(r.retention_id.state_id.name)
+
+            line = lines.create_line()
+            line.jurisdiccion = code
+            line.cuit = r.payment_id.partner_id.vat[0:2] + '-' + r.payment_id.partner_id.vat[2:10] + '-' \
+                        + r.payment_id.partner_id.vat[-1:]
+            line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+            line.puntoDeVenta = r.payment_id.pos_ar_id.name
+            line.numeroComprobante = filter(str.isdigit, str(r.payment_id.name)[5:])
+            line.numeroBase = filter(str.isdigit, str(r.certificate_no))
+            line.tipo = "R"
+            line.letra = " "
+            line.importe = ",".join(self._get_importe(r))
+
+        if missing_vats or invalid_vats or missing_codes:
+            errors = []
+            if missing_vats:
+                errors.append("Los partners de las siguientes facturas no poseen numero de documento:")
+                errors.extend(missing_vats)
+            if invalid_vats:
+                errors.append("Los partners de las siguientes facturas poseen CUIT erroneo:")
+                errors.extend(invalid_vats)
+            if missing_codes:
+                errors.append("Las siguientes jurisdicciones no poseen codigo:")
+                errors.extend(missing_codes)
+            raise Warning("\n".join(errors))
+        else:
+            self.file = lines.get_encoded_string()
+            self.filename = 'ret_iibb_{}_{}.txt'.format(
+                str(self.date_from).replace('-', ''),
+                str(self.date_to).replace('-', ''),
+            )
 
     name = fields.Char(string='Nombre', required=True)
 
