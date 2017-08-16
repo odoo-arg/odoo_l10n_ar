@@ -28,7 +28,8 @@ class AccountAbstractPayment(models.AbstractModel):
     account_third_check_ids = fields.One2many(
         'account.third.check',
         'source_payment_id',
-        'Cheques de terceros'
+        'Cheques de terceros',
+        copy=False
     )
     # Cheques entregados
     account_third_check_sent_ids = fields.Many2many(
@@ -36,12 +37,14 @@ class AccountAbstractPayment(models.AbstractModel):
         'third_check_account_payment_rel',
         'payment_id',
         'third_check_id',
-        'Cheques de terceros'
+        'Cheques de terceros',
+        copy=False
     )
     account_own_check_line_ids = fields.One2many(
         'account.own.check.line',
         'payment_id',
-        'Cheques propios'
+        'Cheques propios',
+        copy=False
     )
 
     @api.constrains('account_third_check_ids', 'account_own_check_line_ids', 'account_third_check_sent_ids', 'payment_type')
