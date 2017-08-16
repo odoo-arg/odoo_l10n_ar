@@ -24,7 +24,12 @@ class AccountInvoice(models.Model):
 
     _inherit = 'account.invoice'
 
-    perception_ids = fields.One2many('account.invoice.perception', 'invoice_id', 'Percepciones')
+    perception_ids = fields.One2many(
+        'account.invoice.perception',
+        'invoice_id',
+        string='Percepciones',
+        copy=True
+    )
 
     @api.onchange('perception_ids')
     def onchange_perception_ids(self):
