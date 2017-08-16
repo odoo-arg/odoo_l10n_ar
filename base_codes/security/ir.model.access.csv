@@ -1,2 +1,3 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 base_codes_codes_models_relation_administration,base_codes.codes_models_relation.administration,base_codes.model_codes_models_relation,base.group_system,1,1,1,1
+base_codes_codes_models_relation_user,base_codes.codes_models_relation.user,base_codes.model_codes_models_relation,base.group_user,1,0,0,0

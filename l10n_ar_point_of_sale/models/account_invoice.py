@@ -28,6 +28,16 @@ class AccountInvoice(models.Model):
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta')
     denomination_id = fields.Many2one('account.denomination', 'Denominacion')
 
+    # Dato que se va a utilizar desde diferentes modulos para poder aplicar
+    # filtros y cambiar los datos que se visualizan en el formulario de una
+    # factura. Ejemplo: En modulo de facturacion electronica solo se mostrara
+    # cae y fecha vencimiento cae en caso de que el tipo de de talonario sea
+    # electronico.
+    document_book_type = fields.Char(
+        compute='get_document_book_type',
+        string='Tipo de talonario'
+    )
+
     def check_invoice_duplicity(self, additional_domains=None):
         """
         Valida que la factura no este duplicada. Agregamos un parametro de domains adicionales
@@ -289,6 +299,12 @@ class AccountInvoice(models.Model):
     def get_full_name(self):
         for inv in self:
             inv.full_name = inv.name_get()[0][1]
+
+    @api.depends('denomination_id', 'pos_ar_id')
+    def get_document_book_type(self):
+        for inv in self:
+            if inv.denomination_id and inv.pos_ar_id:
+                inv.document_book_type = self.get_document_book().book_type_id.type
 
     full_name = fields.Char(compute='get_full_name', string="Numero")
 

@@ -105,7 +105,7 @@ class AccountInvoice(models.Model):
         offset = datetime.now(pytz.timezone('America/Argentina/Buenos_Aires')).utcoffset().total_seconds() / 3600
         fch_proceso = datetime.strptime(response.FeCabResp.FchProceso, '%Y%m%d%H%M%S') - relativedelta(hours=offset)
 
-        self.wsfe_request_detail_ids.create({
+        self.wsfe_request_detail_ids.sudo().create({
             'invoice_id': self.id,
             'request_sent': invoice_detail,
             'request_received': response,
