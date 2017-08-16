@@ -27,7 +27,6 @@ class PerceptionSifere(models.Model):
     _name = 'perception.sifere'
 
     def _get_invoice_currency_rate(self, invoice):
-
         rate = 1
 
         if invoice.move_id.line_ids:
@@ -39,10 +38,7 @@ class PerceptionSifere(models.Model):
 
     def _get_tipo(self, p):
         if p.invoice_id.type == 'in_invoice':
-            if p.invoice_id.is_debit_note:
-                return 'D'
-            else:
-                return 'F'
+            return 'D' if p.invoice_id.is_debit_note else 'F'
         else:
             return 'C'
 
@@ -50,8 +46,8 @@ class PerceptionSifere(models.Model):
         d_denomination = self.env.ref('l10n_ar_afip_tables.account_denomination_d')
         return d_denomination.name
 
-    def _get_importe(self, p, currency_rate):
-        importe = str(format(p.amount * currency_rate))[:-2].zfill(10)
+    def _get_importe(self, p):
+        importe = str(format(p.amount * self._get_invoice_currency_rate(p.invoice_id)))[:-2].zfill(10)
         importe_parts = [importe[:len(importe) % 3]]
         importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
         return importe_parts
@@ -74,15 +70,12 @@ class PerceptionSifere(models.Model):
         missing_codes = set()
 
         for p in perceptions:
-
             code = self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id, 'ConvenioMultilateral')
 
             if not p.invoice_id.partner_id.vat:
                 missing_vats.add(p.invoice_id.name)
-
             elif len(p.invoice_id.partner_id.vat) < 11:
                 invalid_vats.add(p.invoice_id.name)
-
             if not code:
                 missing_codes.add(p.perception_id.state_id.name)
 
@@ -90,18 +83,7 @@ class PerceptionSifere(models.Model):
             if missing_vats or invalid_vats or missing_codes:
                 continue
 
-            currency_rate = self._get_invoice_currency_rate(p.invoice_id)
-
-            line = lines.create_line()
-            line.jurisdiccion = code
-            line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-'\
-                        + p.invoice_id.partner_id.vat[-1:]
-            line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
-            line.puntoDeVenta = p.invoice_id.name[0:4]
-            line.numeroComprobante = p.invoice_id.name[5:]
-            line.tipo = self._get_tipo(p)
-            line.letra = p.invoice_id.denomination_id.name
-            line.importe = ",".join(self._get_importe(p, currency_rate))
+            self.create_line(code, lines, p)
 
         if missing_vats or invalid_vats or missing_codes:
             errors = []
@@ -121,6 +103,18 @@ class PerceptionSifere(models.Model):
                 str(self.date_from).replace('-', ''),
                 str(self.date_to).replace('-', '')
             )
+
+    def create_line(self, code, lines, p):
+        line = lines.create_line()
+        line.jurisdiccion = code
+        line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-' \
+                    + p.invoice_id.partner_id.vat[-1:]
+        line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+        line.puntoDeVenta = p.invoice_id.name[0:4]
+        line.numeroComprobante = p.invoice_id.name[5:]
+        line.tipo = self._get_tipo(p)
+        line.letra = p.invoice_id.denomination_id.name
+        line.importe = ",".join(self._get_importe(p))
 
     name = fields.Char(string='Nombre', required=True)
 
