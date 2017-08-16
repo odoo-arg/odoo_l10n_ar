@@ -100,13 +100,13 @@ class AccountDepositSlip(models.Model):
             if not self.check_ids:
                 raise ValidationError("No se puede validar una boleta sin cheques")
 
-            move = deposit_slip._create_move(deposit_slip.name)
             deposit_slip.write({
-                'move_id': move.id,
                 # Ya validamos en el constraint que la moneda es unica
                 'currency_id': deposit_slip.check_ids.mapped('currency_id').id,
                 'state': 'deposited'
             })
+            move = deposit_slip._create_move(deposit_slip.name)
+            deposit_slip.move_id = move.id
             deposit_slip.check_ids.post_deposit_slip()
 
     def cancel_to_draft(self):
