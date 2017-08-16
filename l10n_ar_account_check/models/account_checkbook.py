@@ -35,7 +35,7 @@ class AccountCheckbook(models.Model):
 
     @api.multi
     def _search_draft_checks(self, operator, value):
-        recs = self.env['account.own.check'].search([('state', '=', 'draft')]).mapped('checkbook_id')
+        recs = self.env['account.own.check'].search([('state', '=', 'draft')])
         return [('id', 'in', recs.ids)]
 
     name = fields.Char('Referencia', required=True, track_visibility='onchange')
