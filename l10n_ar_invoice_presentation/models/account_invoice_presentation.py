@@ -195,7 +195,8 @@ class AccountInvoicePresentation(models.Model):
 
     @api.constrains('date_from', 'date_to')
     def check_dates(self):
-        if self.date_from > self.date_to:
-            raise ValidationError("La fecha 'desde' no puede ser mayor a la fecha 'hasta'.")
+        for presentation in self:
+            if presentation.date_from > presentation.date_to:
+                raise ValidationError("La fecha 'desde' no puede ser mayor a la fecha 'hasta'.")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -41,8 +41,9 @@ class WsfeConfiguration(models.Model):
 
     @api.constrains('wsaa_token_id')
     def check_unique_ticket(self):
-        if self.search_count([('wsaa_token_id', '=', self.wsaa_token_id.id)]) > 1:
-            raise ValidationError('Ya existe una configuracion de factura electronica asociado a ese token')
+        for wsfe in self:
+            if wsfe.search_count([('wsaa_token_id', '=', wsfe.wsaa_token_id.id)]) > 1:
+                raise ValidationError('Ya existe una configuracion de factura electronica asociado a ese token')
 
     @api.onchange('wsaa_configuration_id')
     def onchange_wsaa_configuration(self):

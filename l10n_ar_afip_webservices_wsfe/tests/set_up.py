@@ -37,7 +37,7 @@ class SetUp(common.TransactionCase):
             'name': '0010'
         })
         vals = {
-            'name': '1',
+            'name': '0',
             'category': 'invoice',
             'pos_ar_id': self.pos.id,
             'book_type_id': self.env.ref('l10n_ar_afip_webservices_wsfe.document_book_type_electronic_invoice').id,

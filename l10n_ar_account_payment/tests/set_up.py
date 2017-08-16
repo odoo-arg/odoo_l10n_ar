@@ -48,7 +48,7 @@ class SetUp(common.TransactionCase):
             'pos_ar_id': self.pos_inbound.id,
             'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
             'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_invoice').id,
-            'denomination_id': self.env.ref('l10n_ar_point_of_sale.account_denomination_a').id
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id
         })
 
     def _create_payment_methods(self):
@@ -84,6 +84,14 @@ class SetUp(common.TransactionCase):
 
     def setUp(self):
         super(SetUp, self).setUp()
+
+        journal = self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos')
+        journal.update_posted = True
+
+        # Configuracion de posicion fiscal RI en la compania
+        iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
+        self.env.user.company_id.partner_id.property_account_position_id = iva_ri
+
         self.partner = self.env['res.partner'].create({
             'name': 'Partner',
             'supplier': True,

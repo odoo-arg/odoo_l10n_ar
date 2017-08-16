@@ -94,7 +94,7 @@ class TestInvoice(set_up.SetUp):
         # Validamos los montos
         assert electronic_invoice[0].taxed_amount == 0
         assert electronic_invoice[0].untaxed_amount == 0
-        assert electronic_invoice[0].exempt_amount == 5000
+        assert electronic_invoice[0].exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 iva Exento)
         assert electronic_invoice[0].array_iva[0].document_code == 2
@@ -354,11 +354,11 @@ class TestInvoice(set_up.SetUp):
             self.invoice.action_electronic(self.document_book_fc_a)
             assert self.invoice.cae == '123871298371923'
             assert self.invoice.cae_due_date == '2000-01-10'
-            assert self.invoice.name == self.document_book_fc_a.pos_ar_id.name_get()[0][1]+'-'+'2'.zfill(8)
+            assert self.invoice.name == self.document_book_fc_a.pos_ar_id.name_get()[0][1]+'-'+'1'.zfill(8)
 
             # Como ya tiene cae no se deberia volver a enviar por lo que deberia tener el mismo numero
             self.invoice.action_electronic(self.document_book_fc_a)
-            assert self.invoice.name == self.document_book_fc_a.pos_ar_id.name_get()[0][1]+'-'+'2'.zfill(8)
+            assert self.invoice.name == self.document_book_fc_a.pos_ar_id.name_get()[0][1]+'-'+'1'.zfill(8)
 
             # Probamos una factura rechazada
             self.invoice.cae = None

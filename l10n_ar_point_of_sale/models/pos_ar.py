@@ -33,13 +33,13 @@ class PosAr(models.Model):
     )
     active = fields.Boolean('Activo', default=True)
 
-    @api.one
     @api.constrains('name')
     def check_name(self):
-        try:
-            int(self.name)
-        except Exception:
-            raise ValidationError('El nombre debe contener solo números enteros')
+        for pos_ar in self:
+            try:
+                int(pos_ar.name)
+            except Exception:
+                raise ValidationError('El nombre debe contener solo números enteros')
 
     @api.multi
     def name_get(self):

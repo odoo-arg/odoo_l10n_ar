@@ -52,13 +52,13 @@ class DocumentBook(models.Model):
             'denomination_id': None,
         })
 
-    @api.one
     @api.constrains('name')
     def check_name(self):
-        try:
-            int(self.name)
-        except Exception:
-            raise ValidationError('El nombre debe contener solo números enteros')
+        for document_book in self:
+            try:
+                int(document_book.name)
+            except Exception:
+                raise ValidationError('El nombre debe contener solo números enteros')
 
     @api.multi
     def name_get(self):

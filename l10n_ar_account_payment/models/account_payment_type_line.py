@@ -44,7 +44,8 @@ class AccountPaymentTypeLine(models.Model):
 
     @api.constrains('amount')
     def constraint_amount(self):
-        if self.amount <= 0:
-            raise ValidationError('El importe de la linea de pago debe ser mayor a 0')
+        for payment in self:
+            if payment.amount <= 0:
+                raise ValidationError('El importe de la linea de pago debe ser mayor a 0')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

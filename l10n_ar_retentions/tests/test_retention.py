@@ -37,6 +37,15 @@ class TestRetention(common.TransactionCase):
     def _create_invoices(self):
         invoice_proxy = self.env['account.invoice']
         invoice_line_proxy = self.env['account.invoice.line']
+        pos = self.env['pos.ar'].create({'name': 5})
+        self.env['document.book'].create({
+            'name': 1,
+            'pos_ar_id': pos.id,
+            'category': 'invoice',
+            'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
+            'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_invoice').id,
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
+        })
         self.product_21_consu = self.env['product.product'].create({
             'name': '21 consu',
             'type': 'consu',
@@ -61,6 +70,9 @@ class TestRetention(common.TransactionCase):
 
     def setUp(self):
         super(TestRetention, self).setUp()
+        # Configuracion de posicion fiscal RI en la compania
+        iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
+        self.env.user.company_id.partner_id.property_account_position_id = iva_ri
         self.retention_caba = self.env.ref('l10n_ar_retentions.retention_retention_iibb_caba_efectuada')
         self.payment = self.env['account.payment'].create({
             'company_id': self.env.user.company_id.id,

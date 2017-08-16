@@ -41,21 +41,24 @@ class AccountAbstractCheck(models.AbstractModel):
 
     @api.constrains('name')
     def constraint_name(self):
-        if not self.name.isdigit():
-            raise UserError("El numero del cheque debe contener solo numeros")
+        for check in self:
+            if not check.name.isdigit():
+                raise UserError("El numero del cheque debe contener solo numeros")
 
     @api.constrains('amount')
     def constraint_amount(self):
-        if self.amount <= 0.0:
-            raise ValidationError("El importe del cheque debe ser mayor a 0")
+        for check in self:
+            if check.amount <= 0.0:
+                raise ValidationError("El importe del cheque debe ser mayor a 0")
 
     @api.constrains('payment_date', 'issue_date', 'payment_type')
     def constraint_dates(self):
-        if self.payment_date and self.payment_date < self.issue_date:
-            raise ValidationError("La fecha de pago no puede ser menor a la fecha de emision")
-
-        if self.payment_type == 'common' and self.payment_date != self.issue_date:
-            raise ValidationError("Las fechas de pago y emision de los cheques comunes deben ser similares")
+        for check in self:
+            if check.payment_date and check.payment_date < check.issue_date:
+                raise ValidationError("La fecha de pago no puede ser menor a la fecha de emision")
+    
+            if check.payment_type == 'common' and check.payment_date != check.issue_date:
+                raise ValidationError("Las fechas de pago y emision de los cheques comunes deben ser similares")
 
     @api.onchange('payment_type', 'issue_date')
     def onchange_payment_type(self):

@@ -66,8 +66,9 @@ class AccountOwnCheckLine(models.Model):
     @api.constrains('own_check_id')
     def constraint_own_check(self):
         """ Evitamos que validen dos pagos con el mismo cheque (o dupliquen el cheque en el pago) """
-        if self.search_count([('own_check_id', '=', self.own_check_id.id), ('payment_id', '!=', False)]) > 1:
-            raise ValidationError("El cheque "+self.own_check_id.name+" ya existe en un pago")
+        for check_line in self:
+            if check_line.search_count([('own_check_id', '=', check_line.own_check_id.id), ('payment_id', '!=', False)]) > 1:
+                raise ValidationError("El cheque "+check_line.own_check_id.name+" ya existe en un pago")
 
     @api.onchange('checkbook_id')
     def onchange_checkbook(self):

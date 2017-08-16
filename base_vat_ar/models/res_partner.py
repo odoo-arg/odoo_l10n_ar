@@ -28,19 +28,18 @@ class ResPartner(models.Model):
      
     @api.constrains("vat", "partner_document_type_id")
     def check_vat(self):
-           
-        #Si la empresa tiene el mismo pais, obviamos la parte de que el documento
-        #necesite el prefijo del pais adelante para el chequeo de documento
-        if self.country_id.no_prefix:
-            check_func = self.simple_vat_check
-            if not check_func(self.country_id.code.lower(), self.vat):
-                raise ValidationError("El numero de documento [{vat}] no parece ser correcto para el tipo [{type}]".format(
-                        vat=self.vat, 
-                        type=self.partner_document_type_id.name
-                    )
-                )
-        else:
-            super(ResPartner, self).check_vat()
+        # Si la empresa tiene el mismo pais, obviamos la parte de que el documento
+        # necesite el prefijo del pais adelante para el chequeo de documento
+        for partner in self:
+            if partner.country_id.no_prefix:
+                check_func = partner.simple_vat_check
+                if not check_func(partner.country_id.code.lower(), partner.vat):
+                    raise ValidationError("El numero de documento [{vat}] no parece ser correcto para el tipo [{type}]".format(
+                        vat=partner.vat,
+                        type=partner.partner_document_type_id.name
+                    ))
+            else:
+                super(ResPartner, partner).check_vat()
 
     def check_vat_ar(self, vat_number):
         ''' Verifica que el numero de documento sea correcto para su posicion fiscal '''
