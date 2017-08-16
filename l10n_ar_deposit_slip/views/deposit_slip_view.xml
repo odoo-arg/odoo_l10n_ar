@@ -58,7 +58,7 @@
                                 <field name="date" attrs="{'readonly': [('state','!=','draft')]}"/>
                             </group>
                             <group>
-                                <field name="move_id" attrs="{'invisible': [('state', '!=', 'deposited')]}"/>
+                                <field name="move_id" attrs="{'invisible': [('state', '!=', 'deposited')]}" groups="account.group_account_user"/>
                                 <field name="journal_id" domain="[('type', '=', 'bank')]"
                                        context="{'form_view_ref': 'account.view_account_bank_journal_form'}"
                                        attrs="{'readonly': [('state','!=','draft')]}"
