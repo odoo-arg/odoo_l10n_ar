@@ -29,7 +29,6 @@ class AccountThirdCheck(models.Model):
         Se rechaza el cheque si esta en los estados correspondientes para ser rechazado
         :raise ValidationError: No esta en alguno de los estados para ser rechazado
         """
-        self.ensure_one()
         self.reject_check()
 
         # TODO: Agregar funcionalidad de creacion de nota de debito
@@ -39,7 +38,6 @@ class AccountThirdCheck(models.Model):
         Revierte el rechazo de un cheque
         :raise ValidationError: El estado del cheque no es rechazado
         """
-        self.ensure_one()
         self.revert_reject()
 
     @api.multi
