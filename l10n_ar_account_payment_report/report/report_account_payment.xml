@@ -80,11 +80,11 @@
                                                     <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').name_get()[0][1]"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="datetime.datetime.strptime(i.mapped('debit_move_id').mapped('invoice_id').date_invoice,'%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                                                    <span t-esc="datetime.datetime.strptime(i.mapped('credit_move_id').mapped('invoice_id').date_invoice,'%Y-%m-%d').strftime('%d/%m/%Y')"/>
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').amount_total"
-                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'/>
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'/>
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').residual"
@@ -92,7 +92,7 @@
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="i.amount_currency or i.amount"
-                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'
                                                     />
                                                 </td>
                                             </t>
