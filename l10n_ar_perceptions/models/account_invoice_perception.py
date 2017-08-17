@@ -41,7 +41,7 @@ class AccountInvoicePerception(models.Model):
                 'jurisdiction': None,
             })
 
-    invoice_id = fields.Many2one('account.invoice', 'Documento', required=True)
+    invoice_id = fields.Many2one('account.invoice', 'Documento', required=True, ondelete="cascade")
     currency_id = fields.Many2one(related='invoice_id.currency_id')
     perception_id = fields.Many2one(
         'perception.perception',

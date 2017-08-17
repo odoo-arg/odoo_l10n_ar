@@ -16,7 +16,8 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 
 class AccountDocumentTax(models.AbstractModel):
@@ -36,5 +37,17 @@ class AccountDocumentTax(models.AbstractModel):
         required=True,
     )
     name = fields.Char('Nombre', required=True)
+
+    @api.constrains('amount')
+    def check_amount(self):
+        for tax in self:
+            if tax.amount <= 0:
+                raise ValidationError('El monto del impuesto debe ser mayor a 0')
+
+    @api.constrains('base')
+    def check_base(self):
+        for tax in self:
+            if tax.base < 0:
+                raise ValidationError('La base del impuesto no puede ser negativa')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
