@@ -28,6 +28,10 @@ from odoo_openpyme_api.presentations import presentation
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
 
+    def get_period(self):
+        split_from = self.date_from.split('-')
+        return split_from[0] + split_from[1]
+
     def generate_files(self):
         base_name = "REGINFO_CV_{}"+self.get_period()+".{}"
 
