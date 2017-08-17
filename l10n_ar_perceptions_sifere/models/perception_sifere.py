@@ -52,6 +52,22 @@ class PerceptionSifere(models.Model):
         importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
         return importe_parts
 
+    def get_code(self, p):
+        return self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id,
+                                                          'ConvenioMultilateral')
+
+    def create_line(self, code, lines, p):
+        line = lines.create_line()
+        line.jurisdiccion = code
+        line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-' \
+                    + p.invoice_id.partner_id.vat[-1:]
+        line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+        line.puntoDeVenta = p.invoice_id.name[0:4]
+        line.numeroComprobante = p.invoice_id.name[5:]
+        line.tipo = self._get_tipo(p)
+        line.letra = p.invoice_id.denomination_id.name
+        line.importe = ",".join(self._get_importe(p))
+
     def generate_file(self):
 
         lines = presentation.Presentation("sifere", "percepciones")
@@ -70,7 +86,7 @@ class PerceptionSifere(models.Model):
         missing_codes = set()
 
         for p in perceptions:
-            code = self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id, 'ConvenioMultilateral')
+            code = self.get_code(p)
 
             if not p.invoice_id.partner_id.vat:
                 missing_vats.add(p.invoice_id.name)
@@ -103,18 +119,6 @@ class PerceptionSifere(models.Model):
                 str(self.date_from).replace('-', ''),
                 str(self.date_to).replace('-', '')
             )
-
-    def create_line(self, code, lines, p):
-        line = lines.create_line()
-        line.jurisdiccion = code
-        line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-' \
-                    + p.invoice_id.partner_id.vat[-1:]
-        line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
-        line.puntoDeVenta = p.invoice_id.name[0:4]
-        line.numeroComprobante = p.invoice_id.name[5:]
-        line.tipo = self._get_tipo(p)
-        line.letra = p.invoice_id.denomination_id.name
-        line.importe = ",".join(self._get_importe(p))
 
     name = fields.Char(string='Nombre', required=True)
 

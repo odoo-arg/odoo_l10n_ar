@@ -15,8 +15,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from datetime import datetime
+from datetime import datetime, timedelta, date
 from odoo.tests import common
+
+from odoo_openpyme_api.presentations import presentation
 
 
 class TestPerceptionsSifere(common.TransactionCase):
@@ -25,6 +27,7 @@ class TestPerceptionsSifere(common.TransactionCase):
         self.country = self.env['res.country'].create({
             'name': "Pais",
             'code': "ZZ",
+            'no_prefix': True,
         })
         self.tax = self.env['account.tax'].create({
             'name': "SIFERE",
@@ -34,11 +37,13 @@ class TestPerceptionsSifere(common.TransactionCase):
             'name': "SIFERE",
             'tax_id': self.tax.id,
             'type': 'gross_income',
-            'jurisdiction': 'nacional'
+            'jurisdiction': 'nacional',
+            'state_id': 553,
         })
         self.partner = self.env['res.partner'].create({
             'name': "Cliente",
             'country_id': self.country.id,
+            'vat': '11222222223'
         })
         self.account_type = self.env['account.account.type'].create({
             'name': "Tipo de cuenta",
@@ -53,23 +58,36 @@ class TestPerceptionsSifere(common.TransactionCase):
             'type': 'sale',
             'code': "DIA",
         })
+        self.denomination = self.env['account.denomination'].create({
+            'name': "Z",
+        })
         self.invoice = self.env['account.invoice'].create({
             'partner_id': self.partner.id,
             'account_id': self.account.id,
             'journal_id': self.journal.id,
+            'denomination_id': self.denomination.id,
+            'name': '9999-88888888',
         })
 
     def test_perception(self):
-        self.env['account.invoice.perception'].create({
+        perception_sifere = self.env['perception.sifere'].create({
+            'name': "Percepcion SIFERE",
+            'date_from': datetime.now() - timedelta(days=1),
+            'date_to': datetime.now() + timedelta(days=1),
+        })
+        perception_line = self.env['account.invoice.perception'].create({
             'name': "Linea Percepcion",
             'invoice_id': self.invoice.id,
             'perception_id': self.perception.id,
             'amount': 400,
             'jurisdiction': 'nacional',
+            'create_date': date.today()
         })
-        assert len(self.invoice.perception_ids) == 1
-
-
+        lines = presentation.Presentation("sifere", "percepciones")
+        code = perception_sifere.get_code(perception_line)
+        perception_sifere.create_line(code, lines, perception_line)
+        today = date.today().strftime("%d/%m/%Y")
+        assert lines.lines[0].get_line_string() == "90211-22222222-3{}999988888888CZ0,000,000,400".format(today)
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
