@@ -232,6 +232,17 @@ class AccountOwnCheck(models.Model):
         track_visibility='onchange'
     )
 
+    @api.constrains('destination_payment_id', 'currency_id')
+    def validate_check_currency(self):
+        for check in self:
+
+            if check.destination_payment_id and \
+                    check.currency_id and \
+                    check.currency_id != check.destination_payment_id.currency_id:
+
+                raise ValidationError("El comprobante donde se utiliza el "
+                                      "cheque debe tener la misma moneda que el cheque.")
+
     @api.multi
     def post_payment(self, vals):
         """ Lo que deberia pasar con el cheque cuando se valida el pago.. """

@@ -52,6 +52,7 @@ class AccountOwnCheckLine(models.Model):
         """ Lo que deberia pasar con el cheque cuando se valida el pago.. """
 
         for own_check_line in self:
+
             payment_date = own_check_line.issue_date if own_check_line.payment_type == 'common' \
                 else own_check_line.payment_date
             vals = {
@@ -59,7 +60,6 @@ class AccountOwnCheckLine(models.Model):
                 'payment_date': payment_date,
                 'issue_date': own_check_line.issue_date,
                 'destination_payment_id': payment.id,
-                'currency_id': payment.currency_id.id
             }
             own_check_line.own_check_id.post_payment(vals)
 
