@@ -21,6 +21,7 @@ from datetime import datetime
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 from unidecode import unidecode
+from openerp.exceptions import Warning
 
 from odoo_openpyme_api.presentations import presentation
 
@@ -71,7 +72,10 @@ class AccountInvoicePresentation(models.Model):
         cabecera = presentation.Presentation("ventasCompras", "cabecera")
         line = cabecera.create_line()
 
-        line.cuit = self.company_id.vat or 0
+        if self.company_id.vat:
+            line.cuit = self.company_id.vat
+        else:
+            raise Warning("La compania {} no posee CUIT".format(self.company_id.name))
         line.periodo = self.get_period()
         line.secuencia = self.sequence
         line.sinMovimiento = 'S'
