@@ -32,6 +32,7 @@ class AccountInvoice(models.Model):
         """
         res = super(AccountInvoice, self).invoice_print()
         self.ensure_one()
+
         if self.document_book_type == 'electronic':
             res = self.env['report'].get_action(self, 'l10n_ar_electronic_invoice_report.report_electronic_invoice')
         return res
@@ -41,7 +42,14 @@ class AccountInvoice(models.Model):
         self.ensure_one()
 
         document_type_id = self.get_document_book().document_type_id.id
-        return str(self.env['codes.models.relation'].get_code('afip.voucher.type', document_type_id))
+        voucher_type = self.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id),
+            ('denomination_id', '=', self.denomination_id.id)],
+            limit=1
+        )
+        document_afip_code = self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id)
+
+        return document_afip_code
 
     def get_bar_code(self):
         """
@@ -51,11 +59,11 @@ class AccountInvoice(models.Model):
         """
 
         if not self.cae:
-            raise ValidationError("No se puede imprimir un documento sin CAE")
+            raise ValidationError("No se puede generar el codigo de barra sin CAE")
 
         bar_code = ''.join([
-            self.get_voucher_code(),
             self.company_id.partner_id.vat,
+            self.get_voucher_code(),
             str(self.pos_ar_id.name).zfill(4),
             self.cae,
             self.cae_due_date.replace('-', ''),

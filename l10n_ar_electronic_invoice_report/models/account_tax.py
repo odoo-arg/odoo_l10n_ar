@@ -26,7 +26,7 @@ class AccountTax(models.Model):
     def get_tax_description(self):
 
         group_vat = self.env.ref('l10n_ar.tax_group_vat')
-        # EJ: IVA 21%
+        # EJ: IVA 21.0%
         res = _('VAT ') + str(self.amount) + '%:' if self.tax_group_id == group_vat else self.description
 
         return res
