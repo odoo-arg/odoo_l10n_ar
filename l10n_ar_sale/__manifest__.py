@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Integracion para ventas y localizacion Argentina',
+    'name': 'l10n_ar_sale',
 
     'version': '1.0',
 
