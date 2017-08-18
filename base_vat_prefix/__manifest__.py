@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Base vat prefix',
+    'name': 'base_vat_prefix',
 
     'version': '1.0',
 

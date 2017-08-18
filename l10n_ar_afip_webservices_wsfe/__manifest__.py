@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'AFIP: Web service de factura electrónica',
+    'name': 'l10n_ar_afip_webservices_wsfe',
 
     'version': '1.0',
 

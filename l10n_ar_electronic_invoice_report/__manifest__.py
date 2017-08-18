@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Reporte de Facturacion Electronica',
+    'name': 'l10n_ar_electronic_invoice_report',
 
     'version': '1.0',
 

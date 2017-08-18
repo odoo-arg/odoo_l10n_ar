@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Reporte de Pagos',
+    'name': 'l10n_ar_account_payment_report',
 
     'version': '1.0',
 

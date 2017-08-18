@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'AFIP: Web service de autenticacion',
+    'name': 'l10n_ar_afip_webservices_wsaa',
 
     'version': '1.0',
 

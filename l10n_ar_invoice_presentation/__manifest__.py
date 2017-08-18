@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Account invoice presentation',
+    'name': 'l10n_ar_invoice_presentation',
 
     'version': '1.0',
 
