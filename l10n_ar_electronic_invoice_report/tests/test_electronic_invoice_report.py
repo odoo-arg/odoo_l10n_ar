@@ -27,6 +27,10 @@ class TestElectronicInvoiceReport(set_up.SetUp, OdooAssertions):
 
     def setUp(self):
         super(TestElectronicInvoiceReport, self).setUp()
+        company = self.env.user.company_id
+        company.iibb_number = '123151'
+        company.street = 'street'
+        company.start_date = '1900-01-01'
         self.invoice.cae = '67334641922335'
         self.refund.cae = '67304121890252'
         self.debit_note.cae = '67294049531279'
@@ -112,6 +116,7 @@ class TestElectronicInvoiceReport(set_up.SetUp, OdooAssertions):
         iibb_number = company.iibb_number
         street = company.street
         city = company.city
+        self.invoice.state = 'open'
 
         company.start_date = None
         with pytest.raises(ValidationError):
@@ -133,7 +138,6 @@ class TestElectronicInvoiceReport(set_up.SetUp, OdooAssertions):
             self.env['report.l10n_ar_electronic_invoice_report.report_electronic_invoice'].render_html(self.invoice.id)
 
         company.city = city
-        self.invoice.state = 'open'
         self.env['report.l10n_ar_electronic_invoice_report.report_electronic_invoice'].render_html(self.invoice.id)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
