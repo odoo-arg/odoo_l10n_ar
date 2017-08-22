@@ -28,12 +28,10 @@ class PerceptionSifere(models.Model):
 
     def _get_invoice_currency_rate(self, invoice):
         rate = 1
-
         if invoice.move_id.line_ids:
             move = invoice.move_id.line_ids[0]
             if move.amount_currency != 0:
                 rate = abs((move.credit + move.debit) / move.amount_currency)
-
         return rate
 
     def _get_tipo(self, p):
@@ -43,8 +41,7 @@ class PerceptionSifere(models.Model):
             return 'C'
 
     def _get_invalid_denomination(self):
-        d_denomination = self.env.ref('l10n_ar_afip_tables.account_denomination_d')
-        return d_denomination.name
+        return self.env.ref('l10n_ar_afip_tables.account_denomination_d').name
 
     def _get_importe(self, p):
         importe = str(format(p.amount * self._get_invoice_currency_rate(p.invoice_id)))[:-2].zfill(10)
@@ -69,9 +66,7 @@ class PerceptionSifere(models.Model):
         line.importe = ",".join(self._get_importe(p))
 
     def generate_file(self):
-
         lines = presentation.Presentation("sifere", "percepciones")
-
         perceptions = self.env['account.invoice.perception'].search([
             ('create_date', '>=', self.date_from),
             ('create_date', '<=', self.date_to),
@@ -98,7 +93,6 @@ class PerceptionSifere(models.Model):
             # si ya encontro algun error, que no siga con el resto del loop porque el archivo no va a salir
             if missing_vats or invalid_vats or missing_codes:
                 continue
-
             self.create_line(code, lines, p)
 
         if missing_vats or invalid_vats or missing_codes:
@@ -121,15 +115,10 @@ class PerceptionSifere(models.Model):
             )
 
     name = fields.Char(string='Nombre', required=True)
-
     date_from = fields.Date(string='Desde', required=True)
-
     date_to = fields.Date(string='Hasta', required=True)
-
     file = fields.Binary(string='Archivo', filename="filename")
-
     filename = fields.Char(string='Nombre Archivo')
-
     company_id = fields.Many2one(
         'res.company',
         string='Empresa',
