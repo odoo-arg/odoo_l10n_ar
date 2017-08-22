@@ -25,7 +25,7 @@ class current_account(models.TransientModel):
 
     _name = "current.account"
 
-    partner_id = fields.Many2one('res.partner', 'Partner')
+    partner_id = fields.Many2one('res.partner', 'Partner', ondelete='cascade')
     doc_type = fields.Selection((('fcc', 'FCC'), ('ncc', 'NCC'), ('ndc', 'NDC'),
                                 ('fcp', 'FCP'), ('ncp', 'NCP'), ('ndp', 'NDP'),
                                 ('rec', 'REC'), ('op', 'OP'), ('otro', 'OTRO')), 'Type')
@@ -36,10 +36,10 @@ class current_account(models.TransientModel):
     subtotal = fields.Float('Subtotal')
     total = fields.Float('Total')
     state = fields.Selection((('open', 'Open'), ('conciled', 'Conciled')), 'State')
-    invoice_id = fields.Many2one('account.invoice', 'Invoice')
-    voucher_id = fields.Many2one('account.voucher', 'Voucher')
+    invoice_id = fields.Many2one('account.invoice', 'Invoice', ondelete='cascade')
+    voucher_id = fields.Many2one('account.voucher', 'Voucher', ondelete='cascade')
     wizard_id = fields.Integer('Wizard')
-    move_line_id = fields.Many2one('account.move.line', 'Linea del asiento')
+    move_line_id = fields.Many2one('account.move.line', 'Linea del asiento', ondelete='cascade')
     due_date = fields.Date(related='move_line_id.date_maturity', string='Fecha de vencimiento', store=True)
     current_account_type = fields.Selection((('customer','Cliente'),('supplier','Proveedor')), 'Tipo de cc')
     
