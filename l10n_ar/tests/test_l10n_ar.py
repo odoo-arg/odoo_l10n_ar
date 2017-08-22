@@ -67,4 +67,9 @@ class TestL10nAr(common.TransactionCase):
     def test_update_banks_wizard(self):
         self.env['update.banks.wizard'].action_update()
 
+    def test_create_bank(self):
+        self.bank_proxy.search([('bic', '=', '11'), ('country', '=', self.country_ar.id)]).unlink()
+        self.bank_proxy.update_banks()
+        assert self.bank_proxy.search_count([('bic', '=', '11'), ('country', '=', self.country_ar.id)])
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

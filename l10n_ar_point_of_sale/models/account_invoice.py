@@ -178,31 +178,6 @@ class AccountInvoice(models.Model):
 
         return document_book
 
-    @api.multi
-    def name_get(self):
-        """ Utilizamos la idea original, pero cambiando los parametros """
-
-        types = {
-            'out_invoice': 'FCC',
-            'in_invoice': 'FCP',
-            'out_refund': 'NCC',
-            'in_refund': 'NCP',
-        }
-
-        result = []
-
-        for inv in self:
-            invoice_type = types.get(inv.type)
-
-            # EJ FC A 0001-00000001
-            result.append((inv.id, "%s %s %s" % (
-                invoice_type or '',
-                inv.denomination_id.name or '',
-                inv.name or inv.number or ''))
-            )
-
-        return result
-
     def action_preprint(self, document_book):
         """ Funcion para ejecutarse al validar una factura con talonario preimpreso """
         self.name = document_book.next_number()
