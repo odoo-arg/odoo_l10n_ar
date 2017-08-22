@@ -26,14 +26,14 @@ class AccountOwnCheck(models.Model):
 
     @api.multi
     def cancel_check(self):
-        """ Lo que deberia pasar con el cheque cuando se rechaza """
+        """ Lo que deberia pasar con el cheque cuando se cancela """
         if any(check.state != 'draft' for check in self):
             raise ValidationError("Solo se puede cancelar un cheque en estado borrador")
         self.next_state('draft_canceled')
 
     @api.multi
     def revert_canceled_check(self):
-        """ Lo que deberia pasar con el cheque cuando se revierte un rechazo """
+        """ Lo que deberia pasar con el cheque cuando se revierte una cancelacion """
         if any(check.state != 'canceled' for check in self):
             raise ValidationError("Funcionalidad unica para cheques cancelados")
         self.cancel_state('canceled')
