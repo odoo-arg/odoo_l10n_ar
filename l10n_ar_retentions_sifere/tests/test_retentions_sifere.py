@@ -28,6 +28,10 @@ class TestRetentionsSifere(common.TransactionCase):
     # AUX
     # -------------------------------------------------------------------------
     def create_payment_data(self):
+        self.position = self.env['account.fiscal.position'].create({
+            'name': "Posicion",
+            'vat_required': True,
+        })
         self.pos = self.env['pos.ar'].create({
             'name': "4",
         })
@@ -35,6 +39,7 @@ class TestRetentionsSifere(common.TransactionCase):
             'name': "Proveedor",
             'country_id': self.country.id,
             'vat': '11222222223',
+            'fiscal_position_id': self.position.id
         })
         self.payment_method = self.env['account.payment.method'].create({
             'name': "Metodo de pago",
@@ -106,10 +111,11 @@ class TestRetentionsSifere(common.TransactionCase):
         today = date.today().strftime("%d/%m/%Y")
         assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}00040000000000000010R 000000009999777777770,000,000,400".format(today)
 
-    def test_retention_no_vat_exception(self):
+    def test_retention_no_vat(self):
         self.partner.vat = None
-        with pytest.raises(Exception):
-            self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
+        self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
+        today = date.today().strftime("%d/%m/%Y")
+        assert self.lines.lines[0].get_line_string() == "90200-00000000-0{}00040000000000000010R 000000009999777777770,000,000,400".format(today)
 
     def test_retention_no_code_exception(self):
         self.code = None
