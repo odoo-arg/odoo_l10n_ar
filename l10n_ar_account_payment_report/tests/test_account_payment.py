@@ -22,12 +22,12 @@ from openerp.exceptions import ValidationError
 
 class TestAccountPayment(set_up.SetUp):
 
-    def test_check_state_draft(self):
+    def test_print_report_draft_payment(self):
         report = self.env['report.l10n_ar_account_payment_report.report_account_payment'].new({})
         with self.assertRaises(ValidationError):
             report.render_html(self.customer_payment.id)
 
-    def test_check_state_posted(self):
+    def test_print_report_posted_payment(self):
         self.customer_payment.state = 'posted'
         report = self.env['report.l10n_ar_account_payment_report.report_account_payment'].new({})
         report.render_html(self.customer_payment.id)
