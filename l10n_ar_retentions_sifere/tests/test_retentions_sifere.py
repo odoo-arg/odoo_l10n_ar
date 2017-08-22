@@ -15,19 +15,130 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from datetime import datetime
+from datetime import datetime, timedelta, date
+
+import pytest
 from odoo.tests import common
 
+from odoo_openpyme_api.presentations import presentation
 
-class TestPerceptionsSifere(common.TransactionCase):
-    def setUp(self):
-        super(TestPerceptionsSifere, self).setUp()
-        self.perception_sifere = self.env['perception.sifere'].create({
-            'name': 'SIFERE',
-            'date_from': datetime.now(),
-            'date_to': datetime.now(),
+
+class TestRetentionsSifere(common.TransactionCase):
+    # -------------------------------------------------------------------------
+    # AUX
+    # -------------------------------------------------------------------------
+    def create_payment_data(self):
+        self.pos = self.env['pos.ar'].create({
+            'name': "4",
+        })
+        self.currency = self.env['res.currency'].create({
+            'name': "Moneda",
+            'symbol': "MONE",
+        })
+        self.partner = self.env['res.partner'].create({
+            'name': "Proveedor",
+            'country_id': self.country.id,
+            'vat': '11222222223',
+        })
+        self.journal = self.env['account.journal'].create({
+            'name': "Diario",
+            'type': 'sale',
+            'code': "DIA",
+        })
+        self.payment_method = self.env['account.payment.method'].create({
+            'name': "Metodo de pago",
+            'code': "METODO",
+            'payment_type': 'inbound',
+        })
+        self.payment = self.env['account.payment'].create({
+            'partner_id': self.partner.id,
+            'account_id': self.account.id,
+            'journal_id': self.journal.id,
+            'state': 'posted',
+            'payment_type': 'inbound',
+            'name': '9999-77777777',
+            'payment_date': datetime.now(),
+            'currency_id': self.currency.id,
+            'payment_method_id': self.payment_method.id,
+            'pos_ar_id': self.pos.id,
+            'amount': 1000,
         })
 
-    # TODO
+    def create_tax_data(self):
+        self.tax = self.env['account.tax'].create({
+            'name': "SIFERE",
+            'amount': 1,
+        })
+        self.retention = self.env['retention.retention'].create({
+            'name': "SIFERE",
+            'tax_id': self.tax.id,
+            'type': 'gross_income',
+            'jurisdiction': 'nacional',
+            'state_id': 553,
+        })
+
+    def create_country(self):
+        self.country = self.env['res.country'].create({
+            'name': "Pais",
+            'code': "ZZ",
+            'no_prefix': True,
+        })
+
+    def create_account(self):
+        self.account_type = self.env['account.account.type'].create({
+            'name': "Tipo de cuenta",
+        })
+        self.account = self.env['account.account'].create({
+            'code': "Codigo",
+            'name': "Cuenta",
+            'user_type_id': self.account_type.id,
+        })
+
+    def create_retention(self):
+        self.retention_sifere = self.env['retention.sifere'].create({
+            'name': "Retencion SIFERE",
+            'date_from': datetime.now() - timedelta(days=1),
+            'date_to': datetime.now() + timedelta(days=1),
+        })
+        self.retention_line = self.env['account.payment.retention'].create({
+            'name': "Linea Retencion",
+            'payment_id': self.payment.id,
+            'retention_id': self.retention.id,
+            'amount': 400,
+            'jurisdiction': 'nacional',
+            'create_date': date.today(),
+            'certificate_no': "10",
+        })
+        self.lines = presentation.Presentation("sifere", "retenciones")
+        self.code = self.retention_sifere.get_code(self.retention_line)
+
+    # -------------------------------------------------------------------------
+    # SETUP
+    # -------------------------------------------------------------------------
+    def setUp(self, *args, **kwargs):
+        super(TestRetentionsSifere, self).setUp(*args, **kwargs)
+        self.create_country()
+        self.create_tax_data()
+        self.create_account()
+        self.create_payment_data()
+        self.create_retention()
+
+    # -------------------------------------------------------------------------
+    # TESTS
+    # -------------------------------------------------------------------------
+    def test_retention(self):
+        self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
+        today = date.today().strftime("%d/%m/%Y")
+        assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}00040000000000000010R 000000009999777777770,000,000,400".format(today)
+
+    def test_retention_no_vat_exception(self):
+        self.partner.vat = None
+        with pytest.raises(Exception):
+            self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
+
+    def test_retention_no_code_exception(self):
+        self.code = None
+        with pytest.raises(Exception):
+            self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

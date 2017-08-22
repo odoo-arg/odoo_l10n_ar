@@ -30,10 +30,25 @@ class RetentionSifere(models.Model):
         importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
         return importe_parts
 
+    def create_line(self, code, lines, r):
+        line = lines.create_line()
+        line.jurisdiccion = code
+        line.cuit = r.payment_id.partner_id.vat[0:2] + '-' + r.payment_id.partner_id.vat[2:10] + '-' \
+                    + r.payment_id.partner_id.vat[-1:]
+        line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+        line.puntoDeVenta = r.payment_id.pos_ar_id.name
+        line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
+        line.numeroBase = filter(str.isdigit, str("".join(r.payment_id.name.split("-"))))
+        line.tipo = "R"
+        line.letra = " "
+        line.importe = ",".join(self._get_importe(r))
+
+    def get_code(self, r):
+        return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
+                                                          'ConvenioMultilateral')
+
     def generate_file(self):
-
         lines = presentation.Presentation("sifere", "retenciones")
-
         retentions = self.env['account.payment.retention'].search([
             ('create_date', '>=', self.date_from),
             ('create_date', '<=', self.date_to),
@@ -47,38 +62,24 @@ class RetentionSifere(models.Model):
         missing_codes = set()
 
         for r in retentions:
-
-            code = self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
-                                                              'ConvenioMultilateral')
+            code = self.get_code(r)
 
             if not r.payment_id.partner_id.vat:
                 missing_vats.add(r.payment_id.name)
-
             elif len(r.payment_id.partner_id.vat) < 11:
                 invalid_vats.add(r.payment_id.name)
-
             if not code:
                 missing_codes.add(r.retention_id.state_id.name)
 
-            line = lines.create_line()
-            line.jurisdiccion = code
-            line.cuit = r.payment_id.partner_id.vat[0:2] + '-' + r.payment_id.partner_id.vat[2:10] + '-' \
-                        + r.payment_id.partner_id.vat[-1:]
-            line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
-            line.puntoDeVenta = r.payment_id.pos_ar_id.name
-            line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
-            line.numeroBase = filter(str.isdigit, str(r.payment_id.name)[5:])
-            line.tipo = "R"
-            line.letra = " "
-            line.importe = ",".join(self._get_importe(r))
+            self.create_line(code, lines, r)
 
         if missing_vats or invalid_vats or missing_codes:
             errors = []
             if missing_vats:
-                errors.append("Los partners de las siguientes facturas no poseen numero de documento:")
+                errors.append("Los partners de los siguientes pagos no poseen numero de documento:")
                 errors.extend(missing_vats)
             if invalid_vats:
-                errors.append("Los partners de las siguientes facturas poseen CUIT erroneo:")
+                errors.append("Los partners de los siguientes pagos poseen CUIT erroneo:")
                 errors.extend(invalid_vats)
             if missing_codes:
                 errors.append("Las siguientes jurisdicciones no poseen codigo:")
@@ -92,15 +93,10 @@ class RetentionSifere(models.Model):
             )
 
     name = fields.Char(string='Nombre', required=True)
-
     date_from = fields.Date(string='Desde', required=True)
-
     date_to = fields.Date(string='Hasta', required=True)
-
     file = fields.Binary(string='Archivo', filename="filename")
-
     filename = fields.Char(string='Nombre Archivo')
-
     company_id = fields.Many2one(
         'res.company',
         string='Empresa',
