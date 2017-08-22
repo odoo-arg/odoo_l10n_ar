@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError, UserError
+from openerp.exceptions import ValidationError
 
 
 class AccountCheckbook(models.Model):
@@ -89,13 +89,13 @@ class AccountCheckbook(models.Model):
         for checkbook in self:
 
             if not (checkbook.number_from.isdigit() or checkbook.number_to.isdigit()):
-                raise UserError("La numeracion debe contener solo numeros")
+                raise ValidationError("La numeracion debe contener solo numeros")
 
             if int(checkbook.number_from) <= 0 or int(checkbook.number_to) <= 0:
-                raise UserError("La numeracion debe ser mayor a cero.")
+                raise ValidationError("La numeracion debe ser mayor a cero.")
 
             if int(checkbook.number_from) > int(checkbook.number_to):
-                raise UserError("Numeracion Desde no puede ser mayor a Hasta.")
+                raise ValidationError("Numeracion Desde no puede ser mayor a Hasta.")
 
             if len(range(int(checkbook.number_from), int(checkbook.number_to))) > max_checks:
                 raise ValidationError("El rango de cheques de la chequera es muy grande.\n"

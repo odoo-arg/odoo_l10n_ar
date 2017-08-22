@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp.exceptions import UserError, ValidationError
+from openerp.exceptions import ValidationError
 
 
 class AccountAbstractPayment(models.AbstractModel):
@@ -94,7 +94,7 @@ class AccountAbstractPayment(models.AbstractModel):
 
         third_check_account_id = self.company_id.third_check_account_id.id
         if not third_check_account_id:
-            raise UserError("No hay cuenta de cheques de terceros configurada en la empresa. \n"
+            raise ValidationError("No hay cuenta de cheques de terceros configurada en la empresa. \n"
                             "Por favor, configurar una.")
 
         # Como los cheques de terceros utilizan la misma cuenta, cargamos un solo valor en el diccionario

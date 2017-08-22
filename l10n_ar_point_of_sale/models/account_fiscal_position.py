@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields
-from openerp.exceptions import UserError
+from openerp.exceptions import ValidationError
 
 
 class AccountFiscalPosition(models.Model):
@@ -37,7 +37,7 @@ class AccountFiscalPosition(models.Model):
         Busca la denominacion para la posicion fiscal que se pide
         :param receipt_fiscal_position: account.fiscal.position - Posicion fiscal receptora
         :return: account.denomination - Denominacion resultante
-        :raise: UserError - No esta configurada la denominacion para ese caso
+        :raise: ValidationError - No esta configurada la denominacion para ese caso
         """
 
         denomination_fiscal_position = self.denomination_fiscal_position_ids.filtered(
@@ -45,8 +45,8 @@ class AccountFiscalPosition(models.Model):
         )
 
         if not denomination_fiscal_position:
-            raise UserError('No se encuentra configurada una denominacion para las posiciones fiscales:\n'
-                            + self.name + ' - ' + receipt_fiscal_position.name)
+            raise ValidationError('No se encuentra configurada una denominacion para las posiciones fiscales:\n'
+                                  + self.name + ' - ' + receipt_fiscal_position.name)
 
         return denomination_fiscal_position.account_denomination_id
 

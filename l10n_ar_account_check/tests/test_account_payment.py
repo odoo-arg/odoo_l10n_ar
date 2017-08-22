@@ -18,7 +18,7 @@
 
 import set_up
 from openerp import fields
-from openerp.exceptions import ValidationError, UserError
+from openerp.exceptions import ValidationError
 
 
 class TestAccountPayment(set_up.SetUp):
@@ -92,7 +92,7 @@ class TestAccountPayment(set_up.SetUp):
     def test_invalid_payment_methods_customer_vals(self):
         self.customer_payment.account_third_check_ids = self.third_check
         self.env.user.company_id.third_check_account_id = None
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.customer_payment.set_payment_methods_vals()
 
     def test_payment_methods_supplier_vals(self):

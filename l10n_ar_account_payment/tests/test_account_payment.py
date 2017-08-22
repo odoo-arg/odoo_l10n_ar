@@ -299,7 +299,7 @@ class TestAccountPayment(set_up.SetUp):
             'state': 'posted'
         })
         # Intentamos validar un pago ya validado
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.customer_payment.post_l10n_ar()
 
     def test_payment_greater_than_invoice(self):

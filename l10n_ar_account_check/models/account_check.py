@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp.exceptions import ValidationError, UserError
+from openerp.exceptions import ValidationError
 
 
 class AccountAbstractCheck(models.AbstractModel):
@@ -43,7 +43,7 @@ class AccountAbstractCheck(models.AbstractModel):
     def constraint_name(self):
         for check in self:
             if not check.name.isdigit():
-                raise UserError("El numero del cheque debe contener solo numeros")
+                raise ValidationError("El numero del cheque debe contener solo numeros")
 
     @api.constrains('amount')
     def constraint_amount(self):
