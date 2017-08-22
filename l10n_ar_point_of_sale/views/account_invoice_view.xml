@@ -89,6 +89,19 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="search_invoice_pos">
+            <field name="name">Search invoice pos</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <field name="number" position="before">
+                    <field name="name"/>
+                    <field name="denomination_id"/>
+                    <field name="pos_ar_id"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </openerp>
 
