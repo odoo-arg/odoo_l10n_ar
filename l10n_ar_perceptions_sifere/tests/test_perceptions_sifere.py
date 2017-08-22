@@ -117,8 +117,9 @@ class TestPerceptionsSifere(common.TransactionCase):
 
     def test_perception_no_vat_exception(self):
         self.partner.vat = None
-        with pytest.raises(Exception):
-            self.perception_sifere.create_line(self.code, self.lines, self.perception_line)
+        self.perception_sifere.create_line(self.code, self.lines, self.perception_line)
+        today = date.today().strftime("%d/%m/%Y")
+        assert self.lines.lines[0].get_line_string() == "90200-00000000-0{}999988888888CZ0,000,000,400".format(today)
 
     def test_perception_no_code_exception(self):
         self.code = None
