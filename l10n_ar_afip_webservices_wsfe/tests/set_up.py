@@ -26,9 +26,11 @@ class SetUp(common.TransactionCase):
     """
 
     def _set_up_company(self):
-        self.env.user.company_id.partner_id.property_account_position_id = \
+        company = self.env.user.company_id
+        company.partner_id.property_account_position_id = \
             self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari').id
-        self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
+        self.company_fiscal_position = company.partner_id.property_account_position_id
+        company.partner_id.vat = '33693450239'
 
     def _create_document_books(self):
         pos_proxy = self.env['pos.ar']
@@ -99,6 +101,8 @@ class SetUp(common.TransactionCase):
             'type': 'out_invoice',
             'is_debit_note': True
         })
+        mon = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_mon')
+        self.env.user.company_id.partner_id.property_account_position_id = mon.id
         self.debit_note.onchange_partner_id()
         invoice_line = invoice_line_proxy.create({
             'name': 'Exent',
@@ -110,6 +114,8 @@ class SetUp(common.TransactionCase):
         invoice_line._onchange_product_id()
         invoice_line.price_unit = 5000
         self.debit_note._onchange_invoice_line_ids()
+        self.env.user.company_id.partner_id.property_account_position_id = \
+            self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari').id
 
     def _create_refund_b(self):
         invoice_proxy = self.env['account.invoice']

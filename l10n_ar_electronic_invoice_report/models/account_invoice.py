@@ -32,6 +32,7 @@ class AccountInvoice(models.Model):
         """
         res = super(AccountInvoice, self).invoice_print()
         self.ensure_one()
+
         if self.document_book_type == 'electronic':
             res = self.env['report'].get_action(self, 'l10n_ar_electronic_invoice_report.report_electronic_invoice')
         return res
@@ -41,21 +42,28 @@ class AccountInvoice(models.Model):
         self.ensure_one()
 
         document_type_id = self.get_document_book().document_type_id.id
-        return str(self.env['codes.models.relation'].get_code('afip.voucher.type', document_type_id))
+        voucher_type = self.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id),
+            ('denomination_id', '=', self.denomination_id.id)],
+            limit=1
+        )
+        document_afip_code = self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id)
+
+        return document_afip_code
 
     def get_bar_code(self):
         """
         Devuelve el numero para el codigo de barras del documento segun
-        ResoluciÃ³n General A.F.I.P. 1.702/04
+        Resolución General A.F.I.P. 1.702/04
         http://www.afip.gov.ar/afip/resol170204.html
         """
 
         if not self.cae:
-            raise ValidationError("No se puede imprimir un documento sin CAE")
+            raise ValidationError("No se puede generar el codigo de barras sin CAE")
 
         bar_code = ''.join([
-            self.get_voucher_code(),
             self.company_id.partner_id.vat,
+            self.get_voucher_code(),
             str(self.pos_ar_id.name).zfill(4),
             self.cae,
             self.cae_due_date.replace('-', ''),
@@ -81,10 +89,10 @@ class AccountInvoice(models.Model):
         # Etapa 1: comenzar desde la izquierda, sumar todos los caracteres ubicados en las posiciones impares.
         first = sum(odd for odd in barcode_numbers_list[0::2])
 
-        # Etapa 2: multiplicar la suma obtenida en la etapa 1 por el nÃºmero 3
+        # Etapa 2: multiplicar la suma obtenida en la etapa 1 por el número 3
         second = first * 3
 
-        # Etapa 3: comenzar desde la izquierda, sumar todos los caracteres que estÃ¡n ubicados en las posiciones pares.
+        # Etapa 3: comenzar desde la izquierda, sumar todos los caracteres que están ubicados en las posiciones pares.
         third = sum(pair for pair in barcode_numbers_list[1::2])
 
         # Etapa 4: sumar los resultados obtenidos en las etapas 2 y 3.

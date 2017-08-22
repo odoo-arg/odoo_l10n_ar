@@ -230,8 +230,8 @@
                             </t>
                             <t t-if="not o.denomination_id.vat_discriminated">
                                 <td style="width:12%">
-                                    <span t-esc="sum(tax.compute_all(line.price_unit, o.currency_id, line.quantity).get('total_included')
-                                               for tax in line.invoice_line_tax_ids)"
+                                    <span t-esc="sum(tax.compute_all(line.price_unit, o.currency_id).get('total_included')
+                                               for tax in line.invoice_line_tax_ids) or line.price_unit"
                                            t-esc-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                                 </td>
                             </t>
@@ -250,7 +250,8 @@
                             </t>
                             <td style="width:12%;text-align: right">
                                 <span t-esc="sum(tax.compute_all(line.price_subtotal, o.currency_id).get('total_included')
-                                   for tax in line.invoice_line_tax_ids if tax.tax_group_id == env.ref('l10n_ar.tax_group_vat'))"
+                                   for tax in line.invoice_line_tax_ids if tax.tax_group_id == env.ref('l10n_ar.tax_group_vat'))
+                                   or line.price_subtotal"
                                        t-esc-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
