@@ -28,10 +28,6 @@ class TestRetentionsSifere(common.TransactionCase):
     # AUX
     # -------------------------------------------------------------------------
     def create_payment_data(self):
-        self.position = self.env['account.fiscal.position'].create({
-            'name': "Posicion",
-            'vat_required': True,
-        })
         self.pos = self.env['pos.ar'].create({
             'name': "4",
         })
@@ -39,7 +35,6 @@ class TestRetentionsSifere(common.TransactionCase):
             'name': "Proveedor",
             'country_id': self.country.id,
             'vat': '11222222223',
-            'fiscal_position_id': self.position.id
         })
         self.payment_method = self.env['account.payment.method'].create({
             'name': "Metodo de pago",
