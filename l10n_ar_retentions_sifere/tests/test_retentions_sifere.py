@@ -31,19 +31,10 @@ class TestRetentionsSifere(common.TransactionCase):
         self.pos = self.env['pos.ar'].create({
             'name': "4",
         })
-        self.currency = self.env['res.currency'].create({
-            'name': "Moneda",
-            'symbol': "MONE",
-        })
         self.partner = self.env['res.partner'].create({
             'name': "Proveedor",
             'country_id': self.country.id,
             'vat': '11222222223',
-        })
-        self.journal = self.env['account.journal'].create({
-            'name': "Diario",
-            'type': 'sale',
-            'code': "DIA",
         })
         self.payment_method = self.env['account.payment.method'].create({
             'name': "Metodo de pago",
@@ -52,13 +43,8 @@ class TestRetentionsSifere(common.TransactionCase):
         })
         self.payment = self.env['account.payment'].create({
             'partner_id': self.partner.id,
-            'account_id': self.account.id,
-            'journal_id': self.journal.id,
-            'state': 'posted',
             'payment_type': 'inbound',
             'name': '9999-77777777',
-            'payment_date': datetime.now(),
-            'currency_id': self.currency.id,
             'payment_method_id': self.payment_method.id,
             'pos_ar_id': self.pos.id,
             'amount': 1000,
@@ -82,16 +68,6 @@ class TestRetentionsSifere(common.TransactionCase):
             'name': "Pais",
             'code': "ZZ",
             'no_prefix': True,
-        })
-
-    def create_account(self):
-        self.account_type = self.env['account.account.type'].create({
-            'name': "Tipo de cuenta",
-        })
-        self.account = self.env['account.account'].create({
-            'code': "Codigo",
-            'name': "Cuenta",
-            'user_type_id': self.account_type.id,
         })
 
     def create_retention(self):
@@ -119,7 +95,6 @@ class TestRetentionsSifere(common.TransactionCase):
         super(TestRetentionsSifere, self).setUp(*args, **kwargs)
         self.create_country()
         self.create_tax_data()
-        self.create_account()
         self.create_payment_data()
         self.create_retention()
 
