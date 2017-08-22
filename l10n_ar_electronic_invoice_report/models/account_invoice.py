@@ -54,12 +54,12 @@ class AccountInvoice(models.Model):
     def get_bar_code(self):
         """
         Devuelve el numero para el codigo de barras del documento segun
-        ResoluciÃ³n General A.F.I.P. 1.702/04
+        Resolución General A.F.I.P. 1.702/04
         http://www.afip.gov.ar/afip/resol170204.html
         """
 
         if not self.cae:
-            raise ValidationError("No se puede generar el codigo de barra sin CAE")
+            raise ValidationError("No se puede generar el codigo de barras sin CAE")
 
         bar_code = ''.join([
             self.company_id.partner_id.vat,
@@ -89,10 +89,10 @@ class AccountInvoice(models.Model):
         # Etapa 1: comenzar desde la izquierda, sumar todos los caracteres ubicados en las posiciones impares.
         first = sum(odd for odd in barcode_numbers_list[0::2])
 
-        # Etapa 2: multiplicar la suma obtenida en la etapa 1 por el nÃºmero 3
+        # Etapa 2: multiplicar la suma obtenida en la etapa 1 por el número 3
         second = first * 3
 
-        # Etapa 3: comenzar desde la izquierda, sumar todos los caracteres que estÃ¡n ubicados en las posiciones pares.
+        # Etapa 3: comenzar desde la izquierda, sumar todos los caracteres que están ubicados en las posiciones pares.
         third = sum(pair for pair in barcode_numbers_list[1::2])
 
         # Etapa 4: sumar los resultados obtenidos en las etapas 2 y 3.
