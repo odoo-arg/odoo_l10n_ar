@@ -99,8 +99,8 @@ class TestPerceptionsSifere(common.TransactionCase):
     # -------------------------------------------------------------------------
     # SETUP
     # -------------------------------------------------------------------------
-    def setUp(self):
-        super(TestPerceptionsSifere, self).setUp()
+    def setUp(self, *args, **kwargs):
+        super(TestPerceptionsSifere, self).setUp(*args, **kwargs)
         self.create_country()
         self.create_tax_data()
         self.create_account()
@@ -117,6 +117,11 @@ class TestPerceptionsSifere(common.TransactionCase):
 
     def test_perception_no_vat_exception(self):
         self.partner.vat = None
+        with pytest.raises(Exception):
+            self.perception_sifere.create_line(self.code, self.lines, self.perception_line)
+
+    def test_perception_no_code_exception(self):
+        self.code = None
         with pytest.raises(Exception):
             self.perception_sifere.create_line(self.code, self.lines, self.perception_line)
 
