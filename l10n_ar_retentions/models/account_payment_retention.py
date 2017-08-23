@@ -28,7 +28,7 @@ class AccountPaymentRetention(models.Model):
     _inherit = 'account.document.tax'
     _name = 'account.payment.retention'
 
-    payment_id = fields.Many2one('account.payment', 'Pago', required=True)
+    payment_id = fields.Many2one('account.payment', 'Pago', required=True, ondelete="cascade")
     currency_id = fields.Many2one(related='payment_id.currency_id', readonly=True)
     retention_id = fields.Many2one(
         'retention.retention',
