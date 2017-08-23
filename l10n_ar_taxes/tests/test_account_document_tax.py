@@ -23,39 +23,34 @@ class TestAccountDocumentTax(common.TransactionCase):
 
     def setUp(self):
         super(TestAccountDocumentTax, self).setUp()
+        self.document_tax = self.env['account.document.tax'].new({})
 
     def test_check_amount_with_amount_zero(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.amount = 0.0
+        self.document_tax.amount = 0.0
         with self.assertRaises(ValidationError):
-            document_tax.check_amount()
+            self.document_tax.check_amount()
 
     def test_check_amount_with_amount_negative(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.amount = -10.0
+        self.document_tax.amount = -10.0
         with self.assertRaises(ValidationError):
-            document_tax.check_amount()
+            self.document_tax.check_amount()
 
     def test_check_amount_with_amount_positive(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.amount = 10.0
-        document_tax.check_amount()
+        self.document_tax.amount = 10.0
+        self.document_tax.check_amount()
 
     def test_check_base_with_amount_zero(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.base = 0.0
-        document_tax.check_base()
+        self.document_tax.base = 0.0
+        self.document_tax.check_base()
 
     def test_check_base_with_amount_negative(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.base = -10.0
+        self.document_tax.base = -10.0
         with self.assertRaises(ValidationError):
-            document_tax.check_base()
+            self.document_tax.check_base()
 
     def test_check_base_with_amount_positive(self):
-        document_tax = self.env['account.document.tax'].new({})
-        document_tax.base = 10.0
-        document_tax.check_base()
+        self.document_tax.base = 10.0
+        self.document_tax.check_base()
 
 
 
