@@ -15,43 +15,29 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import os
 
 import pytest
 from odoo.addons.l10n_ar_afip_webservices_wsfe.tests import set_up
 from openerp.exceptions import ValidationError
-from odoo_report_testing.assertions import OdooAssertions
 
 
-class TestElectronicInvoiceReport(set_up.SetUp, OdooAssertions):
+class TestElectronicInvoiceReport(set_up.SetUp):
 
     def setUp(self):
         super(TestElectronicInvoiceReport, self).setUp()
         company = self.env.user.company_id
-        company.iibb_number = '123151'
-        company.street = 'street'
-        company.start_date = '1900-01-01'
+        company.write({
+            'iibb_number': '123151',
+            'street': 'street',
+            'start_date': '1900-01-01',
+            'city': 'Ciudad'
+        })
         self.invoice.cae = '67334641922335'
         self.refund.cae = '67304121890252'
         self.debit_note.cae = '67294049531279'
         self.documents = self.invoice | self.refund | self.debit_note
         cae_due_date = '2000-01-01'
         self.documents.write({'cae_due_date': cae_due_date})
-
-    def test_simple_so_report(self):
-        self.documents.write({'state': 'open'})
-        self.assertOdooReport(
-            os.path.join(
-                os.path.dirname(__file__),
-                'expected_reports',
-                'factura_electronica.pdf'
-            ),
-            'account.invoice',
-            'l10n_ar_electronic_invoice_report.report_electronic_invoice',
-            self.documents.ids,
-            data={},
-            context=None
-        )
 
     def test_get_voucher_type_string(self):
         assert self.invoice.get_voucher_type_string() == 'FACTURA'

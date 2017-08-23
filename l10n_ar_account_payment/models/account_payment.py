@@ -18,7 +18,7 @@
 import itertools
 import operator
 from openerp import models, api, fields
-from openerp.exceptions import ValidationError, UserError
+from openerp.exceptions import ValidationError
 
 
 class AccountAbstractPayment(models.AbstractModel):
@@ -354,7 +354,7 @@ class AccountPayment(models.Model):
         """ Se asegura que los estados y campos de los documentos de pago y del pago sean correctos """
 
         if self.state != 'draft':
-            raise UserError("Solo se pueden validar pagos en borrador")
+            raise ValidationError("Solo se pueden validar pagos en borrador")
 
         if any(inv.state != 'open' for inv in self.invoice_ids):
             raise ValidationError(

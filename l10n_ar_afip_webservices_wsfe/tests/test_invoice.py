@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from mock import mock
+from mock import mock, PropertyMock
 import set_up
 from openerp.exceptions import ValidationError
 from odoo.addons.l10n_ar_afip_webservices_wsaa.tests import config
@@ -322,6 +322,11 @@ class TestInvoice(set_up.SetUp):
         assert self.invoice._get_afip_concept_based_on_products().id == 3
         # Ningun producto ni servicio
         assert self.refund._get_afip_concept_based_on_products().id == 1
+
+    def test_exists_commit(self):
+        # Mockiamos el env para que el commit no commitee realmente en la base
+        self.invoice.env = mock.Mock()
+        self.invoice._commit()
 
     def test_action_electronic(self):
         """ Hacemos una simluacion de envio de factura a AFIP con Mocks """

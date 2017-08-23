@@ -15,7 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.exceptions import UserError, ValidationError
+from openerp.exceptions import ValidationError
 from test_document_book import TestDocumentBook
 
 
@@ -99,23 +99,23 @@ class TestInvoice(TestDocumentBook):
         company_fiscal_position = self.company_fiscal_position
         self.env.user.company_id.partner_id.property_account_position_id = None
         # Probamos validar una factura si la compania no tiene posicion fiscal
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
         self.env.user.company_id.partner_id.property_account_position_id = company_fiscal_position
 
         # Probamos cambiandole la posicion fiscal del partner y validar la factura
         self.partner_ri.property_account_position_id = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ex').id
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
         # Probamos sacandole la posicion fiscal al partner y validar la factura
         self.partner_ri.property_account_position_id = None
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
     def test_invalid_invoice_denomination(self):
         self.invoice.denomination_id = self.env.ref('l10n_ar_afip_tables.account_denomination_b')
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
     def test_supplier_invoice_number(self):
@@ -123,16 +123,16 @@ class TestInvoice(TestDocumentBook):
         self.invoice.onchange_partner_id()
 
         # Deberia tener numero...
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
         # Y el formato XXXX-XXXXXXXX Y solo enteros
         self.invoice.name = 'AAAA-AAAAAAAA'
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
         self.invoice.name = '111178797979'
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.action_invoice_open()
 
         self.invoice.name = '3333-33333333'
@@ -159,7 +159,7 @@ class TestInvoice(TestDocumentBook):
 
     def test_document_book(self):
         # Sin punto de venta y denominacion
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.get_document_book()
 
         self.invoice.onchange_partner_id()
@@ -169,7 +169,7 @@ class TestInvoice(TestDocumentBook):
 
         # Probamos talonario no encontrado
         domain.append(('name', '=', '-1'))
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.invoice.get_document_book(domain)
 
     def test_name_get(self):

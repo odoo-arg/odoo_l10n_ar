@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
-from openerp.exceptions import UserError, ValidationError
+from openerp.exceptions import ValidationError
 import re
 
 
@@ -151,8 +151,8 @@ class AccountInvoice(models.Model):
         para considerar el caso de notas de debito u otros domains de negocio que se puedan agregar
         a futuro.
         :return: Talonario a utilizar
-        :raise UserError: No esta seteado el punto de venta o la denominacion
-        :raise UserError: No hay configurado un talonario para ese punto de venta y denominacion
+        :raise ValidationError: No esta seteado el punto de venta o la denominacion
+        :raise ValidationError: No hay configurado un talonario para ese punto de venta y denominacion
         """
 
         if not additional_domains:
@@ -168,40 +168,15 @@ class AccountInvoice(models.Model):
         ])
 
         if not (self.pos_ar_id and self.denomination_id):
-            raise UserError('El documento debe tener punto de venta y denominacion para ser validado')
+            raise ValidationError('El documento debe tener punto de venta y denominacion para ser validado')
 
         document_book = self.env['document.book'].search(domain, limit=1)
 
         if not document_book:
-            raise UserError('No existe talonario configurado para el punto de venta '
+            raise ValidationError('No existe talonario configurado para el punto de venta '
                             + self.pos_ar_id.name_get()[0][1] + ' y la denominacion ' + self.denomination_id.name)
 
         return document_book
-
-    @api.multi
-    def name_get(self):
-        """ Utilizamos la idea original, pero cambiando los parametros """
-
-        types = {
-            'out_invoice': 'FCC',
-            'in_invoice': 'FCP',
-            'out_refund': 'NCC',
-            'in_refund': 'NCP',
-        }
-
-        result = []
-
-        for inv in self:
-            invoice_type = types.get(inv.type)
-
-            # EJ FC A 0001-00000001
-            result.append((inv.id, "%s %s %s" % (
-                invoice_type or '',
-                inv.denomination_id.name or '',
-                inv.name or inv.number or ''))
-            )
-
-        return result
 
     def action_preprint(self, document_book):
         """ Funcion para ejecutarse al validar una factura con talonario preimpreso """
@@ -224,9 +199,9 @@ class AccountInvoice(models.Model):
         """
         Valida si las posiciones fiscales de los partnes y la empresa
         van acorde a la denominacion de la factura
-        :raises UserError: Si no esta configurada la posicion fiscal de la empresa, partner, o si no es igual
+        :raises ValidationError: Si no esta configurada la posicion fiscal de la empresa, partner, o si no es igual
         la posicion fiscal del partner a la de la factura
-        :raise UserError: Si la denominacion de la factura no es la correcta segun posiciones fiscales
+        :raise ValidationError: Si la denominacion de la factura no es la correcta segun posiciones fiscales
         """
 
         # Valido posiciones fiscales
@@ -245,36 +220,36 @@ class AccountInvoice(models.Model):
         Valida las posiciones fiscales de la factura
         :param company_fiscal_position: account.fiscal.position - Posicion fiscal de la empresa
         :param partner_fiscal_position: account.fiscal.position - Posicion fiscal del partner de la factura
-        :raises UserError: Si no esta configurada la posicion fiscal de la empresa, partner, o si no es igual
+        :raises ValidationError: Si no esta configurada la posicion fiscal de la empresa, partner, o si no es igual
         la posicion fiscal del partner a la de la factura
         """
 
         if not company_fiscal_position:
-            raise UserError('Por favor, configurar la posicion fiscal de la empresa ' + self.company_id.name)
+            raise ValidationError('Por favor, configurar la posicion fiscal de la empresa ' + self.company_id.name)
         if not partner_fiscal_position:
-            raise UserError('Por favor, configurar la posicion fiscal del partner')
+            raise ValidationError('Por favor, configurar la posicion fiscal del partner')
 
         if self.fiscal_position_id != partner_fiscal_position:
-            raise UserError('La posicion fiscal del documento debe ser la misma que la configurada en el partner')
+            raise ValidationError('La posicion fiscal del documento debe ser la misma que la configurada en el partner')
 
     def _validate_denomination(self, denomination):
         """
         Valida la denominacion de la factura
         :param denomination: account.denomination - Posicion fiscal que deberia tener la factura
-        :raise UserError: Si la denominacion de la factura no es la correcta segun posiciones fiscales
+        :raise ValidationError: Si la denominacion de la factura no es la correcta segun posiciones fiscales
         """
 
         if denomination != self.denomination_id:
-            raise UserError('La denominacion de la factura no es la misma que la configurada en las posiciones fiscales')
+            raise ValidationError('La denominacion de la factura no es la misma que la configurada en las posiciones fiscales')
 
     def _validate_supplier_invoice_number(self):
         """
         Validamos el numero de factura
-        :raise UserError: Si no cumple con el formato xxxx-xxxxxxxx, y debe tener solo enteros
+        :raise ValidationError: Si no cumple con el formato xxxx-xxxxxxxx, y debe tener solo enteros
         """
 
         if not self.name:
-            raise UserError('El documento no tiene numero!')
+            raise ValidationError('El documento no tiene numero!')
 
         if self.denomination_id.validate_supplier:
             invoice_number = self.name.split('-')
@@ -282,7 +257,7 @@ class AccountInvoice(models.Model):
 
             # Nos aseguramos que contenga '-' para separar punto de venta de numero
             if len(invoice_number) != 2:
-                raise UserError(error_msg)
+                raise ValidationError(error_msg)
 
             # Rellenamos con 0s los valores necesarios
             point_of_sale = invoice_number[0].zfill(4)
@@ -291,7 +266,7 @@ class AccountInvoice(models.Model):
 
             # Validamos el formato y se lo ponemos a la factura
             if not re.match('^[0-9]{4}-[0-9]{8}$', invoice_number):
-                raise UserError(error_msg)
+                raise ValidationError(error_msg)
 
             self.name = invoice_number
 
