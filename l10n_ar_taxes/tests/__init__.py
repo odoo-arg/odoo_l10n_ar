@@ -18,5 +18,6 @@
 
 import test_invoice
 import test_tax_ar
+import test_account_document_tax
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
