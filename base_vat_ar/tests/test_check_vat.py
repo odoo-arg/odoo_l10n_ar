@@ -62,4 +62,16 @@ class TestCheckVat(common.TransactionCase):
         assert self.env.ref('base.ar').no_prefix
         assert not self.env.ref('base.uy').no_prefix
 
+    def test_vat_with_parent(self):
+        """ Probamos que si se carga un contacto valide con el parent """
+        self.env['res.country'].set_ar_no_prefix()
+        child_partner = self.env['res.partner'].create({
+            'name': 'child_partner',
+            'parent_id': self.partner.id,
+            'country_id': None
+        })
+        # Aunque no tiene pais y tienen el mismo doc deberia pasar la validacion por el parent
+        assert child_partner.vat == self.partner.vat
+        child_partner.check_vat()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
