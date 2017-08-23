@@ -55,6 +55,17 @@ class TestOwnCheckLine(set_up.SetUp):
             'issue_date': date_today,
         })
 
+    def test_post_payment_with_a_different_currency(self):
+        self.own_check_line.own_check_id.currency_id = self.env.ref('base.ARS')
+        self.supplier_payment.currency_id = self.env.ref('base.USD')
+        with self.assertRaises(ValidationError):
+            self.own_check_line.post_payment(self.supplier_payment)
+
+    def test_post_payment_with_same_currency(self):
+        self.own_check_line.own_check_id.currency_id = self.env.ref('base.ARS')
+        self.supplier_payment.currency_id = self.env.ref('base.ARS')
+        self.own_check_line.post_payment(self.supplier_payment)
+
     def test_post_payment(self):
         """ Probamos que los valores de las lineas de cheques propios asigne los valores correctamente """
 
@@ -65,7 +76,6 @@ class TestOwnCheckLine(set_up.SetUp):
         assert self.line_own_check.id == self.own_check_line.own_check_id.id
         assert self.line_own_check.payment_type == self.own_check_line.payment_type
         assert self.line_own_check.destination_payment_id == self.supplier_payment
-        assert self.line_own_check.currency_id == self.supplier_payment.currency_id
 
     def test_constraint_own_check(self):
         self.own_check_line.payment_id = self.supplier_payment.id
