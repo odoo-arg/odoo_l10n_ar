@@ -72,4 +72,19 @@ class TestL10nAr(common.TransactionCase):
         self.bank_proxy.update_banks()
         assert self.bank_proxy.search_count([('bic', '=', '11'), ('country', '=', self.country_ar.id)])
 
+    def test_base_ar_country_default(self):
+        """ Borramos el default pais en el y validamos que se cargue cuando ejecutamos el template de account.chart """
+        default_country = self.env['ir.values'].search([('name', '=', 'country_id'), ('model', '=', 'res.partner')])
+        default_country.unlink()
+        wizard = self.env['wizard.multi.charts.accounts'].create({
+            'company_id': self.env.user.company_id.id,
+            'chart_template_id': self.env['account.chart.template'].search([], limit=1).id,
+            'currency_id': self.env.user.company_id.currency_id.id,
+            'transfer_account_id': self.env.ref('l10n_ar.amortizacion_terrenos').id,
+            'code_digits': 6
+        })
+        wizard.onchange_chart_template_id()
+        wizard.execute()
+        assert default_country
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

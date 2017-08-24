@@ -28,6 +28,7 @@
         <!-- Impuesto a las ventas -->
         <!-- IVA 21% -->
         <record id="vat_21_ventas" model="account.tax.template">
+            <field name="sequence">0</field>
             <field name="name">IVA Ventas 21%</field>
             <field name="description">IVA Ventas 21%</field>
             <field eval="21" name="amount"/>
@@ -150,6 +151,7 @@
 
         <!-- IVA 21% -->
         <record id="vat_21_compras" model="account.tax.template">
+            <field name="sequence">0</field>
             <field name="name">IVA Compras 21%</field>
             <field name="description">IVA Compras 21%</field>
             <field eval="21" name="amount"/>

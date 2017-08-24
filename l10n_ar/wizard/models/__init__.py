@@ -17,5 +17,6 @@
 ##############################################################################
 
 import update_banks_wizard
+import wizard_multi_charts_account
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
