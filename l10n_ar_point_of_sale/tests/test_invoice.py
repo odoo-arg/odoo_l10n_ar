@@ -15,8 +15,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
 from openerp.exceptions import ValidationError
 from test_document_book import TestDocumentBook
+import simplejson
 
 
 class TestInvoice(TestDocumentBook):
@@ -42,7 +44,7 @@ class TestInvoice(TestDocumentBook):
 
         self.env['account.invoice.line'].create({
             'name': 'Producto',
-            'account_id': account.id,
+            'account_id': self.env.ref('l10n_ar.1_bienes_de_cambio').id,
             'quantity': 1,
             'price_unit': 500,
             'invoice_id': self.invoice.id,
@@ -87,6 +89,64 @@ class TestInvoice(TestDocumentBook):
         self.onchange_partner_out_invoice()
         self.onchange_partner_in_invoice()
         self.onchange_no_partner()
+
+    def test_outsanding_widget_info_credit_note_customer(self):
+        """ Probamos que la info del widget este bien """
+
+        # Validamos la factura
+        self.invoice.onchange_partner_id()
+        self.invoice.invoice_line_ids[0]._onchange_product_id()
+        self.invoice.invoice_line_ids[0].price_unit = 500
+        self.invoice._onchange_invoice_line_ids()
+        self.invoice.action_invoice_open()
+
+        # Creamos una nota de credito
+        self.document_book_proxy.create({
+            'name': 12,
+            'pos_ar_id': self.pos.id,
+            'category': 'invoice',
+            'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
+            'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_refund').id,
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
+        })
+        refund = self.invoice.refund()
+        refund.action_invoice_open()
+
+        # Validamos la informacion
+        outstanding_credits = simplejson.loads(self.invoice.outstanding_credits_debits_widget)
+        contents = outstanding_credits.get('content')
+        assert contents[0].get('journal_name') == 'NCC '+refund.name[-8:]
+
+    def test_outsanding_widget_info_credit_note_supplier(self):
+        """ Probamos que la info del widget este bien """
+
+        # Creamos una nota de credito y la validamos
+        refund = self.invoice.copy()
+        refund.write({
+            'type': 'in_refund',
+            'name': '1-1'
+        })
+        refund.onchange_partner_id()
+        refund.invoice_line_ids[0]._onchange_product_id()
+        refund.invoice_line_ids[0].price_unit = 500
+        refund._onchange_invoice_line_ids()
+        refund.action_invoice_open()
+
+        # Validamos la factura
+        self.invoice.write({
+            'type': 'in_invoice',
+            'name': '1-2'
+        })
+        self.invoice.onchange_partner_id()
+        self.invoice.invoice_line_ids[0]._onchange_product_id()
+        self.invoice.invoice_line_ids[0].price_unit = 500
+        self.invoice._onchange_invoice_line_ids()
+        self.invoice.action_invoice_open()
+
+        # Validamos la informacion
+        outstanding_credits = simplejson.loads(self.invoice.outstanding_credits_debits_widget)
+        contents = outstanding_credits.get('content')
+        assert contents[0].get('journal_name') == 'NCP '+refund.name[-8:]
 
     def test_get_invoice_denomination(self):
         assert self.invoice.get_invoice_denomination() == self.env.ref('l10n_ar_afip_tables.account_denomination_a')
@@ -184,6 +244,10 @@ class TestInvoice(TestDocumentBook):
         self.invoice.onchange_partner_id()
         self.invoice.action_invoice_open()
         assert self.invoice.full_name == 'FCC A '+self.invoice.name
+
+    def test_get_document_book_type(self):
+        self.invoice.onchange_partner_id()
+        assert self.invoice.document_book_type == 'preprint'
 
     def test_refund(self):
         values = self.invoice._prepare_refund(self.invoice)

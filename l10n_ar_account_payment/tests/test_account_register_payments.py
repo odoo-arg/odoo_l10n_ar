@@ -16,6 +16,7 @@
 #
 ##############################################################################
 
+import simplejson
 import set_up
 from openerp.exceptions import ValidationError
 
@@ -24,15 +25,15 @@ class TestAccountRegisterPayments(set_up.SetUp):
 
     def setUp(self):
         super(TestAccountRegisterPayments, self).setUp()
-        self.payment_wizard = self.env['account.register.payments'].\
+        self.payment_wizard = self.env['account.register.payments']. \
             with_context(active_ids=self.invoice.id, active_model='account.invoice').create({
-                'partner_id': self.partner.id,
-                'payment_type': 'inbound',
-                'partner_type': 'customer',
-                'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
-                'amount': 500,
-                'payment_type_line_ids': [(6, 0, [self.payment_line.id])]
-            })
+            'partner_id': self.partner.id,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'amount': 500,
+            'payment_type_line_ids': [(6, 0, [self.payment_line.id])]
+        })
 
     def test_old_payment_from_wizard(self):
         with self.assertRaises(ValidationError):
@@ -51,3 +52,35 @@ class TestAccountRegisterPayments(set_up.SetUp):
         with self.assertRaises(ValidationError):
             self.payment_wizard.create_payment_l10n_ar()
 
+    def test_invoice_outsanding_widget_info_payment_inbound(self):
+        self.customer_payment.pos_ar_id = self.pos_inbound
+        self.customer_payment.post_l10n_ar()
+        outstanding_credits = simplejson.loads(self.invoice.outstanding_credits_debits_widget)
+        contents = outstanding_credits.get('content')
+        assert contents[0].get('journal_name') == 'REC '+self.customer_payment.name[-8:]
+
+    def test_invoice_outsanding_widget_info_payment_outbound(self):
+
+        # Cambiamos la factura del setUp a proveedor
+        self.invoice.journal_id.update_posted = True
+        self.invoice.action_invoice_cancel()
+        self.invoice.write({
+            'type': 'in_invoice',
+            'state': 'draft'
+        })
+        self.invoice.onchange_partner_id()
+        self.invoice._onchange_partner_id()
+        self.invoice.action_invoice_open()
+
+        # Validamos el pago a proveedor
+        self.supplier_payment.pos_ar_id = self.supplier_payment.get_pos(self.supplier_payment.payment_type)
+        self.payment_line.payment_id = self.supplier_payment.id
+        self.supplier_payment.post_l10n_ar()
+
+        # Validamos la informacion del widget
+        self.invoice._get_outstanding_info_JSON()
+        outstanding_credits = simplejson.loads(self.invoice.outstanding_credits_debits_widget)
+        contents = outstanding_credits.get('content')
+        assert contents[0].get('journal_name') == 'OP ' + self.supplier_payment.name[-8:]
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

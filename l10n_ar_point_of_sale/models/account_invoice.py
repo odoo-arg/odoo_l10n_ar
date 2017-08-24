@@ -16,6 +16,8 @@
 #
 ##############################################################################
 
+import json
+import simplejson
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 import re
@@ -282,5 +284,24 @@ class AccountInvoice(models.Model):
                 inv.document_book_type = self.get_document_book().book_type_id.type
 
     full_name = fields.Char(compute='get_full_name', string="Numero")
+
+    @api.one
+    def _get_outstanding_info_JSON(self):
+        """
+        Por default trae el nombre del diario en los creditos pendientes de la factura, la idea es que
+        muestre el tipo y numero de documento, por ejemplo, FCC A 0001-000000001 en lugar de INV/XXXX/XXXX
+        """
+        super(AccountInvoice, self)._get_outstanding_info_JSON()
+        outstanding_credits = simplejson.loads(self.outstanding_credits_debits_widget)
+        if outstanding_credits:
+            contents = outstanding_credits.get('content')
+            for content in contents:
+                line = self.env['account.move.line'].browse(content.get('id'))
+                if line and (line.payment_id or line.invoice_id):
+                    invoice_name = line.invoice_id.full_name[:4] + line.invoice_id.full_name[-8:] \
+                        if line.invoice_id else None
+                    payment_name = line.name[:3].split(" ")[0] + ' ' + line.name[-8:] if line.payment_id else None
+                    content['journal_name'] = invoice_name or payment_name or line.name
+            self.outstanding_credits_debits_widget = json.dumps(outstanding_credits)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
