@@ -84,6 +84,13 @@ class AccountCheckbook(models.Model):
 
     active = fields.Boolean(string='Activo', default=True, track_visibility='onchange')
 
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Moneda',
+        related='journal_id.currency_id',
+        readonly=True
+    )
+
     @api.constrains('number_from', 'number_to')
     def constraint_numbers(self, max_checks=100):
         for checkbook in self:
@@ -128,6 +135,7 @@ class AccountCheckbook(models.Model):
                     'name': str(check_number),
                     'bank_id': bank_id,
                     'payment_type': checkbook.payment_type,
+                    'currency_id': checkbook.currency_id.id or self.env.user.company_id.currency_id.id,
                 })
 
     def _validate_checkbook_fields(self):

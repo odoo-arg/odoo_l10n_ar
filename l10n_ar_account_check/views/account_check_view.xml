@@ -122,6 +122,74 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="account_third_check_kanban">
+            <field name="name">Account third check kanban</field>
+            <field name="model">account.third.check</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="issue_date"/>
+                    <field name="payment_date"/>
+                    <field name="bank_id"/>
+                    <field name="payment_type"/>
+                    <field name="currency_id"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <strong><span><t t-esc="record.name.value"/></span></strong>
+                                    </div>
+                                    <div class="col-xs-6 pull-right text-right">
+                                        <strong><field name="amount" widget="monetary"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 text-muted">
+                                        <span><t t-esc="record.bank_id.value"/> <t t-esc="record.payment_type.value"/></span>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <span class="pull-right text-right">
+                                            <field
+                                                name="state"
+                                                widget="kanban_label_selection"
+                                                options="{'classes':
+                                                    {
+                                                        'draft': 'info',
+                                                        'canceled': 'danger',
+                                                        'handed': 'success',
+                                                        'deposited': 'success'
+                                                    }
+                                                }"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_third_check_calendar">
+            <field name="name">Account third check calendar</field>
+            <field name="model">account.third.check</field>
+            <field name="arch" type="xml">
+                <calendar
+                    string="Cheques"
+                    color="bank_id"
+                    date_start="payment_date"
+                    mode="month"
+                >
+                    <field name="name"/>
+                    <field name="bank_id"/>
+                    <field name="amount"/>
+                </calendar>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="account_own_check_tree">
             <field name="name">Account own check tree</field>
             <field name="model">account.own.check</field>
@@ -157,18 +225,87 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="account_own_check_calendar">
+            <field name="name">Account own check calendar</field>
+            <field name="model">account.own.check</field>
+            <field name="arch" type="xml">
+                <calendar
+                    string="Cheques"
+                    color="bank_id"
+                    date_start="payment_date"
+                    mode="month"
+                >
+                    <field name="name"/>
+                    <field name="checkbook_id"/>
+                    <field name="bank_id"/>
+                    <field name="amount"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_own_check_kanban">
+            <field name="name">Account own check kanban</field>
+            <field name="model">account.own.check</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="checkbook_id"/>
+                    <field name="name"/>
+                    <field name="payment_type"/>
+                    <field name="issue_date"/>
+                    <field name="payment_date"/>
+                    <field name="currency_id"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <strong><span><t t-esc="record.name.value"/></span></strong>
+                                    </div>
+                                    <div class="col-xs-6 pull-right text-right">
+                                        <strong><field name="amount" widget="monetary"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 text-muted">
+                                        <span><t t-esc="record.checkbook_id.value"/> <t t-esc="record.payment_type.value"/></span>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <span class="pull-right text-right">
+                                            <field
+                                                name="state"
+                                                widget="kanban_label_selection"
+                                                options="{'classes':
+                                                    {
+                                                        'draft': 'info',
+                                                        'canceled': 'muted',
+                                                        'rejected': 'danger',
+                                                        'handed': 'success'
+                                                    }
+                                                }"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
         <record id="action_third_checks_view" model="ir.actions.act_window">
             <field name="name">Cheques de terceros</field>
             <field name="res_model">account.third.check</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
         </record>
 
         <record id="action_own_checks_view" model="ir.actions.act_window">
             <field name="name">Cheques propios</field>
             <field name="res_model">account.own.check</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
             <field name="context">{'search_default_used_checks': 1}</field>
         </record>
 
