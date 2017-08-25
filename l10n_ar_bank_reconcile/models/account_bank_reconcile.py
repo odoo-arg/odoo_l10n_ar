@@ -77,11 +77,8 @@ class AccountBankReconcile(models.Model):
         return super(AccountBankReconcile, self).write(vals)
 
     def get_last_conciliation(self):
-        last_conciliation = False
-        if self.bank_reconcile_line_ids:
-            last_conciliation = self.bank_reconcile_line_ids.sorted(
-                key=lambda x: x.date_stop, reverse=True)[0]
-        return last_conciliation
+        return self.bank_reconcile_line_ids.sorted(key=lambda x: x.date_stop, reverse=True)[0] \
+            if self.bank_reconcile_line_ids else False
 
     _sql_constraints = [(
         'account_unique',

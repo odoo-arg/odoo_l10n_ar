@@ -52,12 +52,10 @@ class BankReconcileWizard(models.TransientModel):
         )
         if len(bank_reconciliation) < 1:
             raise ValidationError('No existe una conciliacion para la cuenta los movimientos seleccionados.')
-        current_balance = 0
         last_balance = 0
         if bank_reconciliation:
             # Suma del balance actual
-            for move_line in move_lines:
-                current_balance += move_line.debit - move_line.credit
+            current_balance = sum(move_lines.debit - move_line.credit for move_line in move_lines)
             # Chequeo el rango de fechas
             self._check_date(self.date_start, self.date_stop, bank_reconciliation)
             flag_last = False

@@ -46,6 +46,7 @@ class AccountReconcileMoveLine(models.Model):
     )
     currency_id = fields.Many2one(
         comodel_name='res.currency',
+        string='Moneda',
         related='move_line_id.currency_id',
     )
     debit_move_line = fields.Monetary(
