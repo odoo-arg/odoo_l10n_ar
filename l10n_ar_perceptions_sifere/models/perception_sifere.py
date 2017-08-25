@@ -57,7 +57,7 @@ class PerceptionSifere(models.Model):
         line = lines.create_line()
         line.jurisdiccion = code
         line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-' \
-                    + p.invoice_id.partner_id.vat[-1:] if p.invoice_id.partner_id.vat else "00-00000000-0"
+                    + p.invoice_id.partner_id.vat[-1:]
         line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = p.invoice_id.name[0:4]
         line.numeroComprobante = p.invoice_id.name[5:]
@@ -83,7 +83,7 @@ class PerceptionSifere(models.Model):
         for p in perceptions:
             code = self.get_code(p)
 
-            if not p.invoice_id.partner_id.vat and p.invoice_id.partner_id.fiscal_position_id.vat_required:
+            if not p.invoice_id.partner_id.vat:
                 missing_vats.add(p.invoice_id.name)
             elif len(p.invoice_id.partner_id.vat) < 11:
                 invalid_vats.add(p.invoice_id.name)
