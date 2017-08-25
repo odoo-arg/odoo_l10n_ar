@@ -46,7 +46,8 @@ install:
   - git clone --depth=1 https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
-  - rm -r ${HOME}/odoo-10.0/addons/l10n_ar*
+  - ls /home/travis/odoo-10.0/addons/ | grep l10n_ar
+  - rm -r /home/travis/odoo-10.0/addons/l10n_ar*
 
 script:
   - travis_run_tests
