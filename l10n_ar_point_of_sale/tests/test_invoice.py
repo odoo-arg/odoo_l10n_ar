@@ -90,7 +90,7 @@ class TestInvoice(TestDocumentBook):
         self.onchange_partner_in_invoice()
         self.onchange_no_partner()
 
-    def test_outsanding_widget_info_credit_note_customer(self):
+    def test_outstanding_widget_info_credit_note_customer(self):
         """ Probamos que la info del widget este bien """
 
         # Validamos la factura
@@ -117,7 +117,7 @@ class TestInvoice(TestDocumentBook):
         contents = outstanding_credits.get('content')
         assert contents[0].get('journal_name') == 'NCC '+refund.name[-8:]
 
-    def test_outsanding_widget_info_credit_note_supplier(self):
+    def test_outstanding_widget_info_credit_note_supplier(self):
         """ Probamos que la info del widget este bien """
 
         # Creamos una nota de credito y la validamos
