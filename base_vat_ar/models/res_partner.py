@@ -18,7 +18,8 @@
 
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
-from odoo_openpyme_api.padron import contributor
+from padron import contributor
+
 
 
 class ResPartner(models.Model):
