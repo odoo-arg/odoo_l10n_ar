@@ -31,6 +31,7 @@ class AccountBankReconcile(models.Model):
         comodel_name='account.account',
         string='Cuenta',
         required=True,
+        domain=[('user_type_id.type', '=', 'liquidity')]
     )
     bank_reconcile_line_ids = fields.One2many(
         comodel_name='account.bank.reconcile.line',
@@ -45,7 +46,7 @@ class AccountBankReconcile(models.Model):
     @api.multi
     def open_unreconciled_move_line(self):
         return {
-            'name': 'Conciliaciones bancarias sin conciliar',
+            'name': 'Movimientos sin conciliar',
             'views': [[False, "tree"]],
             'domain': [('account_id', '=', self.account_id.id), ('bank_reconciled', '=', False)],
             'res_model': 'account.move.line',

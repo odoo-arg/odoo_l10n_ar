@@ -60,7 +60,7 @@ class AccountBankReconcileLine(models.Model):
 
     def unlink(self):
         if self.bank_reconcile_id.get_last_conciliation() != self:
-            raise ValidationError('No se puede borrar una conciliacion que no es la mas actual.')
+            raise ValidationError('Solo se puede borrar la ultima conciliacion.')
         bank_reconcile = self.bank_reconcile_id
         self.reconcile_move_line_ids.unlink()
         res = super(AccountBankReconcileLine, self).unlink()

@@ -65,14 +65,9 @@ class AccountReconcileMoveLine(models.Model):
 
     @api.multi
     def unlink(self):
-        for each in self:
-            query = "UPDATE {1} set {2} = {3} WHERE id = {0};"
-            each.env.cr.execute(query.format(
-                each.move_line_id.id,
-                "account_move_line",
-                "bank_reconciled",
-                False
-            ))
-            super(AccountReconcileMoveLine, each).unlink()
+        self.move_line_id.write({
+            'bank_reconciled': False
+        })
+        super(AccountReconcileMoveLine, self).unlink()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

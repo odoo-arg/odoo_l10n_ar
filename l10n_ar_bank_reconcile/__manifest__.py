@@ -41,7 +41,7 @@
         'views/account_bank_reconcile.xml',
         'views/account_bank_reconcile_line.xml',
         'views/account_move_line.xml',
-        'views/account_reconcile_remove_line.xml',
+        'views/account_reconcile_move_line.xml',
         'wizard/views/bank_reconcile_wizard.xml',
         'security/ir.model.access.csv',
 

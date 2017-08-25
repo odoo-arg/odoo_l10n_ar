@@ -30,7 +30,7 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def write(self, vals):
-        if not vals.get('bank_reconciled'):
+        if vals.get('debit') or vals.get('credit') or vals.get('account_id'):
             raise ValidationError('No se puede modificar un movimiento que'
                                   ' ya ha sido conciliado bancariamente.')
         super(AccountMoveLine, self).write(vals)
