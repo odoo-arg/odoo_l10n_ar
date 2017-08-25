@@ -33,6 +33,6 @@ class AccountMoveLine(models.Model):
         if vals.get('debit') or vals.get('credit') or vals.get('account_id'):
             raise ValidationError('No se puede modificar un movimiento que'
                                   ' ya ha sido conciliado bancariamente.')
-        super(AccountMoveLine, self).write(vals)
+        return super(AccountMoveLine, self).write(vals)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

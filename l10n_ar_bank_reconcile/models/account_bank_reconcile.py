@@ -69,6 +69,13 @@ class AccountBankReconcile(models.Model):
                     'elimine las conciliaciones relacionadas.')
         return super(AccountBankReconcile, self).unlink()
 
+    @api.multi
+    def write(self, vals):
+        if vals.get('account_id') and len(self.bank_reconcile_line_ids) > 0:
+            raise ValidationError('No se puede modificar una cuenta de una conciliacion'
+                                  'con movimientos conciliados.')
+        return super(AccountBankReconcile, self).write(vals)
+
     def get_last_conciliation(self):
         last_conciliation = False
         if self.bank_reconcile_line_ids:
