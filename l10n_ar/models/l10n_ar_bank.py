@@ -18,7 +18,7 @@
 
 from openerp import models, api
 from openerp.exceptions import Warning
-from odoo_openpyme_api.padron import banks
+from padron import banks
 
 
 class Bank(models.Model):
