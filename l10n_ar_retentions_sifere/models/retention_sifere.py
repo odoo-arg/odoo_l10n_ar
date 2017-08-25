@@ -34,7 +34,7 @@ class RetentionSifere(models.Model):
         line = lines.create_line()
         line.jurisdiccion = code
         line.cuit = r.payment_id.partner_id.vat[0:2] + '-' + r.payment_id.partner_id.vat[2:10] + '-' \
-                    + r.payment_id.partner_id.vat[-1:] if r.payment_id.partner_id.vat else "00-00000000-0"
+                    + r.payment_id.partner_id.vat[-1:]
         line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = r.payment_id.pos_ar_id.name
         line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
@@ -64,7 +64,7 @@ class RetentionSifere(models.Model):
         for r in retentions:
             code = self.get_code(r)
 
-            if not r.payment_id.partner_id.vat and r.payment_id.partner_id.fiscal_position_id.vat_required:
+            if not r.payment_id.partner_id.vat:
                 missing_vats.add(r.payment_id.name)
             elif len(r.payment_id.partner_id.vat) < 11:
                 invalid_vats.add(r.payment_id.name)
