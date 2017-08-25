@@ -42,6 +42,7 @@ mapped with models using l10n_ar_codes application
         'views/afip_tables_configuration.xml',
         'views/account_denomination_view.xml',
         'data/res_country_state.xml',
+        'data/res_currency.xml',
         'data/account_denomination.xml',
         'data/afip_voucher_type.xml',
         'data/partner_document_type.xml',
