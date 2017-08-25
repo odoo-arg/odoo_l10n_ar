@@ -1,0 +1,54 @@
+language: python
+
+sudo: false
+
+cache:
+
+  apt: true
+
+  directories:
+    - $HOME/.cache/pip
+
+python:
+  - "2.7"
+
+addons:
+
+  apt:
+
+    packages:
+      # provides unbuffer utility
+      - expect-dev
+      # because pip installation is slow
+      - python-lxml
+      - python-simplejson
+      - python-serial
+      - python-yaml
+      - python-dev
+      - swig
+      - libffi-dev
+      - libssl-dev
+      - python-m2crypto
+      - python-httplib2
+      - python-pip
+
+env:
+
+  global:
+  - VERSION="10.0" LINT_CHECK="0"
+
+virtualenv:
+
+  system_site_packages: true
+
+install:
+  - pip install l10n_ar_api
+  - git clone --depth=1 https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
+  - travis_install_nightly
+
+script:
+  - travis_run_tests
+
+after_success:
+  coveralls
