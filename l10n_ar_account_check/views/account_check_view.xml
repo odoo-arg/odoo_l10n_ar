@@ -146,6 +146,17 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="account_own_check_search">
+            <field name="name">Account own check search</field>
+            <field name="model">account.own.check</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Utilizados" name="used_checks" domain="[('state', '!=', 'draft')]"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+
         <record id="action_third_checks_view" model="ir.actions.act_window">
             <field name="name">Cheques de terceros</field>
             <field name="res_model">account.third.check</field>
@@ -158,6 +169,7 @@
             <field name="res_model">account.own.check</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_used_checks': 1}</field>
         </record>
 
     </data>

@@ -61,7 +61,7 @@
                             <field name="account_own_check_line_ids" nolabel="1"
                                     attrs="{'readonly': [('state', '!=', 'draft')]}">
                                 <tree editable="bottom">
-                                    <field name="checkbook_id" domain="[('account_draft_own_check_ids', '=', [])]"/>
+                                    <field name="checkbook_id" domain="[('account_own_check_ids.state', '=', 'draft')]"/>
                                     <field name="own_check_id"
                                            domain="[('state', '=', 'draft'), ('destination_payment_id', '=', False)]"/>
                                     <field name="issue_date"/>
@@ -152,7 +152,7 @@
                         <group string="Cheques propios" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
                             <field name="account_own_check_line_ids" nolabel="1">
                                 <tree editable="bottom">
-                                    <field name="checkbook_id" domain="[('account_draft_own_check_ids', '=', [])]"/>
+                                    <field name="checkbook_id" domain="[('account_own_check_ids.state', '=', 'draft')]"/>
                                     <field name="own_check_id"
                                            domain="[('state', '=', 'draft'), ('destination_payment_id', '=', False)]"/>
                                     <field name="issue_date"/>
