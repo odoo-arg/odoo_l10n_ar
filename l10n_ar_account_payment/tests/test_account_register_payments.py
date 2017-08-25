@@ -52,14 +52,14 @@ class TestAccountRegisterPayments(set_up.SetUp):
         with self.assertRaises(ValidationError):
             self.payment_wizard.create_payment_l10n_ar()
 
-    def test_invoice_outsanding_widget_info_payment_inbound(self):
+    def test_invoice_outstanding_widget_info_payment_inbound(self):
         self.customer_payment.pos_ar_id = self.pos_inbound
         self.customer_payment.post_l10n_ar()
         outstanding_credits = simplejson.loads(self.invoice.outstanding_credits_debits_widget)
         contents = outstanding_credits.get('content')
         assert contents[0].get('journal_name') == 'REC '+self.customer_payment.name[-8:]
 
-    def test_invoice_outsanding_widget_info_payment_outbound(self):
+    def test_invoice_outstanding_widget_info_payment_outbound(self):
 
         # Cambiamos la factura del setUp a proveedor
         self.invoice.journal_id.update_posted = True
