@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+        
+        <record id="tax_group_vat" model="account.tax.group">
+            <field name="name">Iva</field>
+        </record>
+        <record id="tax_group_internal" model="account.tax.group">
+            <field name="name">Impuestos internos</field>
+        </record>
+
+        <!-- Impuesto a las ventas -->
+        <!-- IVA 21% -->
+        <record id="vat_21_ventas" model="account.tax.template">
+            <field name="sequence">0</field>
+            <field name="name">IVA Ventas 21%</field>
+            <field name="description">IVA Ventas 21%</field>
+            <field eval="21" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 10,5% -->
+        <record id="vat_105_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas 10,5%</field>
+            <field name="description">IVA Ventas 10,5%</field>
+            <field eval="10.5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 27% -->
+        <record id="vat_27_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas 27%</field>
+            <field name="description">IVA Ventas 27%</field>
+            <field eval="27" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 2,5% -->
+        <record id="vat_25_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas 2,5%</field>
+            <field name="description">IVA Ventas 2,5%</field>
+            <field eval="2.5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 5% -->
+        <record id="vat_5_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas 5%</field>
+            <field name="description">IVA Ventas 5%</field>
+            <field eval="5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                        
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 0% -->
+        <record id="vat_0_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas 0%</field>
+            <field name="description">IVA Ventas 0%</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA EXENTO -->
+        <record id="vat_exento_ventas" model="account.tax.template">
+            <field name="name">IVA Ventas Exento</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">IVA Ventas Exento</field>
+            <field name="amount_type">fixed</field>            
+            <field name="is_exempt">True</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <!-- NO GRAVADO -->
+        <record id="vat_no_gravado_ventas" model="account.tax.template">
+            <field name="name">Ventas No gravado</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">Ventas No gravado</field>
+            <field name="amount_type">fixed</field>
+            <field name="account_id" ref="iva_debito_fiscal"/>
+            <field name="refund_account_id" ref="iva_credito_fiscal"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="account.tax_group_taxes"/>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <!-- Fin Impuesto a las ventas -->
+
+
+        <!-- Impuesto a las compras -->
+        <!-- IVA 27% -->
+        <record id="vat_27_compras" model="account.tax.template">
+            <field name="name">IVA Compras 27%</field>
+            <field name="description">IVA Compras 27%</field>
+            <field eval="27" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 21% -->
+        <record id="vat_21_compras" model="account.tax.template">
+            <field name="sequence">0</field>
+            <field name="name">IVA Compras 21%</field>
+            <field name="description">IVA Compras 21%</field>
+            <field eval="21" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                        
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 10,5% -->
+        <record id="vat_105_compras" model="account.tax.template">
+            <field name="name">IVA Compras 10,5%</field>
+            <field name="description">IVA Compras 10,5%</field>
+            <field eval="10.5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                        
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 2,5% -->
+        <record id="vat_25_compras" model="account.tax.template">
+            <field name="name">IVA Compras 2,5%</field>
+            <field name="description">IVA Compras 2,5%</field>
+            <field eval="2.5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                                    
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 5% -->
+        <record id="vat_5_compras" model="account.tax.template">
+            <field name="name">IVA Compras 5%</field>
+            <field name="description">IVA Compras 5%</field>
+            <field eval="5" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                        
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- IVA 0% -->
+        <record id="vat_0_compras" model="account.tax.template">
+            <field name="name">IVA Compras 0%</field>
+            <field name="description">IVA Compras 0%</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>                        
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+                
+        <!-- IVA EXENTO -->
+        <record id="vat_exento_compras" model="account.tax.template">
+            <field name="name">IVA Compras Exento</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">IVA Compras Exento</field>
+            <field name="is_exempt">True</field>
+            <field name="amount_type">fixed</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_vat"/>            
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+                
+        <!-- IVA NO GRAVADO -->
+        <record id="vat_no_gravado_compras" model="account.tax.template">
+            <field name="name">Compras No gravado</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">Compras No gravado</field>
+            <field name="amount_type">fixed</field>
+            <field name="account_id" ref="iva_credito_fiscal"/>
+            <field name="refund_account_id" ref="iva_debito_fiscal"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="account.tax_group_taxes"/>                                    
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+        
+        <!-- Fin Impuesto a las compras -->
+
+        <!-- Otros impuestos -->
+        <!-- Impuestos internos -->
+        <record id="vat_impuestos_internos" model="account.tax.template">
+            <field name="name">Impuestos internos</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">Impuestos internos</field>
+            <field name="amount_type">fixed</field>
+            <field name="tax_group_id" ref="account.tax_group_taxes"/>                                    
+            <field name="account_id" ref="impuestos_internos"/>
+            <field name="refund_account_id" ref="impuestos_internos"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+        <!-- ENARD -->
+        <record id="vat_enard" model="account.tax.template">
+            <field name="name">Enard</field>
+            <field eval="0" name="amount"/>            
+            <field name="description">Enard</field>
+            <field name="amount_type">fixed</field>
+            <field name="tax_group_id" ref="account.tax_group_taxes"/>                                    
+            <field name="account_id" ref="impuestos_enard"/>
+            <field name="refund_account_id" ref="impuestos_enard"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

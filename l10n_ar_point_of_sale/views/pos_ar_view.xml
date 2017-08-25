@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <!-- VISTAS -->
+
+        <record model="ir.ui.view" id="pos_ar_form">
+            <field name="name">Punto de Venta</field>
+            <field name="model">pos.ar</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{'terminology':'archive'}"/>
+                            </button>
+                        </div>
+                        <group string="Detalles">
+                            <group>
+                                <field name="name" string="Numero"/>
+                            </group>
+                            <group>
+                                <field name="description"/>
+                            </group>
+                            <field name="document_book_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category"/>
+                                    <field name="document_type_id"
+                                           widget="selection"
+                                           domain="[('category', '=', category)]"
+                                           attrs="{'required': [('category', 'in', ['invoice', 'payment'])],
+                                                   'invisible': [('category', 'not in', ['invoice', 'payment'])]}"
+                                    />
+                                    <field name="book_type_id"
+                                           domain="[('category', '=', category)]"
+                                           widget="selection"
+                                    />
+                                    <field
+                                        name="denomination_id"
+                                        widget="selection"
+                                        attrs="{'required': [('category', '=', 'invoice')],
+                                                'invisible': [('category', '!=', 'invoice')]}"
+                                    />
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="pos_ar_tree">
+            <field name="name">Puntos de Venta</field>
+            <field name="model">pos.ar</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+         <!-- ACCION -->
+
+        <record id="action_pos_ar_view" model="ir.actions.act_window">
+            <field name="name">Puntos de venta</field>
+            <field name="res_model">pos.ar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

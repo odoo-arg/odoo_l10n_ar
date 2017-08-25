@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data noupdate="1">
+
+        <record id='account_fiscal_position_ivari' model='account.fiscal.position'>
+            <field name='name'>IVA Responsable Inscripto</field>
+            <field name='auto_apply'>True</field>
+        </record>	
+    	
+        <record id='account_fiscal_position_ivarni' model='account.fiscal.position'>
+            <field name='name'>IVA Responsable no Inscripto</field>
+        </record>   
+        
+        <record id='account_fiscal_position_ivanor' model='account.fiscal.position'>
+            <field name='name'>IVA no Responsable</field>
+        </record>   
+        
+        <record id='account_fiscal_position_ex' model='account.fiscal.position'>
+            <field name='name'>IVA Exento</field>
+        </record>   
+                
+        <record id='account_fiscal_position_cf' model='account.fiscal.position'>
+            <field name='name'>Consumidor Final</field>
+        </record>   
+        
+        <record id='account_fiscal_position_mon' model='account.fiscal.position'>
+            <field name='name'>Responsable Monotributo</field>
+        </record>   
+        
+        <record id='account_fiscal_position_no_categ' model='account.fiscal.position'>
+            <field name='name'>Sujeto no Categorizado</field>
+        </record>   
+        
+        <record id='account_fiscal_position_prov_ext' model='account.fiscal.position'>
+            <field name='name'>Proveedor del Exterior</field>
+        </record>   
+        
+        <record id='account_fiscal_position_cliente_ext' model='account.fiscal.position'>
+            <field name='name'>Cliente del Exterior</field>
+        </record>   
+        
+        <record id='account_fiscal_position_ivalib' model='account.fiscal.position'>
+            <field name='name'>IVA Liberado</field>
+        </record>   
+        
+        <record id='account_fiscal_position_ivari_perception' model='account.fiscal.position'>
+            <field name='name'>IVA Responsable Inscripto – Agente de Percepción</field>
+        </record>   
+        
+        <record id='account_fiscal_position_peq_contr' model='account.fiscal.position'>
+            <field name='name'>Pequeño Contribuyente Eventual</field>
+        </record>   
+        
+        <record id='account_fiscal_position_mono_social' model='account.fiscal.position'>
+            <field name='name'>Monotributista Social</field>
+        </record>   
+        
+        <record id='account_fiscal_position_peq_contr_social' model='account.fiscal.position'>
+            <field name='name'>Pequeño Contribuyente Eventual Social</field>
+        </record>   
+        
+        <!-- CREACION DE LA RELACION CON CODES_MODELS -->
+
+        <record id='codes_models_afip_fiscal_position_1' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ivari'/>
+            <field name='code'>1</field>
+        </record>
+
+        <record id='codes_models_afip_fiscal_position_2' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ivarni'/>
+            <field name='code'>2</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_3' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ivanor'/>
+            <field name='code'>3</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_4' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ex'/>
+            <field name='code'>4</field>
+        </record>
+
+        <record id='codes_models_afip_fiscal_position_5' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_cf'/>
+            <field name='code'>5</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_6' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_mon'/>
+            <field name='code'>6</field>
+        </record>
+        
+       <record id='codes_models_afip_fiscal_position_7' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_no_categ'/>
+            <field name='code'>7</field>
+        </record>
+
+        <record id='codes_models_afip_fiscal_position_8' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_prov_ext'/>
+            <field name='code'>8</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_9' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_cliente_ext'/>
+            <field name='code'>9</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_10' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ivalib'/>
+            <field name='code'>10</field>
+        </record>
+
+        <record id='codes_models_afip_fiscal_position_11' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_ivari_perception'/>
+            <field name='code'>11</field>
+        </record>
+        
+        <record id='codes_models_afip_fiscal_position_12' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_peq_contr'/>
+            <field name='code'>12</field>
+        </record> 
+        
+        <record id='codes_models_afip_fiscal_position_13' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_mono_social'/>
+            <field name='code'>13</field>
+        </record> 
+        
+        <record id='codes_models_afip_fiscal_position_14' model='codes.models.relation'>
+            <field name='name'>Afip</field>
+            <field name='name_model'>account.fiscal.position</field>
+            <field name='id_model' ref='account_fiscal_position_peq_contr_social'/>
+            <field name='code'>14</field>
+        </record> 
+        
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

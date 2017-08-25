@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="register_payments_retentions_form">
+            <field name="name">Register payments retentions form</field>
+            <field name="model">account.register.payments</field>
+            <field name="inherit_id" ref="l10n_ar_account_payment.l10n_ar_account_register_payments_wizard_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Retenciones">
+                        <field name="retention_ids" widget="one2many">
+                            <tree editable="bottom" string="Retenciones">
+                                <field name="currency_id" invisible="1"/>
+                                <field name="retention_id"/>
+                                <field name="certificate_no"/>
+                                <field name="base"/>
+                                <field name="amount" sum='Total'/>
+                                <field name="name" invisible="1"/>
+                                <field name="jurisdiction" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

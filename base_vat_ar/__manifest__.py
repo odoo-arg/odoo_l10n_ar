@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Base vat ar',
+    'name': 'base_vat_ar',
 
     'version': '1.0',
 

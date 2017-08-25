@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <record id="tax_group_perception" model="account.tax.group">
+            <field name="name">Percepcion</field>
+        </record>
+
+        <!-- CUENTAS DE PRECEPCIONES ACTIVO -->
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_sufridas_iigg">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1142.01</field>
+            <field name="name">Percepciones Sufridas IIGG</field>
+        </record>
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_sufrida">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1143.01</field>
+            <field name="name">Percepciones IIBB PBA sufrida</field>
+        </record>
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_sufrida">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1143.02</field>
+            <field name="name">Percepciones IIBB CABA sufrida</field>
+        </record>
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_sufrida">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">1144.01</field>
+            <field name="name">Percepciones IVA sufrida</field>
+        </record>
+
+        <!-- CUENTAS DE PRECEPCIONES PASIVO -->
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_efectuada">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">2153.01</field>
+            <field name="name">Percepciones IIBB PBA efectuada</field>
+        </record>
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_efectuada">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">2153.02</field>
+            <field name="name">Percepciones IIBB CABA efectuada</field>
+        </record>
+
+        <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_efectuada">
+            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="reconcile" eval="True"/>
+            <field name="code">2154.01</field>
+            <field name="name">Percepciones IVA efectuada</field>
+        </record>
+
+        <!-- *** IMPUESTOS *** -->
+
+        <record id="tax_percepcion_ganancia_sufrida" model="account.tax">
+            <field name="name">Percepciones Ganancias Sufrida</field>
+            <field name="description">Percepciones Ganancias Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_sufridas_iigg"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_sufridas_iigg"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iva_sufrida" model="account.tax">
+            <field name="name">Percepciones IVA Sufrida</field>
+            <field name="description">Percepciones IVA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iva_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iva_sufrida"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iva_efectuada" model="account.tax">
+            <field name="name">Percepciones IVA Efectuada</field>
+            <field name="description">Percepciones IVA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iva_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iva_efectuada"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iibb_caba_sufrida" model="account.tax">
+            <field name="name">Percepciones IIBB CABA Sufrida</field>
+            <field name="description">Percepciones IIBB CABA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_sufrida"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iibb_caba_efectuada" model="account.tax">
+            <field name="name">Percepciones IIBB CABA Efectuada</field>
+            <field name="description">Percepciones IIBB CABA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_caba_efectuada"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iibb_pba_sufrida" model="account.tax">
+            <field name="name">Percepciones IIBB PBA Sufrida</field>
+            <field name="description">Percepciones IIBB PBA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_sufrida"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_sufrida"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <record id="tax_percepcion_iibb_pba_efectuada" model="account.tax">
+            <field name="name">Percepciones IIBB PBA Efectuada</field>
+            <field name="description">Percepciones IIBB PBA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_efectuada"/>
+            <field name="refund_account_id" ref="l10n_ar_perceptions.percepciones_iibb_pba_efectuada"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_perception"/>
+        </record>
+
+        <!-- Configuracion de Percepciones (perception.perception) -->
+
+        <record id="perception_perception_iva_efectuada" model="perception.perception">
+            <field name="name">Percepcion IVA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">vat</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_iva_efectuada" />
+        </record>
+
+        <record id="perception_perception_iva_sufrida" model="perception.perception">
+            <field name="name">Percepcion IVA Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">vat</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_iva_sufrida"/>
+        </record>
+
+        <record id="perception_perception_iibb_caba_efectuada" model="perception.perception">
+            <field name="name">Percepcion IIBB CABA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_c"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_caba_efectuada"/>
+        </record>
+
+        <record id="perception_perception_iibb_caba_sufrida" model="perception.perception">
+            <field name="name">Percepcion IIBB CABA Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_c"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
+        </record>
+
+        <record id="perception_perception_iibb_pba_efectuada" model="perception.perception">
+            <field name="name">Percepcion IIBB PBA Efectuada</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_b"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_pba_efectuada"/>
+        </record>
+
+        <record id="perception_perception_iibb_pba_sufrida" model="perception.perception">
+            <field name="name">Percepcion IIBB PBA Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">gross_income</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_c"/>
+            <field name="tax_id" ref="tax_percepcion_iibb_caba_sufrida"/>
+        </record>
+
+        <record id="perception_perception_ganancias_sufrida" model="perception.perception">
+            <field name="name">Percepcion Ganancias Sufrida</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="type">profit</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_percepcion_ganancia_sufrida"/>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

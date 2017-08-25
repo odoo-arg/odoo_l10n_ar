@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_account_payment">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                    <div class="page">
+
+                        <h3 class="col-xs-offset-3">
+                            <span t-if="o.payment_type == 'inbound'">RECIBO N°</span>
+                            <span t-if="o.payment_type == 'outbound'">ORDEN DE PAGO N°</span>
+                            <span t-field="o.name"/>
+                        </h3>
+
+                        <div class="row">
+
+                            <div class="col-xs-5">
+                                <address t-field="o.partner_id" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+                                <span t-field="o.partner_id.vat"/>
+                            </div>
+
+                            <div class="col-xs-2 col-xs-offset-5" t-if="o.payment_date">
+                                <strong><u>Fecha</u></strong>
+                                <p t-field="o.payment_date"
+                                   t-options='{"format": "dd/MM/yyyy"}'/>
+                            </div>
+
+                        </div>
+
+                        <t t-if = "o.has_invoices">
+                            <!-- Tabla de documentos imputados -->
+                            <br></br>
+                            <h4>
+                                <div class="text-center">
+                                    <strong>DOCUMENTOS IMPUTADOS</strong>
+                                </div>
+                            </h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Documento imputado</th>
+                                        <th>Fecha</th>
+                                        <th class="text-right">Importe original</th>
+                                        <th class="text-right">Restante</th>
+                                        <th class="text-right">Asignacion</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="invoice_tbody">
+                                    <!-- CLIENTE -->
+                                    <t t-if="o.payment_type == 'inbound'">
+                                        <tr t-foreach="o._get_partial_ids()" t-as="i">
+                                            <t t-if="i.mapped('debit_move_id').mapped('invoice_id').amount_total > 0">
+                                                <td>
+                                                    <span t-esc="i.mapped('debit_move_id').mapped('invoice_id').name_get()[0][1]"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="datetime.datetime.strptime(i.mapped('debit_move_id').mapped('invoice_id').date_invoice,'%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.mapped('debit_move_id').mapped('invoice_id').amount_total"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.mapped('debit_move_id').mapped('invoice_id').residual"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.amount_currency or i.amount"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("debit_move_id").mapped("invoice_id").currency_id}'
+                                                    />
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <!--PROVEEDOR-->
+                                    <t t-if="o.payment_type == 'outbound'">
+                                        <tr t-foreach="o._get_partial_ids()" t-as="i">
+                                            <t t-if="i.mapped('credit_move_id').mapped('invoice_id').amount_total > 0">
+                                                <td>
+                                                    <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').name_get()[0][1]"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="datetime.datetime.strptime(i.mapped('credit_move_id').mapped('invoice_id').date_invoice,'%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').amount_total"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.mapped('credit_move_id').mapped('invoice_id').residual"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="i.amount_currency or i.amount"
+                                                          t-options='{"widget": "monetary", "display_currency": i.mapped("credit_move_id").mapped("invoice_id").currency_id}'
+                                                    />
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Detalles de formas de pago -->
+                        <t t-if= "sum(l.amount for l in o.payment_type_line_ids) > 0">
+                            <br></br>
+                            <h4>
+                                <div class="text-center">
+                                    <strong>DETALLES DE FORMA DE PAGO</strong>
+                                </div>
+                            </h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Modo de pago</th>
+                                        <th>Fecha</th>
+                                        <th class="text-right">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="invoice_tbody">
+                                    <tr t-foreach="o.payment_type_line_ids" t-as="l">
+                                        <t t-if="l.amount > 0">
+                                            <td>
+                                                <span t-field="l.account_payment_type_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.payment_date"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                       t-field="l.amount" />
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <t t-set="total_payment_method" t-value="sum(payment.amount for payment in o.payment_type_line_ids)"/>
+                                                <span t-esc="total_payment_method"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Cheques -->
+                        <t t-if= "o.account_third_check_ids or o.account_third_check_sent_ids or o.account_own_check_line_ids">
+                            <br></br>
+                            <h4>
+                                <div class="text-center">
+                                    <strong>DETALLE DE CHEQUES</strong>
+                                </div>
+                            </h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Nro. de cheque</th>
+                                        <th>Banco</th>
+                                        <th>Fecha de emision</th>
+                                        <th>Fecha de pago</th>
+                                        <th class="text-right">Importe</th>
+                                    </tr>
+                                </thead>
+                                <t t-if="o.account_third_check_ids">
+                                    <t t-set="total_check" t-value="0"/>
+                                    <tbody class="invoice_tbody">
+                                        <tr t-foreach="o.account_third_check_ids" t-as="l">
+                                            <td>
+                                                <span t-field="l.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.bank_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.issue_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="not l.payment_date">
+                                                    <span t-field="l.issue_date"/>
+                                                </t>
+                                                <span t-field="l.payment_date"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                       t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                                <t t-if="o.account_third_check_sent_ids">
+                                    <tbody class="invoice_tbody">
+                                        <tr t-foreach="o.account_third_check_sent_ids" t-as="l">
+                                            <td>
+                                                <span t-field="l.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.bank_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.issue_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="not l.payment_date">
+                                                    <span t-field="l.issue_date"/>
+                                                </t>
+                                                <span t-field="l.payment_date"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                       t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                                <t t-if="o.account_own_check_line_ids">
+                                    <tbody class="invoice_tbody">
+                                        <tr t-foreach="o.account_own_check_line_ids" t-as="l">
+                                            <td>
+                                                <span t-field="l.own_check_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.bank_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.issue_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="not l.payment_date">
+                                                    <span t-field="l.issue_date"/>
+                                                </t>
+                                                <span t-field="l.payment_date"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                       t-field="l.amount" />
+                                                <t t-set="total_check" t-value="total_check+l.amount"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </t>
+                            </table>
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-esc="total_check"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Retenciones -->
+                        <t t-if= "o.retention_ids">
+                            <br></br>
+                            <h4>
+                                <div class="text-center">
+                                    <strong>DETALLE DE RETENCIONES</strong>
+                                </div>
+                            </h4>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de retención</th>
+                                        <th>Fecha</th>
+                                        <th>Número de certificado</th>
+                                        <th class="text-right">Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="invoice_tbody">
+                                    <tr t-foreach="o.retention_ids" t-as="l">
+                                        <td>
+                                            <span t-field="l.retention_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.payment_date"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.certificate_no"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                   t-field="l.amount" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <t t-set="total_ret" t-value="sum(ret.amount for ret in o.retention_ids)"/>
+                                                <span t-esc="total_ret"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- TOTAL PAGO-->
+                        <br></br>
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr class="border-black">
+                                        <td><strong>Total pagado</strong></td>
+                                        <td class="text-right">
+                                            <span  t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                   t-field="o.amount" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <record id="codes_models_afip_res_currency_peso_argentino" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ARS"/>
+            <field name="code">PES</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.USD"/>
+            <field name="code">DOL</field>
+        </record>
+        <record id="codes_models_afip_res_currency_liras_italianas" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ITL"/>
+            <field name="code">004</field>
+        </record>
+        <record id="codes_models_afip_res_currency_francos_suizos" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.CHF"/>
+            <field name="code">009</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_mexicano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.MXN"/>
+            <field name="code">010</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_uruguayo" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.UYU"/>
+            <field name="code">011</field>
+        </record>
+        <record id="codes_models_afip_res_currency_real" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.BRL"/>
+            <field name="code">012</field>
+        </record>
+        <record id="codes_models_afip_res_currency_corona_danesa" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.DKK"/>
+            <field name="code">014</field>
+        </record>
+        <record id="codes_models_afip_res_currency_corona_noruega" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.NOK"/>
+            <field name="code">015</field>
+        </record>
+        <record id="codes_models_afip_res_currency_corona_sueca" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.SEK"/>
+            <field name="code">016</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_canadiense" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.CAD"/>
+            <field name="code">018</field>
+        </record>
+        <record id="codes_models_afip_res_currency_yens" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.JPY"/>
+            <field name="code">019</field>
+        </record>
+        <record id="codes_models_afip_res_currency_bolivar_venezolano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.VEF"/>
+            <field name="code">023</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_australiano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.AUD"/>
+            <field name="code">026</field>
+        </record>
+        <record id="codes_models_afip_res_currency_florin_antillas_holandesa" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ANG"/>
+            <field name="code">028</field>
+        </record>
+        <record id="codes_models_afip_res_currency_guarani" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.PYG"/>
+            <field name="code">029</field>
+        </record>
+        <record id="codes_models_afip_res_currency_shekel_israeli" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ILS"/>
+            <field name="code">030</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_boliviano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.BOB"/>
+            <field name="code">031</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_colombiano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.COP"/>
+            <field name="code">032</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_chileno" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.CLP"/>
+            <field name="code">033</field>
+        </record>
+        <record id="codes_models_afip_res_currency_rand_sudafricano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ZAR"/>
+            <field name="code">034</field>
+        </record>
+        <record id="codes_models_afip_res_currency_sol_peruano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.PEN"/>
+            <field name="code">035</field>
+        </record>
+        <record id="codes_models_afip_res_currency_sucre_ecuatoriano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.ECS"/>
+            <field name="code">036</field>
+        </record>
+        <record id="codes_models_afip_res_currency_lei_rumano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.RON"/>
+            <field name="code">040</field>
+        </record>
+        <record id="codes_models_afip_res_currency_peso_dominicano" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.DOP"/>
+            <field name="code">042</field>
+        </record>
+        <record id="codes_models_afip_res_currency_balboas_panamenas" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.PAB"/>
+            <field name="code">043</field>
+        </record>
+        <record id="codes_models_afip_res_currency_cordobas_nicaraguenses" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.NIO"/>
+            <field name="code">044</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dirham_marroqui" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.MAD"/>
+            <field name="code">045</field>
+        </record>
+        <record id="codes_models_afip_res_currency_libra_egipcia" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.EGP"/>
+            <field name="code">046</field>
+        </record>
+        <record id="codes_models_afip_res_currency_riyals_sauditas" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.SAR"/>
+            <field name="code">047</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_hong_kong" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.HKD"/>
+            <field name="code">051</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_hong_kong" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.HKD"/>
+            <field name="code">051</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_singapur" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.SGD"/>
+            <field name="code">052</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_jamaica" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.JMD"/>
+            <field name="code">053</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dolar_taiwan" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.TWD"/>
+            <field name="code">054</field>
+        </record>
+        <record id="codes_models_afip_res_currency_quetzal_guatemalteco" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.GTQ"/>
+            <field name="code">055</field>
+        </record>
+        <record id="codes_models_afip_res_currency_forint_hungria" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.HUF"/>
+            <field name="code">056</field>
+        </record>
+        <record id="codes_models_afip_res_currency_baht_tailandes" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.THB"/>
+            <field name="code">057</field>
+        </record>
+        <record id="codes_models_afip_res_currency_dinar_kuwaiti" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.KWD"/>
+            <field name="code">059</field>
+        </record>
+        <record id="codes_models_afip_res_currency_euro" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.EUR"/>
+            <field name="code">060</field>
+        </record>
+        <record id="codes_models_afip_res_currency_zltys_polaco" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.PLN"/>
+            <field name="code">061</field>
+        </record>
+        <record id="codes_models_afip_res_currency_rupia_hindu" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.INR"/>
+            <field name="code">062</field>
+        </record>
+        <record id="codes_models_afip_res_currency_lempiras_hondurena" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.HNL"/>
+            <field name="code">063</field>
+        </record>
+        <record id="codes_models_afip_res_currency_yuan" model="codes.models.relation">
+            <field name="name">Afip</field>
+            <field name="name_model">res.currency</field>
+            <field name="id_model" ref="base.CNY"/>
+            <field name="code">064</field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_check_register_payments_wizard_form">
+            <field name="name">Account check register payments wizard form</field>
+            <field name="model">account.register.payments</field>
+            <field name="inherit_id" ref="l10n_ar_account_payment.l10n_ar_account_register_payments_wizard_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Cheques">
+                        <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}">
+                            <field name="account_third_check_ids" nolabel="1" widget="one2many">
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="payment_type"/>
+                                            <field name="issue_date"/>
+                                        </group>
+                                        <group>
+                                            <field name="state" invisible="1"/>
+                                            <field name="amount"/>
+                                            <field name="bank_id"/>
+                                            <field name="payment_date"
+                                                   attrs="{'invisible': [('payment_type', '=', 'common')]}"/>
+                                            <field name="issue_name"/>
+                                        </group>
+                                    </group>
+                                </form>
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="bank_id"/>
+                                    <field name="payment_type"/>
+                                    <field name="amount" sum='Total'/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+
+                        <group string="Cheques propios" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
+                            <field name="account_own_check_line_ids" nolabel="1" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="checkbook_id" domain="[('account_own_check_ids.state', '=', 'draft')]"/>
+                                    <field name="own_check_id"
+                                           domain="[('state', '=', 'draft'), ('destination_payment_id', '=', False)]"/>
+                                    <field name="issue_date"/>
+                                    <field name="payment_date" attrs="{'readonly': [('payment_type', '=', 'common')]}"/>
+                                    <field name="payment_type" readonly="1"/>
+                                    <field name="amount" sum='Total'/>
+                                    <field name="state" readonly="1"/>
+                                </tree>
+                            </field>
+                        </group>
+
+                        <group string="Cheques de terceros" attrs="{'invisible': [('payment_type', '!=', 'outbound')]}">
+                            <field name="account_third_check_sent_ids" nolabel="1"
+                                    options="{'no_create': True}"
+                                    domain="[('state', '=', 'wallet'), ('account_payment_ids', '=', False)]"
+                            >
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="payment_type"/>
+                                            <field name="issue_date"/>
+                                        </group>
+                                        <group>
+                                            <field name="state" invisible="1"/>
+                                            <field name="amount"/>
+                                            <field name="bank_id"/>
+                                            <field name="payment_date"/>
+                                            <field name="issue_name"/>
+                                        </group>
+                                    </group>
+                                </form>
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="bank_id"/>
+                                    <field name="payment_type"/>
+                                    <field name="amount" sum='Total'/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

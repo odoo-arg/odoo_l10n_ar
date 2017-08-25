@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+
+        <record id="tax_group_retention" model="account.tax.group">
+            <field name="name">Retencion</field>
+        </record>
+
+        <!-- CUENTAS DE RETENCIONES ACTIVO -->
+
+        <record id="retenciones_sufridas_iigg" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">1145.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones Sufridas IIGG</field>
+        </record>
+
+        <record id="retenciones_iibb_pba_sufrida" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">1146.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IIBB PBA Sufrida</field>
+        </record>
+
+        <record id="retenciones_iibb_caba_sufrida" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">1146.02</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IIBB CABA Sufrida</field>
+        </record>
+
+        <record id="retenciones_iva_sufrida" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">1147.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IVA Sufrida</field>
+        </record>
+
+        <!-- CUENTAS DE RETENCIONES PASIVO -->
+
+        <record id="iigg_ddjj_a_pagar" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">2155.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">IIGG DDJJ a pagar</field>
+        </record>
+
+        <record id="retenciones_iigg_a_pagar" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">2156.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retención IIGG a pagar</field>
+        </record>
+
+        <record id="retenciones_iibb_pba_efectuada" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">2157.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IIBB PBA efectuada</field>
+        </record>
+
+        <record id="retenciones_iibb_caba_efectuada" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">2157.02</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IIBB CABA efectuada</field>
+        </record>
+
+        <record id="retenciones_iva_efectuada" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="code">2158.01</field>
+           <field name="reconcile" eval="True"/>
+           <field name="name">Retenciones IVA efectuada</field>
+        </record>
+
+        <!-- RETENCIONES RESULTADO NEGATIVO -->
+
+        <record id="retenciones_suss_sufrida" model="account.account">
+           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="code">5141.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="name">Retenciones SUSS sufrida</field>
+        </record>
+
+        <!-- *** IMPUESTOS *** -->
+
+        <record id="tax_retencion_iva_sufrida" model="account.tax">
+            <field name="name">Retencion IVA Sufrida</field>
+            <field name="description">Retencion IVA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iva_sufrida"/>
+            <field name="refund_account_id" ref="retenciones_iva_sufrida"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_iva_efectuada" model="account.tax">
+            <field name="name">Retencion IVA Efectuada</field>
+            <field name="description">Retencion IVA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iva_efectuada"/>
+            <field name="refund_account_id" ref="retenciones_iva_efectuada"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_iibb_caba_sufrida" model="account.tax">
+            <field name="name">Retencion IIBB CABA Sufrida</field>
+            <field name="description">Retencion IIBB CABA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iibb_caba_sufrida"/>
+            <field name="refund_account_id" ref="retenciones_iibb_caba_sufrida"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_iibb_caba_efectuada" model="account.tax">
+            <field name="name">Retencion IIBB CABA Efectuada</field>
+            <field name="description">Retencion IIBB CABA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iibb_caba_efectuada"/>
+            <field name="refund_account_id" ref="retenciones_iibb_caba_efectuada"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_iibb_pba_sufrida" model="account.tax">
+            <field name="name">Retencion IIBB PBA Sufrida</field>
+            <field name="description">Retencion IIBB PBA Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iibb_pba_sufrida"/>
+            <field name="refund_account_id" ref="retenciones_iibb_pba_sufrida"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_iibb_pba_efectuada" model="account.tax">
+            <field name="name">Retencion IIBB PBA Efectuada</field>
+            <field name="description">Retencion IIBB PBA Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iibb_pba_efectuada"/>
+            <field name="refund_account_id" ref="retenciones_iibb_pba_efectuada"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_ganancias_sufrida" model="account.tax">
+            <field name="name">Retencion Ganancias Sufrida</field>
+            <field name="description">Retencion Ganancias Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_sufridas_iigg"/>
+            <field name="refund_account_id" ref="retenciones_sufridas_iigg"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_ganancias_efectuada" model="account.tax">
+            <field name="name">Retencion Ganancias Efectuada</field>
+            <field name="description">Retencion Ganancias Efectuada</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_iigg_a_pagar"/>
+            <field name="refund_account_id" ref="retenciones_iigg_a_pagar"/>
+            <field name="type_tax_use">purchase</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <record id="tax_retencion_suss_sufrida" model="account.tax">
+            <field name="name">Retencion SUSS Sufrida</field>
+            <field name="description">Retencion SUSS Sufrida</field>
+            <field eval="0" name="amount"/>
+            <field name="amount_type">percent</field>
+            <field name="account_id" ref="retenciones_suss_sufrida"/>
+            <field name="refund_account_id" ref="retenciones_suss_sufrida"/>
+            <field name="type_tax_use">sale</field>
+            <field name="tax_group_id" ref="tax_group_retention"/>
+        </record>
+
+        <!-- Configuracion de Percepciones (perception.perception) -->
+
+        <record id="retention_retention_iva_sufrida" model="retention.retention">
+            <field name="name">Retencion IVA Sufrida</field>
+            <field name="type_tax_use">sale</field>
+            <field name="type">vat</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_retencion_iva_sufrida" />
+        </record>
+
+       <record id="retention_retention_iva_efectuada" model="retention.retention">
+            <field name="name">Retencion IVA Efectuada</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="type">vat</field>
+            <field name="tax_id" ref="tax_retencion_iva_efectuada" />
+        </record>
+
+        <record id="retention_retention_iibb_caba_sufrida" model="retention.retention">
+            <field name="name">Retencion IIBB CABA Sufrida</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="type_tax_use">sale</field>
+            <field name="state_id" ref="base.state_ar_c"/>
+            <field name="type">gross_income</field>
+            <field name="tax_id" ref="tax_retencion_iibb_caba_sufrida" />
+        </record>
+
+        <record id="retention_retention_iibb_caba_efectuada" model="retention.retention">
+            <field name="name">Retencion IIBB CABA Efectuada</field>
+            <field name="type">gross_income</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_c"/>
+            <field name="tax_id" ref="tax_retencion_iibb_caba_efectuada" />
+        </record>
+
+        <record id="retention_retention_iibb_pba_sufrida" model="retention.retention">
+            <field name="name">Retencion IIBB PBA Sufrida</field>
+            <field name="type">gross_income</field>
+            <field name="type_tax_use">sale</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_b"/>
+            <field name="tax_id" ref="tax_retencion_iibb_pba_sufrida" />
+        </record>
+
+        <record id="retention_retention_iibb_pba_efectuada" model="retention.retention">
+            <field name="name">Retencion IIBB PBA Efectuada</field>
+            <field name="type">gross_income</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="jurisdiction">provincial</field>
+            <field name="state_id" ref="base.state_ar_b"/>
+            <field name="tax_id" ref="tax_retencion_iibb_pba_efectuada" />
+        </record>
+
+        <record id="retention_retention_ganancias_sufrida" model="retention.retention">
+            <field name="name">Retencion Ganancias Sufrida</field>
+            <field name="type">profit</field>
+            <field name="type_tax_use">sale</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_retencion_ganancias_sufrida" />
+        </record>
+
+        <record id="retention_retention_ganancias_efectuada" model="retention.retention">
+            <field name="name">Retencion Ganancias Efectuada</field>
+            <field name="type">profit</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_retencion_ganancias_efectuada" />
+        </record>
+
+        <record id="retention_retention_suss_sufrida" model="retention.retention">
+            <field name="name">Retencion SUSS Sufrida</field>
+            <field name="type">other</field>
+            <field name="type_tax_use">sale</field>
+            <field name="jurisdiction">nacional</field>
+            <field name="tax_id" ref="tax_retencion_suss_sufrida" />
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

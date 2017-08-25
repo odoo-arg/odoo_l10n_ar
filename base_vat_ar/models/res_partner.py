@@ -21,6 +21,7 @@ from openerp.exceptions import ValidationError
 from padron import contributor
 
 
+
 class ResPartner(models.Model):
 
     _inherit = 'res.partner'
@@ -31,10 +32,12 @@ class ResPartner(models.Model):
     def check_vat(self):
         # Si la empresa tiene el mismo pais, obviamos la parte de que el documento
         # necesite el prefijo del pais adelante para el chequeo de documento
+
         for partner in self:
-            if partner.country_id.no_prefix:
+            country = partner.parent_id.country_id if partner.parent_id else partner.country_id
+            if country.no_prefix:
                 check_func = partner.simple_vat_check
-                if not check_func(partner.country_id.code.lower(), partner.vat):
+                if not check_func(country.code.lower(), partner.vat):
                     raise ValidationError("El numero de documento [{vat}] no parece ser correcto para el tipo [{type}]".format(
                         vat=partner.vat,
                         type=partner.partner_document_type_id.name
@@ -43,8 +46,10 @@ class ResPartner(models.Model):
                 super(ResPartner, partner).check_vat()
 
     def check_vat_ar(self, vat_number):
-        ''' Verifica que el numero de documento sea correcto para su posicion fiscal '''
-        
+        """
+        Verifica que el numero de documento sea correcto para su posicion fiscal
+        :param vat_number: str - Numero de documento a validar
+        """
         if vat_number and self.partner_document_type_id.verification_required:
             return contributor.Contributor.is_valid_cuit(vat_number)
         

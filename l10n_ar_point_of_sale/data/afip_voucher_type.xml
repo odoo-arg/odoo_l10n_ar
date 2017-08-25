@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <!--TIPOS DE DOCUMENTO DE AFIP Y SUS RELACIONES CON DENOMINACIONES Y TIPOS DE DOCUMENTO-->
+
+        <!--DOCUMENTOS TIPO A-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_001' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_003' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_refund'/>
+        </record>
+
+        <!--DOCUMENTOS TIPO B-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_006' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_008' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_refund'/>
+        </record>
+
+        <!--DOCUMENTOS TIPO C-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_011' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_013' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_refund'/>
+        </record>
+
+        <!--EXPORTACION-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_019' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_021' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_refund'/>
+        </record>
+
+        <!--DOCUMENTOS TIPO M-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_051' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_053' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_refund'/>
+        </record>
+
+        <!--DESPACHO DE IMPORTACION-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_066' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <!--OTROS COMPROBANTES-->
+        <record id='l10n_ar_afip_tables.afip_voucher_type_099' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

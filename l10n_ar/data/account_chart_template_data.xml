@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="1">
+    
+        <!-- CUENTA DE TRANSFERENCIA -->
+        <record model="account.account.template" id="transferencias_liquidez">
+            <field name="name">Transferencias liquidez</field>
+            <field name="code">1112.04</field>
+            <field name="reconcile" eval="True"/>
+            <field name="user_type_id" ref="account_type_disponibility"/>
+        </record>      
+        
+        <record id="ar_chart_template" model="account.chart.template">
+          <field name="name">Argentina - Plan de Cuentas</field>
+          <field name="code_digits">7</field>
+          <field name="currency_id" ref="base.ARS"/>
+          <field name="transfer_account_id" ref="transferencias_liquidez"/>                      
+        </record>   
+  
+        <record id="transferencias_liquidez" model="account.account.template">
+            <field name="chart_template_id" ref="ar_chart_template"/>
+        </record>
+          
+    </data>
+    
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

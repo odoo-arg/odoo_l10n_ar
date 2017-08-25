@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <menuitem
+            id="treasury_main_menu"
+            name="Tesoreria"
+            groups="group_account_treasury_user"
+            sequence="60"
+        />
+
+        <!--CHEQUES PROPIOS-->
+        <menuitem
+            id="treasury_own_checks_main_menu"
+            name="Cheques propios"
+            parent="treasury_main_menu"
+            sequence="10"
+        />
+
+        <menuitem
+            id="treasury_own_checks_menu"
+            name="Cheques propios"
+            parent="treasury_own_checks_main_menu"
+            action="action_own_checks_view"
+            sequence="10"
+        />
+
+        <menuitem
+            id="treasury_checkbook_menu"
+            name="Chequeras"
+            parent="treasury_own_checks_main_menu"
+            action="action_checkbook_view"
+            sequence="100"
+        />
+
+        <!--CHEQUES DE TERCERO-->
+        <menuitem
+            id="treasury_third_checks_main_menu"
+            name="Cheques de terceros"
+            parent="treasury_main_menu"
+            sequence="20"
+        />
+
+        <menuitem
+            id="treasury_third_checks_menu"
+            name="Cheques de terceros"
+            parent="treasury_third_checks_main_menu"
+            action="action_third_checks_view"
+            sequence="10"
+        />
+
+        <!--TRANSFERENCIAS INTERNAS-->
+        <menuitem
+            id="treasury_movements_main_menu"
+            name="Movimientos"
+            parent="treasury_main_menu"
+            sequence="20"
+        />
+
+        <menuitem
+            id="treasury_movements_internal_payment_menu"
+            name="Transferencias internas"
+            action="action_internal_transfers"
+            parent="treasury_movements_main_menu"
+            sequence="0"
+        />
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
