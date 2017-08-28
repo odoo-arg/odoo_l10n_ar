@@ -48,6 +48,7 @@ install:
   - travis_install_nightly
   - ls /home/travis/odoo-10.0/addons/ | grep l10n_ar
   - rm -r /home/travis/odoo-10.0/addons/l10n_ar*
+  - export INSTALL_OPTIONS "--without-demo"
   - export
 
 script:
