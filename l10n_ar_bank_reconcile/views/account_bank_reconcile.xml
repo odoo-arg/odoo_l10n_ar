@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record id="account_bank_reconcile_form_view" model="ir.ui.view">
+            <field name="name">account.bank.reconcile.form.view</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group string="Informacion general">
+                            <group>
+                                <field name="name"/>
+                                <field name="account_id"/>
+                            </group>
+                            <group>
+                                <button name="open_unreconciled_move_line"
+                                        class="oe_inline oe_stat_button"
+                                        icon="fa-check"
+                                        type="object">
+                                    <field string="No conciliados"
+                                           name="unreconciled_count"
+                                           widget="statinfo"/>
+                                </button>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Conciliaciones">
+                                <field name="bank_reconcile_line_ids" nolabel="1">
+                                    <tree create="false">
+                                    <field name="date_start"/>
+                                    <field name="date_stop"/>
+                                    <field name="last_balance"/>
+                                    <field name="current_balance"/>
+                                </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="account_bank_reconcile_tree_view" model="ir.ui.view">
+            <field name="name">account.bank.reconcile.tree.view</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="arch" type="xml">
+                <tree string="Conciliaciones">
+                    <field name="name"/>
+                    <field name="account_id"/>
+                    <field name="unreconciled_count"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bank_reconcile_action" model="ir.actions.act_window">
+            <field name="name">Conciliacion bancaria</field>
+            <field name="res_model">account.bank.reconcile</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="account_bank_reconcile_tree_view"/>
+        </record>
+
+        <menuitem id="bank_reconcile_menu"
+                  name="Conciliacion bancaria"
+                  parent="account.menu_finance_entries"
+                  action="bank_reconcile_action"
+                  sequence="50"/>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

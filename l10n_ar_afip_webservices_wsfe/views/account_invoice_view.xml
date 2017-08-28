@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_invoice_wsfe_form">
+            <field name="name">Account invoice wsfe form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="outstanding_credits_debits_widget" position="after">
+                    <field name="cae" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}"/>
+                    <field name="cae_due_date" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}"/>
+                </field>
+                <field name="fiscal_position_id" position="before">
+                    <field name="date_service_from"
+                           attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}"/>
+                </field>
+                <field name="move_id" position="before">
+                    <field name="date_service_to"
+                           attrs="{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}"/>
+                </field>
+                <notebook position="inside">
+                    <page string="Solicitudes AFIP" attrs="{'invisible': [('document_book_type', '!=', 'electronic')]}" groups="base.group_no_one">
+                        <field name="wsfe_request_detail_ids">
+                            <tree>
+                                <field name="date"/>
+                                <field name="result"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+
+                <!--READONLYS SI EL DOCUMENTO TIENE CAE-->
+                <field name="date_invoice" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="date_due" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="payment_term_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="currency_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="invoice_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="tax_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+                <field name="fiscal_position_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                </field>
+
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="account_invoice_wsfe_debit_note_form">
+            <field name="name">Account invoice wsfe debit note form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="l10n_ar_debit_note.invoice_debit_note_customer_form"/>
+            <field name="arch" type="xml">
+                 <field name="is_debit_note" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                 </field>
+            </field>
+        </record>
+
+       <record model="ir.ui.view" id="account_invoice_wsfe_perceptions_form">
+            <field name="name">Account invoice wsfe debit perceptions form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="l10n_ar_perceptions.account_invoice_perception_line_form"/>
+            <field name="arch" type="xml">
+                 <field name="perception_ids" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                 </field>
+            </field>
+       </record>
+
+        <record model="ir.ui.view" id="account_invoice_wsfe_pos_form">
+            <field name="name">Account invoice wsfe pos form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="l10n_ar_point_of_sale.invoice_pos_ar_form"/>
+            <field name="arch" type="xml">
+                 <field name="pos_ar_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                 </field>
+                 <field name="denomination_id" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
+                 </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

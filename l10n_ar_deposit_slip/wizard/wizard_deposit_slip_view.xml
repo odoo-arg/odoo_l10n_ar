@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <record model="ir.ui.view" id="account_deposit_slip_wizard_form">
+            <field name="name">account.deposit.slip.wizard.form</field>
+            <field name="model">wizard.deposit.slip</field>
+            <field name="arch" type="xml">
+                <form string="Check Deposit">
+                    <group>
+                        <group>
+                            <field name="journal_id" widget="selection"/>
+                            <field name="total" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button type="object" name="action_create_deposit_slip" string="Depositar" class="oe_highlight" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        or
+                        <button class="oe_link" special="cancel" string="Cancelar"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window
+            name="Depositar cheques"
+            res_model="wizard.deposit.slip"
+            src_model="account.third.check"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_check_deposit"
+        />
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+    	<record model="ir.ui.view" id="account_invoice_presentation_form">
+            <field name="name">Account invoice presentation form form</field>
+            <field name="model">account.invoice.presentation</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Nombre"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="with_prorate"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="generation_time" readonly="1" attrs="{'invisible':[('generation_time', '=', False)]}"/>
+                            <field name="reginfo_zip_file" filename="reginfo_zip_filename"/>
+                            <field name="reginfo_zip_filename" invisible="True"/>
+                            <button name="generate_files"
+                                    type="object"
+                                    string="Generar"
+                                    icon="fa-gear"
+                                    colspan="1"
+                            />
+                        </group>
+                        <group string="Archivos">
+                            <field name="header_file" filename="header_filename"/>
+                            <field name="header_filename" invisible="True"/>
+                            <field name="sale_file" filename="sale_filename"/>
+                            <field name="sale_filename" invisible="True"/>
+                            <field name="sale_vat_file" filename="sale_vat_filename"/>
+                            <field name="sale_vat_filename" invisible="True"/>
+                            <field name="purchase_file" filename="purchase_filename"/>
+                            <field name="purchase_filename" invisible="True"/>
+                            <field name="purchase_vat_file" filename="purchase_vat_filename"/>
+                            <field name="purchase_vat_filename" invisible="True"/>
+                            <field name="purchase_imports_file" filename="purchase_imports_filename"/>
+                            <field name="purchase_imports_filename" invisible="True"/>
+                            <field name="fiscal_credit_service_import_file" filename="fiscal_credit_service_import_filename"/>
+                            <field name="fiscal_credit_service_import_filename" invisible="True"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_invoice_presentation_tree">
+            <field name="name">Account invoice presentation tree</field>
+            <field name="model">account.invoice.presentation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="sequence"/>
+                    <field name="reginfo_zip_file" filename="reginfo_zip_filename"/>
+                    <field name="reginfo_zip_filename" invisible="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_invoice_presentation_view" model="ir.actions.act_window">
+            <field name="name">Presentacion ventas/compras</field>
+            <field name="res_model">account.invoice.presentation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="account_invoice_presentation_menu"
+            name="Presentacion ventas/compras"
+            action="action_account_invoice_presentation_view"
+            parent="account.menu_finance_reports"
+        />
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
