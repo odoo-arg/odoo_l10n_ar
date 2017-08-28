@@ -18,7 +18,7 @@
 
 from openerp import models, api
 from openerp.exceptions import Warning
-from padron import banks
+from l10n_ar_api.padron import banks
 
 
 class Bank(models.Model):

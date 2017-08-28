@@ -107,6 +107,16 @@ class TestBankReconcile(TransactionCase):
             for line in move_lines:
                 line.write({'debit': 1000})
 
+    def test_reconcile_different_accounts(self):
+        self.move_line_2.account_id = self.env.ref('l10n_ar.caja_monex').id
+        move_lines = self.move_line_1 | self.move_line_2
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=move_lines.ids).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
+
     def test_check_current_balance(self):
         """
         Creo una conciliacion con las lineas y chequeo si el balance del rango de fechas es correcto
@@ -150,8 +160,8 @@ class TestBankReconcile(TransactionCase):
         new_move_lines = new_move_line_1 | self.move_line_5
         active_ids = new_move_lines.ids
         wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=active_ids).create({
-            'date_start': '2017-08-15',
-            'date_stop': '2017-08-16',
+            'date_start': '2017-08-16',
+            'date_stop': '2017-08-17',
         })
         wizard.create_conciliation()
         assert self.bank_reconcile.bank_reconcile_line_ids[0].current_balance == -1000
@@ -182,6 +192,23 @@ class TestBankReconcile(TransactionCase):
             'date_stop': '2017-08-30',
         })
         new_wizard.create_conciliation()
+
+    def test_check_date_start_greater_than_date_stop(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-15',
+            'date_stop': '2017-08-01',
+        })
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
+
+    def test_no_conciliation_created(self):
+        self.move_line_1.account_id = self.env.ref('l10n_ar.caja_monex').id
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
 
     def test_delete_last_reconcile(self):
         """
@@ -220,6 +247,103 @@ class TestBankReconcile(TransactionCase):
         with self.assertRaises(IntegrityError):
             self.move.unlink()
 
+    def test_update_conciliation(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        assert self.bank_reconcile.bank_reconcile_line_ids[0].current_balance == self.move_line_1.debit
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_2.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        assert self.bank_reconcile.bank_reconcile_line_ids[0].current_balance == \
+            self.move_line_1.debit + self.move_line_2.debit
+
+    def test_create_conciliation_lesser_date_from(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_2.id).create({
+            'date_start': '2017-08-14',
+            'date_stop': '2017-08-30',
+        })
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
+
+    def test_create_conciliation_middle_date_from(self):
+        move_lines = self.move_line_1 | self.move_line_2
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=move_lines.ids).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        # Probamos crear una con la fecha inicial en el medio
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=move_lines.ids).create({
+            'date_start': '2017-08-07',
+            'date_stop': '2017-08-30',
+        })
+
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
+
+        # Ahora tambien con la fecha final igual
+        wizard.write({'date-stop': '2017-08-15'})
+        with self.assertRaises(ValidationError):
+            wizard.create_conciliation()
+
+    def test_open_unreconciled_move_lines(self):
+        unreconciled_lines = self.bank_reconcile.open_unreconciled_move_lines().get('domain')
+        assert unreconciled_lines[0] == ('account_id', '=', self.bank_reconcile.account_id.id)
+        assert unreconciled_lines[1] == ('bank_reconciled', '=', False)
+
+    def test_count_unrenconciled_move_lines(self):
+        move_lines = self.move_line_1 | self.move_line_2 | self.move_line_3 | self.move_line_4 | self.move_line_5
+        assert self.bank_reconcile.unreconciled_count == len(move_lines)
+
+    def test_unlink_reconcile(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        with self.assertRaises(ValidationError):
+            self.bank_reconcile.unlink()
+
+        self.bank_reconcile.bank_reconcile_line_ids[0].unlink()
+        self.bank_reconcile.unlink()
+
+    def test_account_reconcile(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        with self.assertRaises(ValidationError):
+            self.bank_reconcile.account_id = self.env.ref('l10n_ar.caja_monex').id
+
+        self.bank_reconcile.bank_reconcile_line_ids[0].unlink()
+        self.bank_reconcile.account_id = self.env.ref('l10n_ar.caja_monex').id
+
+    def test_onchange_balance(self):
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_1.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        last_move_relation_id = self.bank_reconcile.bank_reconcile_line_ids[0].reconcile_move_line_ids[0].id
+        wizard = self.env['bank.reconcile.wizard'].with_context(active_ids=self.move_line_2.id).create({
+            'date_start': '2017-08-01',
+            'date_stop': '2017-08-15',
+        })
+        wizard.create_conciliation()
+        assert self.bank_reconcile.bank_reconcile_line_ids[0].current_balance == 30
+        self.bank_reconcile.bank_reconcile_line_ids[0].reconcile_move_line_ids = [(3, last_move_relation_id)]
+        self.bank_reconcile.bank_reconcile_line_ids[0].onchange_balance()
+        assert self.bank_reconcile.bank_reconcile_line_ids[0].current_balance == 20
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

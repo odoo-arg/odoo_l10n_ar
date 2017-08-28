@@ -56,7 +56,8 @@ class AccountBankReconcileLine(models.Model):
     def onchange_balance(self):
         self.current_balance = sum(
             line.debit_move_line - line.credit_move_line
-            for line in self.reconcile_move_line_ids) + self.last_balance
+            for line in self.reconcile_move_line_ids
+        ) + self.last_balance
 
     def unlink(self):
         if self.bank_reconcile_id.get_last_conciliation() != self:

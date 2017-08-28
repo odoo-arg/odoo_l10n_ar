@@ -30,9 +30,10 @@ class AccountMoveLine(models.Model):
 
     @api.multi
     def write(self, vals):
-        if vals.get('debit') or vals.get('credit') or vals.get('account_id'):
-            raise ValidationError('No se puede modificar un movimiento que'
-                                  ' ya ha sido conciliado bancariamente.')
+        for move_line in self:
+            if (vals.get('debit') or vals.get('credit') or vals.get('account_id')) and move_line.bank_reconciled:
+                raise ValidationError('No se puede modificar un movimiento que'
+                                      ' ya ha sido conciliado bancariamente.')
         return super(AccountMoveLine, self).write(vals)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

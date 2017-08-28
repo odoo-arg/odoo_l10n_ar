@@ -22,7 +22,7 @@ from openerp.exceptions import ValidationError
 from datetime import datetime
 from unidecode import unidecode
 
-from presentations import presentation
+from l10n_ar_api.presentations import presentation
 
 
 class AccountInvoicePresentation(models.Model):

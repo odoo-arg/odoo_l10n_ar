@@ -30,7 +30,7 @@
                                 <field name="account_id"/>
                             </group>
                             <group>
-                                <button name="open_unreconciled_move_line"
+                                <button name="open_unreconciled_move_lines"
                                         class="oe_inline oe_stat_button"
                                         icon="fa-check"
                                         type="object">
