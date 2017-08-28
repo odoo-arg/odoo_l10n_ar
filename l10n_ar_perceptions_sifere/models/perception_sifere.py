@@ -83,7 +83,7 @@ class PerceptionSifere(models.Model):
         for p in perceptions:
             code = self.get_code(p)
 
-            if not p.invoice_id.partner_id.vat:
+            if not p.invoice_id.partner_id.vat or p.invoice_id.partner_id.partner_document_type_id != self.env.ref('partner_document_type_80'):
                 missing_vats.add(p.invoice_id.name)
             elif len(p.invoice_id.partner_id.vat) < 11:
                 invalid_vats.add(p.invoice_id.name)
@@ -98,7 +98,7 @@ class PerceptionSifere(models.Model):
         if missing_vats or invalid_vats or missing_codes:
             errors = []
             if missing_vats:
-                errors.append("Los partners de las siguientes facturas no poseen numero de documento:")
+                errors.append("Los partners de las siguientes facturas no poseen CUIT:")
                 errors.extend(missing_vats)
             if invalid_vats:
                 errors.append("Los partners de las siguientes facturas poseen CUIT erroneo:")
