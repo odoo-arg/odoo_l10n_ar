@@ -22,7 +22,7 @@ from openerp.exceptions import ValidationError
 from datetime import datetime
 from unidecode import unidecode
 
-from odoo_openpyme_api.presentations import presentation
+from presentations import presentation
 
 
 class AccountInvoicePresentation(models.Model):
