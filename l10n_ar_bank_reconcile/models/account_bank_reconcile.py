@@ -44,7 +44,7 @@ class AccountBankReconcile(models.Model):
         compute='_get_unreconciled')
 
     @api.multi
-    def open_unreconciled_move_line(self):
+    def open_unreconciled_move_lines(self):
         return {
             'name': 'Movimientos sin conciliar',
             'views': [[False, "tree"]],
@@ -55,9 +55,10 @@ class AccountBankReconcile(models.Model):
 
     # Cantidad de movimientos sin conciliar
     def _get_unreconciled(self):
-        self.unreconciled_count = self.env['account.move.line'].search_count(
-            [('bank_reconciled', '=', False),
-             ('account_id', '=', self.account_id.id)])
+        self.unreconciled_count = self.env['account.move.line'].search_count([
+            ('bank_reconciled', '=', False),
+            ('account_id', '=', self.account_id.id)
+        ])
 
     # Chequeo si existen concialiaciones antes de eliminar una conciliacion bancaria
     @api.multi
@@ -66,7 +67,8 @@ class AccountBankReconcile(models.Model):
             if bank.bank_reconcile_line_ids:
                 raise ValidationError(
                     'No se puede eliminar una conciliacion bancaria con conciliaciones realizadas. Primero '
-                    'elimine las conciliaciones relacionadas.')
+                    'elimine las conciliaciones relacionadas.'
+                )
         return super(AccountBankReconcile, self).unlink()
 
     @api.multi
@@ -83,6 +85,7 @@ class AccountBankReconcile(models.Model):
     _sql_constraints = [(
         'account_unique',
         'unique(account_id)',
-        'Ya existe una conciliacion con esta cuenta.')]
+        'Ya existe una conciliacion con esta cuenta.'
+    )]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
