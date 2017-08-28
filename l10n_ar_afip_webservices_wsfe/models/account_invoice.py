@@ -18,9 +18,9 @@
 
 import pytz
 from datetime import datetime
-import documents
+from odoo_openpyme_api import documents
 from dateutil.relativedelta import relativedelta
-from afip_webservices import wsfe, wsaa
+from odoo_openpyme_api.afip_webservices import wsfe, wsaa
 from openerp import models, fields
 from openerp.exceptions import ValidationError
 
