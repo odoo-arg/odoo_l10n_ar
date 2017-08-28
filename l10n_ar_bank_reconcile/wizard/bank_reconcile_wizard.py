@@ -35,77 +35,88 @@ class BankReconcileWizard(models.TransientModel):
     def create_conciliation(self):
         active_ids = self.env.context.get('active_ids')
         move_lines = self.env['account.move.line'].browse(active_ids)
-        bank_reconciliation_obj = self.env['account.bank.reconcile']
         bank_reconcile_move_line_obj = self.env['account.reconcile.move.line']
-        account_ids = []
 
-        # Itero los movimientos y agrego las cuentas de los mismos
-        for move_line in move_lines:
-            if move_line.bank_reconciled:
-                raise ValidationError('Ya existe una conciliacion para algun movimiento seleccionado.')
-            if move_line.account_id.id not in account_ids:
-                account_ids.append(move_line.account_id.id)
-        if len(account_ids) != 1:
-            raise ValidationError('Solo se puede crear conciliaciones para movimientos de la misma cuenta.')
-        bank_reconciliation = bank_reconciliation_obj.search(
-            [('account_id', '=', account_ids[0])]
-        )
-        if len(bank_reconciliation) < 1:
-            raise ValidationError('No existe una conciliacion para la cuenta los movimientos seleccionados.')
+        # Validamos las move lines y fechas de la conciliacion
+        bank_reconciliation = self._validate_conciliation(move_lines)
+
         last_balance = 0
-        if bank_reconciliation:
-            # Suma del balance actual
-            current_balance = sum(move_lines.debit - move_line.credit for move_line in move_lines)
-            # Chequeo el rango de fechas
-            self._check_date(self.date_start, self.date_stop, bank_reconciliation)
-            flag_last = False
-            # Obtengo el balance anterior
-            if bank_reconciliation.bank_reconcile_line_ids:
-                last_balance = bank_reconciliation.bank_reconcile_line_ids[0].current_balance
-                flag_last = True
-                if bank_reconciliation.bank_reconcile_line_ids[0].date_start < self.date_start\
-                        < bank_reconciliation.bank_reconcile_line_ids[0].date_stop:
-                    raise ValidationError('No se puede crear una conciliacion con fecha de inicio menor '
-                                          'a la fecha de fin de la ultima conciliacion.')
+        # Suma del balance actual
+        current_balance = sum(move_line.debit - move_line.credit for move_line in move_lines)
 
-            # Chequeo si existe una conciliacion que el rango de fechas seleccionado
-            if flag_last and self.date_start >= bank_reconciliation.bank_reconcile_line_ids[0].date_start\
-                    and bank_reconciliation.bank_reconcile_line_ids[0].date_stop >= self.date_stop:
-                reconcile_line = bank_reconciliation.bank_reconcile_line_ids[0]
-                reconcile_line.write({'current_balance': current_balance + last_balance})
-                for move_line in move_lines:
-                    bank_reconcile_move_line_obj.create({
-                        'bank_reconcile_line_id': reconcile_line.id,
-                        'move_line_id': move_line.id,
-                    })
-            else:
-                if bank_reconciliation.bank_reconcile_line_ids:
-                    bank_reconciliation.bank_reconcile_line_ids[0].last = False
-                reconcile_line = bank_reconciliation.bank_reconcile_line_ids.create(
-                    {'date_start': self.date_start,
-                     'date_stop': self.date_stop,
-                     'last_balance': last_balance,
-                     'current_balance': current_balance + last_balance,
-                     'bank_reconcile_id': bank_reconciliation.id,
-                     'last': True}
+        reconcile_lines = bank_reconciliation.bank_reconcile_line_ids
+
+        # Obtengo el balance anterior
+        if reconcile_lines:
+            last_balance = reconcile_lines[0].current_balance
+            if reconcile_lines[0].date_start < self.date_start < reconcile_lines[0].date_stop:
+                raise ValidationError(
+                    'No se puede crear una conciliacion con fecha de inicio menor '
+                    'a la fecha de fin de la ultima conciliacion.'
                 )
-                for move_line in move_lines:
-                    bank_reconcile_move_line_obj.create({
-                        'bank_reconcile_line_id': reconcile_line.id,
-                        'move_line_id': move_line.id,
-                    })
-            move_lines.write({'bank_reconciled': True})
 
-    def _check_date(self, date_start, date_stop, bank_reconciliation):
+        # Chequeo si existe una conciliacion con el rango de fechas seleccionado, en ese caso actualizamos los valores
+        if reconcile_lines and self.date_start == reconcile_lines[0].date_start \
+                and reconcile_lines[0].date_stop == self.date_stop:
+            reconcile_line = reconcile_lines[0]
+            reconcile_line.write({'current_balance': current_balance + last_balance})
+            for move_line in move_lines:
+                bank_reconcile_move_line_obj.create({
+                    'bank_reconcile_line_id': reconcile_line.id,
+                    'move_line_id': move_line.id,
+                })
+        # Caso contrario creamos una conciliacion nueva
+        else:
+            if reconcile_lines:
+                reconcile_lines[0].last = False
+            reconcile_line = bank_reconciliation.bank_reconcile_line_ids.create({
+                'date_start': self.date_start,
+                'date_stop': self.date_stop,
+                'last_balance': last_balance,
+                'current_balance': current_balance + last_balance,
+                'bank_reconcile_id': bank_reconciliation.id,
+                'last': True
+            })
+            for move_line in move_lines:
+                bank_reconcile_move_line_obj.create({
+                    'bank_reconcile_line_id': reconcile_line.id,
+                    'move_line_id': move_line.id,
+                })
+        move_lines.write({'bank_reconciled': True})
+
+    def _validate_conciliation(self, move_lines):
+        """
+        Valida que no se pueda realizar una conciliacion incorrecta
+        :param move_lines: Move lines seleccionadas para la conciliacion
+        :raises ValidationError: - Ya existe una conciliacion en la linea que se quiere conciliar
+                                 - Se seleccionan movimientos de distintas cuentas
+                                 - No existe una conciliacion creada para la cuenta de las lineas
+                                 - Las fechas seleccionadas son incorrectas
+                                 - Existe una conciliacion con fecha mayor a la seleccionada
+        :return: Conciliacion bancaria de la cuenta de los move lines
+        """
+        if any(move_lines.mapped('bank_reconciled')):
+            raise ValidationError('Ya existe una conciliacion para algun movimiento seleccionado.')
+        account = move_lines.mapped('account_id')
+        if len(account) != 1:
+            raise ValidationError('Solo se puede crear conciliaciones para movimientos de la misma cuenta.')
+
+        bank_reconciliation = self.env['account.bank.reconcile'].search([('account_id', '=', account.id)])
+        if not bank_reconciliation:
+            raise ValidationError('No existe una conciliacion para la cuenta los movimientos seleccionados.')
+
         bank_reconcile_line_obj = self.env['account.bank.reconcile.line']
-        if date_start > date_stop:
+        if self.date_start > self.date_stop:
             raise ValidationError('Rango de fechas incorrecta.')
+
         # Busco si existen conciliaciones mayores que el rango seleccionado
         bank_reconcile_line = bank_reconcile_line_obj.search(
-            [('date_stop', '>', date_stop),
+            [('date_stop', '>', self.date_stop),
              ('bank_reconcile_id', '=', bank_reconciliation.id)]
         )
         if bank_reconcile_line:
-            raise ValidationError('Existe una conciliacion mas actual que el rango de fechas dado.')
+            raise ValidationError('Ya existe una conciliacion con fecha fin mayor a la seleccionada')
+
+        return bank_reconciliation
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

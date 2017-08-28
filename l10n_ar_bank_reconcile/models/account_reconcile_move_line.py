@@ -66,9 +66,10 @@ class AccountReconcileMoveLine(models.Model):
 
     @api.multi
     def unlink(self):
-        self.move_line_id.write({
-            'bank_reconciled': False
-        })
+        for reconcile_move_line in self:
+            reconcile_move_line.write({
+                'bank_reconciled': False
+            })
         return super(AccountReconcileMoveLine, self).unlink()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
