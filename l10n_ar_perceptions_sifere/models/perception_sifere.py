@@ -17,10 +17,9 @@
 ##############################################################################
 from datetime import datetime
 
+from odoo_openpyme_api.presentations import presentation
 from openerp import models, fields
 from openerp.exceptions import Warning
-
-from odoo_openpyme_api.presentations import presentation
 
 
 class PerceptionSifere(models.Model):
@@ -53,6 +52,9 @@ class PerceptionSifere(models.Model):
         return self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id,
                                                           'ConvenioMultilateral')
 
+    def partner_document_type_not_cuit(self, partner):
+        return partner.partner_document_type_id != self.env.ref('l10n_ar_afip_tables.partner_document_type_80')
+
     def create_line(self, code, lines, p):
         line = lines.create_line()
         line.jurisdiccion = code
@@ -83,7 +85,7 @@ class PerceptionSifere(models.Model):
         for p in perceptions:
             code = self.get_code(p)
 
-            if not p.invoice_id.partner_id.vat or p.invoice_id.partner_id.partner_document_type_id != self.env.ref('l10n_ar_afip_tables.partner_document_type_80'):
+            if not p.invoice_id.partner_id.vat or self.partner_document_type_not_cuit(p.invoice_id.partner_id):
                 missing_vats.add(p.invoice_id.name)
             elif len(p.invoice_id.partner_id.vat) < 11:
                 invalid_vats.add(p.invoice_id.name)
