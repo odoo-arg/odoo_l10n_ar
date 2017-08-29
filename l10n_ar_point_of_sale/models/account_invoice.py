@@ -29,6 +29,7 @@ class AccountInvoice(models.Model):
 
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta')
     denomination_id = fields.Many2one('account.denomination', 'Denominacion')
+    is_debit_note = fields.Boolean('Es nota de debito?')
 
     # Dato que se va a utilizar desde diferentes modulos para poder aplicar
     # filtros y cambiar los datos que se visualizan en el formulario de una
@@ -40,23 +41,53 @@ class AccountInvoice(models.Model):
         string='Tipo de talonario'
     )
 
-    def check_invoice_duplicity(self, additional_domains=None):
-        """
-        Valida que la factura no este duplicada. Agregamos un parametro de domains adicionales
-        para considerar el caso de notas de debito u otros domains de negocio que se puedan agregar
-        a futuro.
-        :param additional_domains: domain inicial
-        """
+    @api.multi
+    def name_get(self):
+        """ Utilizamos la idea original, pero cambiando los parametros """
 
-        domain = [] if not additional_domains else additional_domains
+        types = {
+            'out_invoice': 'FCC',
+            'in_invoice': 'FCP',
+            'out_refund': 'NCC',
+            'in_refund': 'NCP',
+            'out_debit_note': 'NDC',
+            'in_debit_note': 'NDP',
+        }
 
-        domain.extend([
+        result = []
+
+        for inv in self:
+            if inv.is_debit_note:
+                if inv.type == 'in_invoice':
+                    invoice_type = types.get('in_debit_note')
+                else:
+                    invoice_type = types.get('out_debit_note')
+            else:
+                invoice_type = types.get(inv.type)
+
+            name_get = [invoice_type]
+            if inv.denomination_id:
+                name_get.append(inv.denomination_id.name)
+
+            if inv.name or inv.number:
+                name_get.append(inv.name or inv.number)
+
+            # EJ FC A 0001-00000001
+            result.append((inv.id, " ".join(name_get)))
+
+        return result
+
+    def check_invoice_duplicity(self):
+        """ Valida que la factura no este duplicada. """
+
+        domain = [
+            ('is_debit_note', '=', self.is_debit_note),
             ('denomination_id', '=', self.denomination_id.id),
             ('pos_ar_id', '=', self.pos_ar_id.id),
             ('name', '=', self.name),
             ('type', '=', self.type),
             ('state', 'not in', ['draft', 'cancel'])
-        ])
+        ]
 
         if self.type in ['in_invoice', 'in_refund']:
             domain.append(('partner_id', '=', self.partner_id.id))
@@ -146,7 +177,7 @@ class AccountInvoice(models.Model):
 
         return super(AccountInvoice, self).action_move_create()
 
-    def get_document_book(self, additional_domains=None):
+    def get_document_book(self):
         """
         Busca el talonario obtenido del punto de venta y denominacion.
         Agregamos un parametro de domains adicionales
@@ -157,17 +188,17 @@ class AccountInvoice(models.Model):
         :raise ValidationError: No hay configurado un talonario para ese punto de venta y denominacion
         """
 
-        if not additional_domains:
-            invoice_type = 'invoice' if self.type == 'out_invoice' else 'refund'
-            domain = [('document_type_id.type', '=', invoice_type)]
+        if self.is_debit_note:
+            invoice_type = 'debit_note'
         else:
-            domain = additional_domains
+            invoice_type = 'invoice' if self.type == 'out_invoice' else 'refund'
 
-        domain.extend([
+        domain = [
+            ('document_type_id.type', '=', invoice_type),
             ('denomination_id', '=', self.denomination_id.id),
             ('pos_ar_id', '=', self.pos_ar_id.id),
             ('category', '=', 'invoice'),
-        ])
+        ]
 
         if not (self.pos_ar_id and self.denomination_id):
             raise ValidationError('El documento debe tener punto de venta y denominacion para ser validado')

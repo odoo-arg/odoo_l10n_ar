@@ -24,6 +24,10 @@
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
+        <record id='l10n_ar_afip_tables.afip_voucher_type_002' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_debit_note'/>
+        </record>
+
         <record id='l10n_ar_afip_tables.afip_voucher_type_003' model='afip.voucher.type'>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
@@ -31,6 +35,10 @@
         <!--DOCUMENTOS TIPO B-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_006' model='afip.voucher.type'>
             <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_007' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_008' model='afip.voucher.type'>
@@ -42,6 +50,10 @@
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
+        <record id='l10n_ar_afip_tables.afip_voucher_type_012' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_debit_note'/>
+        </record>
+
         <record id='l10n_ar_afip_tables.afip_voucher_type_013' model='afip.voucher.type'>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
@@ -51,6 +63,10 @@
             <field name='document_type_id' ref='document_type_invoice'/>
         </record>
 
+        <record id='l10n_ar_afip_tables.afip_voucher_type_020' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_debit_note'/>
+        </record>
+
         <record id='l10n_ar_afip_tables.afip_voucher_type_021' model='afip.voucher.type'>
             <field name='document_type_id' ref='document_type_refund'/>
         </record>
@@ -58,6 +74,10 @@
         <!--DOCUMENTOS TIPO M-->
         <record id='l10n_ar_afip_tables.afip_voucher_type_051' model='afip.voucher.type'>
             <field name='document_type_id' ref='document_type_invoice'/>
+        </record>
+
+        <record id='l10n_ar_afip_tables.afip_voucher_type_052' model='afip.voucher.type'>
+            <field name='document_type_id' ref='document_type_debit_note'/>
         </record>
 
         <record id='l10n_ar_afip_tables.afip_voucher_type_053' model='afip.voucher.type'>

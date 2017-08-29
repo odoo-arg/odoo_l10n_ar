@@ -32,7 +32,6 @@
 
     'depends': [
         'l10n_ar_taxes',
-        'l10n_ar_debit_note'
     ],
 
     'data': [

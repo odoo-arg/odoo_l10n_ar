@@ -39,6 +39,12 @@
             <field name='category'>invoice</field>
         </record>
 
+        <record id='document_type_debit_note' model='document.book.document.type'>
+            <field name='type'>debit_note</field>
+            <field name='name'>Nota de debito</field>
+            <field name='category'>invoice</field>
+        </record>
+
         <record id='document_type_refund' model='document.book.document.type'>
             <field name='type'>refund</field>
             <field name='name'>Nota de credito</field>

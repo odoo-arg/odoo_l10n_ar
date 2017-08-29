@@ -31,8 +31,17 @@ class TestInvoice(TestDocumentBook):
             'property_account_position_id': self.iva_ri.id
         })
 
+        self.partner_cf = self.env['res.partner'].create({
+            'name': 'Supplier',
+            'customer': True,
+            'supplier': True,
+            'property_account_position_id': self.iva_cf.id
+        })
+
     def _create_invoices(self):
+
         account = self.partner_ri.property_account_receivable_id
+
         self.invoice = self.env['account.invoice'].create({
             'partner_id': self.partner_ri.id,
             'fiscal_position_id': self.partner_ri.property_account_position_id.id,
@@ -40,7 +49,6 @@ class TestInvoice(TestDocumentBook):
             'type': 'out_invoice',
             'state': 'draft'
         })
-        self.invoice_new = self.env['account.invoice'].new({})
 
         self.env['account.invoice.line'].create({
             'name': 'Producto',
@@ -50,8 +58,32 @@ class TestInvoice(TestDocumentBook):
             'invoice_id': self.invoice.id,
         })
 
+        self.debit_note = self.env['account.invoice'].create({
+            'partner_id': self.partner_ri.id,
+            'fiscal_position_id': self.partner_ri.property_account_position_id.id,
+            'account_id': account.id,
+            'type': 'out_invoice',
+            'state': 'draft',
+            'is_debit_note': True,
+        })
+
+        self.env['account.invoice.line'].create({
+            'name': 'Producto',
+            'account_id': account.id,
+            'quantity': 1,
+            'price_unit': 500,
+            'invoice_id': self.debit_note.id,
+        })
+
+        self.invoice_new = self.env['account.invoice'].new({})
+
+
     def setUp(self):
         super(TestInvoice, self).setUp()
+
+        self.iva_ri = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_ivari')
+        self.iva_cf = self.env.ref('l10n_ar_afip_tables.account_fiscal_position_cf')
+        self.env.user.company_id.partner_id.property_account_position_id = self.iva_ri
         self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
 
         # Clientes y proveedores
@@ -223,14 +255,11 @@ class TestInvoice(TestDocumentBook):
             self.invoice.get_document_book()
 
         self.invoice.onchange_partner_id()
-        # Probamos domains adicionales
-        domain = [('document_type_id.type', '=', 'invoice')]
-        self.invoice.get_document_book(domain)
 
         # Probamos talonario no encontrado
-        domain.append(('name', '=', '-1'))
+        self.document_book.unlink()
         with self.assertRaises(ValidationError):
-            self.invoice.get_document_book(domain)
+            self.invoice.get_document_book()
 
     def test_name_get(self):
         self.invoice.onchange_partner_id()
@@ -254,5 +283,36 @@ class TestInvoice(TestDocumentBook):
         assert values['pos_ar_id'] == self.invoice.pos_ar_id.id
         assert values['denomination_id'] == self.invoice.denomination_id.id
         assert values['origin'] == self.invoice.name_get()[0][1]
+
+    def test_name_get_customer_debit_note(self):
+        assert self.debit_note.name_get()[0][1] == 'NDC'
+        # El onchange nos deberia dar la denominacion
+        self.debit_note.onchange_partner_id()
+        assert self.debit_note.name_get()[0][1] == 'NDC A'
+        # Al validarla deberia darnos la numeracion del talonario
+        self.debit_note.action_invoice_open()
+        pos_ar_name_get = self.pos.name_get()[0][1]
+        document_book_name_get = self.document_book_debit.name_get()[0][1]
+        assert self.debit_note.name_get()[0][1] == 'NDC A '+pos_ar_name_get+'-'+document_book_name_get
+
+    def test_name_get_supplier_debit_note(self):
+        self.debit_note.type = 'in_invoice'
+        assert self.debit_note.name_get()[0][1] == 'NDP'
+        self.partner_ri.property_account_position_id = self.iva_cf.id
+        self.debit_note.onchange_partner_id()
+        self.debit_note._onchange_partner_id()
+        # El onchange nos deberia dar la denominacion
+        assert self.debit_note.name_get()[0][1] == 'NDP C'
+        self.debit_note.name = '5-3'
+        self.debit_note.action_invoice_open()
+        assert self.debit_note.name_get()[0][1] == 'NDP C 0005-00000003'
+
+    def test_check_invoice_duplicity(self):
+        self.debit_note.onchange_partner_id()
+        self.debit_note.check_invoice_duplicity()
+
+    def test_get_document_book_debit_note(self):
+        self.debit_note.onchange_partner_id()
+        self.debit_note.get_document_book()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
