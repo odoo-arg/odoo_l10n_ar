@@ -292,7 +292,7 @@ class TestBankReconcile(TransactionCase):
             wizard.create_conciliation()
 
         # Ahora tambien con la fecha final igual
-        wizard.write({'date-stop': '2017-08-15'})
+        wizard.write({'date_stop': '2017-08-15'})
         with self.assertRaises(ValidationError):
             wizard.create_conciliation()
 
