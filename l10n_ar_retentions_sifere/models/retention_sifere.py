@@ -16,9 +16,10 @@
 #
 ##############################################################################
 from datetime import datetime
-from openerp import models, fields
 
 from odoo_openpyme_api.presentations import presentation
+from openerp import models, fields
+from openerp.exceptions import Warning
 
 
 class RetentionSifere(models.Model):
@@ -47,6 +48,9 @@ class RetentionSifere(models.Model):
         return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
                                                           'ConvenioMultilateral')
 
+    def partner_document_type_not_cuit(self, partner):
+        return partner.partner_document_type_id != self.env.ref('l10n_ar_afip_tables.partner_document_type_80')
+
     def generate_file(self):
         lines = presentation.Presentation("sifere", "retenciones")
         retentions = self.env['account.payment.retention'].search([
@@ -64,7 +68,7 @@ class RetentionSifere(models.Model):
         for r in retentions:
             code = self.get_code(r)
 
-            if not r.payment_id.partner_id.vat:
+            if not r.payment_id.partner_id.vat or self.partner_document_type_not_cuit(r.payment_id.partner_id):
                 missing_vats.add(r.payment_id.name)
             elif len(r.payment_id.partner_id.vat) < 11:
                 invalid_vats.add(r.payment_id.name)
@@ -79,7 +83,7 @@ class RetentionSifere(models.Model):
         if missing_vats or invalid_vats or missing_codes:
             errors = []
             if missing_vats:
-                errors.append("Los partners de los siguientes pagos no poseen numero de documento:")
+                errors.append("Los partners de los siguientes pagos no poseen CUIT:")
                 errors.extend(missing_vats)
             if invalid_vats:
                 errors.append("Los partners de los siguientes pagos poseen CUIT erroneo:")
