@@ -26,13 +26,13 @@ class AccountPayment(models.Model):
         move_line_proxy = self.env['account.move.line']
         # Para clientes
         if self.payment_type == 'inbound':
-            move_lines = move_line_proxy.search([('payment_id', '=', self.ids)])
+            move_lines = move_line_proxy.search([('payment_id', '=', self.id)])
             for line in move_lines:
                 if line.credit > 0:
                     return line.matched_debit_ids
         # Para proveedor
         if self.payment_type == 'outbound':
-            move_lines = move_line_proxy.search([('payment_id', '=', self.ids)])
+            move_lines = move_line_proxy.search([('payment_id', '=', self.id)])
             for line in move_lines:
                 if line.debit > 0:
                     return line.matched_credit_ids

@@ -31,7 +31,6 @@ class TestPos(TestDocumentBook):
         with self.assertRaises(IntegrityError):
             self.pos_proxy.create({
                 'name': 5,
-                'sequence': -50
             })
 
     def test_name_of_pos(self):
