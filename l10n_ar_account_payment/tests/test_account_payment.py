@@ -275,7 +275,6 @@ class TestAccountPayment(set_up.SetUp):
     def test_payment_with_different_amounts(self):
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'amount': 310
         })
         with self.assertRaises(UserError):
