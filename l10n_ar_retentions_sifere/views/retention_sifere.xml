@@ -68,8 +68,8 @@
         </record>
 
         <!-- MENU -->
-        <menuitem id="retention_sifere_menu_view" name="Retencion Presentacion SIFERE"
-                  parent="l10n_ar_taxes.taxes_main_menu" action="retention_sifere_action" sequence="20"/>
+        <menuitem id="retention_sifere_menu_view" name="SIFERE Retenciones"
+                  parent="account.menu_finance_reports" action="retention_sifere_action" sequence="20"/>
 
     </data>
 
