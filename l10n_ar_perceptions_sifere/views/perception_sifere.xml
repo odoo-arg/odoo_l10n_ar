@@ -68,8 +68,8 @@
         </record>
 
         <!-- MENU -->
-        <menuitem id="perception_sifere_menu_view" name="Percepcion Presentacion SIFERE"
-                  parent="l10n_ar_taxes.taxes_main_menu" action="perception_sifere_action" sequence="20"/>
+        <menuitem id="perception_sifere_menu_view" name="SIFERE Percepciones"
+                  parent="account.menu_finance_reports" action="perception_sifere_action" sequence="20"/>
 
     </data>
 

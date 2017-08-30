@@ -79,16 +79,19 @@ class PerceptionSifere(models.Model):
         ]).sorted(key=lambda r: (r.create_date, r.id))
 
         missing_vats = set()
+        invalid_doctypes = set()
         invalid_vats = set()
         missing_codes = set()
 
         for p in perceptions:
             code = self.get_code(p)
 
-            if not p.invoice_id.partner_id.vat or self.partner_document_type_not_cuit(p.invoice_id.partner_id):
-                missing_vats.add(p.invoice_id.name)
+            if not p.invoice_id.partner_id.vat:
+                missing_vats.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
             elif len(p.invoice_id.partner_id.vat) < 11:
-                invalid_vats.add(p.invoice_id.name)
+                invalid_vats.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
+            if self.partner_document_type_not_cuit(p.invoice_id.partner_id):
+                invalid_doctypes.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
             if not code:
                 missing_codes.add(p.perception_id.state_id.name)
 
@@ -97,18 +100,22 @@ class PerceptionSifere(models.Model):
                 continue
             self.create_line(code, lines, p)
 
-        if missing_vats or invalid_vats or missing_codes:
+        if missing_vats or invalid_doctypes or invalid_vats or missing_codes:
             errors = []
             if missing_vats:
-                errors.append("Los partners de las siguientes facturas no poseen CUIT:")
+                errors.append("Los partners de las siguientes facturas no poseen numero de CUIT:")
                 errors.extend(missing_vats)
+            if invalid_doctypes:
+                errors.append("El tipo de documento de los partners de las siguientes facturas no es CUIT:")
+                errors.extend(invalid_doctypes)
             if invalid_vats:
-                errors.append("Los partners de las siguientes facturas poseen CUIT erroneo:")
+                errors.append("Los partners de las siguientes facturas poseen numero de CUIT erroneo:")
                 errors.extend(invalid_vats)
             if missing_codes:
                 errors.append("Las siguientes jurisdicciones no poseen codigo:")
                 errors.extend(missing_codes)
             raise Warning("\n".join(errors))
+
         else:
             self.file = lines.get_encoded_string()
             self.filename = 'per_iibb_{}_{}.txt'.format(
