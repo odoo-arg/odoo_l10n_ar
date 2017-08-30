@@ -19,7 +19,7 @@ import pytz
 
 from openerp import models, fields, api
 from datetime import datetime, timedelta
-from odoo_openpyme_api.afip_webservices import wsaa
+from l10n_ar_api.afip_webservices import wsaa
 from openerp.exceptions import ValidationError
 from openerp import SUPERUSER_ID
 

@@ -44,7 +44,6 @@ class TestAccountPayment(set_up.SetUp):
     def test_partial_ids_customer(self):
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 1210
         })
@@ -60,7 +59,6 @@ class TestAccountPayment(set_up.SetUp):
     def test_partial_ids_different_residual_customer(self):
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 1000
         })
@@ -83,7 +81,6 @@ class TestAccountPayment(set_up.SetUp):
         self.invoice.action_invoice_open()
         self.supplier_payment.write({
             'pos_ar_id': self.supplier_payment.get_pos(self.supplier_payment.payment_type),
-            'payment_id': self.supplier_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 1210
         })
@@ -109,7 +106,6 @@ class TestAccountPayment(set_up.SetUp):
         self.invoice.action_invoice_open()
         self.supplier_payment.write({
             'pos_ar_id': self.supplier_payment.get_pos(self.supplier_payment.payment_type),
-            'payment_id': self.supplier_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 500
         })
@@ -139,7 +135,6 @@ class TestAccountPayment(set_up.SetUp):
         self.invoice.action_invoice_open()
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 1210
         })
@@ -161,7 +156,6 @@ class TestAccountPayment(set_up.SetUp):
         })
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'currency_id': usd.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 100
@@ -194,7 +188,6 @@ class TestAccountPayment(set_up.SetUp):
         self.invoice.action_invoice_open()
         self.supplier_payment.write({
             'pos_ar_id': self.supplier_payment.get_pos(self.supplier_payment.payment_type),
-            'payment_id': self.supplier_payment.id,
             'currency_id': usd.id,
             'invoice_ids': [(6, 0, [self.invoice.id])],
             'amount': 850

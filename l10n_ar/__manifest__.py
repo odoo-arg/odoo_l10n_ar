@@ -39,6 +39,7 @@
     ],
 
     'data': [
+        'data/company_data.xml',
         'data/account_type_data.xml',
         'data/account_chart_template_data.xml',
         'data/account_chart_data.xml',

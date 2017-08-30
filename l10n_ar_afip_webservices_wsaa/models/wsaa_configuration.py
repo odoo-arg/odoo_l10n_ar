@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models, fields
-from odoo_openpyme_api.afip_webservices.wsaa import certificate
+from l10n_ar_api.afip_webservices.wsaa import certificate
 from openerp.exceptions import ValidationError
 
 

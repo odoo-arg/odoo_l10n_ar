@@ -1,4 +1,5 @@
-#Localizacion argentina de ODOO v10.0
+[![Build Status](https://travis-ci.org/odoo-arg/odoo_l10n_ar.svg?branch=master)](https://travis-ci.org/odoo-arg/odoo_l10n_ar)
+[![Code Climate](https://codeclimate.com/github/odoo-arg/odoo_l10n_ar/badges/gpa.svg)](https://codeclimate.com/github/odoo-arg/odoo_l10n_ar)
+[![Coverage Status](https://coveralls.io/repos/github/odoo-arg/odoo_l10n_ar/badge.svg?branch=master)](https://coveralls.io/github/odoo-arg/odoo_l10n_ar?branch=master)
 
-Repositorio que contiene los módulos de odoo necesarios para el
-funcionamiento de la localización argentina.
+# Localizacion Argentina para Odoo

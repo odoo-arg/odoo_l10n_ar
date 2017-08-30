@@ -16,9 +16,9 @@
 #
 ##############################################################################
 
+import account_move_line
 import account_bank_reconcile
 import account_bank_reconcile_line
-import account_move_line
 import account_reconcile_move_line
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

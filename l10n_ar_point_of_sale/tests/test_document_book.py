@@ -44,6 +44,15 @@ class TestDocumentBook(common.TransactionCase):
             'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
         })
 
+        self.document_book_debit = self.env['document.book'].create({
+            'name': 15,
+            'pos_ar_id': self.pos.id,
+            'category': 'invoice',
+            'book_type_id': self.env.ref('l10n_ar_point_of_sale.document_book_type_preprint_invoice').id,
+            'document_type_id': self.env.ref('l10n_ar_point_of_sale.document_type_debit_note').id,
+            'denomination_id': self.env.ref('l10n_ar_afip_tables.account_denomination_a').id,
+        })
+
     def test_unique(self):
         with self.assertRaises(IntegrityError):
             self.document_book_proxy.create({

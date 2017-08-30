@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'Bank reconcile',
+    'name': 'l10n_ar_bank_reconcile',
 
     'version': '1.0',
 

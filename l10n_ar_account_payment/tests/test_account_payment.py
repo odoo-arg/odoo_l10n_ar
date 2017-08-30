@@ -275,7 +275,6 @@ class TestAccountPayment(set_up.SetUp):
     def test_payment_with_different_amounts(self):
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'amount': 310
         })
         with self.assertRaises(UserError):
@@ -295,7 +294,6 @@ class TestAccountPayment(set_up.SetUp):
     def test_invalid_payment_state(self):
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'state': 'posted'
         })
         # Intentamos validar un pago ya validado
@@ -315,7 +313,6 @@ class TestAccountPayment(set_up.SetUp):
         self.payment_line.amount = 8000
         self.customer_payment.write({
             'pos_ar_id': self.customer_payment.get_pos(self.customer_payment.payment_type),
-            'payment_id': self.customer_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])]
         })
         self.customer_payment.onchange_payment_type_line_ids()
@@ -332,7 +329,6 @@ class TestAccountPayment(set_up.SetUp):
         self.invoice.type = 'in_invoice'
         self.supplier_payment.write({
             'pos_ar_id': self.supplier_payment.get_pos(self.supplier_payment.payment_type),
-            'payment_id': self.supplier_payment.id,
             'invoice_ids': [(6, 0, [self.invoice.id])]
         })
         self.supplier_payment.onchange_payment_type_line_ids()

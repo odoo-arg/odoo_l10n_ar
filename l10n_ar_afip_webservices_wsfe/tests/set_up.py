@@ -50,7 +50,7 @@ class SetUp(common.TransactionCase):
         vals['document_type_id'] = self.env.ref('l10n_ar_point_of_sale.document_type_refund').id
         vals['denomination_id'] = self.env.ref('l10n_ar_afip_tables.account_denomination_b').id
         self.document_book_nc_b = document_book_proxy.create(vals)
-        vals['document_type_id'] = self.env.ref('l10n_ar_debit_note.document_type_debit_note').id
+        vals['document_type_id'] = self.env.ref('l10n_ar_point_of_sale.document_type_debit_note').id
         vals['denomination_id'] = self.env.ref('l10n_ar_afip_tables.account_denomination_c').id
         self.document_book_nd_c = document_book_proxy.create(vals)
 

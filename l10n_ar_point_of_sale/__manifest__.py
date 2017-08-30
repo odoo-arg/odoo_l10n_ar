@@ -36,7 +36,7 @@ entre posiciones fiscales y denominaciones.
     'category': 'Accounting',
 
     'depends': [
-        'l10n_ar',
+        'l10n_ar_afip_tables',
     ],
 
     'data': [
