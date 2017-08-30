@@ -82,4 +82,6 @@ class WsaaToken(models.Model):
             'sign': access_token.sign,
         })
 
+    _sql_constraints = [('unique_token_service', 'unique(name)', 'Ya existe un token para este servicio')]
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
