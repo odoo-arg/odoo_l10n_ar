@@ -84,7 +84,7 @@ class AccountBankReconcile(models.Model):
     _sql_constraints = [(
         'account_unique',
         'unique(account_id)',
-        'Ya existe una conciliacion creada con esta cuenta.'
+        'Ya existe una conciliacion con esta cuenta.'
     )]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
