@@ -26,10 +26,9 @@ class RetentionSifere(models.Model):
     _name = 'retention.sifere'
 
     def _get_importe(self, r):
-        importe = str(format(r.amount))[:-2].zfill(10)
-        importe_parts = [importe[:len(importe) % 3]]
-        importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
-        return importe_parts
+        importe = '{0:.2f}'.format(r.amount)
+        importe = importe.replace('.', ',')
+        return importe
 
     def create_line(self, code, lines, r):
         line = lines.create_line()
@@ -39,10 +38,10 @@ class RetentionSifere(models.Model):
         line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = r.payment_id.pos_ar_id.name
         line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
-        line.numeroBase = filter(str.isdigit, str("".join(r.payment_id.name.split("-"))))
+        line.numeroBase = filter(str.isdigit, str(r.payment_id.name.replace('-', '')))
         line.tipo = "R"
         line.letra = " "
-        line.importe = ",".join(self._get_importe(r))
+        line.importe = self._get_importe(r)
 
     def get_code(self, r):
         return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
@@ -79,7 +78,7 @@ class RetentionSifere(models.Model):
                 missing_codes.add(r.retention_id.state_id.name)
 
             # si ya encontro algun error, que no siga con el resto del loop porque el archivo no va a salir
-            if missing_vats or invalid_vats or missing_codes:
+            if missing_vats or invalid_doctypes or invalid_vats or missing_codes:
                 continue
             self.create_line(code, lines, r)
 

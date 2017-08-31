@@ -23,7 +23,7 @@
             <field name="name">retention.sifere.form</field>
             <field name="model">retention.sifere</field>
             <field name="arch" type="xml">
-                <form string="Presentacion Retencion SIFERE">
+                <form string="SIFERE Retenciones">
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -49,7 +49,7 @@
             <field name="name">retention.sifere.tree</field>
             <field name="model">retention.sifere</field>
             <field name="arch" type="xml">
-                <tree string="Presentacion Retencion SIFERE">
+                <tree string="SIFERE Retenciones">
                     <field name="name"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
@@ -61,7 +61,7 @@
 
         <!-- ACTION -->
         <record model="ir.actions.act_window" id="retention_sifere_action">
-            <field name="name">Presentacion Retencion SIFERE</field>
+            <field name="name">SIFERE Retenciones</field>
             <field name="res_model">retention.sifere</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
