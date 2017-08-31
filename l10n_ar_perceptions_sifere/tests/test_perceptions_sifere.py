@@ -89,7 +89,7 @@ class TestPerceptionsSifere(common.TransactionCase):
             'name': "Linea Percepcion",
             'invoice_id': self.invoice.id,
             'perception_id': self.perception.id,
-            'amount': 400,
+            'amount': 400.5,
             'jurisdiction': 'nacional',
             'create_date': date.today()
         })
@@ -113,7 +113,7 @@ class TestPerceptionsSifere(common.TransactionCase):
     def test_perception(self):
         self.perception_sifere.create_line(self.code, self.lines, self.perception_line)
         today = date.today().strftime("%d/%m/%Y")
-        assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}999988888888CZ00000400,00".format(today)
+        assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}999988888888CZ00000400,50".format(today)
 
     def test_perception_no_vat_exception(self):
         self.partner.vat = None
