@@ -33,7 +33,7 @@ class RetentionSifere(models.Model):
         line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = r.payment_id.pos_ar_id.name
         line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
-        line.numeroBase = filter(str.isdigit, str(r.payment_id.name.replace('-', '')))
+        line.numeroBase = filter(str.isdigit, str(r.payment_id.name.split('-')[1]))
         line.tipo = "R"
         line.letra = " "
         line.importe = '{0:.2f}'.format(r.amount).replace('.', ',')
