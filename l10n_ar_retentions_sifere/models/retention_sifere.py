@@ -25,11 +25,6 @@ from openerp.exceptions import Warning
 class RetentionSifere(models.Model):
     _name = 'retention.sifere'
 
-    def _get_importe(self, r):
-        importe = '{0:.2f}'.format(r.amount)
-        importe = importe.replace('.', ',')
-        return importe
-
     def create_line(self, code, lines, r):
         line = lines.create_line()
         line.jurisdiccion = code
@@ -41,7 +36,7 @@ class RetentionSifere(models.Model):
         line.numeroBase = filter(str.isdigit, str(r.payment_id.name.replace('-', '')))
         line.tipo = "R"
         line.letra = " "
-        line.importe = self._get_importe(r)
+        line.importe = '{0:.2f}'.format(r.amount).replace('.', ',')
 
     def get_code(self, r):
         return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,

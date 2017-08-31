@@ -104,7 +104,7 @@ class TestRetentionsSifere(common.TransactionCase):
     def test_retention(self):
         self.retention_sifere.create_line(self.code, self.lines, self.retention_line)
         today = date.today().strftime("%d/%m/%Y")
-        assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}00040000000000000010R 000000009999777777770,000,000,400".format(today)
+        assert self.lines.lines[0].get_line_string() == "90211-22222222-3{}00040000000000000010R 0000000099997777777700000400,00".format(today)
 
     def test_retention_no_vat_exception(self):
         self.partner.vat = None
