@@ -23,7 +23,7 @@
             <field name="name">perception.sifere.form</field>
             <field name="model">perception.sifere</field>
             <field name="arch" type="xml">
-                <form string="Presentacion Percepcion SIFERE">
+                <form string="SIFERE Percepciones">
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -49,7 +49,7 @@
             <field name="name">perception.sifere.tree</field>
             <field name="model">perception.sifere</field>
             <field name="arch" type="xml">
-                <tree string="Presentacion Percepcion SIFERE">
+                <tree string="SIFERE Percepciones">
                     <field name="name"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
@@ -61,7 +61,7 @@
 
         <!-- ACTION -->
         <record model="ir.actions.act_window" id="perception_sifere_action">
-            <field name="name">Presentacion Percepcion SIFERE</field>
+            <field name="name">SIFERE Percepciones</field>
             <field name="res_model">perception.sifere</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

@@ -42,12 +42,6 @@ class PerceptionSifere(models.Model):
     def _get_invalid_denomination(self):
         return self.env.ref('l10n_ar_afip_tables.account_denomination_d').name
 
-    def _get_importe(self, p):
-        importe = str(format(p.amount * self._get_invoice_currency_rate(p.invoice_id)))[:-2].zfill(10)
-        importe_parts = [importe[:len(importe) % 3]]
-        importe_parts.extend([importe[i:i + 3] for i in range(len(importe) % 3, len(importe), 3)])
-        return importe_parts
-
     def get_code(self, p):
         return self.env['codes.models.relation'].get_code('res.country.state', p.perception_id.state_id.id,
                                                           'ConvenioMultilateral')
@@ -65,7 +59,7 @@ class PerceptionSifere(models.Model):
         line.numeroComprobante = p.invoice_id.name[5:]
         line.tipo = self._get_tipo(p)
         line.letra = p.invoice_id.denomination_id.name
-        line.importe = ",".join(self._get_importe(p))
+        line.importe = '{0:.2f}'.format(p.amount * self._get_invoice_currency_rate(p.invoice_id)).replace('.', ',')
 
     def generate_file(self):
         lines = presentation.Presentation("sifere", "percepciones")
