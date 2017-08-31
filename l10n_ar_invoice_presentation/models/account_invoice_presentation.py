@@ -16,11 +16,12 @@
 #
 ##############################################################################
 import base64
+from datetime import datetime
 
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
-from datetime import datetime
 from unidecode import unidecode
+from openerp.exceptions import Warning
 
 from odoo_openpyme_api.presentations import presentation
 
@@ -33,20 +34,23 @@ class AccountInvoicePresentation(models.Model):
         return split_from[0] + split_from[1]
 
     def generate_files(self):
-        base_name = "REGINFO_CV_{}"+self.get_period()+".{}"
+        base_name = "REGINFO_CV_{}" + self.get_period() + ".{}"
 
         header_file = self.generate_header_file()
+        header_file.file_name = base_name.format("CABECERA_", "txt")
         sale_file = self.generate_sale_file()
         sale_vat_file = self.generate_sale_vat_file()
         purchase_file = self.generate_purchase_file()
         purchase_vat_file = self.generate_purchase_vat_file()
         purchase_imports_file = self.generate_purchase_imports_file()
         fiscal_credit_service_import_file = self.generate_fiscal_credit_service_import_file()
-        reginfo_zip_file = self.generate_reginfo_zip_file()
+        reginfo_zip_file = self.generate_reginfo_zip_file(
+            [header_file, sale_file, sale_vat_file, purchase_file, purchase_vat_file, purchase_imports_file,
+             fiscal_credit_service_import_file])
 
         self.write({
             'generation_time': datetime.now(),
-            'header_filename': base_name.format("CABECERA_", "txt"),
+            'header_filename': header_file.file_name,
             'header_file': header_file.get_encoded_string(),
             'sale_filename': base_name.format("VENTAS_CBTE_", "txt"),
             'sale_file': sale_file,
@@ -65,7 +69,30 @@ class AccountInvoicePresentation(models.Model):
         })
 
     def generate_header_file(self):
-        return base64.encodestring(unidecode(" "))
+        cabecera = presentation.Presentation("ventasCompras", "cabecera")
+        line = cabecera.create_line()
+
+        if self.company_id.vat:
+            line.cuit = self.company_id.vat
+        else:
+            raise Warning("La compania {} no posee CUIT".format(self.company_id.name))
+        line.periodo = self.get_period()
+        line.secuencia = self.sequence
+        line.sinMovimiento = 'S'
+        if self.with_prorate:
+            line.prorratearCFC = 'S'
+            line.cFCGlobal = '1'
+        else:
+            line.prorratearCFC = 'N'
+            line.cFCGlobal = '2'
+        line.importeCFCG = 0
+        line.importeCFCAD = 0
+        line.importeCFCP = 0
+        line.importeCFnCG = 0
+        line.cFCSSyOC = 0
+        line.cFCCSSyOC = 0
+
+        return cabecera
 
     def generate_sale_file(self):
         return base64.encodestring(unidecode(" "))
@@ -85,8 +112,10 @@ class AccountInvoicePresentation(models.Model):
     def generate_fiscal_credit_service_import_file(self):
         return base64.encodestring(unidecode(" "))
 
-    def generate_reginfo_zip_file(self):
-        return base64.encodestring(unidecode(" "))
+    def generate_reginfo_zip_file(self, files):
+        exporter = presentation.PresentationZipExporter()
+        exporter.add_element(files[0])
+        return exporter.export_elements()
 
     name = fields.Char(
         string="Nombre",
