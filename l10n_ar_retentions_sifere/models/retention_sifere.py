@@ -25,11 +25,18 @@ from openerp.exceptions import Warning
 class RetentionSifere(models.Model):
     _name = 'retention.sifere'
 
+    def get_code(self, r):
+        return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
+                                                          'ConvenioMultilateral')
+
+    def partner_document_type_not_cuit(self, partner):
+        return partner.partner_document_type_id != self.env.ref('l10n_ar_afip_tables.partner_document_type_80')
+
     def create_line(self, code, lines, r):
         line = lines.create_line()
         line.jurisdiccion = code
-        line.cuit = r.payment_id.partner_id.vat[0:2] + '-' + r.payment_id.partner_id.vat[2:10] + '-' \
-                    + r.payment_id.partner_id.vat[-1:]
+        vat = r.payment_id.partner_id.vat
+        line.cuit = "{0}-{1}-{2}".format(vat[0:2], vat[2:10], vat[-1:])
         line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = r.payment_id.pos_ar_id.name
         line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
@@ -37,13 +44,6 @@ class RetentionSifere(models.Model):
         line.tipo = "R"
         line.letra = " "
         line.importe = '{0:.2f}'.format(r.amount).replace('.', ',')
-
-    def get_code(self, r):
-        return self.env['codes.models.relation'].get_code('res.country.state', r.retention_id.state_id.id,
-                                                          'ConvenioMultilateral')
-
-    def partner_document_type_not_cuit(self, partner):
-        return partner.partner_document_type_id != self.env.ref('l10n_ar_afip_tables.partner_document_type_80')
 
     def generate_file(self):
         lines = presentation.Presentation("sifere", "retenciones")
@@ -63,16 +63,18 @@ class RetentionSifere(models.Model):
         for r in retentions:
             code = self.get_code(r)
 
-            if not r.payment_id.partner_id.vat:
-                missing_vats.add(r.payment_id.name_get()[0][1].encode('utf-8'))
-            elif len(r.payment_id.partner_id.vat) < 11:
-                invalid_vats.add(r.payment_id.name_get()[0][1].encode('utf-8'))
+            vat = r.payment_id.partner_id.vat
+            if not vat:
+                missing_vats.add(r.payment_id.name_get()[0][1])
+            elif len(vat) < 11:
+                invalid_vats.add(r.payment_id.name_get()[0][1])
             if self.partner_document_type_not_cuit(r.payment_id.partner_id):
-                invalid_doctypes.add(r.payment_id.name_get()[0][1].encode('utf-8'))
+                invalid_doctypes.add(r.payment_id.name_get()[0][1])
             if not code:
                 missing_codes.add(r.retention_id.state_id.name)
 
             # si ya encontro algun error, que no siga con el resto del loop porque el archivo no va a salir
+            # pero que siga revisando las retenciones por si hay mas errores, para mostrarlos todos juntos
             if missing_vats or invalid_doctypes or invalid_vats or missing_codes:
                 continue
             self.create_line(code, lines, r)
