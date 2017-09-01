@@ -52,8 +52,8 @@ class PerceptionSifere(models.Model):
     def create_line(self, code, lines, p):
         line = lines.create_line()
         line.jurisdiccion = code
-        line.cuit = p.invoice_id.partner_id.vat[0:2] + '-' + p.invoice_id.partner_id.vat[2:10] + '-' \
-                    + p.invoice_id.partner_id.vat[-1:]
+        vat = p.invoice_id.partner_id.vat
+        line.cuit = "{0}-{1}-{2}".format(vat[0:2], vat[2:10], vat[-1:])
         line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
         line.puntoDeVenta = p.invoice_id.name[0:4]
         line.numeroComprobante = p.invoice_id.name[5:]
@@ -80,17 +80,19 @@ class PerceptionSifere(models.Model):
         for p in perceptions:
             code = self.get_code(p)
 
-            if not p.invoice_id.partner_id.vat:
-                missing_vats.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
-            elif len(p.invoice_id.partner_id.vat) < 11:
-                invalid_vats.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
+            vat = p.invoice_id.partner_id.vat
+            if not vat:
+                missing_vats.add(p.invoice_id.name_get()[0][1])
+            elif len(vat) < 11:
+                invalid_vats.add(p.invoice_id.name_get()[0][1])
             if self.partner_document_type_not_cuit(p.invoice_id.partner_id):
-                invalid_doctypes.add(p.invoice_id.name_get()[0][1].encode('utf-8'))
+                invalid_doctypes.add(p.invoice_id.name_get()[0][1])
             if not code:
                 missing_codes.add(p.perception_id.state_id.name)
 
             # si ya encontro algun error, que no siga con el resto del loop porque el archivo no va a salir
-            if missing_vats or invalid_vats or missing_codes:
+            # pero que siga revisando las percepciones por si hay mas errores, para mostrarlos todos juntos
+            if missing_vats or invalid_doctypes or invalid_vats or missing_codes:
                 continue
             self.create_line(code, lines, p)
 
