@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+l10n_ar_retention_sifere_user,l10n_ar_retentions_sifere.user,model_retention_sifere,base.group_user,1,0,0,0
+l10n_ar_retention_sifere_manager,l10n_ar_retentions_sifere.manager,model_retention_sifere,account.group_account_invoice,1,1,1,1
