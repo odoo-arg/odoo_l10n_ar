@@ -81,8 +81,8 @@ class TestSaleOrder(common.TransactionCase):
 
         sale.action_confirm()
 
-        inv = sale.action_invoice_create()
+        inv_ids = sale.action_invoice_create()
 
-        assert self.env['account.invoice'].browse(inv).denomination_id == denomination_a
+        assert self.env['account.invoice'].browse(inv_ids).denomination_id == denomination_a
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
