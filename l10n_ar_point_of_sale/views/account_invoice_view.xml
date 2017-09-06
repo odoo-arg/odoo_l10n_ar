@@ -31,7 +31,7 @@
                 <field name="user_id" position="after">
                     <field name="denomination_id" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="selection"/>
                 </field>
-                <xpath expr="//notebook/page[2]/group/group/field[@name='name']" position="replace">
+                <xpath expr="//notebook/page[@name='other_info']/group/group/field[@name='name']" position="replace">
                     <field name="number" readonly="1"/>
                     <field name="is_debit_note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </xpath>
