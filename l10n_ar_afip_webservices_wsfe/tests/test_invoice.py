@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from mock import mock, PropertyMock
+from mock import mock
 import set_up
 from openerp.exceptions import ValidationError
 from odoo.addons.l10n_ar_afip_webservices_wsaa.tests import config
@@ -378,5 +378,70 @@ class TestInvoice(set_up.SetUp):
             wsfe_mock.get_cae = mock.Mock(side_effect=Exception("Error al enviar la factura"))
             with self.assertRaises(ValidationError):
                 self.invoice.action_electronic(self.document_book_fc_a)
+
+    def test_electronic_invoice_currency_pes(self):
+        document_type_id = self.document_book_fc_a.document_type_id.id
+        voucher_type = self.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id),
+            ('denomination_id', '=', self.invoice.denomination_id.id)],
+            limit=1
+        )
+        document_afip_code = int(
+            self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
+        assert document_afip_code == 1
+        self.invoice.update({
+            'currency_id': self.env.ref('base.ARS').id
+        })
+        electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
+
+        # Validamos la moneda y cotizacion
+        assert electronic_invoice[0].mon_id == 'PES'
+        assert electronic_invoice[0].mon_cotiz == 1.0
+
+    def test_electronic_invoice_currency_usd(self):
+        document_type_id = self.document_book_fc_a.document_type_id.id
+        voucher_type = self.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id),
+            ('denomination_id', '=', self.invoice.denomination_id.id)],
+            limit=1
+        )
+        document_afip_code = int(
+            self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
+        assert document_afip_code == 1
+        self.env['res.currency.rate'].create({
+            'currency_id': self.env.ref('base.USD').id,
+            'rate': 0.1
+        })
+        self.invoice.update({
+            'currency_id': self.env.ref('base.USD').id
+        })
+        electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
+
+        # Validamos la moneda y cotizacion
+        assert electronic_invoice[0].mon_id == 'DOL'
+        assert electronic_invoice[0].mon_cotiz == 10
+
+    def test_electronic_invoice_currency_eur(self):
+        document_type_id = self.document_book_fc_a.document_type_id.id
+        voucher_type = self.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id),
+            ('denomination_id', '=', self.invoice.denomination_id.id)],
+            limit=1
+        )
+        document_afip_code = int(
+            self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
+        assert document_afip_code == 1
+        self.env['res.currency.rate'].create({
+            'currency_id': self.env.ref('base.EUR').id,
+            'rate': 0.20
+        })
+        self.invoice.update({
+            'currency_id': self.env.ref('base.EUR').id
+        })
+        electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
+
+        # Validamos la moneda y cotizacion
+        assert electronic_invoice[0].mon_id == '060'
+        assert electronic_invoice[0].mon_cotiz == 5
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
