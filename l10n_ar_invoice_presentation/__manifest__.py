@@ -18,7 +18,7 @@
 
 {
 
-    'name': 'l10n_ar_invoice_presentation',
+    'name': 'Account invoice presentation',
 
     'version': '1.0',
 
@@ -31,8 +31,11 @@
     'website': 'http://www.openpyme.com.ar',
 
     'depends': [
+        'l10n_ar',
         'base_vat_ar',
         'account',
+        'base_codes',
+        'l10n_ar_point_of_sale'
     ],
 
     'data': [

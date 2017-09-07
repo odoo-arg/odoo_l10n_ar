@@ -47,8 +47,21 @@ class UnitTest(TransactionCase):
                 'with_prorate': True
             })
 
+    def test_cannot_generate_presentations_without_vat(self):
+        "No se pueden generar las presentaciones sin el CUIT de la compania"
+        self.env.user.company_id.partner_id.vat = ""
+        presentation = self.presentation_proxy.create({
+            'name': 'TEST',
+            'date_from': '2017-08-01',
+            'date_to': '2017-08-31',
+            'sequence': '00',
+        })
+        with self.assertRaises(Exception):
+            presentation.generate_files()
+
     def test_can_generate_presentations(self):
         "Se pueden generar las presentaciones"
+        self.env.user.company_id.partner_id.vat = "20359891033"
         presentation = self.presentation_proxy.create({
             'name': 'TEST',
             'date_from': '2017-08-01',
