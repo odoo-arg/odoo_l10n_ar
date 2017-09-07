@@ -18,7 +18,7 @@
 
 from openerp.exceptions import Warning
 from openerp import models
-import odoo_openpyme_api.presentations.presentation as presentation_builder
+import l10n_ar_api.presentations.presentation as presentation_builder
 
 
 class AccountInvoicePresentation(models.Model):

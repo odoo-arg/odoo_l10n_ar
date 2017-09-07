@@ -12,7 +12,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 from openerp import models
-import odoo_openpyme_api.presentations.presentation as presentation_builder
+import l10n_ar_api.presentations.presentation as presentation_builder
 from presentation_tools import PresentationTools
 from presentation_sale import SaleInvoicePresentation
 
@@ -40,6 +40,12 @@ class SaleVatInvoicePresentation:
         return invoices
 
     def create_line(self, builder, invoice, helper, codes_models_proxy):
+        """
+        Crea una linea por cada factura, usando el builder y el helper
+        :param builder: objeto de la api para construir las lineas de la presentacion
+        :param invoice: record, factura
+        :param helper: objeto con metodos auxiliares
+        """
         tax_group_vat = invoice.env.ref("l10n_ar.tax_group_vat")
         if SaleInvoicePresentation.get_cantidad_alic_iva(invoice) > 0:
             for tax in invoice.tax_line_ids:
@@ -167,8 +173,9 @@ class AccountInvoicePresentation(models.Model):
 
     def generate_sale_vat_file(self):
         """
-        Genera el archivo de presentacion para REGINFO_CV_VENTAS_ALICUOTAS.
-        :return: El base 64 del archivo.
+        Se genera el archivo de alicuotas de ventas. Utiliza la API de presentaciones y tools para poder crear los archivos
+        y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
         """
         # instanciamos el builder de la api
         builder = presentation_builder.Presentation("ventasCompras", "ventasAlicuotas")
@@ -192,7 +199,6 @@ class AccountInvoicePresentation(models.Model):
                 builder, invoice, helper, codes_models_relation_proxy
             ), invoices
         )
-        # devolvemos el b64
         return builder
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

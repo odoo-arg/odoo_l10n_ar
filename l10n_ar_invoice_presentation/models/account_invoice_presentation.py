@@ -19,34 +19,38 @@
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError, Warning
 from datetime import datetime
-from odoo_openpyme_api.presentations import presentation
+from l10n_ar_api.presentations import presentation
 
 
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
 
     def get_period(self):
-        "Genera un string con el periodo seleccionado"
+        """
+        Genera un string con el periodo seleccionado.
+        :return: string con periodo ej : '201708'
+        """
         split_from = self.date_from.split('-')
         return split_from[0] + split_from[1]
 
     @staticmethod
     def validate_invoices(invoices):
-        "Valida que las facturas tengan los campos necesarios"
+        """
+        Validamos que las facturas tengan los datos necesarios.
+        :param invoices: recordset facturas
+        """
         errors = []
+        for partner in invoices.mapped('partner_id'):
+            if not partner.property_account_position_id:
+                errors.append("El partner {} no posee posicion fiscal.".format(partner.name))
+
+            if not partner.partner_document_type_id:
+                errors.append("El partner {} no posee tipo de documento.".format(partner.name))
+
+            if not partner.vat:
+                errors.append("El partner {} no posee numero de documento.".format(partner.name))
+
         for invoice in invoices:
-            if not invoice.partner_id.property_account_position_id:
-                errors.append("El partner {} no posee posicion fiscal.".format(invoice.partner_id.name))
-
-            if not invoice.partner_id.partner_document_type_id:
-                errors.append("El partner {} no posee tipo de documento.".format(invoice.partner_id.name))
-
-            if not invoice.partner_id.vat:
-                errors.append("El partner {} no posee numero de documento.".format(invoice.partner_id.name))
-
-            if not invoice.date_invoice:
-                errors.append("La factura {} no posee fecha.".format(invoice.name))
-
             if invoice.amount_total == 0:
                 errors.append("El total de la factura {} es cero.".format(invoice.name))
 

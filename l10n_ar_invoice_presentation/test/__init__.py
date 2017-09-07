@@ -15,4 +15,5 @@ from . import test_presentation
 from . import test_presentation_sale
 from . import test_presentation_sale_iva
 from . import test_presentation_purchase
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

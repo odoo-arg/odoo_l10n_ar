@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models
-import odoo_openpyme_api.presentations.presentation as presentation_builder
+import l10n_ar_api.presentations.presentation as presentation_builder
 from presentation_tools import PresentationTools
 from presentation_purchase import PurchaseInvoicePresentation
 
@@ -116,7 +116,9 @@ class AccountInvoicePresentation(models.Model):
 
     def generate_purchase_vat_file(self):
         """
-        Se genera el archivo de alicuotas de compras.
+        Se genera el archivo de alicuotas de compras. Utiliza la API de presentaciones y tools para poder crear los archivos
+        y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
         """
         # Instanciamos API, tools y datos generales
         builder = presentation_builder.Presentation('ventasCompras', 'comprasAlicuotas')

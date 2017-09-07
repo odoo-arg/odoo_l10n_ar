@@ -12,6 +12,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
+
 class PresentationTools:
     def __init__(self):
         pass
@@ -114,19 +115,5 @@ class PresentationTools:
         amount = str("{0:.{1}f}".format(amount, dp))
         amount = amount.replace(".", "").replace(",", "")
         return amount
-
-    @staticmethod
-    def get_company_currency(invoice):
-        return invoice.company_id.currency_id
-
-    @staticmethod
-    def get_invoice_currency(invoice):
-        return invoice.currency_id
-
-    @staticmethod
-    def are_company_and_invoice_same_currency(invoice):
-        company_currency_id = PresentationTools.get_company_currency(invoice).id
-        invoice_currency_id = PresentationTools.get_invoice_currency(invoice).id
-        return company_currency_id == invoice_currency_id
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

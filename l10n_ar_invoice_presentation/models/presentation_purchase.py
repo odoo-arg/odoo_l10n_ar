@@ -17,7 +17,7 @@
 ##############################################################################
 
 from openerp import models
-import odoo_openpyme_api.presentations.presentation as presentation_builder
+import l10n_ar_api.presentations.presentation as presentation_builder
 from presentation_tools import PresentationTools
 
 
@@ -150,6 +150,12 @@ class PurchaseInvoicePresentation:
     # Campo 9
     @staticmethod
     def get_purchase_importeTotal(invoice, helper):
+        """
+        Devuelve el importe total de la factura
+        :param invoice: record, factura.
+        :param helper: instancia de PresentationTools, con herramientas de formateo.
+        :return: string, monto ej: 5000->'500000' , 0->'0'
+        """
         rate = helper.get_currency_rate_from_move(invoice)
         amount = invoice.amount_total
         return helper.format_amount(rate * amount)
@@ -157,6 +163,11 @@ class PurchaseInvoicePresentation:
     # Campo 10
     @staticmethod
     def get_purchase_importeTotalNG(invoice, helper, cod_ope):
+        """
+        Devuelve el importe total no gravado. Si el importe total de la operacion es 'N' devuelve 0.
+        :param cod_ope: Codigo de operacion. ej: 'N'   
+        :return: string, monto ej: 23.00-> '2300' , 0->'0'
+        """
         rate = helper.get_currency_rate_from_move(invoice)
         amount = 0 if cod_ope == 'N' else invoice.amount_not_taxable
         return helper.format_amount(rate * amount)
@@ -164,6 +175,10 @@ class PurchaseInvoicePresentation:
     # Campo 11
     @staticmethod
     def get_purchase_importeOpExentas(invoice, helper):
+        """
+        Devuelve el monto total de importes de operaciones exentas.
+        :return: string, monto ej: 23.00-> '2300' 
+        """
         rate = helper.get_currency_rate_from_move(invoice)
         amount = invoice.amount_exempt
 
@@ -172,6 +187,10 @@ class PurchaseInvoicePresentation:
     # Campo 12
     @staticmethod
     def get_purchase_importePerOIva(invoice, helper):
+        """
+        Devuelve el monto total de percepciones de iva de la factura.
+        :return: string, monto ej: 23.00-> '2300'
+        """
         importPerOIva = 0.00
         for perception in invoice.perception_ids:
             importPerOIva += perception.amount if perception.perception_id.type == 'vat' else 0
@@ -182,6 +201,10 @@ class PurchaseInvoicePresentation:
     # Campo 13
     @staticmethod
     def get_purchase_importePerOtrosImp(invoice, helper):
+        """
+        Devuelve el monto total de percepciones de otros impuestos de la factura.
+        :return: string, monto ej: 23.00-> '2300'
+        """
         importePerOtrosImp = 0.00
         for perception in invoice.perception_ids:
             importePerOtrosImp += perception.amount if perception.perception_id.type == 'other' else 0
@@ -192,6 +215,10 @@ class PurchaseInvoicePresentation:
     # Campo 14
     @staticmethod
     def get_purchase_importePerIIBB(invoice, helper):
+        """
+        Devuelve el monto total de percepciones de ingresos brutos de la factura.
+        :return: string, monto ej: 23.00-> '2300'
+        """
         importePerIIBB = 0.00
         for perception in invoice.perception_ids:
             importePerIIBB += perception.amount if perception.perception_id.type == 'gross_income' else 0
@@ -201,6 +228,10 @@ class PurchaseInvoicePresentation:
     # Campo 15
     @staticmethod
     def get_purchase_importePerIM(invoice, helper):
+        """
+        Devuelve el monto total de percepciones de impuestos municipales de la factura.
+        :return: string, monto ej: '4500' 
+        """
         importePerIM = 0.00
         for perception in invoice.perception_ids:
             importePerIM += perception.amount if perception.perception_id.jurisdiction == 'municipal' else 0
@@ -211,6 +242,10 @@ class PurchaseInvoicePresentation:
     # Campo 16
     @staticmethod
     def get_purchase_importeImpInt(invoice, helper):
+        """
+        Obtiene los impuestos internos de la factura formateados en string. 
+        :return: string, monto ej: '2300' 
+        """
         importeImpInt = 0.00
         tax_group_internal = invoice.env.ref('l10n_ar.tax_group_internal')
         for tax in invoice.tax_line_ids:
@@ -221,6 +256,10 @@ class PurchaseInvoicePresentation:
     # Campo 17
     @staticmethod
     def get_purchase_codigoMoneda(invoice):
+        """
+        Obtiene el codigo de moneda de acuerdo a los mapeados en las tablas de AFIP
+        Ejemplo: Las monedas Pesos y USD se mapean a PES y DOL.
+        """
         codes_proxy = invoice.env["codes.models.relation"]
         model_name = "res.currency"
         model_id = invoice.currency_id.id
@@ -229,6 +268,7 @@ class PurchaseInvoicePresentation:
     # Campo 18
     @staticmethod
     def get_purchase_tipoCambio(invoice, helper):
+        "Este metodo obtiene el tipo de cambio, con las seis posiciones decimales que requiere el archivo."
         rate = helper.get_currency_rate_from_move(invoice)
         return helper.format_amount(rate, 6)
 
@@ -257,6 +297,10 @@ class PurchaseInvoicePresentation:
     # Campo 20
     @staticmethod
     def get_purchase_codigoOperacion(invoice, type_d):
+        """
+        Obtiene el codigo de operacion de acuerdo a los impuestos. Actualmente no contempla el caso de importaciones
+        de zona franca.
+        """
         codigoOperacion = ' '
 
         # Exento:
@@ -278,20 +322,16 @@ class PurchaseInvoicePresentation:
         if invoice.denomination_id == type_d:
             codigoOperacion = 'X'
 
-            # TODO: ver como hacer para diferenciar si viene de zona franca
-            # # Importaciones de zona franca
-            # # Si tiene despacho de importacion y este viene de zona franca
-            # ar_country = self.env.ref('base.ar')
-            # if invoice.partner_id.country_id == ar_country:
-            #     codigoOperacion = 'Z'
-
         return codigoOperacion
 
     # Campo 21
     @staticmethod
     def get_purchase_credFiscComp(invoice, helper, type_b, type_c, tax_group_vat, with_prorate):
-        """Si tiene iva, y se eligio sin prorate, se van devolver todos los impuestos. Si se eligio
-         con prorate, y tiene impuestos de iva se devuelve la suma de los mismos"""
+        """
+        Se devuelve cero en caso de que no tenga alicuotas de iva. Si tiene alicuotas y la presentacion es
+        sin prorrateo, se devuelven todos los impuestos. En caso contrario se devuelve la suma de los impuestos
+        de iva.
+        """
         # Si la cantidad de alicuotas es igual a 0, se devuelve 0
         if PurchaseInvoicePresentation.get_purchase_cantidadAlicIva(invoice, type_b, type_c, tax_group_vat) is 0:
             return 0
@@ -307,12 +347,14 @@ class PurchaseInvoicePresentation:
                     'amount'))
             return helper.format_amount(vat_tax_amount * rate)
 
-        # Sino se devuelve ceros
-        return 0
-
     # Campo 22
     @staticmethod
     def get_purchase_otrosTrib(invoice, helper):
+        """
+        Devuelve la suma de todos los impuestos que NO son internos, de iva, retenciones o percepciones,
+        en formato string
+        :return: string, monto formateado. ej: '223455'
+        """
         otrosTrib = 0.00
         tax_group_ids = [
             invoice.env.ref('l10n_ar.tax_group_internal'),
@@ -346,7 +388,9 @@ class AccountInvoicePresentation(models.Model):
 
     def generate_purchase_file(self):
         """
-        Se genera el archivo de compras.
+        Se genera el archivo de compras. Utiliza la API de presentaciones y tools para poder crear los archivos
+        y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
         """
         # Instanciamos API, tools y datos generales
         builder = presentation_builder.Presentation('ventasCompras', 'comprasCbte')

@@ -12,7 +12,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 from openerp import models
-import odoo_openpyme_api.presentations.presentation as presentation_builder
+import l10n_ar_api.presentations.presentation as presentation_builder
 from presentation_tools import PresentationTools
 
 
@@ -39,6 +39,12 @@ class SaleInvoicePresentation:
         return invoices
 
     def create_line(self, builder, invoice, helper, codes_proxy):
+        """
+        Crea una linea por cada factura, usando el builder y el helper
+        :param builder: objeto de la api para construir las lineas de la presentacion
+        :param invoice: record, factura
+        :param helper: objeto con metodos auxiliares
+        """
         line = builder.create_line()
         # campo 1: fecha de comprobante
         line.fecha = self.get_fecha(invoice, helper)
@@ -382,8 +388,9 @@ class AccountInvoicePresentation(models.Model):
 
     def generate_sale_file(self):
         """
-        Genera el archivo de presentacion para REGINFO_CV_VENTAS_CBTE.
-        :return: El base 64 del archivo.
+        Se genera el archivo de ventas. Utiliza la API de presentaciones y tools para poder crear los archivos
+        y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
         """
         # instanciamos el builder de la api
         builder = presentation_builder.Presentation("ventasCompras", "ventasCbte")
@@ -407,7 +414,6 @@ class AccountInvoicePresentation(models.Model):
                 builder, invoice, helper, codes_models_relation_proxy
             ), invoices
         )
-        # devolvemos el b64
         return builder
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
