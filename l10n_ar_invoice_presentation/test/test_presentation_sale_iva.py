@@ -56,6 +56,19 @@ class TestPresentationSaleIva(TransactionCase):
             "type": "consu",
             "taxes_id": [(6, 0, [self.env.ref("l10n_ar.1_vat_21_ventas").id])]
         })
+        # creamos el punto de venta
+        pos = self.env["pos.ar"].create({
+            "name": "9"
+        })
+        # creamos el talonario para la factura
+        self.env["document.book"].create({
+            "name": "1",
+            "category": "invoice",
+            "pos_ar_id": pos.id,
+            "book_type_id": self.env.ref("l10n_ar_point_of_sale.document_book_type_preprint_invoice").id,
+            "document_type_id": self.env.ref("l10n_ar_point_of_sale.document_type_invoice").id,
+            "denomination_id": self.env.ref("l10n_ar_afip_tables.account_denomination_a").id
+        })
         # creamos la factura
         self.account_invoice = self._create(account_invoice_proxy, {
             "partner_id": self.res_partner.id,

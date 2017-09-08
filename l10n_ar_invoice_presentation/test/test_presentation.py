@@ -61,6 +61,7 @@ class UnitTest(TransactionCase):
 
     def test_can_generate_presentations(self):
         "Se pueden generar las presentaciones"
+        self.env.user.company_id.partner_id.country_id = self.env.ref('base.ar')
         self.env.user.company_id.partner_id.vat = "20359891033"
         presentation = self.presentation_proxy.create({
             'name': 'TEST',
@@ -73,6 +74,7 @@ class UnitTest(TransactionCase):
 
     def test_validate_invoices_raises_warning(self):
         "El metodo de validar facturas arroja Warning"
+        self.env.user.company_id.partner_id.country_id = self.env.ref('base.ar')
         self.env.user.company_id.partner_id.vat = "20359891033"
         presentation = self.presentation_proxy.create({
             'name': 'TEST',

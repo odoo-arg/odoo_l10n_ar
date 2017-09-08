@@ -12,7 +12,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
-
 class PresentationTools:
     def __init__(self):
         pass
@@ -40,13 +39,7 @@ class PresentationTools:
         # sacamos la cuenta de la factura
         account = invoice.account_id
         # buscamos las move lines que pertenezcan al move y a la cuenta de la factura
-        move_line = account_move_line_proxy.search(
-            [
-                ("move_id", "=", move.id),
-                ("account_id", "=", account.id)
-            ],
-            limit=1
-        )
+        move_line = move.line_ids.filtered(lambda x: x.account_id == account)[0]
         # traemos el credito o debito de la move line
         amount = move_line.credit or move_line.debit
         # traemos el monto moneda

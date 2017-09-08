@@ -120,7 +120,7 @@ class TestPresentationPurchase(TransactionCase):
 
     def test_purchase_invoice_presentation(self):
         "Se puede generar la presentacion de una factura comun."
-        self.create_invoice()
+        invoice = self.create_invoice()
         b64 = self.presentation.generate_purchase_file()
         decoded = base64.decodestring(b64.get_encoded_string())
         # Fecha de comprobante

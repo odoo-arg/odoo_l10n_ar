@@ -54,6 +54,9 @@ class AccountInvoicePresentation(models.Model):
             if invoice.amount_total == 0:
                 errors.append("El total de la factura {} es cero.".format(invoice.name))
 
+            if not invoice.move_id.line_ids:
+                errors.append("La factura {} no posee lineas de asientos.".format(invoice.name))
+
         if errors:
             raise Warning(
                 "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
