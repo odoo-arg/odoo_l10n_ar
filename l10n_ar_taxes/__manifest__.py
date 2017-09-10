@@ -19,21 +19,14 @@
 {
 
     'name': 'l10n_ar_taxes',
-
     'version': '1.0',
-
     'category': 'Accounting',
-
     'summary': 'Manejo de importes de impuestos para Argentina',
-
     'author': 'OPENPYME S.R.L',
-
     'website': 'http://www.openpyme.com.ar',
-
     'depends': [
         'l10n_ar_point_of_sale'
     ],
-
     'data': [
         'views/account_invoice_view.xml',
         'views/account.xml',
@@ -44,13 +37,9 @@
         "static/src/xml/account_info.xml",
     ],
     'installable': True,
-
     'auto_install': False,
-
     'application': True,
-
     'description': 'Manejo de importes de impuestos para Argentina',
-
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
