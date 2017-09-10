@@ -35,6 +35,7 @@ mapped with models using l10n_ar_codes application
     'category': 'base',
 
     'depends': [
+        'base_vat_ar',
         'base_codes',
         'l10n_ar',
     ],
