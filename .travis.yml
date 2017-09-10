@@ -49,6 +49,8 @@ install:
   - ls /home/travis/odoo-10.0/addons/ | grep l10n_ar
   - rm -r /home/travis/odoo-10.0/addons/l10n_ar*
   - export INSTALL_OPTIONS="--without-demo=True --load-language=es_AR"
+  # Exclusion de modulos con dependencia en enterprise.
+  - export EXCLUDE="l10n_ar_sale_contract"
 
 script:
   - travis_run_tests
