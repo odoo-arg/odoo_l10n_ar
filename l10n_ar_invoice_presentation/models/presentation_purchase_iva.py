@@ -32,7 +32,9 @@ class PurchaseIvaPresentation:
 
     # Datos del sistema
     def get_general_data(self):
-        "Obtiene valores predeterminados de la localizacion"
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
         self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
         self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
         self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
@@ -93,7 +95,8 @@ class PurchaseIvaPresentation:
     @staticmethod
     def get_purchase_vat_alicuotaIva(tax, operation_code):
         """
-        Si la operacion es exenta o no gravada se devuelve 3. Sino se devuelve el codigo de impuesto
+        Si la operacion es exenta o no gravada la alicuota a informar es la de 0%, y su codigo es 3. 
+        Sino se devuelve el codigo de impuesto.
         :param tax: objeto impuesto
         :param operation_code: char codigo de operacion
         """

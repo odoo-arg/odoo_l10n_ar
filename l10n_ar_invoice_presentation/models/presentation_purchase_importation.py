@@ -33,7 +33,9 @@ class PurchaseImportationPresentation:
 
     # Datos del sistema
     def get_general_data(self):
-        "Obtiene valores predeterminados de la localizacion"
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
         self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
         self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
         self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')

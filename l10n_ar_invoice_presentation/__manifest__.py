@@ -31,11 +31,8 @@
     'website': 'http://www.openpyme.com.ar',
 
     'depends': [
-        'l10n_ar',
-        'base_vat_ar',
-        'account',
-        'base_codes',
-        'l10n_ar_point_of_sale'
+        'l10n_ar_perceptions',
+        'l10n_ar_retentions'
     ],
 
     'data': [

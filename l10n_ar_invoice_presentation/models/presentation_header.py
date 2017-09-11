@@ -25,18 +25,20 @@ class AccountInvoicePresentation(models.Model):
     _inherit = 'account.invoice.presentation'
 
     def validate_header(self):
-        "Se valida que existan los campos necesarios"
-        errors = []
+        """
+        Validamos que la compania tenga los datos necesarios.
+        """
         if not self.company_id.partner_id.vat:
-            errors.append("La compania no posee CUIT")
-
-        if errors:
             raise Warning(
-                "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
+                "ERROR\nLa presentacion no pudo ser generada porque la compania no tiene CUIT\n"
             )
 
     def generate_header_file(self):
-        "Se genera el archivo de cabecera"
+        """
+        Se genera el archivo de cabecera. Utiliza la API de presentaciones y tools para poder crear los archivos
+        y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
+        """
         self.validate_header()
 
         cabecera = presentation_builder.Presentation("ventasCompras", "cabecera")

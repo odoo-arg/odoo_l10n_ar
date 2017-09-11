@@ -31,7 +31,9 @@ class PurchaseInvoicePresentation:
 
     # Datos del sistema
     def get_general_data(self):
-        "Obtiene valores predeterminados de la localizacion"
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
         self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
         self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
         self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
@@ -277,8 +279,8 @@ class PurchaseInvoicePresentation:
     def get_purchase_cantidadAlicIva(invoice, type_b, type_c, tax_group_vat):
         """
         En caso de ser comprobante B o C se devuelve 0. En caso de que todos los impuestos sean
-        exentos, devolver 1. En caso de que haya una o mas alicuotas de iva no exentas se devuelve 
-        la cantidad. En el resto de los casos se devuelve 1.
+        exentos, se devuelve su cantidad. En caso de que haya una o mas alicuotas de iva no exentas
+        se devuelve la cantidad de no exentas. En el resto de los casos se devuelve 1.
         """
         if invoice.denomination_id in [type_b, type_c]:
             return 0
@@ -286,7 +288,7 @@ class PurchaseInvoicePresentation:
         # Traemos cantidad de impuestos exentos
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
         if len(exempt_taxes) == len(invoice.tax_line_ids):
-            return 1
+            return exempt_taxes
 
         cantidadAlicIva = 0
         for tax in invoice.tax_line_ids:
@@ -359,7 +361,6 @@ class PurchaseInvoicePresentation:
         tax_group_ids = [
             invoice.env.ref('l10n_ar.tax_group_internal'),
             invoice.env.ref('l10n_ar.tax_group_vat'),
-            invoice.env.ref('l10n_ar_retentions.tax_group_retention'),
             invoice.env.ref('l10n_ar_perceptions.tax_group_perception'),
         ]
         for tax in invoice.tax_line_ids:

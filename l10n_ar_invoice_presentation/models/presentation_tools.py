@@ -32,66 +32,55 @@ class PresentationTools:
 
     @staticmethod
     def get_currency_rate_from_move(invoice):
-        # traemos el poxy
-        account_move_line_proxy = invoice.env["account.move.line"]
-        # sacamos el move de la factura
+        """
+        Obtiene la currency de la factura, a partir de las lineas del asiento.
+        :param invoice: record, factura
+        :return: float, currency. ej: 15.32
+        """
         move = invoice.move_id
-        # sacamos la cuenta de la factura
         account = invoice.account_id
-        # buscamos las move lines que pertenezcan al move y a la cuenta de la factura
+
+        # Traemos todas las lineas del asiento que tengan esa cuenta
         move_line = move.line_ids.filtered(lambda x: x.account_id == account)[0]
-        # traemos el credito o debito de la move line
+
+        # Traemos el monto de la linea, si es de debito o credito
         amount = move_line.credit or move_line.debit
-        # traemos el monto moneda
         amount_currency = abs(move_line.amount_currency)
-        # calculamos el rate de la moneda
+        # El rate sera el monto dividido la currency si es distinto de cero, sino se divide por si mismo
         currency_rate = float(amount) / float(amount_currency or amount)
 
-        # devolvemos el rate <:o)
         return currency_rate
 
     @staticmethod
     def get_invoice_type(invoice):
-        type_a = invoice.env.ref("l10n_ar_afip_tables.account_denomination_a")
-        type_b = invoice.env.ref("l10n_ar_afip_tables.account_denomination_b")
-        type_c = invoice.env.ref("l10n_ar_afip_tables.account_denomination_c")
-        type_d = invoice.env.ref("l10n_ar_afip_tables.account_denomination_d")
-        type_e = invoice.env.ref("l10n_ar_afip_tables.account_denomination_e")
-        type_m = invoice.env.ref("l10n_ar_afip_tables.account_denomination_m")
-        type_i = invoice.env.ref("l10n_ar_afip_tables.account_denomination_i")
-
+        """
+        Obtiene el tipo de factura, a partir de los codigos de AFIP.
+        :param invoice: record, factura
+        :return: string, codigo de afip del tipo de factura
+        """
+        # Guardamos en invoice_type si es nota de debito, credito o factura
         if invoice.is_debit_note:
-            types = {
-                type_a: "002",
-                type_b: "007",
-                type_c: "012",
-                type_e: "020",
-                type_m: "052",
-            }
-            return types.get(invoice.denomination_id) or ""
+            invoice_type = 'debit_note'
         else:
-            if invoice.type in ["out_invoice", "in_invoice"]:
-                types = {
-                    type_a: "001",
-                    type_b: "006",
-                    type_c: "011",
-                    type_d: "066",
-                    type_e: "019",
-                    type_m: "051",
-                    type_i: "099",
-                }
-                return types.get(invoice.denomination_id) or ""
-            elif invoice.type in ["out_refund", "in_refund"]:
-                types = {
-                    type_a: "003",
-                    type_b: "008",
-                    type_c: "013",
-                    type_e: "021",
-                    type_m: "053",
-                }
-                return types.get(invoice.denomination_id) or ""
-            else:
-                return ""
+            invoice_type = 'invoice' if invoice.type in ['out_invoice', 'in_invoice'] else 'refund'
+
+        # Buscamos el tipo de talonario segun el tipo de factura
+        document_type_id = invoice.env['document.book.document.type'].search([
+            ('type', '=', invoice_type),
+            ('category', '=', 'invoice'),
+        ], limit=1)
+        # Buscamos el tipo de voucher almacenado en sistema de acuerdo al tipo de talonario y denominacion
+        voucher_type = invoice.env['afip.voucher.type'].search([
+            ('document_type_id', '=', document_type_id.id),
+            ('denomination_id', '=', invoice.denomination_id.id)],
+            limit=1
+        )
+        print invoice.denomination_id.id
+        # Traemos el codigo de afip de la tabla de relaciones, en base a lo antes calculado
+        print ('invoice_tpye {0}, document_type_id {1}, voucher_type {2}'.format(invoice_type, document_type_id, voucher_type))
+        document_afip_code = int(invoice.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
+
+        return document_afip_code
 
     @staticmethod
     def format_amount(amount, dp=2):

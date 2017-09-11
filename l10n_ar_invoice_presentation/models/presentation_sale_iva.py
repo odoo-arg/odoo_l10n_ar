@@ -181,7 +181,7 @@ class AccountInvoicePresentation(models.Model):
         builder = presentation_builder.Presentation("ventasCompras", "ventasAlicuotas")
         # instanciamos las tools de ventas-compras
         helper = PresentationTools()
-        # Instanciamos la clase ayudadora xD de la presentacion puntual que estamos haciendo
+        # Instanciamos helper de la presentacion puntual que estamos haciendo
         presentation = SaleVatInvoicePresentation()
         # escribimos las propiedades de SaleVatInvoicePresentation
         presentation.invoice_proxy = self.env["account.invoice"]

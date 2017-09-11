@@ -194,11 +194,11 @@ class SaleInvoicePresentation:
         :return: La percepcion a no categorizados.
         """
         rate = helper.get_currency_rate_from_move(invoice)
+        no_categorizado = invoice.env.ref('l10n_ar_afip_tables.account_fiscal_position_no_categ')
         amount = sum(
-            invoice.perception_ids.filtered(
-                lambda p: not p.perception_id.jurisdiction
-            ).mapped("amount")
-        )
+            invoice.perception_ids.mapped("amount"))\
+            if invoice.partner_id.property_account_position_id == no_categorizado \
+            else 0
         return helper.format_amount(rate * amount)
 
     @staticmethod
@@ -240,7 +240,7 @@ class SaleInvoicePresentation:
         rate = helper.get_currency_rate_from_move(invoice)
         amount = sum(
             invoice.perception_ids.filtered(
-                lambda p: p.perception_id.jurisdiction == "provincial"
+                lambda p: p.perception_id.type == "gross_income"
             ).mapped("amount")
         )
         return helper.format_amount(rate * amount)
@@ -309,12 +309,14 @@ class SaleInvoicePresentation:
         # Traemos cantidad de impuestos exentos
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
         if len(exempt_taxes) == len(invoice.tax_line_ids):
-            return 1
-        cantidad_alic_iva = 0
-        tax_group_vat = invoice.env.ref("l10n_ar.tax_group_vat")
+            return exempt_taxes
+
+        tax_group_vat = invoice.env.ref('l10n_ar.tax_group_vat')
+        cantidadAlicIva = 0
         for tax in invoice.tax_line_ids:
-            cantidad_alic_iva += 1 if tax.tax_id.tax_group_id == tax_group_vat else 0
-        return cantidad_alic_iva or 1
+            cantidadAlicIva += 1 if tax.tax_id.tax_group_id == tax_group_vat else 0
+
+        return cantidadAlicIva if cantidadAlicIva > 0 else 1
 
     @staticmethod
     def get_codigo_operacion(invoice):
@@ -359,7 +361,6 @@ class SaleInvoicePresentation:
         not_other_tax_group_ids = [
             invoice.env.ref('l10n_ar.tax_group_internal'),
             invoice.env.ref('l10n_ar.tax_group_vat'),
-            invoice.env.ref('l10n_ar_retentions.tax_group_retention'),
             invoice.env.ref('l10n_ar_perceptions.tax_group_perception'),
         ]
         rate = helper.get_currency_rate_from_move(invoice)
@@ -371,7 +372,10 @@ class SaleInvoicePresentation:
     @staticmethod
     def get_fecha_vto_pago(invoice, helper):
         """
-        Campo 22: Fecha de vencimiento de pago.
+        Campo 22: Fecha de vencimiento de pago. Sólo se informará cuando la prestación se corresponda 
+        con un servicio público, siendo obligatorio para los comprobantes tipo '017 - Liquidación de 
+        Servicios Públicos Clase A' y '018 – Liquidación de Servicios Públicos Clase B' y opcional 
+        para el resto de los comprobantes.
         :param invoice: La factura de la cual se sacara la informacion.
         :param helper: Las presentation tools.
         :return: La fecha de vencimiento de pago.
@@ -396,7 +400,7 @@ class AccountInvoicePresentation(models.Model):
         builder = presentation_builder.Presentation("ventasCompras", "ventasCbte")
         # instanciamos las tools de ventas-compras
         helper = PresentationTools()
-        # Instanciamos la clase ayudadora xD de la presentacion puntual que estamos haciendo
+        # Instanciamos helper de la presentacion puntual que estamos haciendo
         presentation = SaleInvoicePresentation()
         # escribimos las propiedades de SaleAccountInvoicePresentation
         presentation.invoice_proxy = self.env["account.invoice"]

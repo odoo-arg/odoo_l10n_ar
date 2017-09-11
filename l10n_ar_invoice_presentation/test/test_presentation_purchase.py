@@ -84,7 +84,8 @@ class TestPresentationPurchase(TransactionCase):
             "partner_id": partner.id,
             "type": "in_invoice",
             "date_invoice": "2017-08-01",
-        })
+            "denomination_id": self.env.ref('l10n_ar_afip_tables.account_denomination_d').id
+        }) #TODO: arreglar eso del denomination que pone 4 en lugar de 6!!!!!!!!!!!!!!!!!!
         # Ejecuto onchange de partner
         invoice.onchange_partner_id()
 
@@ -115,6 +116,7 @@ class TestPresentationPurchase(TransactionCase):
         super(TestPresentationPurchase, self).setUp()
         self.get_general_data()
         self.env.user.company_id.partner_id.property_account_position_id = self.fiscal_position_ri
+        # self.create_document_books()
 
         self.presentation = self.create_presentation()
 
