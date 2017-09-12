@@ -70,14 +70,23 @@ class PresentationTools:
             ('category', '=', 'invoice'),
         ], limit=1)
         # Buscamos el tipo de voucher almacenado en sistema de acuerdo al tipo de talonario y denominacion
-        voucher_type = invoice.env['afip.voucher.type'].search([
-            ('document_type_id', '=', document_type_id.id),
-            ('denomination_id', '=', invoice.denomination_id.id)],
-            limit=1
-        )
-        print invoice.denomination_id.id
+        # TODO: Para los despachos de importacion el voucher type no va a existir por un problema de mapeo
+        # El siguiente bloque if/else es temporal y debe ser removido.
+        type_i = invoice.env.ref('l10n_ar_afip_tables.account_denomination_i')
+        if invoice.denomination_id == invoice.env.ref('l10n_ar_afip_tables.account_denomination_d'):
+            voucher_type = invoice.env['afip.voucher.type'].search([
+                ('document_type_id', '=', document_type_id.id),
+                ('denomination_id', '=', type_i.id)],
+                limit=1
+            )
+        else:
+            # Conservar solo esta porcion de codigo
+            voucher_type = invoice.env['afip.voucher.type'].search([
+                ('document_type_id', '=', document_type_id.id),
+                ('denomination_id', '=', invoice.denomination_id.id)],
+                limit=1
+            )
         # Traemos el codigo de afip de la tabla de relaciones, en base a lo antes calculado
-        print ('invoice_tpye {0}, document_type_id {1}, voucher_type {2}'.format(invoice_type, document_type_id, voucher_type))
         document_afip_code = int(invoice.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
 
         return document_afip_code

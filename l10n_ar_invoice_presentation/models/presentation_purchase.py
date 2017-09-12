@@ -166,7 +166,7 @@ class PurchaseInvoicePresentation:
     @staticmethod
     def get_purchase_importeTotalNG(invoice, helper, cod_ope):
         """
-        Devuelve el importe total no gravado. Si el importe total de la operacion es 'N' devuelve 0.
+        Devuelve el importe total no gravado. Si el codigo de operacion es 'N' devuelve 0.
         :param cod_ope: Codigo de operacion. ej: 'N'   
         :return: string, monto ej: 23.00-> '2300' , 0->'0'
         """
@@ -288,7 +288,7 @@ class PurchaseInvoicePresentation:
         # Traemos cantidad de impuestos exentos
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
         if len(exempt_taxes) == len(invoice.tax_line_ids):
-            return exempt_taxes
+            return len(exempt_taxes)
 
         cantidadAlicIva = 0
         for tax in invoice.tax_line_ids:

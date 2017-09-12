@@ -195,8 +195,7 @@ class SaleInvoicePresentation:
         """
         rate = helper.get_currency_rate_from_move(invoice)
         no_categorizado = invoice.env.ref('l10n_ar_afip_tables.account_fiscal_position_no_categ')
-        amount = sum(
-            invoice.perception_ids.mapped("amount"))\
+        amount = sum(invoice.perception_ids.mapped("amount"))\
             if invoice.partner_id.property_account_position_id == no_categorizado \
             else 0
         return helper.format_amount(rate * amount)
@@ -309,13 +308,12 @@ class SaleInvoicePresentation:
         # Traemos cantidad de impuestos exentos
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
         if len(exempt_taxes) == len(invoice.tax_line_ids):
-            return exempt_taxes
+            return len(exempt_taxes)
 
         tax_group_vat = invoice.env.ref('l10n_ar.tax_group_vat')
         cantidadAlicIva = 0
         for tax in invoice.tax_line_ids:
             cantidadAlicIva += 1 if tax.tax_id.tax_group_id == tax_group_vat else 0
-
         return cantidadAlicIva if cantidadAlicIva > 0 else 1
 
     @staticmethod
@@ -380,11 +378,8 @@ class SaleInvoicePresentation:
         :param helper: Las presentation tools.
         :return: La fecha de vencimiento de pago.
         """
-        type_e = invoice.env.ref("l10n_ar_afip_tables.account_denomination_e")
-        ret = "".zfill(8)
-        if invoice.denomination_id.id != type_e.id:
-            ret = helper.format_date(invoice.date_due)
-        return ret
+        # TODO: no implementado
+        return "".zfill(8)
 
 
 class AccountInvoicePresentation(models.Model):

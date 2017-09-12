@@ -151,6 +151,6 @@ class TestPresentationSale(TransactionCase):
         # Otros tributos
         assert decoded[243:258] == "000000000000000"
         # Fecha de vencimiento de pago
-        assert decoded[258:266] == "20000801"
+        assert decoded[258:266] == "00000000"
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
