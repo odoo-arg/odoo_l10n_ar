@@ -17,7 +17,7 @@
 ##############################################################################
 
 import pytz
-from datetime import datetime
+from datetime import datetime, date
 from l10n_ar_api import documents
 from dateutil.relativedelta import relativedelta
 from l10n_ar_api.afip_webservices import wsfe, wsaa
@@ -116,6 +116,27 @@ class AccountInvoice(models.Model):
     def _commit(self):
         self.env.cr.commit()
 
+    @staticmethod
+    def convert_currency(from_currency, to_currency, amount=1.0, d=None):
+        """
+        Convierte `amount` de `from_currency` a `to_currency` segun la cotizacion de la fecha `d`.
+        :param from_currency: La moneda que queremos convertir.
+        :param to_currency: La moneda a la que queremos convertir.
+        :param amount: La cantidad que queremos convertir (1 para sacar el rate de la moneda).
+        :param d: La fecha que se usara para tomar la cotizacion de ambas monedas.
+        :return: El valor en la moneda convertida segun el rate de conversion.
+        """
+        if from_currency.id == to_currency.id:
+            return amount
+        if not d:
+            d = str(date.today())
+        from_currency_with_context = from_currency.with_context(date=d)
+        to_currency_with_context = to_currency.with_context(date=d)
+        converted_amount = from_currency_with_context.compute(
+            amount, to_currency_with_context, round=False
+        )
+        return converted_amount
+
     def _set_electronic_invoice_details(self, document_afip_code):
         """ Mapea los valores de ODOO al objeto ElectronicInvoice"""
 
@@ -144,9 +165,16 @@ class AccountInvoice(models.Model):
             'partner.document.type',
             self.partner_id.partner_document_type_id.id
         )
-        # TODO: CAMBIAR DESPUES DE IMPORTAR MONEDAS
-        electronic_invoice.mon_id = 'PES'
-        electronic_invoice.mon_cotiz = self.currency_id.compute(1, self.company_id.currency_id)
+        electronic_invoice.mon_id = self.env['codes.models.relation'].get_code(
+            'res.currency',
+            self.currency_id.id
+        )
+        electronic_invoice.mon_cotiz = self.convert_currency(
+            from_currency=self.currency_id,
+            to_currency=self.company_id.currency_id,
+            d=self.date_invoice
+        )
+
         electronic_invoice.concept = int(codes_models_proxy.get_code(
             'afip.concept',
             self.afip_concept_id.id
