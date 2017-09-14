@@ -312,7 +312,7 @@ class AccountInvoice(models.Model):
     def get_document_book_type(self):
         for inv in self:
             if inv.denomination_id and inv.pos_ar_id:
-                inv.document_book_type = self.get_document_book().book_type_id.type
+                inv.document_book_type = inv.get_document_book().book_type_id.type
 
     full_name = fields.Char(compute='get_full_name', string="Numero")
 
