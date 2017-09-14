@@ -17,10 +17,12 @@ from presentation_tools import PresentationTools
 
 
 class SaleInvoicePresentation:
-    def __init__(self):
-        self.invoice_proxy = None
-        self.invoice_date_from = None
-        self.invoice_date_to = None
+    def __init__(self, invoice_proxy=None, date_from=None, date_to=None, helper=None):
+        self.invoice_proxy = invoice_proxy
+        self.invoice_date_from = date_from
+        self.invoice_date_to = date_to
+        self.helper = helper
+        self.get_general_data()
 
     def get_invoices(self):
         """
@@ -37,6 +39,17 @@ class SaleInvoicePresentation:
             ]
         )
         return invoices
+
+    # Datos del sistema
+    def get_general_data(self):
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
+        self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
+        self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
+        self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
+        self.type_i = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_i')
+        self.tax_group_vat = self.invoice_proxy.env.ref('l10n_ar.tax_group_vat')
 
     def create_line(self, builder, invoice, helper, codes_proxy):
         """
@@ -66,16 +79,10 @@ class SaleInvoicePresentation:
         line.importeTotal = self.get_importe_total(invoice, helper)
         # campo 10: importe total de conceptos que no integran el precio neto gravado
         line.importeTotalNG = self.get_importe_total_ng(invoice, helper)
-        # campo 11: percepcion a no categorizados
-        line.percepcionNC = self.get_percepcion_nc(invoice, helper)
+        # Campos 11, 13, 14 y 15 (Percepciones)
+        self.fill_perceptions(invoice,helper,line)
         # campo 12: importe de operaciones exentas
         line.importeExentos = self.get_importe_exentos(invoice, helper)
-        # campo 13: importe de percepciones o pagos a cuenta de impuestos nacionales
-        line.importePercepciones = self.get_importe_percepciones(invoice, helper)
-        # campo 14: importe de percepciones de ingresos brutos
-        line.importePerIIBB = self.get_importe_per_iibb(invoice, helper)
-        # campo 15: importe de percepciones de impuestos municipales
-        line.importePerIM = self.get_importe_per_im(invoice, helper)
         # campo 16: importe de impuestos internos
         line.importeImpInt = self.get_importe_imp_int(invoice, helper)
         # campo 17: codigo de moneda
@@ -83,7 +90,7 @@ class SaleInvoicePresentation:
         # campo 18: tipo de cambio
         line.tipoCambio = self.get_tipo_cambio(invoice, helper)
         # campo 19: cantidad de alicuotas de IVA
-        line.cantidadAlicIva = self.get_cantidad_alic_iva(invoice)
+        line.cantidadAlicIva = self.get_cantidad_alic_iva(invoice, self.tax_group_vat)
         # campo 20: codigo de operacion
         line.codigoOperacion = self.get_codigo_operacion(invoice)
         # campo 21: otros tributos
@@ -184,6 +191,15 @@ class SaleInvoicePresentation:
         rate = helper.get_currency_rate_from_move(invoice)
         amount = invoice.amount_not_taxable
         return helper.format_amount(rate * amount)
+
+    def fill_perceptions(self,invoice,helper,line):
+        no_categorizado = invoice.env.ref('l10n_ar_afip_tables.account_fiscal_position_no_categ')
+        if invoice.partner_id.property_account_position_id == no_categorizado:
+            line.percepcionNC = self.get_percepcion_nc(invoice,helper)
+        else:
+            line.importePercepciones = self.get_importe_percepciones(invoice,helper)
+            line.importePerIIBB = self.get_importe_per_iibb(invoice,helper)
+            line.importePerIM = self.get_importe_per_im(invoice,helper)
 
     @staticmethod
     def get_percepcion_nc(invoice, helper):
@@ -299,54 +315,53 @@ class SaleInvoicePresentation:
         return helper.format_amount(rate, 6)
 
     @staticmethod
-    def get_cantidad_alic_iva(invoice):
+    def get_cantidad_alic_iva(invoice, tax_group_vat):
         """
         Campo 19: Cantidad de alicuotas de IVA.
         :param invoice: La factura de la cual se sacara la informacion.
         :return: La cantidad de alicuotas de IVA.
         """
-        # Traemos cantidad de impuestos exentos
+        # Traemos impuestos exentos que no son no gravados
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
-        if len(exempt_taxes) == len(invoice.tax_line_ids):
-            return len(exempt_taxes)
 
-        tax_group_vat = invoice.env.ref('l10n_ar.tax_group_vat')
-        cantidadAlicIva = 0
-        for tax in invoice.tax_line_ids:
-            cantidadAlicIva += 1 if tax.tax_id.tax_group_id == tax_group_vat else 0
-        return cantidadAlicIva if cantidadAlicIva > 0 else 1
+        # Traemos impuestos no gravados (tipo de impuesto 'no gravado')
+        tax_compras_ng = invoice.env.ref('l10n_ar.1_vat_no_gravado_compras')
+        untaxable_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == tax_compras_ng]
+        # Si la cantidad de exentos es igual a la cantidad total sin los no gravados, devolvemos exentos
+        if len(exempt_taxes) == len(invoice.tax_line_ids) - len(untaxable_taxes):
+            return len(exempt_taxes) or 1
+
+        # En caso contrario devolvemos la cantidad de alicuotas de iva restantes, o 1
+        cantidadAlicIva = [tax for tax in invoice.tax_line_ids if tax.tax_id.tax_group_id == tax_group_vat]
+        return len(cantidadAlicIva) if len(cantidadAlicIva) > 0 else 1
 
     @staticmethod
     def get_codigo_operacion(invoice):
         """
-        Campo 20: Codigo de operacion.
-        :param invoice: La factura de la cual se sacara la informacion.
-        :return: El codigo de operacion.
+        Obtiene el codigo de operacion de acuerdo a los impuestos. Solo si la alicuota de iva es 0.
+        de zona franca.
         """
-        codigo_operacion = " "
+        if SaleInvoicePresentation.get_cantidad_alic_iva(invoice) != 0:
+            return ''
         # Exento:
-        # Si el total de impuestos es igual al total de impuestos exentos
+        # Si el total de impuestos es igual al total de impuestos exentos la operacion es exenta.
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
-        if len(exempt_taxes) == len(invoice.tax_line_ids):
-            codigo_operacion = "E"
+        if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids):
+            return 'E'
+
         # No gravado:
-        # Si el total de impuestos es igual al total de impuestos no gravados
-        not_taxed_tax_id = invoice.env.ref("l10n_ar.1_vat_no_gravado_ventas")
+        # Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
+        # En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
+        not_taxed_tax_id = invoice.env.ref('l10n_ar.1_vat_no_gravado_ventas')
         not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == not_taxed_tax_id]
         if len(not_taxed_taxes) == len(invoice.tax_line_ids):
-            codigo_operacion = "N"
-        # IMPORTACIONES
-        type_d = invoice.env.ref("l10n_ar_afip_tables.account_denomination_d")
-        # Exportaciones:
-        # Si tiene despacho de importacion y este viene directo de aduana
-        if invoice.denomination_id == type_d:
-            codigo_operacion = "X"
-            # Importaciones de zona franca
-            # Si tiene despacho de importacion y este viene de zona franca
-            ar_country = invoice.env.ref("base.ar")
-            if invoice.partner_id.country_id == ar_country:
-                codigo_operacion = "Z"
-        return codigo_operacion
+            return 'N'
+
+        # Exportacion:
+        # Si el partner tiene como posicion fiscal 'despachante de aduana' la operacion es de exportacion
+        fiscal_position_ad = invoice.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
+        if invoice.partner_id.property_account_position_id == fiscal_position_ad:
+            return 'X'
 
     @staticmethod
     def get_otros_tributos(invoice, helper):
@@ -396,15 +411,14 @@ class AccountInvoicePresentation(models.Model):
         # instanciamos las tools de ventas-compras
         helper = PresentationTools()
         # Instanciamos helper de la presentacion puntual que estamos haciendo
-        presentation = SaleInvoicePresentation()
-        # escribimos las propiedades de SaleAccountInvoicePresentation
-        presentation.invoice_proxy = self.env["account.invoice"]
-        presentation.invoice_date_from = self.date_from
-        presentation.invoice_date_to = self.date_to
+        presentation = SaleInvoicePresentation(
+            invoice_proxy = self.env["account.invoice"],
+            date_from = self.date_from,
+            date_to = self.date_to,
+            helper=helper
+        )
         # se traen todas las facturas de venta del periodo indicado
         invoices = presentation.get_invoices()
-        # validamos que tengan los datos necesarios
-        self.validate_invoices(invoices)
         # instanciamos los proxies
         codes_models_relation_proxy = self.env["codes.models.relation"]
         # se crea la linea de la presentacion para cada factura.

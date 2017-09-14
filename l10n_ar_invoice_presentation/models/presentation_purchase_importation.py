@@ -66,16 +66,16 @@ class PurchaseImportationPresentation:
         :param invoice: record, factura
         :param helper: objeto con metodos auxiliares
         """
-        if PurchaseInvoicePresentation.get_purchase_cantidadAlicIva(invoice,self.type_b,self.type_c,self.tax_group_vat) > 0:
-            for tax in invoice.tax_line_ids:
-                if tax.tax_id.tax_group_id == self.tax_group_vat:
-                    importation_line = builder.create_line()
-                    rate = helper.get_currency_rate_from_move(invoice)
 
-                    importation_line.despachoImportacion = PurchaseInvoicePresentation.get_purchase_despachoImportacion(invoice,self.type_d)
-                    importation_line.importeNetoGravado = PurchaseIvaPresentation.get_purchase_vat_importeNetoGravado(tax, rate, helper)
-                    importation_line.alicuotaIva = PurchaseIvaPresentation.get_purchase_vat_alicuotaIva(tax, PurchaseInvoicePresentation.get_purchase_codigoOperacion(invoice, self.type_d))
-                    importation_line.impuestoLiquidado = helper.format_amount(rate * tax.amount)
+        for tax in invoice.tax_line_ids:
+            if tax.tax_id.tax_group_id == self.tax_group_vat:
+                importation_line = builder.create_line()
+                rate = helper.get_currency_rate_from_move(invoice)
+
+                importation_line.despachoImportacion = PurchaseInvoicePresentation.get_purchase_despachoImportacion(invoice,self.type_d)
+                importation_line.importeNetoGravado = PurchaseIvaPresentation.get_purchase_vat_importeNetoGravado(tax, rate, helper)
+                importation_line.alicuotaIva = PurchaseIvaPresentation.get_purchase_vat_alicuotaIva(tax, PurchaseInvoicePresentation.get_purchase_codigoOperacion(invoice, self.type_d))
+                importation_line.impuestoLiquidado = helper.format_amount(rate * tax.amount)
 
 
 class AccountInvoicePresentation(models.Model):
@@ -100,8 +100,6 @@ class AccountInvoicePresentation(models.Model):
 
         # Se traen todas las facturas de compra del periodo indicado
         invoices = presentation.get_invoices()
-        # Validamos que se tengan los datos necesarios de los partners.
-        self.validate_invoices(invoices)
 
         # Se crea la linea de la presentacion para cada factura.
         map(

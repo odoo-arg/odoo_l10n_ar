@@ -32,7 +32,6 @@
 
     'depends': [
         'l10n_ar_perceptions',
-        'l10n_ar_retentions'
     ],
 
     'data': [

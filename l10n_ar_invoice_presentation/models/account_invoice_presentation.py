@@ -19,8 +19,27 @@
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError, Warning
 from datetime import datetime
+from presentation_tools import PresentationTools
 from l10n_ar_api.presentations import presentation
 
+class GeneralData:
+    def __init__(self, proxy=None):
+        self.proxy = proxy
+        self.get_general_data()
+
+    # Datos del sistema
+    def get_general_data(self):
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
+        self.type_b = self.proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
+        self.type_c = self.proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
+        self.type_d = self.proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
+        self.type_i = self.proxy.env.ref('l10n_ar_afip_tables.account_denomination_i')
+        self.tax_group_vat = self.proxy.env.ref('l10n_ar.tax_group_vat')
+        self.tax_group_internal = self.proxy.env.ref('l10n_ar.tax_group_internal')
+        self.tax_group_perception = self.proxy.env.ref('l10n_ar_perceptions.tax_group_perception')
+        self.tax_purchase_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_compras')
 
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
@@ -33,14 +52,20 @@ class AccountInvoicePresentation(models.Model):
         split_from = self.date_from.split('-')
         return split_from[0] + split_from[1]
 
-    @staticmethod
-    def validate_invoices(invoices):
+    def get_invoices(self):
+        return self.env['account.invoice'].search([
+            ('state', 'not in', ('cancel', 'draft')),
+            ('date_invoice', '>=', self.date_from),
+            ('date_invoice', '<=', self.date_to),
+        ])
+
+    def validate_invoices(self):
         """
         Validamos que las facturas tengan los datos necesarios.
         :param invoices: recordset facturas
         """
         errors = []
-        for partner in invoices.mapped('partner_id'):
+        for partner in self.invoices.mapped('partner_id'):
             if not partner.property_account_position_id:
                 errors.append("El partner {} no posee posicion fiscal.".format(partner.name))
 
@@ -50,7 +75,7 @@ class AccountInvoicePresentation(models.Model):
             if not partner.vat:
                 errors.append("El partner {} no posee numero de documento.".format(partner.name))
 
-        for invoice in invoices:
+        for invoice in self.invoices:
             if invoice.amount_total == 0:
                 errors.append("El total de la factura {} es cero.".format(invoice.name))
 
@@ -62,12 +87,32 @@ class AccountInvoicePresentation(models.Model):
                 "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
             )
 
+    def generate_a_file(self, builder, presentation):
+        """
+        Se genera el archivo de una presentacion. Utiliza la API de presentaciones y tools 
+        para poder crear los archivos y formatear los datos.
+        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
+        """
+        # Se filtran todas las facturas para la presentacion correspondiente
+        invoices = presentation.filter_invoices(self.invoices)
+
+        # Se crea la linea de la presentacion para cada factura.
+        map(lambda invoice: presentation.create_line(invoice), invoices)
+        return builder
+
     def generate_files(self):
         """
         Genera todas las presentaciones. A cada archivo generado le pone un nombre que se usa para
         crear el nombre del fichero. Luego llama a la funcion que colocara todos los archivos en
         un fichero zip.
         """
+        # Instanciamos proxy, data, helper, traemos facturas y validamos
+        invoice_proxy = self.env['account.invoice']
+        self.data = GeneralData(invoice_proxy)
+        self.helper = PresentationTools()
+        self.invoices = self.get_invoices()
+        self.validate_invoices()
+
         base_name = "REGINFO_CV_{}" + self.get_period() + ".{}"
 
         header_file = self.generate_header_file()
@@ -279,5 +324,7 @@ class AccountInvoicePresentation(models.Model):
     def check_dates(self):
         if self.date_from > self.date_to:
             raise ValidationError("La fecha 'desde' no puede ser mayor a la fecha 'hasta'.")
+
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

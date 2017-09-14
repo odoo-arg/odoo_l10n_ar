@@ -23,44 +23,29 @@ from presentation_purchase import PurchaseInvoicePresentation
 
 
 class PurchaseIvaPresentation:
-    def __init__(self, proxy=None, date_from=None, date_to=None, with_prorate=False):
-        self.invoice_proxy = proxy
-        self.date_from = date_from
-        self.date_to = date_to
+    def __init__(self, with_prorate=False, helper=None, builder=None, data=None, purchase_presentation=None):
         self.with_prorate = with_prorate
-        self.get_general_data()
+        self.helper = helper
+        self.builder = builder
+        self.data = data
+        self.purchase_presentation = purchase_presentation
 
-    # Datos del sistema
-    def get_general_data(self):
+    def filter_invoices(self, invoices):
         """
-        Obtiene valores predeterminados de la localizacion
-        """
-        self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
-        self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
-        self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
-        self.type_i = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_i')
-        self.tax_group_vat = self.invoice_proxy.env.ref('l10n_ar.tax_group_vat')
-
-    def get_invoices(self):
-        """
-        Trae las facturas para generar la presentacion de compras.
+        Trae las facturas para generar la presentacion de alicuotas de compras.
         :return: recordset, Las facturas de compras.
         """
-        invoices = self.invoice_proxy.search([
-            ('type', 'in', ('in_invoice', 'in_refund')),
-            ('state', 'not in', ('cancel', 'draft')),
-            ('date_invoice', '>=', self.date_from),
-            ('date_invoice', '<=', self.date_to),
-            ('denomination_id', 'not in', [
-                self.type_b.id,
-                self.type_c.id,
-                self.type_d.id,
-                self.type_i.id,
-            ])
-        ])
-        return invoices
+        return invoices.filtered(
+            lambda i: i.type in ['in_invoice', 'in_refund']
+                      and i.denomination_id not in [
+                            self.data.type_b,
+                            self.data.type_c,
+                            self.data.type_d,
+                            self.data.type_i
+                        ]
+        )
 
-    def create_line(self, builder, invoice, helper):
+    def create_line(self, invoice):
         """
         Crea x lineas por cada factura, segun la cantidad de alicuotas usando el builder y el helper
         para todas las facturas que no son de importacion.
@@ -68,39 +53,61 @@ class PurchaseIvaPresentation:
         :param invoice: record, factura
         :param helper: objeto con metodos auxiliares
         """
-        if PurchaseInvoicePresentation.get_purchase_cantidadAlicIva(invoice,self.type_b,self.type_c,self.tax_group_vat) > 0:
-            for tax in invoice.tax_line_ids:
-                if (
-                    tax.tax_id.tax_group_id == self.tax_group_vat
-                    or PurchaseInvoicePresentation.get_purchase_codigoOperacion(invoice, self.type_d) == 'N'
-                ):
-                    line = builder.create_line()
-                    rate = helper.get_currency_rate_from_move(invoice)
-                    line.tipoComprobante = PurchaseInvoicePresentation.get_purchase_tipo(invoice, helper)
-                    line.puntoDeVenta = PurchaseInvoicePresentation.get_purchase_puntoDeVenta(invoice,self.type_d)
-                    line.numeroComprobante = PurchaseInvoicePresentation.get_purchase_numeroComprobante(invoice,self.type_d)
-                    line.codigoDocVend = PurchaseInvoicePresentation.get_purchase_codigoDocumento(invoice)
-                    line.numeroIdVend = PurchaseInvoicePresentation.get_purchase_numeroVendedor(invoice)
-                    line.importeNetoGravado = self.get_purchase_vat_importeNetoGravado(tax, rate, helper)
-                    line.alicuotaIva = self.get_purchase_vat_alicuotaIva(tax, PurchaseInvoicePresentation.get_purchase_codigoOperacion(invoice, self.type_d))
-                    line.impuestoLiquidado = helper.format_amount(rate * tax.amount)
+        rate = self.helper.get_currency_rate_from_move(invoice)
+        invoice_type = self.purchase_presentation.get_purchase_tipo(invoice)
+        point_of_sale = self.purchase_presentation.get_purchase_puntoDeVenta(invoice)
+        invoice_number = self.purchase_presentation.get_purchase_numeroComprobante(invoice)
+        document_code = self.purchase_presentation.get_purchase_codigoDocumento(invoice)
+        supplier_doc = self.purchase_presentation.get_purchase_numeroVendedor(invoice)
+        invoice_vat_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id.tax_group_id == self.data.tax_group_vat)
+
+        for tax in invoice_vat_taxes:
+            line = self.builder.create_line()
+            line.tipoComprobante = invoice_type
+            line.puntoDeVenta = point_of_sale
+            line.numeroComprobante = invoice_number
+            line.codigoDocVend = document_code
+            line.numeroIdVend = supplier_doc
+            line.importeNetoGravado = self.get_purchase_vat_importeNetoGravado(tax, rate)
+            line.alicuotaIva = self.get_purchase_vat_alicuotaIva(tax)
+            line.impuestoLiquidado = self.helper.format_amount(rate * tax.amount)
+
+        # En caso que no tenga ningun impuesto, se informa una alicuota por defecto (Iva 0%)
+        if not invoice_vat_taxes:
+            line = self.builder.create_line()
+            line.tipoComprobante = invoice_type
+            line.puntoDeVenta = point_of_sale
+            line.numeroComprobante = invoice_number
+            line.codigoDocVend = document_code
+            line.numeroIdVend = supplier_doc
+            line.importeNetoGravado = '0'
+            line.alicuotaIva = '3'
+            line.impuestoLiquidado = '0'
 
     # ----------------CAMPOS ALICUOTAS----------------
     # Campo 6
-    @staticmethod
-    def get_purchase_vat_importeNetoGravado(tax, rate, helper):
-        return helper.format_amount(tax.base * rate)
+    def get_purchase_vat_importeNetoGravado(self, tax, rate):
+        """
+        Obtiene el neto gravado de la operacion. Para los impuestos exentos o no gravados devuelve 0.
+        :param tax: objeto impuesto
+        :param rate: rate de moneda. Ej: 15.63
+        :param helper: tools de la presentacion
+        :return: string, monto del importe
+        """
+        if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
+            return '0'
+        return self.helper.format_amount(tax.base * rate)
 
     # Campo 7
-    @staticmethod
-    def get_purchase_vat_alicuotaIva(tax, operation_code):
+    def get_purchase_vat_alicuotaIva(self, tax):
         """
-        Si la operacion es exenta o no gravada la alicuota a informar es la de 0%, y su codigo es 3. 
+        Si el impuesto es exento o no gravado, la alicuota a informar es la de 0%, y su codigo es 3,
+        ya que el SIAP no contempla los codigos 1(no gravado) ni 2(exento).
         Sino se devuelve el codigo de impuesto.
         :param tax: objeto impuesto
         :param operation_code: char codigo de operacion
         """
-        if operation_code in ['E', 'N']:
+        if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
             return '3'
 
         codes_model_proxy = tax.env['codes.models.relation']
@@ -125,25 +132,20 @@ class AccountInvoicePresentation(models.Model):
         """
         # Instanciamos API, tools y datos generales
         builder = presentation_builder.Presentation('ventasCompras', 'comprasAlicuotas')
-        helper = PresentationTools()
+        # Mejorar esta repeticion
+        purchase_presentation = PurchaseInvoicePresentation(
+            with_prorate=self.with_prorate,
+            helper = self.helper,
+            data = self.data,
+            builder=builder,
+        )
         presentation = PurchaseIvaPresentation(
-            proxy=self.env["account.invoice"],
-            date_from=self.date_from,
-            date_to=self.date_to,
-            with_prorate=self.with_prorate
+            with_prorate = self.with_prorate,
+            helper = self.helper,
+            data = self.data,
+            builder = builder,
+            purchase_presentation = purchase_presentation
         )
-
-        # Se traen todas las facturas de compra del periodo indicado
-        invoices = presentation.get_invoices()
-        # Validamos que se tengan los datos necesarios de los partners.
-        self.validate_invoices(invoices)
-
-        # Se crea la linea de la presentacion para cada factura.
-        map(
-            lambda invoice: presentation.create_line(
-                builder, invoice, helper
-            ), invoices
-        )
-        return builder
+        return self.generate_a_file(builder, presentation)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

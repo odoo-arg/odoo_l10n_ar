@@ -18,10 +18,22 @@ from presentation_sale import SaleInvoicePresentation
 
 
 class SaleVatInvoicePresentation:
-    def __init__(self):
-        self.invoice_proxy = None
-        self.invoice_date_from = None
-        self.invoice_date_to = None
+    def __init__(self, invoice_proxy=None, date_from=None, date_to=None):
+        self.invoice_proxy = invoice_proxy
+        self.invoice_date_from = date_from
+        self.invoice_date_to = date_to
+        self.get_general_data()
+
+    # Datos del sistema
+    def get_general_data(self):
+        """
+        Obtiene valores predeterminados de la localizacion
+        """
+        self.type_b = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_b')
+        self.type_c = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_c')
+        self.type_d = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_d')
+        self.type_i = self.invoice_proxy.env.ref('l10n_ar_afip_tables.account_denomination_i')
+        self.tax_group_vat = self.invoice_proxy.env.ref('l10n_ar.tax_group_vat')
 
     def get_invoices(self):
         """
@@ -46,27 +58,30 @@ class SaleVatInvoicePresentation:
         :param invoice: record, factura
         :param helper: objeto con metodos auxiliares
         """
-        tax_group_vat = invoice.env.ref("l10n_ar.tax_group_vat")
-        if SaleInvoicePresentation.get_cantidad_alic_iva(invoice) > 0:
-            for tax in invoice.tax_line_ids:
-                if (
-                    tax.tax_id.tax_group_id != tax_group_vat
-                    and SaleInvoicePresentation.get_codigo_operacion(invoice) != 'N'
-                ):
-                    continue
-                line = builder.create_line()
-                # campo 1: tipo de comprobante
-                line.tipoComprobante = SaleInvoicePresentation.get_tipo(invoice, helper)
-                # campo 2: punto de venta
-                line.puntoDeVenta = SaleInvoicePresentation.get_punto_venta(invoice)
-                # campo 3: numero de comprobante
-                line.numeroComprobante = SaleInvoicePresentation.get_numero_comprobante(invoice)
-                # campo 4: importe neto gravado
-                line.importeNetoGravado = self.get_importe_neto_gravado(invoice, helper)
-                # campo 5: alicuota de iva
-                line.alicuotaIva = self.get_alicuota_iva(invoice, tax, codes_models_proxy, helper)
-                # campo 6: impuesto liquidado
-                line.impuestoLiquidado = self.get_impuesto_liquidado(invoice, tax, helper)
+        invoice_vat_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id.tax_group_id == self.tax_group_vat)
+
+        tipoComprobante = SaleInvoicePresentation.get_tipo(invoice, helper)
+        puntoDeVenta = SaleInvoicePresentation.get_punto_venta(invoice)
+        numeroComprobante = SaleInvoicePresentation.get_numero_comprobante(invoice)
+
+        for tax in invoice_vat_taxes:
+            line = builder.create_line()
+            line.tipoComprobante = tipoComprobante
+            line.puntoDeVenta = puntoDeVenta
+            line.numeroComprobante = numeroComprobante
+            line.importeNetoGravado = self.get_importe_neto_gravado(invoice, helper)
+            line.alicuotaIva = self.get_alicuota_iva(tax)
+            line.impuestoLiquidado = self.get_impuesto_liquidado(invoice, tax, helper)
+
+        # En caso que no tenga ningun impuesto, se informa una alicuota por defecto (Iva 0%)
+        if not invoice_vat_taxes:
+            line = builder.create_line()
+            line.tipoComprobante = tipoComprobante
+            line.puntoDeVenta = puntoDeVenta
+            line.numeroComprobante = numeroComprobante
+            line.importeNetoGravado = '0'
+            line.alicuotaIva = '3'
+            line.impuestoLiquidado = '0'
 
     @staticmethod
     def get_importe_neto_gravado(invoice, helper):
@@ -81,17 +96,25 @@ class SaleVatInvoicePresentation:
         return helper.format_amount(rate * amount)
 
     @staticmethod
-    def get_alicuota_iva(invoice, tax, codes_models_proxy, helper):
+    def get_alicuota_iva(tax):
         """
-        Campo 5: Alicuota de IVA.
-        :param invoice: La factura de la cual se sacara la informacion.
-        :param tax: El impuesto de la linea de la factura (o uno de ellos).
-        :param codes_models_proxy: El proxy de codes models relation.
-        :return: La alicuota de IVA.
+        Si el impuesto es exento o no gravado, la alicuota a informar es la de 0%, y su codigo es 3,
+        ya que el SIAP no contempla los codigos 1(no gravado) ni 2(exento).
+        Sino se devuelve el codigo de impuesto.
+        :param tax: objeto impuesto
+        :param operation_code: char codigo de operacion
         """
-        if SaleInvoicePresentation.get_codigo_operacion(invoice) in ["E","N"]:
-            return "3"
-        tax_code = codes_models_proxy.get_code("account.tax", tax.tax_id.id)
+        tax_compras_ng = tax.env.ref('l10n_ar.1_vat_no_gravado_compras')
+        if tax.tax_id.is_exempt or tax.tax_id == tax_compras_ng:
+            return '3'
+
+        codes_model_proxy = tax.env['codes.models.relation']
+
+        tax_code = codes_model_proxy.get_code(
+            'account.tax',
+            tax.tax_id.id
+        )
+
         return tax_code
 
     @staticmethod
@@ -122,15 +145,13 @@ class AccountInvoicePresentation(models.Model):
         # instanciamos las tools de ventas-compras
         helper = PresentationTools()
         # Instanciamos helper de la presentacion puntual que estamos haciendo
-        presentation = SaleVatInvoicePresentation()
-        # escribimos las propiedades de SaleVatInvoicePresentation
-        presentation.invoice_proxy = self.env["account.invoice"]
-        presentation.invoice_date_from = self.date_from
-        presentation.invoice_date_to = self.date_to
+        presentation = SaleVatInvoicePresentation(
+            invoice_proxy=self.env["account.invoice"],
+            date_from=self.date_from,
+            date_to=self.date_to
+        )
         # se traen todas las facturas de venta del periodo indicado
         invoices = presentation.get_invoices()
-        # validamos tener todos los datos necesarios
-        self.validate_invoices(invoices)
         # instanciamos los proxies
         codes_models_relation_proxy = self.env["codes.models.relation"]
         # se crea la linea de la presentacion para cada factura.

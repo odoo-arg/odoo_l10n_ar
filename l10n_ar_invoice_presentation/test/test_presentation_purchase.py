@@ -135,13 +135,13 @@ class TestPresentationPurchase(TransactionCase):
         # Numero de comprobante
         assert decoded[16:36] == "00000000000000000001"
         # Numero de despacho de importacion
-        assert decoded[36:52] == "                "
+        assert decoded[36:52] == "".ljust(16)
         # Codigo de documento del proveedor
         assert decoded[52:54] == "80"
         # Numero de identificacion del proveedor
         assert decoded[54:74] == "00000000020307810795"
         # Apellido y nombre del proveedor
-        assert decoded[74:104] == "Test Partner                  "
+        assert decoded[74:104] == "Test Partner".ljust(30)
         # Importe total de la operacion
         assert decoded[104:119] == "000000000121000"
         # Importe total de conceptos que no integran el precio neto gravado
@@ -173,7 +173,7 @@ class TestPresentationPurchase(TransactionCase):
         # CUIT emisor
         assert decoded[269:280] == "00000000000"
         # Denominacion emisor
-        assert decoded[280:310] == "                              "
+        assert decoded[280:310] == "".ljust(30)
         # IVA comision
         assert decoded[310:325] == "000000000000000"
 
@@ -220,7 +220,7 @@ class TestPresentationPurchase(TransactionCase):
         # Numero de identificacion del proveedor
         assert decoded[54:74] == "00000000020307810795"
         # Apellido y nombre del proveedor
-        assert decoded[74:104] == "Test Partner                  "
+        assert decoded[74:104] == "Test Partner".ljust(30)
         # Importe total de la operacion
         assert decoded[104:119] == "000000000121000"
         # Importe total de conceptos que no integran el precio neto gravado
@@ -252,7 +252,7 @@ class TestPresentationPurchase(TransactionCase):
         # CUIT emisor
         assert decoded[269:280] == "00000000000"
         # Denominacion emisor
-        assert decoded[280:310] == "                              "
+        assert decoded[280:310] == "".ljust(30)
         # IVA comision
         assert decoded[310:325] == "000000000000000"
 
