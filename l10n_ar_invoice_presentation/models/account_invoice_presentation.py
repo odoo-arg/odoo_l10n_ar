@@ -21,6 +21,11 @@ from openerp.exceptions import ValidationError, Warning
 from datetime import datetime
 from presentation_tools import PresentationTools
 from l10n_ar_api.presentations import presentation
+from presentation_purchase import PurchaseInvoicePresentation
+from presentation_purchase_iva import PurchaseIvaPresentation
+from presentation_purchase_importation import PurchaseImportationPresentation
+from presentation_sale import SaleInvoicePresentation
+from presentation_sale_iva import SaleVatInvoicePresentation
 
 class GeneralData:
     def __init__(self, proxy=None):
@@ -40,6 +45,8 @@ class GeneralData:
         self.tax_group_internal = self.proxy.env.ref('l10n_ar.tax_group_internal')
         self.tax_group_perception = self.proxy.env.ref('l10n_ar_perceptions.tax_group_perception')
         self.tax_purchase_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_compras')
+        self.codes_model_proxy = self.env['codes.models.relation']
+        self.fiscal_position_ad = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
 
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
@@ -87,18 +94,58 @@ class AccountInvoicePresentation(models.Model):
                 "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
             )
 
-    def generate_a_file(self, builder, presentation):
-        """
-        Se genera el archivo de una presentacion. Utiliza la API de presentaciones y tools 
-        para poder crear los archivos y formatear los datos.
-        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
-        """
-        # Se filtran todas las facturas para la presentacion correspondiente
-        invoices = presentation.filter_invoices(self.invoices)
+    def generate_presentations(self):
+        invoice_proxy = self.env['account.invoice']
+        data = GeneralData(invoice_proxy)
+        helper = PresentationTools()
 
-        # Se crea la linea de la presentacion para cada factura.
-        map(lambda invoice: presentation.create_line(invoice), invoices)
-        return builder
+        purchase_builder = presentation.Presentation('ventasCompras', 'comprasCbte')
+        purchase_iva_builder = presentation.Presentation('ventasCompras', 'comprasAlicuotas')
+        purchase_import_builder = presentation.Presentation('ventasCompras', 'comprasImportaciones')
+        sale_builder = presentation.Presentation('ventasCompras', 'ventasCbte')
+        sale_iva_builder = presentation.Presentation('ventasCompras', 'ventasAlicuotas')
+
+        self.purchase_presentation = PurchaseInvoicePresentation(
+            helper=helper,
+            data=data,
+            builder=purchase_builder,
+            with_prorate=self.with_prorate,
+        )
+        self.purchase_iva_presentation = PurchaseIvaPresentation(
+            helper=helper,
+            data=data,
+            builder=purchase_iva_builder,
+            purchase_presentation=self.purchase_presentation
+        )
+        self.purchase_import_presentation = PurchaseImportationPresentation(
+            helper=helper,
+            data=data,
+            builder=purchase_import_builder,
+            purchase_presentation=self.purchase_presentation,
+            purchase_iva_presentation=self.purchase_iva_presentation
+        )
+        self.sale_presentation = SaleInvoicePresentation(
+            helper=helper,
+            data=data,
+            builder=sale_builder,
+        )
+        self.sale_iva_presentation = SaleVatInvoicePresentation(
+            helper=helper,
+            data=data,
+            builder=sale_iva_builder,
+            sale_presentation=self.sale_presentation
+        )
+
+    @staticmethod
+    def generate_reginfo_zip_file(files):
+        """
+        Instancia el exportador en zip de ficheros de la API, y exporta todas las presentaciones.
+        :param files: generators de las presentaciones
+        :return: archivo zip
+        """
+        exporter = presentation.PresentationZipExporter()
+        map(lambda file: exporter.add_element(file), files)
+        return exporter.export_elements()
 
     def generate_files(self):
         """
@@ -106,36 +153,38 @@ class AccountInvoicePresentation(models.Model):
         crear el nombre del fichero. Luego llama a la funcion que colocara todos los archivos en
         un fichero zip.
         """
-        # Instanciamos proxy, data, helper, traemos facturas y validamos
-        invoice_proxy = self.env['account.invoice']
-        self.data = GeneralData(invoice_proxy)
-        self.helper = PresentationTools()
+        # Traemos y validamos todas las facturas del periodo seleccionado
         self.invoices = self.get_invoices()
         self.validate_invoices()
 
+        # Instanciamos presentaciones
+        self.generate_presentations()
+
+        # Creamos nombre base para los archivos
         base_name = "REGINFO_CV_{}" + self.get_period() + ".{}"
 
         header_file = self.generate_header_file()
         header_file.file_name = base_name.format("CABECERA_", "txt")
 
-        sale_file = self.generate_sale_file()
+        sale_file = self.sale_presentation.generate(self.invoices)
         sale_file.file_name = base_name.format("VENTAS_CBTE_", "txt")
 
-        sale_vat_file = self.generate_sale_vat_file()
+        sale_vat_file = self.sale_iva_presentation.generate(self.invoices)
         sale_vat_file.file_name = base_name.format("VENTAS_ALICUOTAS_", "txt")
 
-        purchase_file = self.generate_purchase_file()
+        purchase_file = self.purchase_presentation.generate(self.invoices)
         purchase_file.file_name = base_name.format("COMPRAS_CBTE_", "txt")
 
-        purchase_vat_file = self.generate_purchase_vat_file()
+        purchase_vat_file = self.purchase_iva_presentation.generate(self.invoices)
         purchase_vat_file.file_name = base_name.format("COMPRAS_ALICUOTAS_", "txt")
 
-        purchase_imports_file = self.generate_purchase_imports_file()
+        purchase_imports_file = self.purchase_import_presentation.generate(self.invoices)
         purchase_imports_file.file_name = base_name.format("COMPRAS_IMPORTACION_", "txt")
 
-        fiscal_credit_service_import_file = self.generate_fiscal_credit_service_import_file()
+        fiscal_credit_service_import_file = None
         fiscal_credit_service_import_file.file_name = base_name.format("CREDITO_FISCAL_SERVICIOS_", "txt")
 
+        # Se genera el archivo zip que contendra los archivos
         reginfo_zip_file = self.generate_reginfo_zip_file(
             [
                 header_file,
@@ -147,7 +196,7 @@ class AccountInvoicePresentation(models.Model):
                 fiscal_credit_service_import_file
             ]
         )
-
+        #Se escriben en la presentacion los datos generados
         self.write({
             'generation_time': datetime.now(),
 
@@ -175,42 +224,6 @@ class AccountInvoicePresentation(models.Model):
             'reginfo_zip_filename': base_name.format("", "zip"),
             'reginfo_zip_file': reginfo_zip_file,
         })
-
-    """
-    Se declaran los metodos que generan las presentaciones para que puedan heredarse e implementarse
-    en clases separadas. De este modo tenemos menos codigo en un solo archivo.
-    """
-    def generate_header_file(self):
-        raise NotImplementedError
-
-    def generate_sale_file(self):
-        raise NotImplementedError
-
-    def generate_sale_vat_file(self):
-        raise NotImplementedError
-
-    def generate_purchase_file(self):
-        raise NotImplementedError
-
-    def generate_purchase_vat_file(self):
-        raise NotImplementedError
-
-    def generate_purchase_imports_file(self):
-        raise NotImplementedError
-
-    def generate_fiscal_credit_service_import_file(self):
-        raise NotImplementedError
-
-    @staticmethod
-    def generate_reginfo_zip_file(files):
-        """
-        Instancia el exportador en zip de ficheros de la API, y exporta todas las presentaciones.
-        :param files: generators de las presentaciones
-        :return: archivo zip
-        """
-        exporter = presentation.PresentationZipExporter()
-        map(lambda file: exporter.add_element(file), files)
-        return exporter.export_elements()
 
     name = fields.Char(
         string="Nombre",

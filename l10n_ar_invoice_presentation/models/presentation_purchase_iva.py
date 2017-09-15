@@ -23,8 +23,7 @@ from presentation_purchase import PurchaseInvoicePresentation
 
 
 class PurchaseIvaPresentation:
-    def __init__(self, with_prorate=False, helper=None, builder=None, data=None, purchase_presentation=None):
-        self.with_prorate = with_prorate
+    def __init__(self, helper, builder, data, purchase_presentation):
         self.helper = helper
         self.builder = builder
         self.data = data
@@ -38,12 +37,17 @@ class PurchaseIvaPresentation:
         return invoices.filtered(
             lambda i: i.type in ['in_invoice', 'in_refund']
                       and i.denomination_id not in [
-                            self.data.type_b,
-                            self.data.type_c,
-                            self.data.type_d,
-                            self.data.type_i
-                        ]
+                self.data.type_b,
+                self.data.type_c,
+                self.data.type_d,
+                self.data.type_i
+            ]
         )
+
+    def generate(self, invoices):
+        filtered_invoices = self.filter_invoices(invoices)
+        map(lambda invoice: self.create_line(invoice), filtered_invoices)
+        return self.builder
 
     def create_line(self, invoice):
         """
@@ -54,7 +58,7 @@ class PurchaseIvaPresentation:
         :param helper: objeto con metodos auxiliares
         """
         rate = self.helper.get_currency_rate_from_move(invoice)
-        invoice_type = self.purchase_presentation.get_purchase_tipo(invoice)
+        invoice_type = self.purchase_presentation.get_tipo(invoice)
         point_of_sale = self.purchase_presentation.get_purchase_puntoDeVenta(invoice)
         invoice_number = self.purchase_presentation.get_purchase_numeroComprobante(invoice)
         document_code = self.purchase_presentation.get_purchase_codigoDocumento(invoice)
@@ -118,34 +122,5 @@ class PurchaseIvaPresentation:
         )
 
         return tax_code
-
-
-class AccountInvoicePresentation(models.Model):
-
-    _inherit = 'account.invoice.presentation'
-
-    def generate_purchase_vat_file(self):
-        """
-        Se genera el archivo de alicuotas de compras. Utiliza la API de presentaciones y tools para poder crear los archivos
-        y formatear los datos.
-        :return: objeto de la api (generator), con las lineas de la presentacion creadas.
-        """
-        # Instanciamos API, tools y datos generales
-        builder = presentation_builder.Presentation('ventasCompras', 'comprasAlicuotas')
-        # Mejorar esta repeticion
-        purchase_presentation = PurchaseInvoicePresentation(
-            with_prorate=self.with_prorate,
-            helper = self.helper,
-            data = self.data,
-            builder=builder,
-        )
-        presentation = PurchaseIvaPresentation(
-            with_prorate = self.with_prorate,
-            helper = self.helper,
-            data = self.data,
-            builder = builder,
-            purchase_presentation = purchase_presentation
-        )
-        return self.generate_a_file(builder, presentation)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
