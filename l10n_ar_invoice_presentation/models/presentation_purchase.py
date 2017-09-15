@@ -19,9 +19,9 @@ from presentation import Presentation
 
 
 class PurchaseInvoicePresentation(Presentation):
-    def __init__(self, with_prorate=False, builder=None, helper=None, data=None):
+    def __init__(self, with_prorate=False, builder=None, data=None):
         self.with_prorate = with_prorate
-        super(PurchaseInvoicePresentation, self).__init__(builder, helper, data)
+        super(PurchaseInvoicePresentation, self).__init__(builder, data)
 
     def filter_invoices(self, invoices):
         """
@@ -36,13 +36,11 @@ class PurchaseInvoicePresentation(Presentation):
     def create_line(self, invoice):
         """
         Crea una linea por cada factura, usando el builder y el helper
-        :param builder: objeto de la api para construir las lineas de la presentacion
         :param invoice: record, factura
-        :param helper: objeto con metodos auxiliares
         """
-        line = self.builder.create_line()
-
         self.rate = self.helper.get_currency_rate_from_move(invoice)
+
+        line = self.builder.create_line()
 
         line.fecha = self.get_fecha(invoice)
         line.tipo = self.get_tipo(invoice)
@@ -72,45 +70,54 @@ class PurchaseInvoicePresentation(Presentation):
 
     # ----------------CAMPOS COMPRAS----------------
     def get_puntoDeVenta(self, invoice):
+        """
+        Si la denominacion de la factura es tipo D, se devuelve vacio.
+        :param invoice: record.
+        :return: string, ej: '0001'
+        """
         if invoice.denomination_id == self.data.type_d:
             return ''
         return super(PurchaseInvoicePresentation, self).get_puntoDeVenta()
 
     def get_numeroComprobante(self, invoice):
+        """
+        Si la denominacion de la factura es tipo D, se devuelve vacio.
+        :param invoice: record.
+        :return: string, ej: '11110001'
+        """
         if invoice.denomination_id == self.data.type_d:
             return ''
         return super(PurchaseInvoicePresentation, self).get_numeroComprobante()
 
     def get_despachoImportacion(self, invoice):
-        """Si la denominacion de la factura es D, devolvemos el numero de la factura
-        que es el despacho de importacion"""
+        """
+        Si la denominacion de la factura es D, devolvemos el numero de la factura
+        que es el despacho de importacion.
+        :param invoice: record.
+        :return string, despacho de importacion. ej: '17HB1A73G008'
+        """
         if invoice.denomination_id != self.data.type_d:
             return ''
         return invoice.name
 
     def get_cantidadAlicIva(self, invoice):
         """
-        En caso de ser comprobante B o C se devuelve 0. En caso de que todos los impuestos sean
-        exentos, se devuelve su cantidad. En caso de que haya una o mas alicuotas de iva no exentas
-        se devuelve la cantidad de no exentas. En el resto de los casos se devuelve 1. A todos los
-        casos se le restan la cantidad de impuestos no gravados ya que no forman parte de la cuenta.
+        En caso de ser comprobante B o C se devuelve 0.
+        :param invoice: record.
         """
-        # Si el comprobante es tipo b o c, devolvemos 0
         if invoice.denomination_id in [self.data.type_b, self.data.type_c]:
             return 0
         return super(PurchaseInvoicePresentation, self).get_cantidadAlicIva(invoice)
 
     def get_codigoOperacion(self, invoice):
         """
-        Obtiene el codigo de operacion de acuerdo a los impuestos. Actualmente no contempla el caso de importaciones
-        de zona franca.
+        Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
+        En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
         :param invoice: record.
         :return string, ej 'N'
         """
         super(PurchaseInvoicePresentation, self).get_codigoOperacion()
-        # No gravado:
-        # Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
-        # En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
+
         not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == self.data.tax_purchase_ng]
         if len(not_taxed_taxes) == len(invoice.tax_line_ids):
             return 'N'
@@ -120,10 +127,12 @@ class PurchaseInvoicePresentation(Presentation):
         Se devuelve cero en caso de que no tenga alicuotas de iva. Si tiene alicuotas y la presentacion es
         sin prorrateo, se devuelven todos los impuestos. En caso contrario se devuelve la suma de los impuestos
         de iva.
+        :param invoice: record.
+        :return: string, ej: '0023'
         """
         # Si la cantidad de alicuotas es igual a 0, se devuelve 0
         if self.get_cantidadAlicIva(invoice) is 0:
-            return 0
+            return self.helper.format_amount(0)
 
         # Si es sin prorrateo , se devuelve el total de impuestos liquidado
         if not self.with_prorate:
@@ -136,6 +145,7 @@ class PurchaseInvoicePresentation(Presentation):
                 ).mapped('amount'))
             return self.helper.format_amount(vat_tax_amount * self.rate)
 
+    # No implementado
     @staticmethod
     def get_purchase_cuitEmisor():
         return 0

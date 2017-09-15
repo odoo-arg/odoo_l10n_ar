@@ -19,7 +19,6 @@
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError, Warning
 from datetime import datetime
-from presentation_tools import PresentationTools
 from l10n_ar_api.presentations import presentation
 from presentation_purchase import PurchaseInvoicePresentation
 from presentation_purchase_iva import PurchaseIvaPresentation
@@ -45,6 +44,7 @@ class GeneralData:
         self.tax_group_internal = self.proxy.env.ref('l10n_ar.tax_group_internal')
         self.tax_group_perception = self.proxy.env.ref('l10n_ar_perceptions.tax_group_perception')
         self.tax_purchase_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_compras')
+        self.tax_sale_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_ventas')
         self.codes_model_proxy = self.env['codes.models.relation']
         self.fiscal_position_ad = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
 
@@ -94,10 +94,12 @@ class AccountInvoicePresentation(models.Model):
                 "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
             )
 
+    def generate_header_file(self):
+        raise NotImplementedError
+
     def generate_presentations(self):
         invoice_proxy = self.env['account.invoice']
         data = GeneralData(invoice_proxy)
-        helper = PresentationTools()
 
         purchase_builder = presentation.Presentation('ventasCompras', 'comprasCbte')
         purchase_iva_builder = presentation.Presentation('ventasCompras', 'comprasAlicuotas')
@@ -106,46 +108,26 @@ class AccountInvoicePresentation(models.Model):
         sale_iva_builder = presentation.Presentation('ventasCompras', 'ventasAlicuotas')
 
         self.purchase_presentation = PurchaseInvoicePresentation(
-            helper=helper,
             data=data,
             builder=purchase_builder,
-            with_prorate=self.with_prorate,
+            with_prorate=self.with_prorate
         )
         self.purchase_iva_presentation = PurchaseIvaPresentation(
-            helper=helper,
             data=data,
-            builder=purchase_iva_builder,
-            purchase_presentation=self.purchase_presentation
+            builder=purchase_iva_builder
         )
         self.purchase_import_presentation = PurchaseImportationPresentation(
-            helper=helper,
             data=data,
-            builder=purchase_import_builder,
-            purchase_presentation=self.purchase_presentation,
-            purchase_iva_presentation=self.purchase_iva_presentation
+            builder=purchase_import_builder
         )
         self.sale_presentation = SaleInvoicePresentation(
-            helper=helper,
             data=data,
-            builder=sale_builder,
+            builder=sale_builder
         )
         self.sale_iva_presentation = SaleVatInvoicePresentation(
-            helper=helper,
             data=data,
-            builder=sale_iva_builder,
-            sale_presentation=self.sale_presentation
+            builder=sale_iva_builder
         )
-
-    @staticmethod
-    def generate_reginfo_zip_file(files):
-        """
-        Instancia el exportador en zip de ficheros de la API, y exporta todas las presentaciones.
-        :param files: generators de las presentaciones
-        :return: archivo zip
-        """
-        exporter = presentation.PresentationZipExporter()
-        map(lambda file: exporter.add_element(file), files)
-        return exporter.export_elements()
 
     def generate_files(self):
         """
@@ -181,7 +163,7 @@ class AccountInvoicePresentation(models.Model):
         purchase_imports_file = self.purchase_import_presentation.generate(self.invoices)
         purchase_imports_file.file_name = base_name.format("COMPRAS_IMPORTACION_", "txt")
 
-        fiscal_credit_service_import_file = None
+        fiscal_credit_service_import_file = self.generate_fiscal_credit_service_import_file()
         fiscal_credit_service_import_file.file_name = base_name.format("CREDITO_FISCAL_SERVICIOS_", "txt")
 
         # Se genera el archivo zip que contendra los archivos
@@ -332,6 +314,24 @@ class AccountInvoicePresentation(models.Model):
         comodel_name="res.company",
         default=lambda self: self.pool['res.company']._company_default_get(self.env.user.company_id),
     )
+
+    @staticmethod
+    def generate_fiscal_credit_service_import_file():
+        """
+        Esta presentacion no se utiliza actualmente
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    def generate_reginfo_zip_file(files):
+        """
+        Instancia el exportador en zip de ficheros de la API, y exporta todas las presentaciones.
+        :param files: generators de las presentaciones
+        :return: archivo zip
+        """
+        exporter = presentation.PresentationZipExporter()
+        map(lambda file: exporter.add_element(file), files)
+        return exporter.export_elements()
 
     @api.constrains('date_from', 'date_to')
     def check_dates(self):

@@ -15,19 +15,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from openerp import models
-import l10n_ar_api.presentations.presentation as presentation_builder
-from presentation_tools import PresentationTools
 from presentation_purchase import PurchaseInvoicePresentation
 
 
-class PurchaseIvaPresentation:
-    def __init__(self, helper, builder, data, purchase_presentation):
-        self.helper = helper
-        self.builder = builder
-        self.data = data
-        self.purchase_presentation = purchase_presentation
+class PurchaseIvaPresentation(PurchaseInvoicePresentation):
+    def __init__(self, builder, data):
+        super(PurchaseIvaPresentation, self).__init__(builder, data)
 
     def filter_invoices(self, invoices):
         """
@@ -44,25 +37,20 @@ class PurchaseIvaPresentation:
             ]
         )
 
-    def generate(self, invoices):
-        filtered_invoices = self.filter_invoices(invoices)
-        map(lambda invoice: self.create_line(invoice), filtered_invoices)
-        return self.builder
-
     def create_line(self, invoice):
         """
         Crea x lineas por cada factura, segun la cantidad de alicuotas usando el builder y el helper
         para todas las facturas que no son de importacion.
-        :param builder: objeto de la api para construir las lineas de la presentacion
         :param invoice: record, factura
-        :param helper: objeto con metodos auxiliares
         """
-        rate = self.helper.get_currency_rate_from_move(invoice)
-        invoice_type = self.purchase_presentation.get_tipo(invoice)
-        point_of_sale = self.purchase_presentation.get_purchase_puntoDeVenta(invoice)
-        invoice_number = self.purchase_presentation.get_purchase_numeroComprobante(invoice)
-        document_code = self.purchase_presentation.get_purchase_codigoDocumento(invoice)
-        supplier_doc = self.purchase_presentation.get_purchase_numeroVendedor(invoice)
+        self.rate = self.helper.get_currency_rate_from_move(invoice)
+
+        invoice_type = self.get_tipo(invoice)
+        point_of_sale = self.get_puntoDeVenta(invoice)
+        invoice_number = self.get_numeroComprobante(invoice)
+        document_code = self.get_codigoDocumento(invoice)
+        supplier_doc = self.get_numeroPartner(invoice)
+
         invoice_vat_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id.tax_group_id == self.data.tax_group_vat)
 
         for tax in invoice_vat_taxes:
@@ -72,9 +60,9 @@ class PurchaseIvaPresentation:
             line.numeroComprobante = invoice_number
             line.codigoDocVend = document_code
             line.numeroIdVend = supplier_doc
-            line.importeNetoGravado = self.get_purchase_vat_importeNetoGravado(tax, rate)
-            line.alicuotaIva = self.get_purchase_vat_alicuotaIva(tax)
-            line.impuestoLiquidado = self.helper.format_amount(rate * tax.amount)
+            line.importeNetoGravado = self.get_importeNetoGravado(tax)
+            line.alicuotaIva = self.get_alicuotaIva(tax)
+            line.impuestoLiquidado = self.get_impuestoLiquidado(tax)
 
         # En caso que no tenga ningun impuesto, se informa una alicuota por defecto (Iva 0%)
         if not invoice_vat_taxes:
@@ -88,39 +76,26 @@ class PurchaseIvaPresentation:
             line.alicuotaIva = '3'
             line.impuestoLiquidado = '0'
 
-    # ----------------CAMPOS ALICUOTAS----------------
-    # Campo 6
-    def get_purchase_vat_importeNetoGravado(self, tax, rate):
+    def get_importeNetoGravado(self, tax):
         """
         Obtiene el neto gravado de la operacion. Para los impuestos exentos o no gravados devuelve 0.
         :param tax: objeto impuesto
-        :param rate: rate de moneda. Ej: 15.63
-        :param helper: tools de la presentacion
         :return: string, monto del importe
         """
         if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
             return '0'
-        return self.helper.format_amount(tax.base * rate)
+        return self.helper.format_amount(tax.base * self.rate)
 
-    # Campo 7
-    def get_purchase_vat_alicuotaIva(self, tax):
+    def get_alicuotaIva(self, tax):
         """
         Si el impuesto es exento o no gravado, la alicuota a informar es la de 0%, y su codigo es 3,
         ya que el SIAP no contempla los codigos 1(no gravado) ni 2(exento).
-        Sino se devuelve el codigo de impuesto.
         :param tax: objeto impuesto
-        :param operation_code: char codigo de operacion
+        :return integer, codigo de impuesto afip, ej: 5 
         """
         if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
             return '3'
 
-        codes_model_proxy = tax.env['codes.models.relation']
-
-        tax_code = codes_model_proxy.get_code(
-            'account.tax',
-            tax.tax_id.id
-        )
-
-        return tax_code
+        return super(PurchaseIvaPresentation, self).get_alicuotaIva(tax)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -15,14 +15,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from presentation_purchase_iva import PurchaseIvaPresentation
 
-class PurchaseImportationPresentation:
-    def __init__(self, helper, builder, data, purchase_presentation, purchase_iva_presentation):
-        self.helper = helper
-        self.builder = builder
-        self.data = data
-        self.purchase_presentation = purchase_presentation
-        self.purchase_iva_presentation = purchase_iva_presentation
+
+class PurchaseImportationPresentation(PurchaseIvaPresentation):
+    def __init__(self, builder, data):
+        super(PurchaseImportationPresentation, self).__init__(builder, data)
 
     def filter_invoices(self, invoices):
         """
@@ -34,28 +32,21 @@ class PurchaseImportationPresentation:
                       and i.denomination_id in [self.data.type_d]
         )
 
-    def generate(self, invoices):
-        filtered_invoices = self.filter_invoices(invoices)
-        map(lambda invoice: self.create_line(invoice), filtered_invoices)
-        return self.builder
-
     def create_line(self, invoice):
         """
         Crea x lineas por cada factura, segun la cantidad de alicuotas usando el builder y el helper
         para todas las facturas de importacion.
-        :param builder: objeto de la api para construir las lineas de la presentacion
         :param invoice: record, factura
-        :param helper: objeto con metodos auxiliares
         """
+        self.rate = self.helper.get_currency_rate_from_move(invoice)
 
         for tax in invoice.tax_line_ids:
             if tax.tax_id.tax_group_id == self.data.tax_group_vat:
                 importation_line = self.builder.create_line()
-                rate = self.helper.get_currency_rate_from_move(invoice)
 
-                importation_line.despachoImportacion = self.purchase_presentation.get_purchase_despachoImportacion(invoice)
-                importation_line.importeNetoGravado = self.purchase_iva_presentation.get_purchase_vat_importeNetoGravado(tax, rate)
-                importation_line.alicuotaIva = self.purchase_iva_presentation.get_purchase_vat_alicuotaIva(tax)
-                importation_line.impuestoLiquidado = self.helper.format_amount(rate * tax.amount)
+                importation_line.despachoImportacion = self.get_despachoImportacion(invoice)
+                importation_line.importeNetoGravado = self.get_importeNetoGravado(tax)
+                importation_line.alicuotaIva = self.get_alicuotaIva(tax)
+                importation_line.impuestoLiquidado = self.helper.format_amount(self.rate * tax.amount)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

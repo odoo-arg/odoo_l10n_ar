@@ -12,20 +12,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
 
+
 class PresentationTools:
     def __init__(self):
         pass
-
-    @staticmethod
-    def get_invoices(self, domain, date_from, date_to):
-        invoices = self.invoice_proxy.search([
-            ('type', 'in', ('in_invoice', 'in_refund')),
-            ('state', 'not in', ('cancel', 'draft')),
-            ('date_invoice', '>=', self.date_from),
-            ('date_invoice', '<=', self.date_to),
-            ('denomination_id', '!=', self.type_i.id)
-        ])
-        return invoices
 
     @staticmethod
     def format_date(d):

@@ -15,13 +15,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import abc
+from presentation_tools import PresentationTools
 
 
 class Presentation:
-    def __init__(self, builder, helper, data):
-        self.helper = helper
-        self.builder = builder
+    __metaclass__ = abc.ABCMeta
+
+    def __init__(self, builder, data):
+        self.helper = PresentationTools()
         self.data = data
+        self.builder = builder
+        self.rate = None
+
+    def filter_invoices(self, invoices):
+        raise NotImplementedError
+
+    def create_line(self, invoice):
+        raise NotImplementedError
 
     def generate(self, invoices):
         """
@@ -182,6 +193,27 @@ class Presentation:
                            tax.tax_id.tax_group_id == self.data.tax_group_vat]
         return len(cantidadAlicIva) or 1
 
+    def get_alicuotaIva(self, tax):
+        """
+        Se devuelve el codigo de impuesto en base a las tablas de AFIP.
+        :param tax: objeto impuesto
+        :return integer, codigo de impuesto afip, ej: 5 
+        """
+        tax_code = self.data.codes_model_proxy.get_code(
+            'account.tax',
+            tax.tax_id.id
+        )
+
+        return tax_code
+
+    def get_impuestoLiquidado(self, tax):
+        """
+        Devuelve el monto liquidado del impuesto.
+        :param tax: record, impuesto.
+        :return: string, monto del impuesto, ej:'1233'
+        """
+        return self.helper.format_amount(self.rate * tax.amount)
+
     def get_codigoOperacion(self, invoice):
         """
         Obtiene el codigo de operacion de acuerdo a los impuestos. Actualmente no contempla el caso de importaciones
@@ -216,4 +248,5 @@ class Presentation:
         for tax in invoice.tax_line_ids:
             otrosTrib += tax.amount if tax.tax_id.tax_group_id not in tax_group_ids else 0
         return self.helper.format_amount(self.rate * otrosTrib)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
