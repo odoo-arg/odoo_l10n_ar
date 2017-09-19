@@ -71,12 +71,7 @@ class AccountInvoicePresentation(models.Model):
     @staticmethod
     def get_total_notTaxed_taxes(invoice, data):
         not_taxed_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id in [data.tax_sale_ng, data.tax_purchase_ng])
-        suma = sum(not_taxed_taxes.mapped('amount'))
-        import logging
-        _logger = logging.getLogger(__name__)
-
-        _logger.info('\n\n %s\n', suma)
-        return suma
+        return sum(not_taxed_taxes.mapped('amount'))
 
     def validate_invoices(self, data):
         """
