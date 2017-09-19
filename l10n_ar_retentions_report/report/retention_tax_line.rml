@@ -105,8 +105,7 @@
 
         <para style='text' alignment='left'><b>Monto del Comprobante que origina la Retención:</b> $[[ o.voucher_id.amount or '' ]]</para>
 
-        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type == 'gross_income') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
-        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type == 'vat') or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
+        <para style='text' alignment='left'><b>Base de cálculo: [[ ((o.type in ['gross_income', 'profit', 'vat']) or removeParentNode('para')) and '' ]]</b> $[[ o.base ]]</para>
 
         <para style='text' alignment='left'><b>Monto de la Retención:</b> $[[ o.amount or '' ]]</para>
 
