@@ -185,12 +185,20 @@ class Presentation:
     def get_cantidadAlicIva(self, invoice):
         """
         Devuelve la cantidad de impuestos de la factura que pertenecen al grupo 'iva', o en su defecto devuelve 1.
+        En caso de que la operacion sea exenta (E), se devuelve la cantidad de impuestos exentos.
         :param invoice: record.
         :return integer, ej: '3'
         """
-        # En caso contrario devolvemos la cantidad de alicuotas de iva, o 1 si no tiene ninguna
-        cantidadAlicIva = [tax for tax in invoice.tax_line_ids if
-                           tax.tax_id.tax_group_id == self.data.tax_group_vat]
+        if self.get_codigoOperacion(invoice) == 'E':
+            return len(self.get_invoice_exempt_taxes(invoice))
+
+        # Se cuentan todos los impuestos que no son exentos, no gravados o sin impuestos.
+        cantidadAlicIva = [
+            tax for tax in invoice.tax_line_ids
+            if tax.tax_id.tax_group_id == self.data.tax_group_vat
+            and tax.tax_id != self.data.tax_purchase_ng
+            and not tax.tax_id.is_exempt
+        ]
         return len(cantidadAlicIva) or 1
 
     def get_alicuotaIva(self, tax):
@@ -216,24 +224,49 @@ class Presentation:
 
     def get_codigoOperacion(self, invoice):
         """
-        Obtiene el codigo de operacion de acuerdo a los impuestos. Actualmente no contempla el caso de importaciones
+        Obtiene el codigo de operacion de acuerdo a los impuestos. 
+        -Si el total de impuestos menos los no gravados es igual a la cantidad de impuestos exentos, se
+        califica la operacion como exenta.
+        -Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
+        En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
+        -Actualmente no contempla el caso de importaciones
         de zona franca.
         :param invoice: record.
         :return string, ej 'N'
         """
         res = ''
-        # Exento:
-        # Si el total de impuestos es igual al total de impuestos exentos
-        exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
-        if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids):
-            res = 'E'
-
-        # Importaciones del exterior:
-        # Si tiene despacho de importacion y este viene directo de aduana
         if invoice.denomination_id == self.data.type_d:
             res = 'X'
 
+        exempt_taxes = self.get_invoice_exempt_taxes(invoice)
+        not_taxed_taxes = self.get_invoice_notTaxed_taxes(invoice)
+
+        if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids) - len(not_taxed_taxes):
+            res = 'E'
+
+        if len(not_taxed_taxes) == len(invoice.tax_line_ids):
+            res = 'N'
+
         return res
+
+    def get_invoices_vat_taxes(self, invoice):
+        exempt_taxes = self.get_invoice_exempt_taxes(invoice)
+        not_taxed_taxes = self.get_invoice_notTaxed_taxes(invoice)
+
+        if self.get_codigoOperacion(invoice) == 'E':
+            return exempt_taxes
+
+        elif self.get_codigoOperacion(invoice) == 'N':
+            return not_taxed_taxes
+
+        else:
+            return invoice.tax_line_ids.filtered(
+                lambda t: t.tax_id.tax_group_id == self.data.tax_group_vat
+                and t not in set(exempt_taxes + not_taxed_taxes)
+            )
+
+    def get_invoice_notTaxed_taxes(self, invoice):
+        raise NotImplementedError
 
     def get_otrosTrib(self, invoice):
         """
@@ -251,5 +284,75 @@ class Presentation:
         for tax in invoice.tax_line_ids:
             otrosTrib += tax.amount if tax.tax_id.tax_group_id not in tax_group_ids else 0
         return self.helper.format_amount(self.rate * otrosTrib)
+
+    @staticmethod
+    def get_invoice_exempt_taxes(invoice):
+        return [
+            tax for tax in invoice.tax_line_ids
+            if tax.tax_id.is_exempt
+        ]
+
+
+class PurchasePresentation(Presentation):
+    # ----------------CAMPOS COMPRAS----------------
+    def get_puntoDeVenta(self, invoice):
+        """
+        Si la denominacion de la factura es tipo D, se devuelve vacio.
+        :param invoice: record.
+        :return: string, ej: '0001'
+        """
+        if invoice.denomination_id == self.data.type_d:
+            return ''
+        return super(PurchasePresentation, self).get_puntoDeVenta(invoice)
+
+    def get_numeroComprobante(self, invoice):
+        """
+        Si la denominacion de la factura es tipo D, se devuelve vacio.
+        :param invoice: record.
+        :return: string, ej: '11110001'
+        """
+        if invoice.denomination_id == self.data.type_d:
+            return ''
+        return super(PurchasePresentation, self).get_numeroComprobante(invoice)
+
+    def get_despachoImportacion(self, invoice):
+        """
+        Si la denominacion de la factura es D, devolvemos el numero de la factura
+        que es el despacho de importacion.
+        :param invoice: record.
+        :return string, despacho de importacion. ej: '17HB1A73G008'
+        """
+        if invoice.denomination_id != self.data.type_d:
+            return ''
+        return invoice.name
+
+    def get_invoice_notTaxed_taxes(self, invoice):
+        return [
+            tax for tax in invoice.tax_line_ids
+            if tax.tax_id == self.data.tax_purchase_ng
+        ]
+
+
+class PurchaseVatPresentation(PurchasePresentation):
+
+    def get_importeNetoGravado(self, tax):
+        """
+        Obtiene el neto gravado de la operacion. Para los impuestos exentos o no gravados devuelve 0.
+        :param tax: objeto impuesto
+        :return: string, monto del importe
+        """
+        if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
+            return '0'
+        return self.helper.format_amount(tax.base * self.rate)
+
+
+class SalePresentation(Presentation):
+
+    def get_invoice_notTaxed_taxes(self, invoice):
+        return [
+            tax for tax in invoice.tax_line_ids
+            if tax.tax_id == self.data.tax_sale_ng
+        ]
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

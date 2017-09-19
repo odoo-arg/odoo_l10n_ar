@@ -15,10 +15,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from presentation_purchase_iva import PurchaseIvaPresentation
+from presentation import PurchaseVatPresentation
 
 
-class PurchaseImportationPresentation(PurchaseIvaPresentation):
+class PurchaseImportationPresentation(PurchaseVatPresentation):
     def __init__(self, builder, data):
         super(PurchaseImportationPresentation, self).__init__(builder, data)
 
@@ -39,14 +39,14 @@ class PurchaseImportationPresentation(PurchaseIvaPresentation):
         :param invoice: record, factura
         """
         self.rate = self.helper.get_currency_rate_from_move(invoice)
+        invoice_vat_taxes = self.get_invoices_vat_taxes(invoice)
 
-        for tax in invoice.tax_line_ids:
-            if tax.tax_id.tax_group_id == self.data.tax_group_vat:
-                importation_line = self.builder.create_line()
+        for tax in invoice_vat_taxes:
+            importation_line = self.builder.create_line()
 
-                importation_line.despachoImportacion = self.get_despachoImportacion(invoice)
-                importation_line.importeNetoGravado = self.get_importeNetoGravado(tax)
-                importation_line.alicuotaIva = self.get_alicuotaIva(tax)
-                importation_line.impuestoLiquidado = self.helper.format_amount(self.rate * tax.amount)
+            importation_line.despachoImportacion = self.get_despachoImportacion(invoice)
+            importation_line.importeNetoGravado = self.get_importeNetoGravado(tax)
+            importation_line.alicuotaIva = self.get_alicuotaIva(tax)
+            importation_line.impuestoLiquidado = self.helper.format_amount(self.rate * tax.amount)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

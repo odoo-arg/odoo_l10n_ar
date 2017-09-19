@@ -11,10 +11,10 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
-import presentation_sale
+from presentation import SalePresentation
 
 
-class SaleVatInvoicePresentation(presentation_sale.SaleInvoicePresentation):
+class SaleVatInvoicePresentation(SalePresentation):
     def __init__(self, builder, data):
         super(SaleVatInvoicePresentation, self).__init__(builder=builder, data=data)
 
@@ -38,7 +38,7 @@ class SaleVatInvoicePresentation(presentation_sale.SaleInvoicePresentation):
         puntoDeVenta = self.get_puntoDeVenta(invoice)
         numeroComprobante = self.get_numeroComprobante(invoice)
 
-        invoice_vat_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id.tax_group_id == self.data.tax_group_vat)
+        invoice_vat_taxes = self.get_invoices_vat_taxes(invoice)
 
         for tax in invoice_vat_taxes:
             line = self.builder.create_line()
@@ -76,7 +76,6 @@ class SaleVatInvoicePresentation(presentation_sale.SaleInvoicePresentation):
         Si el impuesto es exento o no gravado, la alicuota a informar es la de 0%, y su codigo es 3,
         ya que el SIAP no contempla los codigos 1(no gravado) ni 2(exento).
         :param tax: objeto impuesto
-        :param operation_code: char codigo de operacion
         """
         if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_sale_ng:
             return '3'

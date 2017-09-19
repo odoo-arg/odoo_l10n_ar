@@ -15,10 +15,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from presentation_purchase import PurchaseInvoicePresentation
+from presentation import PurchaseVatPresentation
 
 
-class PurchaseIvaPresentation(PurchaseInvoicePresentation):
+class PurchaseIvaPresentation(PurchaseVatPresentation):
     def __init__(self, builder, data):
         super(PurchaseIvaPresentation, self).__init__(builder=builder, data=data)
 
@@ -51,7 +51,7 @@ class PurchaseIvaPresentation(PurchaseInvoicePresentation):
         document_code = self.get_codigoDocumento(invoice)
         supplier_doc = self.get_numeroPartner(invoice)
 
-        invoice_vat_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id.tax_group_id == self.data.tax_group_vat)
+        invoice_vat_taxes = self.get_invoices_vat_taxes(invoice)
 
         for tax in invoice_vat_taxes:
             line = self.builder.create_line()
@@ -75,16 +75,6 @@ class PurchaseIvaPresentation(PurchaseInvoicePresentation):
             line.importeNetoGravado = '0'
             line.alicuotaIva = '3'
             line.impuestoLiquidado = '0'
-
-    def get_importeNetoGravado(self, tax):
-        """
-        Obtiene el neto gravado de la operacion. Para los impuestos exentos o no gravados devuelve 0.
-        :param tax: objeto impuesto
-        :return: string, monto del importe
-        """
-        if tax.tax_id.is_exempt or tax.tax_id == self.data.tax_purchase_ng:
-            return '0'
-        return self.helper.format_amount(tax.base * self.rate)
 
     def get_alicuotaIva(self, tax):
         """

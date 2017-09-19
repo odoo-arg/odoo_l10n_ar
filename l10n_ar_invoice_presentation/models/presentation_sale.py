@@ -11,10 +11,10 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
-import presentation
+from presentation import SalePresentation
 
 
-class SaleInvoicePresentation(presentation.Presentation):
+class SaleInvoicePresentation(SalePresentation):
     def __init__(self, builder, data):
         super(SaleInvoicePresentation, self).__init__(builder=builder, data=data)
 
@@ -58,7 +58,7 @@ class SaleInvoicePresentation(presentation.Presentation):
         
     # ----------------CAMPOS VENTAS----------------
     def fill_perceptions(self, invoice, line):
-        if invoice.partner_id.property_account_position_id == self.data.tax_sale_ng:
+        if invoice.partner_id.property_account_position_id == self.data.fiscal_position_nc:
             line.percepcionNC = self.get_percepcion_nc(invoice)
         else:
             line.percepcionNC = 0
@@ -73,22 +73,9 @@ class SaleInvoicePresentation(presentation.Presentation):
         :return: string, importe percepcion nc, ej: '2134'
         """
         amount = sum(invoice.perception_ids.mapped("amount")) \
-            if invoice.partner_id.property_account_position_id == self.data.tax_sale_ng \
+            if invoice.partner_id.property_account_position_id == self.data.fiscal_position_nc \
             else 0
         return self.helper.format_amount(self.rate * amount)
-
-    def get_codigoOperacion(self, invoice):
-        """
-        Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
-        En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
-        :param invoice: record.
-        :return string, ej 'N'
-        """
-        res = super(SaleInvoicePresentation, self).get_codigoOperacion(invoice)
-        not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == self.data.tax_sale_ng]
-        if len(not_taxed_taxes) == len(invoice.tax_line_ids):
-            res = 'N'
-        return res
 
     # No implementado
     @staticmethod

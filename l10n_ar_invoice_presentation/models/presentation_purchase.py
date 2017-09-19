@@ -15,10 +15,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from presentation import Presentation
+from presentation import PurchasePresentation
 
 
-class PurchaseInvoicePresentation(Presentation):
+class PurchaseInvoicePresentation(PurchasePresentation):
     def __init__(self, with_prorate=False, builder=None, data=None):
         self.with_prorate = with_prorate
         super(PurchaseInvoicePresentation, self).__init__(builder=builder, data=data)
@@ -69,36 +69,7 @@ class PurchaseInvoicePresentation(Presentation):
         line.ivaComision = self.get_purchase_ivaComision()
 
     # ----------------CAMPOS COMPRAS----------------
-    def get_puntoDeVenta(self, invoice):
-        """
-        Si la denominacion de la factura es tipo D, se devuelve vacio.
-        :param invoice: record.
-        :return: string, ej: '0001'
-        """
-        if invoice.denomination_id == self.data.type_d:
-            return ''
-        return super(PurchaseInvoicePresentation, self).get_puntoDeVenta(invoice)
 
-    def get_numeroComprobante(self, invoice):
-        """
-        Si la denominacion de la factura es tipo D, se devuelve vacio.
-        :param invoice: record.
-        :return: string, ej: '11110001'
-        """
-        if invoice.denomination_id == self.data.type_d:
-            return ''
-        return super(PurchaseInvoicePresentation, self).get_numeroComprobante(invoice)
-
-    def get_despachoImportacion(self, invoice):
-        """
-        Si la denominacion de la factura es D, devolvemos el numero de la factura
-        que es el despacho de importacion.
-        :param invoice: record.
-        :return string, despacho de importacion. ej: '17HB1A73G008'
-        """
-        if invoice.denomination_id != self.data.type_d:
-            return ''
-        return invoice.name
 
     def get_importeOpExentas(self, invoice):
         """
@@ -112,26 +83,15 @@ class PurchaseInvoicePresentation(Presentation):
 
     def get_cantidadAlicIva(self, invoice):
         """
-        En caso de ser comprobante B o C se devuelve 0.
+        En caso de ser comprobante B o C se devuelve 0. Si la operacion es no gravada, se devuelve la cantidad
+        de impuestos no gravado.
         :param invoice: record.
         """
         if invoice.denomination_id in [self.data.type_b, self.data.type_c]:
             return 0
+        if self.get_codigoOperacion(invoice) == 'N':
+            return len(self.get_invoice_notTaxed_taxes(invoice))
         return super(PurchaseInvoicePresentation, self).get_cantidadAlicIva(invoice)
-
-    def get_codigoOperacion(self, invoice):
-        """
-        Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
-        En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
-        :param invoice: record.
-        :return string, ej 'N'
-        """
-        res = super(PurchaseInvoicePresentation, self).get_codigoOperacion(invoice)
-        not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == self.data.tax_purchase_ng]
-        if len(not_taxed_taxes) == len(invoice.tax_line_ids):
-            res = 'N'
-        return res
-
 
     def get_credFiscComp(self, invoice):
         """

@@ -85,7 +85,7 @@ class TestPresentationPurchase(TransactionCase):
             "type": "in_invoice",
             "date_invoice": "2017-08-01",
             "denomination_id": self.env.ref('l10n_ar_afip_tables.account_denomination_d').id
-        }) #TODO: arreglar eso del denomination que pone 4 en lugar de 6!!!!!!!!!!!!!!!!!!
+        })
 
         # Ejecuto onchange de partner
         invoice.onchange_partner_id()
@@ -200,7 +200,6 @@ class TestPresentationPurchase(TransactionCase):
         # Impuesto liquidado
         assert decoded[69:84] == "000000000021000"
 
-
     def test_importation_purchase_invoice_presentation(self):
         "Se puede generar la presentacion de una factura de aduana comun."
         self.create_importation_invoice()
@@ -279,3 +278,4 @@ class TestPresentationPurchase(TransactionCase):
         invoice.partner_id.vat = False
         with self.assertRaises(Exception):
             self.presentation.generate_purchase_file()
+
