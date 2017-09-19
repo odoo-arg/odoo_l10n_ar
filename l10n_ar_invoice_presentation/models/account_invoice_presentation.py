@@ -68,7 +68,17 @@ class AccountInvoicePresentation(models.Model):
             ('date_invoice', '<=', self.date_to),
         ])
 
-    def validate_invoices(self):
+    @staticmethod
+    def get_total_notTaxed_taxes(invoice, data):
+        not_taxed_taxes = invoice.tax_line_ids.filtered(lambda t: t.tax_id in [data.tax_sale_ng, data.tax_purchase_ng])
+        suma = sum(not_taxed_taxes.mapped('amount'))
+        import logging
+        _logger = logging.getLogger(__name__)
+
+        _logger.info('\n\n %s\n', suma)
+        return suma
+
+    def validate_invoices(self, data):
         """
         Validamos que las facturas tengan los datos necesarios.
         """
@@ -90,6 +100,9 @@ class AccountInvoicePresentation(models.Model):
             if not invoice.move_id.line_ids:
                 errors.append("La factura {} no posee lineas de asientos.".format(invoice.name))
 
+            if self.get_total_notTaxed_taxes(invoice, data):
+                errors.append("La factura {} posee montos en los impuestos no gravados.".format(invoice.name))
+
         if errors:
             raise Warning(
                 "ERROR\nLa presentacion no pudo ser generada por los siguientes motivos:\n{}".format("\n".join(errors))
@@ -98,10 +111,7 @@ class AccountInvoicePresentation(models.Model):
     def generate_header_file(self):
         raise NotImplementedError
 
-    def generate_presentations(self):
-        invoice_proxy = self.env['account.invoice']
-        data = GeneralData(invoice_proxy)
-
+    def generate_presentations(self, data):
         purchase_builder = presentation.Presentation('ventasCompras', 'comprasCbte')
         purchase_iva_builder = presentation.Presentation('ventasCompras', 'comprasAlicuotas')
         purchase_import_builder = presentation.Presentation('ventasCompras', 'comprasImportaciones')
@@ -136,12 +146,16 @@ class AccountInvoicePresentation(models.Model):
         crear el nombre del fichero. Luego llama a la funcion que colocara todos los archivos en
         un fichero zip.
         """
+        # Traemos datos generales
+        invoice_proxy = self.env['account.invoice']
+        data = GeneralData(invoice_proxy)
+
         # Traemos y validamos todas las facturas del periodo seleccionado
         self.invoices = self.get_invoices()
-        self.validate_invoices()
+        self.validate_invoices(data)
 
         # Instanciamos presentaciones
-        self.generate_presentations()
+        self.generate_presentations(data)
 
         # Creamos nombre base para los archivos
         base_name = "REGINFO_CV_{}" + self.get_period() + ".{}"
@@ -338,7 +352,5 @@ class AccountInvoicePresentation(models.Model):
     def check_dates(self):
         if self.date_from > self.date_to:
             raise ValidationError("La fecha 'desde' no puede ser mayor a la fecha 'hasta'.")
-
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
