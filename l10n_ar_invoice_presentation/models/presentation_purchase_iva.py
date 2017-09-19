@@ -20,7 +20,7 @@ from presentation_purchase import PurchaseInvoicePresentation
 
 class PurchaseIvaPresentation(PurchaseInvoicePresentation):
     def __init__(self, builder, data):
-        super(PurchaseIvaPresentation, self).__init__(builder, data)
+        super(PurchaseIvaPresentation, self).__init__(builder=builder, data=data)
 
     def filter_invoices(self, invoices):
         """

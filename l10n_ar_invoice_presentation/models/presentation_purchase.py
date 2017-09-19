@@ -21,7 +21,7 @@ from presentation import Presentation
 class PurchaseInvoicePresentation(Presentation):
     def __init__(self, with_prorate=False, builder=None, data=None):
         self.with_prorate = with_prorate
-        super(PurchaseInvoicePresentation, self).__init__(builder, data)
+        super(PurchaseInvoicePresentation, self).__init__(builder=builder, data=data)
 
     def filter_invoices(self, invoices):
         """
@@ -77,7 +77,7 @@ class PurchaseInvoicePresentation(Presentation):
         """
         if invoice.denomination_id == self.data.type_d:
             return ''
-        return super(PurchaseInvoicePresentation, self).get_puntoDeVenta()
+        return super(PurchaseInvoicePresentation, self).get_puntoDeVenta(invoice)
 
     def get_numeroComprobante(self, invoice):
         """
@@ -87,7 +87,7 @@ class PurchaseInvoicePresentation(Presentation):
         """
         if invoice.denomination_id == self.data.type_d:
             return ''
-        return super(PurchaseInvoicePresentation, self).get_numeroComprobante()
+        return super(PurchaseInvoicePresentation, self).get_numeroComprobante(invoice)
 
     def get_despachoImportacion(self, invoice):
         """
@@ -99,6 +99,16 @@ class PurchaseInvoicePresentation(Presentation):
         if invoice.denomination_id != self.data.type_d:
             return ''
         return invoice.name
+
+    def get_importeOpExentas(self, invoice):
+        """
+        Devuelve el monto total de importes de operaciones exentas.
+        :param invoice: record.
+        :return: string, monto ej: 23.00-> '2300' 
+        """
+        if invoice.denomination_id in [self.data.type_b, self.data.type_c]:
+            return '0'
+        return super(PurchaseInvoicePresentation, self).get_importeOpExentas(invoice)
 
     def get_cantidadAlicIva(self, invoice):
         """
@@ -116,11 +126,12 @@ class PurchaseInvoicePresentation(Presentation):
         :param invoice: record.
         :return string, ej 'N'
         """
-        super(PurchaseInvoicePresentation, self).get_codigoOperacion()
-
+        res = super(PurchaseInvoicePresentation, self).get_codigoOperacion(invoice)
         not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == self.data.tax_purchase_ng]
         if len(not_taxed_taxes) == len(invoice.tax_line_ids):
-            return 'N'
+            res = 'N'
+        return res
+
 
     def get_credFiscComp(self, invoice):
         """

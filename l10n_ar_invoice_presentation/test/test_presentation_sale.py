@@ -24,6 +24,7 @@ class TestPresentationSale(TransactionCase):
     def setUp(self):
         # calleamos al super
         super(TestPresentationSale, self).setUp()
+
         # creamos los proxies necesarios
         pos_ar_proxy = self.env["pos.ar"]
         res_partner_proxy = self.env["res.partner"]
@@ -31,11 +32,16 @@ class TestPresentationSale(TransactionCase):
         account_invoice_proxy = self.env["account.invoice"]
         account_invoice_line_proxy = self.env["account.invoice.line"]
         account_invoice_presentation_proxy = self.env["account.invoice.presentation"]
+
         # traemos la posicion fiscal iva responsable inscripto
         iva_r_i = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_ivari")
-        # seteamos la posicion fiscal en el partner y en la compania
+
+        # seteamos el pais, la posicion fiscal y el cuit en el partner y en la compania
         self.env.user.company_id.partner_id.property_account_position_id = iva_r_i.id
+        self.env.user.company_id.partner_id.country_id = self.env.ref('base.ar').id
+        self.env.user.company_id.partner_id.vat = '20359891033'
         self.company_fiscal_position = self.env.user.company_id.partner_id.property_account_position_id
+
         # creamos el punto de venta
         self.pos_ar = self._create(pos_ar_proxy, {
             "name": "0007"
@@ -106,8 +112,8 @@ class TestPresentationSale(TransactionCase):
         })
 
     def test_sale_invoice_presentation(self):
-        b64 = self.account_invoice_presentation.generate_sale_file()
-        decoded = base64.decodestring(b64.get_encoded_string())
+        self.account_invoice_presentation.generate_files()
+        decoded = base64.decodestring(self.account_invoice_presentation.sale_file)
         # Fecha de comprobante
         assert decoded[0:8] == "20000801"
         # Tipo de comprobante

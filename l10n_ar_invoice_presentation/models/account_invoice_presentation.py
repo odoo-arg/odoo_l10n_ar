@@ -26,6 +26,7 @@ from presentation_purchase_importation import PurchaseImportationPresentation
 from presentation_sale import SaleInvoicePresentation
 from presentation_sale_iva import SaleVatInvoicePresentation
 
+
 class GeneralData:
     def __init__(self, proxy=None):
         self.proxy = proxy
@@ -45,8 +46,8 @@ class GeneralData:
         self.tax_group_perception = self.proxy.env.ref('l10n_ar_perceptions.tax_group_perception')
         self.tax_purchase_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_compras')
         self.tax_sale_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_ventas')
-        self.codes_model_proxy = self.env['codes.models.relation']
-        self.fiscal_position_ad = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
+        self.codes_model_proxy = self.proxy.env['codes.models.relation']
+        self.fiscal_position_ad = self.proxy.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
 
 class AccountInvoicePresentation(models.Model):
     _name = 'account.invoice.presentation'
@@ -69,7 +70,6 @@ class AccountInvoicePresentation(models.Model):
     def validate_invoices(self):
         """
         Validamos que las facturas tengan los datos necesarios.
-        :param invoices: recordset facturas
         """
         errors = []
         for partner in self.invoices.mapped('partner_id'):

@@ -11,12 +11,12 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
-from presentation_sale import SaleInvoicePresentation
+import presentation_sale
 
 
-class SaleVatInvoicePresentation(SaleInvoicePresentation):
+class SaleVatInvoicePresentation(presentation_sale.SaleInvoicePresentation):
     def __init__(self, builder, data):
-        super(SaleVatInvoicePresentation, self).__init__(builder, data)
+        super(SaleVatInvoicePresentation, self).__init__(builder=builder, data=data)
 
     def filter_invoices(self, invoices):
         """
@@ -46,9 +46,9 @@ class SaleVatInvoicePresentation(SaleInvoicePresentation):
             line.tipoComprobante = tipoComprobante
             line.puntoDeVenta = puntoDeVenta
             line.numeroComprobante = numeroComprobante
-            line.importeNetoGravado = self.get_importeNetoGravado(invoice)
+            line.importeNetoGravado = self.get_importeNetoGravado(tax)
             line.alicuotaIva = self.get_alicuotaIva(tax)
-            line.impuestoLiquidado = self.get_impuestoLiquidado(invoice, tax)
+            line.impuestoLiquidado = self.get_impuestoLiquidado(tax)
 
         # En caso que no tenga ningun impuesto, se informa una alicuota por defecto (Iva 0%)
         if not invoice_vat_taxes:
@@ -60,6 +60,7 @@ class SaleVatInvoicePresentation(SaleInvoicePresentation):
             line.alicuotaIva = '3'
             line.impuestoLiquidado = '0'
 
+    # ----------------CAMPOS ALICUOTAS----------------
     def get_importeNetoGravado(self, tax):
         """
         Obtiene el neto gravado de la operacion. Para los impuestos exentos o no gravados devuelve 0.

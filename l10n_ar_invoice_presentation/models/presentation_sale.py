@@ -11,12 +11,12 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
-from presentation import Presentation
+import presentation
 
 
-class SaleInvoicePresentation(Presentation):
+class SaleInvoicePresentation(presentation.Presentation):
     def __init__(self, builder, data):
-        super(SaleInvoicePresentation, self).__init__(builder, data)
+        super(SaleInvoicePresentation, self).__init__(builder=builder, data=data)
 
     def filter_invoices(self, invoices):
         """
@@ -50,16 +50,18 @@ class SaleInvoicePresentation(Presentation):
         line.importeExentos = self.get_importeOpExentas(invoice)
         line.importeImpInt = self.get_importeImpInt(invoice)
         line.codigoMoneda = self.get_codigoMoneda(invoice)
-        line.tipoCambio = self.get_tipoCambio(invoice)
+        line.tipoCambio = self.get_tipoCambio()
         line.cantidadAlicIva = self.get_cantidadAlicIva(invoice)
         line.codigoOperacion = self.get_codigoOperacion(invoice)
         line.otrosTributos = self.get_otrosTrib(invoice)
         line.fechaVtoPago = self.get_fecha_vto_pago()
-
+        
+    # ----------------CAMPOS VENTAS----------------
     def fill_perceptions(self, invoice, line):
         if invoice.partner_id.property_account_position_id == self.data.tax_sale_ng:
             line.percepcionNC = self.get_percepcion_nc(invoice)
         else:
+            line.percepcionNC = 0
             line.importePercepciones = self.get_importe_per_by_jurisdiction(invoice, 'nacional')
             line.importePerIM = self.get_importe_per_by_jurisdiction(invoice, 'municipal')
             line.importePerIIBB = self.get_importe_per_by_type(invoice, 'gross_income')
@@ -77,19 +79,18 @@ class SaleInvoicePresentation(Presentation):
 
     def get_codigoOperacion(self, invoice):
         """
-        Obtiene el codigo de operacion de acuerdo a los impuestos. Actualmente no contempla el caso de importaciones
-        de zona franca.
+        Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
+        En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
         :param invoice: record.
         :return string, ej 'N'
         """
-        super(SaleInvoicePresentation, self).get_codigoOperacion()
-        # No gravado:
-        # Si el total de impuestos es igual al total de impuestos no gravados la operacion es no gravada.
-        # En caso de que la factura tenga 0 impuestos, la condicion dara verdadero y la operacion sera no gravada.
+        res = super(SaleInvoicePresentation, self).get_codigoOperacion(invoice)
         not_taxed_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id == self.data.tax_sale_ng]
         if len(not_taxed_taxes) == len(invoice.tax_line_ids):
-            return 'N'
+            res = 'N'
+        return res
 
+    # No implementado
     @staticmethod
     def get_fecha_vto_pago():
         """
@@ -97,11 +98,7 @@ class SaleInvoicePresentation(Presentation):
         con un servicio público, siendo obligatorio para los comprobantes tipo '017 - Liquidación de 
         Servicios Públicos Clase A' y '018 – Liquidación de Servicios Públicos Clase B' y opcional 
         para el resto de los comprobantes.
-        :param invoice: La factura de la cual se sacara la informacion.
-        :param helper: Las presentation tools.
-        :return: La fecha de vencimiento de pago.
         """
-        # TODO: no implementado
-        return "".zfill(8)
+        return ""
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

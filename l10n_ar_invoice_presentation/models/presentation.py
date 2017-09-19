@@ -221,16 +221,19 @@ class Presentation:
         :param invoice: record.
         :return string, ej 'N'
         """
+        res = ''
         # Exento:
         # Si el total de impuestos es igual al total de impuestos exentos
         exempt_taxes = [tax for tax in invoice.tax_line_ids if tax.tax_id.is_exempt]
         if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids):
-            return 'E'
+            res = 'E'
 
         # Importaciones del exterior:
         # Si tiene despacho de importacion y este viene directo de aduana
         if invoice.denomination_id == self.data.type_d:
-            return 'X'
+            res = 'X'
+
+        return res
 
     def get_otrosTrib(self, invoice):
         """

@@ -117,15 +117,16 @@ class TestPresentationPurchase(TransactionCase):
         super(TestPresentationPurchase, self).setUp()
         self.get_general_data()
         self.env.user.company_id.partner_id.property_account_position_id = self.fiscal_position_ri
-        # self.create_document_books()
+        self.env.user.company_id.partner_id.country_id = self.env.ref('base.ar').id
+        self.env.user.company_id.partner_id.vat = '20359891033'
 
         self.presentation = self.create_presentation()
 
     def test_purchase_invoice_presentation(self):
         "Se puede generar la presentacion de una factura comun."
-        invoice = self.create_invoice()
-        b64 = self.presentation.generate_purchase_file()
-        decoded = base64.decodestring(b64.get_encoded_string())
+        self.create_invoice()
+        self.presentation.generate_files()
+        decoded = base64.decodestring(self.presentation.purchase_file)
         # Fecha de comprobante
         assert decoded[0:8] == "20170801"
         # Tipo de comprobante
@@ -180,8 +181,8 @@ class TestPresentationPurchase(TransactionCase):
     def test_purchase_invoice_iva_presentation(self):
         "Se puede generar la presentacion de iva de una factura comun."
         self.create_invoice()
-        b64 = self.presentation.generate_purchase_vat_file()
-        decoded = base64.decodestring(b64.get_encoded_string())
+        self.presentation.generate_files()
+        decoded = base64.decodestring(self.presentation.purchase_vat_file)
         # Tipo de comprobante
         assert decoded[0:3] == "001"
         # Punto de venta
@@ -203,8 +204,8 @@ class TestPresentationPurchase(TransactionCase):
     def test_importation_purchase_invoice_presentation(self):
         "Se puede generar la presentacion de una factura de aduana comun."
         self.create_importation_invoice()
-        b64 = self.presentation.generate_purchase_file()
-        decoded = base64.decodestring(b64.get_encoded_string())
+        self.presentation.generate_files()
+        decoded = base64.decodestring(self.presentation.purchase_file)
         # Fecha de comprobante
         assert decoded[0:8] == "20170801"
         # Tipo de comprobante
@@ -259,8 +260,8 @@ class TestPresentationPurchase(TransactionCase):
     def test_purchase_importation_presentation(self):
         "Se puede generar la presentacion de importacion de una factura de aduana comun."
         self.create_importation_invoice()
-        b64 = self.presentation.generate_purchase_imports_file()
-        decoded = base64.decodestring(b64.get_encoded_string())
+        self.presentation.generate_files()
+        decoded = base64.decodestring(self.presentation.purchase_imports_file)
         # Despacho importacion
         assert decoded[0:16] == "17073IC04092010Z"
         # Neto gravado
