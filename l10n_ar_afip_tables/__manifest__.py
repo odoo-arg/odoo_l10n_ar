@@ -35,6 +35,8 @@ mapped with models using l10n_ar_codes application
     'category': 'base',
 
     'depends': [
+        'base_vat_ar',
+        'base_codes',
         'l10n_ar',
     ],
 
@@ -46,8 +48,8 @@ mapped with models using l10n_ar_codes application
         'data/account_denomination.xml',
         'data/afip_voucher_type.xml',
         'data/partner_document_type.xml',
-        'data/account_tax.xml',
         'data/account_fiscal_position.xml',
+        'data/account_tax.xml',
         'data/afip_concept.xml',
         'security/ir.model.access.csv',
     ],

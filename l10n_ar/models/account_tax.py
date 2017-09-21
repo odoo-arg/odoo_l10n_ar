@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from odoo import models, fields
 
 class AccountTax(models.Model):
 
