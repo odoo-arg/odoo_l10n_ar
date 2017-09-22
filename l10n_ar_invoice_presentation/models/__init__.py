@@ -16,6 +16,14 @@
 #
 ##############################################################################
 
+import presentation_tools
 import account_invoice_presentation
+import presentation_header
+import presentation_purchase
+import presentation_purchase_iva
+import presentation_sale
+import presentation_sale_iva
+import presentation_purchase_importation
+import presentation_fiscal_credit_service
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
