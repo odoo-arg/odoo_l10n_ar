@@ -21,6 +21,7 @@
             id="treasury_main_menu"
             name="Tesoreria"
             groups="group_account_treasury_user"
+            web_icon="l10n_ar_account_check,static/description/icon.png"
             sequence="60"
         />
 
