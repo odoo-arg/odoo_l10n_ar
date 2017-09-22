@@ -89,8 +89,6 @@ class PurchaseInvoicePresentation(PurchasePresentation):
         """
         if invoice.denomination_id in [self.data.type_b, self.data.type_c]:
             return 0
-        if self.get_codigoOperacion(invoice) == 'N':
-            return len(self.get_invoice_notTaxed_taxes(invoice))
         return super(PurchaseInvoicePresentation, self).get_cantidadAlicIva(invoice)
 
     def get_credFiscComp(self, invoice):
