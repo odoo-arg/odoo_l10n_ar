@@ -104,9 +104,9 @@ class AccountCheckbook(models.Model):
             if int(checkbook.number_from) > int(checkbook.number_to):
                 raise ValidationError("Numeracion Desde no puede ser mayor a Hasta.")
 
-            if len(range(int(checkbook.number_from), int(checkbook.number_to))) > max_checks:
+            if int(checkbook.number_to) - int(checkbook.number_from) + 1 > max_checks:
                 raise ValidationError("El rango de cheques de la chequera es muy grande.\n"
-                                      "No puede superar los "+str(max_checks)+" cheques")
+                                      "No puede superar los {} cheques".format(max_checks))
 
     def generate_checks(self):
         """ Crea todos los cheques faltantes de cada chequera seleccionada """
