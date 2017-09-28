@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="payment_imputation_form">
+            <field name="name">Payment imputation form</field>
+            <field name="model">payment.imputation.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="type" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="partner_id" required="1"/>
+                                <field name="advance_amount"/>
+                            </group>
+                            <group>
+                                <field name="journal_id" string="Diario"/>
+                            </group>
+                        </group>
+                        <field name="payment_imputation_line_ids">
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="invoice_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="wizard_currency_id" invisible="1"/>
+                                <field name="amount"/>
+                                <field name="invoice_name"/>
+                                <field name="invoice_amount_residual" string="Restante"/>
+                                <field name="invoice_amount_total" string="Total"/>
+                                <field name="invoice_amount_residual_company" string="Restante moneda compania"/>
+                                <field name="invoice_amount_company" string="Total moneda compania"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="total"/>
+                        </group>
+                        <footer>
+                            <button
+                                name="create_payment"
+                                string="Crear pago"
+                                type="object"
+                                class="btn btn-primary btn-sm"
+                            />
+                            o
+                            <button string="Cancelar" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_register_payment_purchases" model="ir.actions.act_window">
+            <field name="name">Registrar pago</field>
+            <field name="res_model">payment.imputation.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_type': 'outbound'}</field>
+        </record>
+
+        <menuitem
+            id="register_payment_purchases"
+            name="Registrar pago"
+            action="action_register_payment_purchases"
+            sequence="15"
+            parent="account.menu_finance_payables"
+        />
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->
