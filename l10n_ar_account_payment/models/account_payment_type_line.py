@@ -32,7 +32,6 @@ class AccountPaymentTypeLine(models.Model):
     payment_id = fields.Many2one(
         'account.payment',
         'Pago',
-        required=True,
         ondelete='cascade'
     )
     amount = fields.Monetary('Importe', required=True)

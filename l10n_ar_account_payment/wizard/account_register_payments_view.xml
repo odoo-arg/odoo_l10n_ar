@@ -25,9 +25,6 @@
                 <field name="payment_date" position="after">
                     <field name="pos_ar_id" widget="selection"/>
                 </field>
-                <field name="communication" position="after">
-                    <field name="total_invoices_amount" attrs="{'invisible': [('total_invoices_amount', '=', 0.0)]}"/>
-                </field>
                 <form position="inside">
                     <notebook>
                         <page string="Lineas de pago">
