@@ -33,7 +33,9 @@
                 </field>
                 <xpath expr="//notebook/page[@name='other_info']/group/group/field[@name='name']" position="replace">
                     <field name="number" readonly="1"/>
-                    <field name="is_debit_note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="is_debit_note"
+                       attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('type', 'not in', ['in_invoice', 'out_invoice'])}"
+                    />
                 </xpath>
                 <field name="number" position="replace">
                     <field name="name" readonly="1" class="oe_inline" attrs="{'invisible': [('state','in',('draft',))]}"/>

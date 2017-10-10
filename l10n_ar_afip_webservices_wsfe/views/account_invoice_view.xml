@@ -74,18 +74,6 @@
             </field>
         </record>
 
-
-        <record model="ir.ui.view" id="account_invoice_wsfe_debit_note_form">
-            <field name="name">Account invoice wsfe debit note form</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="l10n_ar_point_of_sale.invoice_pos_ar_form"/>
-            <field name="arch" type="xml">
-                 <field name="is_debit_note" position="attributes">
-                    <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
-                 </field>
-            </field>
-        </record>
-
        <record model="ir.ui.view" id="account_invoice_wsfe_perceptions_form">
             <field name="name">Account invoice wsfe debit perceptions form</field>
             <field name="model">account.invoice</field>
@@ -102,6 +90,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="l10n_ar_point_of_sale.invoice_pos_ar_form"/>
             <field name="arch" type="xml">
+                 <field name="is_debit_note" position="attributes">
+                    <attribute name="attrs">{'readonly': ['|', '|', ('state', 'not in', ['draft']), ('cae', '!=', False),('type', 'not in', ['in_invoice', 'out_invoice'])]}</attribute>
+                 </field>
                  <field name="pos_ar_id" position="attributes">
                     <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ['draft']), ('cae', '!=', False)]}</attribute>
                  </field>
