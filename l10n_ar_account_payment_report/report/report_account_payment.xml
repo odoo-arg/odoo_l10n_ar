@@ -9,7 +9,7 @@
                          t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
                          style="max-height: 45px;"/>
                 </div>
-                <div style="text-right">
+                <div style="float:right">
                     <strong>
                         <t t-if="r.retention_id.type == 'gross_income'">
                             Constancia de Retención IIBB
