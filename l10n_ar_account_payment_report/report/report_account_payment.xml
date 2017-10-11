@@ -134,11 +134,6 @@
                               t-options='{"widget": "monetary"}'
                         />
                         <br/>
-                        <strong>Monto de la Retención: </strong>
-                        <span t-field="r.amount"
-                              t-options='{"widget": "monetary"}'
-                        />
-                        <br/>
                         <strong>Imposibilidad de Retención:</strong>
                         <br/><br/>
                     </div>
