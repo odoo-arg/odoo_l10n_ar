@@ -9,18 +9,19 @@
                          t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
                          style="max-height: 45px;"/>
                 </div>
-                <div class="right">
-                    <t t-if="r.retention_id.type == 'gross_income'">
-                        Constancia de Retención IIBB
-                    </t>
-                    <t t-if="r.retention_id.type == 'vat'">
-                        Constancia de Retención IVA
-                    </t>
-                    <t t-if="r.retention_id.type == 'profit'">
-                        Constancia de Retención SICORE
-                    </t>
-                    <br/>
-                    <br/>
+                <div style="text-right">
+                    <strong>
+                        <t t-if="r.retention_id.type == 'gross_income'">
+                            Constancia de Retención IIBB
+                        </t>
+                        <t t-if="r.retention_id.type == 'vat'">
+                            Constancia de Retención IVA
+                        </t>
+                        <t t-if="r.retention_id.type == 'profit'">
+                            Constancia de Retención SICORE
+                        </t>
+                    </strong>
+                    <br/><br/>
                     <div>
                         <t t-if="r.certificate_no">
                              Certificado N°: <span t-field="r.certificate_no"/>
@@ -63,7 +64,7 @@
                         <h4>
                             <strong>A.- Datos del Agente de Retención</strong>
                         </h4>
-                        <br/><br/>
+                        <br/>
                         <strong>Apellido y Nombre o Denominación: </strong>
                         <span t-field="o.company_id.name"/>
                         <br/>
@@ -83,7 +84,7 @@
                         <h4>
                             <strong>B.- Datos del Sujeto Retenido</strong>
                         </h4>
-                        <br/><br/>
+                        <br/>
                         <strong>Apellido y Nombre o Denominación: </strong>
                         <span t-field="o.partner_id.name"/>
                         <br/>
@@ -103,7 +104,7 @@
                         <h4>
                             <strong>C.- Datos de la Retención Practicada</strong>
                         </h4>
-                        <br/><br/>
+                        <br/>
                         <strong>Impuesto: </strong>
                         <span t-field="r.name"/>
                         <br/>
