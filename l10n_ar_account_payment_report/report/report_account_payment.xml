@@ -116,6 +116,8 @@
                         <strong>Comprobante que origina la Retención: </strong>
                         <span t-field="o.name"/>
                         <br/>
+                        <!-- ESTE CAMPO EN V8 ESTA EN EL MODELO DE RETENCIONES COMO EN ESTA VERSION NO EXISTE, -->
+                        <!-- LO DEJO COMENTADO POR LAS DUDAS -->
                         <!--<strong>Notas: </strong>-->
                         <!--<span t-field="o.notes"/>-->
                         <!--<br/>-->
