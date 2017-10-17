@@ -32,37 +32,9 @@ class AccountAbstractPayment(models.AbstractModel):
             pos = self.get_pos(default_type)
         return pos
 
-    def _get_total_invoices_amount_default(self):
-        """
-        Funcion utilizada para obtener el monto total de facturas a pagar al crear un nuevo pago
-        Resulta que como dicho valor no depende de ningun campo del modulo en particular
-        no se puede generar un @api.depends el valor se obtiene a partir de registros
-        que se obtienen por medio del context
-        :return: Monto total de facturas a pagar
-        """
-        active_model = self.env.context.get('active_model')
-        active_ids = self.env.context.get('active_ids')
-        if active_model and active_ids:
-            invoices = self.env[active_model].browse(active_ids)
-            return sum(inv.residual for inv in invoices)
-
-    def _get_total_invoices_amount(self):
-        """
-        Funcion utilizada para obtener el monto total de facturas a pagar.
-        Esto es simplemente utilizado como un hack dado que el valor nunca cambia
-        luego de que el pago se crea y tampoco tiene sentido que el valor se guarde
-        en la tabla.
-        """
-        self.total_invoices_amount = self._get_total_invoices_amount_default()
-
     pos_ar_id = fields.Many2one('pos.ar', 'Punto de venta', default=_get_default_pos)
     journal_id = fields.Many2one(default=lambda self: self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id)
     payment_type_line_ids = fields.One2many('account.payment.type.line', 'payment_id', 'Lineas de pagos')
-    total_invoices_amount = fields.Monetary(
-        'Total documentos',
-        compute='_get_total_invoices_amount',
-        default=_get_total_invoices_amount_default
-    )
 
     @api.onchange('payment_type_line_ids')
     def onchange_payment_type_line_ids(self):
@@ -218,6 +190,10 @@ class AccountPayment(models.Model):
 
             rec.write({'state': 'posted', 'move_name': move.name})
 
+    def create_imputation(self, move_line):
+        """ Concilia la move_line con la creada en el pago """
+        self.invoice_ids.register_payment(move_line)
+
     def _create_l10n_ar_payment_entry(self, amount):
         """
         Create el asiento correspondiente al pago. Concilia las facturas que referencia.
@@ -279,7 +255,8 @@ class AccountPayment(models.Model):
             if counterpart_aml['credit']:
                 counterpart_aml['credit'] += debit_wo - credit_wo
             counterpart_aml['amount_currency'] -= amount_currency_wo
-        self.invoice_ids.register_payment(counterpart_aml)
+
+        self.create_imputation(counterpart_aml)
 
         # Parte modificada para hookear las contrapartidas
         if self.payment_type == 'transfer':
