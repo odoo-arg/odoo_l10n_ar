@@ -481,8 +481,10 @@
 
                     </div>
                 </t>
-                <t t-foreach="o.retention_ids" t-as="r">
-                    <t t-call="l10n_ar_account_payment_report.report_retentions_template"/>
+                <t t-if="o.payment_type == 'inbound'">
+                    <t t-foreach="o.retention_ids" t-as="r">
+                        <t t-call="l10n_ar_account_payment_report.report_retentions_template"/>
+                    </t>
                 </t>
             </t>
         </template>
