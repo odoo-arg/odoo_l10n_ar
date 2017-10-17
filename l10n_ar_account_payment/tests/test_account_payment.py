@@ -38,22 +38,6 @@ class TestAccountPayment(set_up.SetUp):
         assert customer_payment._get_default_pos() == self.pos_inbound.id
         assert supplier_payment._get_default_pos() == self.pos_outbound.id
 
-    def test_amount_invoices(self):
-        active_model = 'account.invoice'
-        active_ids = [self.invoice.id]
-        total_invoices = self.customer_payment.with_context(active_model=active_model, active_ids=active_ids). \
-            _get_total_invoices_amount_default()
-        assert total_invoices == self.invoice.residual
-
-        get_total_invoices = 'odoo.addons.l10n_ar_account_payment.models.account_payment.' \
-                             'AccountAbstractPayment._get_total_invoices_amount_default'
-
-        # Mockiamos la funcion porque perdemos el contexto que armamos previo
-        with mock.patch(get_total_invoices) as MockClass:
-            MockClass.return_value = total_invoices
-            self.customer_payment._get_total_invoices_amount()
-            assert self.customer_payment.total_invoices_amount == self.invoice.residual
-
     def test_onchange_payment_line(self):
         self.customer_payment.amount = 10000
         self.customer_payment.onchange_payment_type_line_ids()
