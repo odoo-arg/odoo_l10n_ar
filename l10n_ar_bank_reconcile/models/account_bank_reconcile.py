@@ -54,11 +54,13 @@ class AccountBankReconcile(models.Model):
         }
 
     # Cantidad de movimientos sin conciliar
+    @api.multi
     def _get_unreconciled(self):
-        self.unreconciled_count = self.env['account.move.line'].search_count([
-            ('bank_reconciled', '=', False),
-            ('account_id', '=', self.account_id.id)
-        ])
+        for r in self:
+            r.unreconciled_count = r.env['account.move.line'].search_count([
+                ('bank_reconciled', '=', False),
+                ('account_id', '=', r.account_id.id)
+            ])
 
     # Chequeo si existen concialiaciones antes de eliminar una conciliacion bancaria
     @api.multi

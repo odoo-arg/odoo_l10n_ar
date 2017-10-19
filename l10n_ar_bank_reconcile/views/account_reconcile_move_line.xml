@@ -35,6 +35,7 @@
                                 <field name="date_move_line"/>
                                 <field name="debit_move_line"/>
                                 <field name="credit_move_line"/>
+                                <field name="amount_currency"/>
                             </group>
                         </group>
                     </sheet>

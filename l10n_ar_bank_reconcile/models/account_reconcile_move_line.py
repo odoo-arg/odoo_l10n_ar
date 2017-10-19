@@ -63,6 +63,11 @@ class AccountReconcileMoveLine(models.Model):
         related='move_line_id.date',
         string='Fecha'
     )
+    amount_currency = fields.Monetary(
+        related='move_line_id.amount_currency',
+        currency_field='currency_id',
+        string='Monto moneda',
+    )
 
     @api.multi
     def unlink(self):
