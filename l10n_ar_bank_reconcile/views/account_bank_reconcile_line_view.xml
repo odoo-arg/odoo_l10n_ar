@@ -18,6 +18,8 @@
                             <group>
                                 <field name="last_balance"/>
                                 <field name="current_balance"/>
+                                <field name="last_balance_currency"/>
+                                <field name="current_balance_currency"/>
                             </group>
                         </group>
                         <group string="Movements">
@@ -30,6 +32,8 @@
                                     <field name="move_id" readonly="True"/>
                                     <field name="debit" readonly="True"/>
                                     <field name="credit" readonly="True"/>
+                                    <field name="currency_id" readonly="True"/>
+                                    <field name="amount_currency" readonly="True"/>
                                     <field name="delete_from_conciliation"/>
                                 </tree>
                             </field>
