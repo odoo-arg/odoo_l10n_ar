@@ -38,6 +38,12 @@ class AccountBankReconcileLine(models.Model):
     current_balance = fields.Float(
         'Balance actual',
     )
+    last_balance_currency = fields.Float(
+        'Balance anterior en moneda'
+    )
+    current_balance_currency = fields.Float(
+        'Balance actual en moneda'
+    )
     reconcile_move_line_ids = fields.One2many(
         comodel_name='account.reconcile.move.line',
         inverse_name='bank_reconcile_line_id',
@@ -54,6 +60,10 @@ class AccountBankReconcileLine(models.Model):
 
     @api.onchange('reconcile_move_line_ids')
     def onchange_balance(self):
+        self.current_balance_currency = sum(
+            line.amount_currency
+            for line in self.reconcile_move_line_ids
+        ) + self.last_balance_currency
         self.current_balance = sum(
             line.debit_move_line - line.credit_move_line
             for line in self.reconcile_move_line_ids

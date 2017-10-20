@@ -49,19 +49,29 @@ class AccountReconcileMoveLine(models.Model):
         string='Moneda',
         related='move_line_id.currency_id',
     )
+    company_currency_id = fields.Many2one(
+        comodel_name='res.currency',
+        related='move_line_id.company_currency_id',
+        string="Company Currency"
+    )
     debit_move_line = fields.Monetary(
         related='move_line_id.debit',
-        currency_field='currency_id',
+        currency_field='company_currency_id',
         string='Debe'
     )
     credit_move_line = fields.Monetary(
         related='move_line_id.credit',
-        currency_field='currency_id',
+        currency_field='company_currency_id',
         string='Haber'
     )
     date_move_line = fields.Date(
         related='move_line_id.date',
         string='Fecha'
+    )
+    amount_currency = fields.Monetary(
+        related='move_line_id.amount_currency',
+        currency_field='currency_id',
+        string='Monto moneda',
     )
 
     @api.multi

@@ -27,11 +27,13 @@
                         <group>
                             <field name="date_start"/>
                             <field name="last_balance" invisible="1"/>
+                            <field name="last_balance_currency" invisible="1"/>
                         </group>
                         <group>
 
                             <field name="date_stop"/>
                             <field name="current_balance" invisible="1"/>
+                            <field name="current_balance_currency" invisible="1"/>
                         </group>
                     </group>
                     <group string="Movimientos">
@@ -47,6 +49,8 @@
                                 <field name="name_move" readonly="True"/>
                                 <field name="debit_move_line" readonly="True"/>
                                 <field name="credit_move_line" readonly="True"/>
+                                <field name="currency_id" readonly="True"/>
+                                <field name="amount_currency" readonly="True"/>
                             </tree>
                         </field>
                     </group>
