@@ -34,7 +34,7 @@
 
     'depends': [
 
-        'l10n_ar_chart_of_account'
+        'l10n_ar_chart_of_account',
 
     ],
 
