@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!--TREE VIEW -->
+        <record model="ir.ui.view" id="retention_activity_tree_view">
+            <field name="name">retention.activity.tree.view</field>
+            <field name="model">retention.activity</field>
+            <field name="arch" type="xml">
+                <tree string="Retention Activity">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- ACTION -->
+        <record model="ir.actions.act_window" id="retention_activity_source_form">
+            <field name="name">Actividades Retencion</field>
+            <field name="res_model">retention.activity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- MENU -->
+        <menuitem id="retention_activity_menu_view"
+                  name="Actividades Retencion"
+                  parent="account.account_account_menu"
+                  action="retention_activity_source_form"
+                  sequence="20"
+        />
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

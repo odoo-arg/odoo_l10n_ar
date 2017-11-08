@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+
+    <data>
+        <record id="compute_retention_wizard_form" model="ir.ui.view">
+            <field name="name">compute.retention.wizard.form</field>
+            <field name="model">compute.retention.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Computar Retenciones">
+ 					<separator string="PASO 1 DE 2: SELECCIONAR LOS DOCUMENTOS A PAGAR" attrs="{'invisible':[('valid', '=', True)]}"/>
+                    <separator string="PASO 2 DE 2: SELECCIONAR LOS IMPORTES A IMPUTAR" attrs="{'invisible':[('valid', '=', False)]}"/>                
+                    <field name="valid" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="withholding_amount" invisible="1"/>
+                    <group>
+                    	<group>
+							<field name="advance_amount" attrs="{'invisible':[('valid', '=', False)]}"/>   
+							<field name="retention_advance_amount" attrs="{'invisible':[('valid', '=', False)]}"/>							                     	
+                    	</group>
+						<group>
+							<button name="recalculate_documents" attrs="{'invisible':[('valid', '=', False)]}" string="Recalcular"
+								class="oe_inline oe_stat_button" icon="fa-rotate-left" type="object" help="Recalcula las retenciones si hubo cambio en los importes"/>                                                                                  				
+                       	</group>
+					</group>
+					<group>
+                        <field name="compute_retention_invoice_ids"
+                        	   attrs="{'invisible':[('valid', '=', False)]}"
+                        	   nolabel="1">
+                        	<tree create="false">
+	                        	<field name="date"/>
+                                <field name="type_analysis"/>	                        	
+	                        	<field name="name"/>
+	                        	<field name="balance" sum="Total"/>
+	                        	<field name="subtotal" sum="Total"/>
+	                        	<field name="total" sum="Total"/>
+	                        	<field name="amount" sum="Total"/>
+                                <field name="currency_id"/>
+                                <field name="cotization"/>                                
+	                        	<field name="amount_of_retentions" sum="Total" readonly="True"/>
+	                        	<field name="amount_to_pay" sum="Total"/>
+	                        	<field name="invoice_id" invisible="1"/>
+                        	</tree>
+                        </field>
+                        <field name="account_invoice_ids"
+                               options="{'no_create': True}"
+                        	   attrs="{'invisible':[('valid', '=', True)]}"
+                               nolabel="1">
+                            <tree>
+                                <field name="date_invoice"/>
+                                <field name="type_analysis"/>
+                                <field name="denomination_id" string="Den."/>
+                                <field name="internal_number"/>
+                                <field name="date_due" invisible="True"/>
+                                <field name="residual" sum="Total"/>
+                                <field name="amount_untaxed" sum="Total"/>
+                                <field name="amount_total" sum="Total"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </group>
+       			    <footer>
+                        <button type="object" name="create_documents_to_concile" string="Siguiente" icon="gtk-jump-to" attrs="{'invisible':[('valid', '=', True)]}"/>
+                        <button type="object" name="action_compute" string="Calcular" icon="gtk-ok" attrs="{'invisible':[('valid', '=', False)]}"/>
+						or
+						<button type="special" special="cancel" string="Cancelar" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACCION -->
+        <record model="ir.actions.act_window" id="compute_retention_wizard_action">
+            <field name="name">Calcular Retenciones</field>
+            <field name="res_model">compute.retention.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+
+</openerp>
