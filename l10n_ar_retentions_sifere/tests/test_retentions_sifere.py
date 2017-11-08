@@ -20,7 +20,7 @@ from datetime import datetime, timedelta, date
 import pytest
 from odoo.tests import common
 
-from odoo_openpyme_api.presentations import presentation
+from l10n_ar_api.presentations import presentation
 
 
 class TestRetentionsSifere(common.TransactionCase):

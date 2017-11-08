@@ -17,7 +17,7 @@
 ##############################################################################
 from datetime import datetime
 
-from odoo_openpyme_api.presentations import presentation
+from l10n_ar_api.presentations import presentation
 from openerp import models, fields
 from openerp.exceptions import Warning
 
