@@ -20,7 +20,6 @@ from openerp import models
 
 
 class RetentionRetention(models.Model):
-
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
 

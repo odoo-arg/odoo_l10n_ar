@@ -16,8 +16,9 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
 from lxml import etree
+
+from openerp import models, fields, api
 
 PAYMENT_TYPE = {
     'inbound': 'sale',
@@ -26,7 +27,6 @@ PAYMENT_TYPE = {
 
 
 class AccountAbstractPayment(models.AbstractModel):
-
     _inherit = 'account.abstract.payment'
 
     retention_ids = fields.One2many(
@@ -48,7 +48,7 @@ class AccountAbstractPayment(models.AbstractModel):
             for retention in self.retention_ids
         ]
 
-        return vals+retentions
+        return vals + retentions
 
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
@@ -81,7 +81,7 @@ class AccountAbstractPayment(models.AbstractModel):
                                 payment_type = 'outbound' if invoice.type in ['in_invoice', 'out_refund'] else 'inbound'
 
                 if payment_type and payment_type in ['outbound', 'inbound']:
-                    node.set('domain', "[('type_tax_use', '=','"+PAYMENT_TYPE.get(payment_type)+"')]")
+                    node.set('domain', "[('type_tax_use', '=','" + PAYMENT_TYPE.get(payment_type) + "')]")
                     res['fields']['retention_ids']['views']['tree']['arch'] = etree.tostring(doc)
 
         return res
