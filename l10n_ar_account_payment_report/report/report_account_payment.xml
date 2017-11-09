@@ -108,9 +108,9 @@
                         <strong>Impuesto: </strong>
                         <span t-field="r.name"/>
                         <br/>
-                        <t t-if="r.retention_id.type == 'profit'">
-                            <strong>Regimen: </strong>
-                            <!--<span t-field="r.regimen"/>-->
+                        <t t-if="r.activity_id">
+                            <strong>Actividad: </strong>
+                            <span t-field="r.activity_id.name"/>
                             <br/>
                         </t>
                         <strong>Comprobante que origina la Retención: </strong>
@@ -481,7 +481,7 @@
 
                     </div>
                 </t>
-                <t t-if="o.payment_type == 'inbound'">
+                <t t-if="o.payment_type == 'outbound'">
                     <t t-foreach="o.retention_ids" t-as="r">
                         <t t-call="l10n_ar_account_payment_report.report_retentions_template"/>
                     </t>

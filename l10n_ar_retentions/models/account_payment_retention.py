@@ -37,6 +37,10 @@ class AccountPaymentRetention(models.Model):
         required=True
     )
     certificate_no = fields.Char(string='Numero de certificado')
+    activity_id = fields.Many2one(
+        'retention.activity',
+        'Actividad',
+    )
 
     @api.onchange('retention_id')
     def onchange_retention_id(self):
