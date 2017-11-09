@@ -109,7 +109,7 @@
                         <span t-field="r.name"/>
                         <br/>
                         <t t-if="r.activity_id">
-                            <strong>Actividad: </strong>
+                            <strong>Regimen: </strong>
                             <span t-field="r.activity_id.name"/>
                             <br/>
                         </t>
