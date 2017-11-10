@@ -16,11 +16,24 @@
 #
 ##############################################################################
 
-from openerp import models
+from openerp import models, fields, api
 
 
 class RetentionRetention(models.Model):
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
+
+    @api.onchange('type_tax_use')
+    def onchange_type_tax_use_domain(self):
+        domain = {}
+        domain['tax_id'] = [('type_tax_use', '=', self.type_tax_use), ('tax_group_id', '=', self.env.ref('l10n_ar_retentions.tax_group_retention').id)]
+        return {'domain': domain }
+
+    def get_domain(self):
+        return [('type_tax_use', '=', self.type_tax_use), ('tax_group_id', '=', self.env.ref('l10n_ar_retentions.tax_group_retention').id)]
+
+    tax_id = fields.Many2one(
+        domain=get_domain,
+    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

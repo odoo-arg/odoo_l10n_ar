@@ -40,7 +40,7 @@
         <!-- MENU -->
         <menuitem id="retention_activity_menu"
                   name="Actividades"
-                  parent="l10n_ar_retentions.retention_retention_main_menu"
+                  parent="l10n_ar_taxes.taxes_main_menu"
                   action="retention_activity_action"
                   sequence="10"
         />

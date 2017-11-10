@@ -30,7 +30,7 @@
                             <group>
                                 <field name="tax_id"/>
                                 <field name="state_id"/>
-                                <field name="type_tax_use" string="Aplicacion impositiva"/>
+                                <field name="type_tax_use" string="Aplicacion impositiva" required="1"/>
                             </group>
                             <group>
                                 <field name="type"/>
