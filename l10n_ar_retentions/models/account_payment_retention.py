@@ -42,6 +42,14 @@ class AccountPaymentRetention(models.Model):
         'Actividad',
     )
 
+    @api.constrains('retention_id', 'activity_id')
+    def check_activity(self):
+        if self.activity_id and self.retention_id.type != 'profit':
+            raise Warning(
+                "Para {} no se debe configurar actividad".format(self.retention_id.name))
+        elif not self.activity_id and self.retention_id.type == 'profit':
+            raise Warning("Para {} se debe configurar actividad".format(self.retention_id.name))
+
     @api.onchange('retention_id')
     def onchange_retention_id(self):
         if self.retention_id:

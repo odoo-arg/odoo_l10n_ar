@@ -26,8 +26,8 @@ PAYMENT_TYPE = {
 }
 
 
-class AccountAbstractPayment(models.AbstractModel):
-    _inherit = 'account.abstract.payment'
+class AccountPayment(models.AbstractModel):
+    _inherit = 'account.payment'
 
     retention_ids = fields.One2many(
         'account.payment.retention',
@@ -41,7 +41,7 @@ class AccountAbstractPayment(models.AbstractModel):
 
     def set_payment_methods_vals(self):
 
-        vals = super(AccountAbstractPayment, self).set_payment_methods_vals()
+        vals = super(AccountPayment, self).set_payment_methods_vals()
 
         retentions = [
             {'amount': retention.amount, 'account_id': retention.retention_id.tax_id.account_id.id}
@@ -50,11 +50,26 @@ class AccountAbstractPayment(models.AbstractModel):
 
         return vals + retentions
 
+    @api.multi
+    def post_l10n_ar(self):
+        for rec in self:
+            if rec.partner_type == 'supplier':
+                for ret in rec.retention_ids:
+                    if not ret.certificate_no:
+                        type = ret.retention_id.type
+                        if type == 'profit':
+                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.profit.seq')
+                        elif type == 'vat':
+                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.vat.seq')
+                        elif type == 'gross_income':
+                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.gross.seq')
+        return super(AccountPayment, self).post_l10n_ar()
+
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         """ Le setiamos el dominio a las retenciones segun desde donde se abre la vista de pagos """
 
-        res = super(AccountAbstractPayment, self).fields_view_get(view_id=view_id, view_type=view_type,
+        res = super(AccountPayment, self).fields_view_get(view_id=view_id, view_type=view_type,
                                                                   toolbar=toolbar, submenu=submenu)
 
         # Buscamos si el campo de retention_ids existe en la vista y si tiene una vista tree
