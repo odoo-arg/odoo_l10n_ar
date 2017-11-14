@@ -24,8 +24,25 @@
             <field name="model">retention.activity</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="code"/>
                     <field name="name"/>
                 </tree>
+            </field>
+        </record>
+
+        <!--FORM VIEW -->
+        <record model="ir.ui.view" id="retention_activity_form">
+            <field name="name">retention.activity.form</field>
+            <field name="model">retention.activity</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <label for="code" class="oe_edit_only"/>
+                        <h2><field name="code"/></h2>
+                        <label for="name" class="oe_edit_only"/>
+                        <field name="name"/>
+                    </sheet>
+                </form>
             </field>
         </record>
 

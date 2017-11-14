@@ -24,12 +24,17 @@ class RetentionActivity(models.Model):
     _description = 'Actividad de retencion'
 
     name = fields.Char(
-        string="Nombre",
+        string="Actividad",
+        required=True,
+    )
+
+    code = fields.Integer(
+        string="Codigo AFIP",
         required=True,
     )
 
     _sql_constraints = [
-        ('activity_name_unique', 'unique(name)', 'Ya existe una actividad con ese nombre.')
+        ('activity_code_unique', 'unique(code)', 'Ya existe una actividad con ese codigo.')
     ]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

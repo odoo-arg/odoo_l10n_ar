@@ -28,7 +28,8 @@
                         </div>
                         <group string="Configuracion">
                             <group>
-                                <field name="tax_id"/>
+                                <field name="tax_group_retention_id" invisible="1"/>
+                                <field name="tax_id" domain="[('type_tax_use', '=', type_tax_use), ('tax_group_id', '=', tax_group_retention_id)]"/>
                                 <field name="state_id"/>
                                 <field name="type_tax_use" string="Aplicacion impositiva" required="1"/>
                             </group>
