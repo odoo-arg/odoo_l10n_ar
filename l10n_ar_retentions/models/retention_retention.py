@@ -23,14 +23,6 @@ class RetentionRetention(models.Model):
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
 
-    @api.onchange('type_tax_use')
-    def onchange_type_tax_use_domain(self):
-        domain = {}
-        domain['tax_id'] = [('type_tax_use', '=', self.type_tax_use),
-                            ('tax_group_id', '=', self.tax_group_retention_id.id)]
-        self.tax_id = self.env['account.tax'].search(domain['tax_id'], limit=1) or None
-        return {'domain': domain}
-
     def _get_tax_group_retention(self):
         return self.env.ref('l10n_ar_retentions.tax_group_retention')
 

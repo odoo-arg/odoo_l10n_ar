@@ -25,6 +25,12 @@ PAYMENT_TYPE = {
     'outbound': 'purchase'
 }
 
+RETENTION_TYPE_CODES = {
+    'profit': 'profit',
+    'vat': 'vat',
+    'gross_income': 'gross',
+}
+
 
 class AccountPayment(models.AbstractModel):
     _inherit = 'account.payment'
@@ -52,17 +58,10 @@ class AccountPayment(models.AbstractModel):
 
     @api.multi
     def post_l10n_ar(self):
-        for rec in self:
-            if rec.partner_type == 'supplier':
-                for ret in rec.retention_ids:
-                    if not ret.certificate_no:
-                        type = ret.retention_id.type
-                        if type == 'profit':
-                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.profit.seq')
-                        elif type == 'vat':
-                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.vat.seq')
-                        elif type == 'gross_income':
-                            ret.certificate_no = self.env['ir.sequence'].next_by_code('rtl.gross.seq')
+        for rec in self.search([('partner_type', '=', 'supplier')]):
+            for ret in rec.retention_ids.filtered(lambda x: not x.certificate_no):
+                ret.certificate_no = self.env['ir.sequence'].next_by_code(
+                    'rtl.{}.seq'.format(RETENTION_TYPE_CODES.get(ret.retention_id.type)))
         return super(AccountPayment, self).post_l10n_ar()
 
     @api.model
@@ -70,7 +69,7 @@ class AccountPayment(models.AbstractModel):
         """ Le setiamos el dominio a las retenciones segun desde donde se abre la vista de pagos """
 
         res = super(AccountPayment, self).fields_view_get(view_id=view_id, view_type=view_type,
-                                                                  toolbar=toolbar, submenu=submenu)
+                                                          toolbar=toolbar, submenu=submenu)
 
         # Buscamos si el campo de retention_ids existe en la vista y si tiene una vista tree
         if res['fields'].get('retention_ids') and res['fields'].get('retention_ids').get('views').get('tree'):
@@ -96,7 +95,7 @@ class AccountPayment(models.AbstractModel):
                                 payment_type = 'outbound' if invoice.type in ['in_invoice', 'out_refund'] else 'inbound'
 
                 if payment_type and payment_type in ['outbound', 'inbound']:
-                    node.set('domain', "[('type_tax_use', '=','" + PAYMENT_TYPE.get(payment_type) + "')]")
+                    node.set('domain', "[('type_tax_use', '=','{}')]".format(PAYMENT_TYPE.get(payment_type)))
                     res['fields']['retention_ids']['views']['tree']['arch'] = etree.tostring(doc)
 
         return res
