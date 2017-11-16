@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
+from openerp import models, fields
 
 
 class RetentionRetention(models.Model):

@@ -55,7 +55,7 @@ class AccountAbstractPayment(models.AbstractModel):
         """ Le setiamos el dominio a las retenciones segun desde donde se abre la vista de pagos """
 
         res = super(AccountAbstractPayment, self).fields_view_get(view_id=view_id, view_type=view_type,
-                                                          toolbar=toolbar, submenu=submenu)
+                                                                  toolbar=toolbar, submenu=submenu)
 
         # Buscamos si el campo de retention_ids existe en la vista y si tiene una vista tree
         if res['fields'].get('retention_ids') and res['fields'].get('retention_ids').get('views').get('tree'):
