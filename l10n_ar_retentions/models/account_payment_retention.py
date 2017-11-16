@@ -41,14 +41,25 @@ class AccountPaymentRetention(models.Model):
         'retention.activity',
         'Actividad',
     )
+    type = fields.Selection(
+        selection=[
+            ('vat', 'IVA'),
+            ('gross_income', 'Ingresos Brutos'),
+            ('profit', 'Ganancias'),
+            ('other', 'Otro'),
+        ],
+        string="Tipo",
+        related='retention_id.type',
+        readonly=True,
+    )
 
-    @api.constrains('retention_id', 'activity_id')
-    def check_activity(self):
-        if self.activity_id and self.retention_id.type != 'profit':
-            raise Warning(
-                "Para {} no se debe configurar actividad".format(self.retention_id.name))
-        elif not self.activity_id and self.retention_id.type == 'profit':
-            raise Warning("Para {} se debe configurar actividad".format(self.retention_id.name))
+    @api.constrains('payment_id', 'retention_id', 'activity_id')
+    def _check_repeat(self):
+        rules = self.search([('payment_id', '=', self.payment_id.id), ('retention_id', '=', self.retention_id.id),
+                             ('activity_id', '=', self.activity_id.id), ('id', '!=', self.id)])
+        if rules:
+            raise Warning("Existe mas de una regla con retencion {} y actividad {}.".format(self.retention_id.name,
+                                                                                            self.activity_id.name if self.activity_id else "vacia"))
 
     @api.onchange('retention_id')
     def onchange_retention_id(self):
