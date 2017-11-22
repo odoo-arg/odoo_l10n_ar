@@ -16,12 +16,17 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
 
 
 class RetentionRetention(models.Model):
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
+
+    @api.onchange('type_tax_use')
+    def change_tax_id(self):
+        self.tax_id = self.env['account.tax'].search(
+            [('type_tax_use', '=', self.type_tax_use), ('tax_group_id', '=', self.tax_group_retention_id.id)], limit=1)
 
     def _get_tax_group_retention(self):
         return self.env.ref('l10n_ar_retentions.tax_group_retention')
