@@ -149,8 +149,11 @@
         </template>
         <template id="report_payment_header" inherit_id="report.external_layout_header">
             <xpath expr="//div//div[@name='company_address']//span" position="before">
+                <t t-if="company.partner_id.partner_document_type_id">
+                    <span t-field="company.partner_id.partner_document_type_id.name"/>:
+                </t>
                 <t t-if="company.partner_id.vat">
-                    CUIT: <span t-field="company.partner_id.vat"/><br/>
+                    <span t-field="company.partner_id.vat"/><br/>
                 </t>
             </xpath>
         </template>
