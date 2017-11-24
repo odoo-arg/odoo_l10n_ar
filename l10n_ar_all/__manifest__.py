@@ -39,6 +39,9 @@ Modulo encargado de instalar todos los modulos requeridos para la localizacion A
         'l10n_ar_account_payment_report',
         'l10n_ar_electronic_invoice_report',
         'l10n_ar_bank_reconcile',
+        'l10n_ar_invoice_presentation',
+        'l10n_ar_retentions_sifere',
+        'l10n_ar_perceptions_sifere'
     ],
 
     'data': [
