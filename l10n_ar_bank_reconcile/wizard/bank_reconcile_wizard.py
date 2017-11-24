@@ -41,14 +41,17 @@ class BankReconcileWizard(models.TransientModel):
         bank_reconciliation = self._validate_conciliation(move_lines)
 
         last_balance = 0
+        last_balance_currency = 0
         # Suma del balance actual
         current_balance = sum(move_line.debit - move_line.credit for move_line in move_lines)
+        current_balance_currency = sum(move_line.amount_currency for move_line in move_lines)
 
         reconcile_lines = bank_reconciliation.bank_reconcile_line_ids
 
         # Obtengo el balance anterior
         if reconcile_lines:
-            last_balance = reconcile_lines[0].current_balance
+            last_balance, last_balance_currency = [reconcile_lines[0].current_balance,
+                                                   reconcile_lines[0].current_balance_currency]
             if reconcile_lines[0].date_start < self.date_start < reconcile_lines[0].date_stop:
                 raise ValidationError(
                     'No se puede crear una conciliacion con fecha de inicio menor '
@@ -59,7 +62,10 @@ class BankReconcileWizard(models.TransientModel):
         if reconcile_lines and self.date_start == reconcile_lines[0].date_start \
                 and reconcile_lines[0].date_stop == self.date_stop:
             reconcile_line = reconcile_lines[0]
-            reconcile_line.write({'current_balance': current_balance + last_balance})
+            reconcile_line.write({
+                'current_balance': current_balance + last_balance,
+                'current_balance_currency': current_balance_currency + last_balance_currency
+            })
             for move_line in move_lines:
                 bank_reconcile_move_line_obj.create({
                     'bank_reconcile_line_id': reconcile_line.id,
@@ -74,6 +80,8 @@ class BankReconcileWizard(models.TransientModel):
                 'date_stop': self.date_stop,
                 'last_balance': last_balance,
                 'current_balance': current_balance + last_balance,
+                'last_balance_currency': last_balance_currency,
+                'current_balance_currency': current_balance_currency + last_balance_currency,
                 'bank_reconcile_id': bank_reconciliation.id,
                 'last': True
             })
@@ -100,7 +108,12 @@ class BankReconcileWizard(models.TransientModel):
         account = move_lines.mapped('account_id')
         if len(account) != 1:
             raise ValidationError('Solo se puede crear conciliaciones para movimientos de la misma cuenta.')
-
+        currency = move_lines.mapped('currency_id')
+        currency_account = account.currency_id if account.currency_id else account.company_id.currency_id
+        if currency or account.currency_id:
+            if len(currency) != 1 or currency != currency_account:
+                raise ValidationError('Solo se pueden conciliar movimientos de la misma moneda que la '
+                                      'de la cuenta.')
         bank_reconciliation = self.env['account.bank.reconcile'].search([('account_id', '=', account.id)])
         if not bank_reconciliation:
             raise ValidationError('No existe una conciliacion para la cuenta los movimientos seleccionados.')

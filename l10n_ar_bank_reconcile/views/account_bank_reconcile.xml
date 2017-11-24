@@ -48,6 +48,8 @@
                                     <field name="date_stop"/>
                                     <field name="last_balance"/>
                                     <field name="current_balance"/>
+                                    <field name="last_balance_currency"/>
+                                    <field name="current_balance_currency"/>
                                 </tree>
                                 </field>
                             </page>

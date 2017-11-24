@@ -126,7 +126,7 @@
             <field name="name">Account third check kanban</field>
             <field name="model">account.third.check</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_mobile" create="false" delete="false">
+                <kanban class="o_kanban_mobile">
                     <field name="name"/>
                     <field name="issue_date"/>
                     <field name="payment_date"/>
@@ -182,8 +182,6 @@
                     color="bank_id"
                     date_start="payment_date"
                     mode="month"
-                    create="false"
-                    delete="false"
                 >
                     <field name="name"/>
                     <field name="bank_id"/>
@@ -236,8 +234,6 @@
                     color="bank_id"
                     date_start="payment_date"
                     mode="month"
-                    create="false"
-                    delete="false"
                 >
                     <field name="name"/>
                     <field name="checkbook_id"/>
@@ -251,7 +247,7 @@
             <field name="name">Account own check kanban</field>
             <field name="model">account.own.check</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_mobile" create="false" delete="false">
+                <kanban class="o_kanban_mobile">
                     <field name="checkbook_id"/>
                     <field name="name"/>
                     <field name="payment_type"/>

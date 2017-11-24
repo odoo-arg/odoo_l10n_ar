@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <!--RETENTIONS-->
+        <template id="report_retentions_header">
+            <div class="header">
+                <div class="left">
+                    <img t-if="o.company_id.logo"
+                         t-att-src="'data:image/png;base64,%s' % o.company_id.logo"
+                         style="max-height: 45px;"/>
+                </div>
+                <div style="float:right">
+                    <strong>
+                        <t t-if="r.retention_id.type == 'gross_income'">
+                            Constancia de Retención IIBB
+                        </t>
+                        <t t-if="r.retention_id.type == 'vat'">
+                            Constancia de Retención IVA
+                        </t>
+                        <t t-if="r.retention_id.type == 'profit'">
+                            Constancia de Retención SICORE
+                        </t>
+                    </strong>
+                    <br/><br/>
+                    <div>
+                        <t t-if="r.certificate_no">
+                             Certificado N°: <span t-field="r.certificate_no"/>
+                        </t>
+                        <t t-if="o.payment_date">
+                             Fecha: <span t-field="o.payment_date"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="report_retentions_footer">
+            <div class="footer">
+                <div style="width: 90%, text-center">
+                    <t t-if="r.retention_id.type in ['profit', 'vat']">
+                        Declaro que los datos consignados en este Formulario son correctos y completos y
+                        que he confeccionado la presente utilizando mismo formato que la
+                        AFIP sin falsear dato alguno que deba contener, siendo fiel expresión de la verdad.
+                    </t>
+                    <t t-if="r.retention_id.type == 'gross_income'">
+                        La retención practicada mediante el presete certificado sera informada en la
+                        declaración jurada correspondiente al periodo
+                        <strong><span t-esc="datetime.datetime.strptime(o.payment_date,'%Y-%m-%d').strftime('%m/%Y')"/></strong>
+                    </t>
+
+                </div>
+            </div>
+        </template>
+        <template id="report_retentions_layout">
+            <t t-name="report.electronic_invoice_layout">
+                <t t-call="l10n_ar_account_payment_report.report_retentions_header"/>
+                <t t-raw="0"/>
+                <t t-call="l10n_ar_account_payment_report.report_retentions_footer"/>
+            </t>
+        </template>
+        <template id="report_retentions_body">
+            <div class="page">
+                <div style="width: 100%">
+                    <div class="left">
+                        <h4>
+                            <strong>A.- Datos del Agente de Retención</strong>
+                        </h4>
+                        <br/>
+                        <strong>Apellido y Nombre o Denominación: </strong>
+                        <span t-field="o.company_id.name"/>
+                        <br/>
+                        <strong>C.U.I.T N°: </strong>
+                        <span t-field="o.company_id.vat"/>
+                        <br/>
+                        <strong>Domicilio: </strong>
+                        <t t-if="o.company_id.street">
+                            Direccion:
+                            <span t-field="o.company_id.street"/>
+                        </t>
+                        <t t-if="o.company_id.city">
+                            Cuidad:
+                            <span t-field="o.company_id.city"/>
+                        </t>
+                        <br/><br/>
+                        <h4>
+                            <strong>B.- Datos del Sujeto Retenido</strong>
+                        </h4>
+                        <br/>
+                        <strong>Apellido y Nombre o Denominación: </strong>
+                        <span t-field="o.partner_id.name"/>
+                        <br/>
+                        <strong>C.U.I.T N°: </strong>
+                        <span t-field="o.partner_id.vat"/>
+                        <br/>
+                        <strong>Domicilio: </strong>
+                        <t t-if="o.partner_id.street">
+                            Direccion:
+                            <span t-field="o.partner_id.street"/>
+                        </t>
+                        <t t-if="o.partner_id.city">
+                            Cuidad:
+                            <span t-field="o.partner_id.city"/>
+                        </t>
+                        <br/><br/>
+                        <h4>
+                            <strong>C.- Datos de la Retención Practicada</strong>
+                        </h4>
+                        <br/>
+                        <strong>Impuesto: </strong>
+                        <span t-field="r.name"/>
+                        <br/>
+                        <t t-if="r.activity_id">
+                            <strong>Regimen: </strong>
+                            <span t-field="r.activity_id.name"/>
+                            <br/>
+                        </t>
+                        <strong>Comprobante que origina la Retención: </strong>
+                        <span t-field="o.name"/>
+                        <br/>
+                        <!-- ESTE CAMPO EN V8 ESTA EN EL MODELO DE RETENCIONES COMO EN ESTA VERSION NO EXISTE, -->
+                        <!-- LO DEJO COMENTADO POR LAS DUDAS -->
+                        <!--<strong>Notas: </strong>-->
+                        <!--<span t-field="o.notes"/>-->
+                        <!--<br/>-->
+                        <strong>Monto del Comprobante que origina la Retención: </strong>
+                        <span t-field="o.amount"
+                              t-options='{"widget": "monetary"}'
+                        />
+                        <br/>
+                        <t t-if="r.retention_id.type not in ['gross_income', 'profit', 'vat']">
+                            <strong>Base de cálculo: </strong>
+                            <span t-field="r.base"/>
+                            <br/>
+                        </t>
+                        <strong>Monto de la Retención: </strong>
+                        <span t-field="r.amount"
+                              t-options='{"widget": "monetary"}'
+                        />
+                        <br/>
+                        <strong>Imposibilidad de Retención:</strong>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="report_retentions_template">
+            <t t-call="l10n_ar_account_payment_report.report_retentions_layout">
+                <t t-call="l10n_ar_account_payment_report.report_retentions_body"/>
+            </t>
+        </template>
+        <template id="report_payment_header" inherit_id="report.external_layout_header">
+            <xpath expr="//div//div[@name='company_address']//span" position="before">
+                <t t-if="company.partner_id.partner_document_type_id">
+                    <span t-field="company.partner_id.partner_document_type_id.name"/>:
+                </t>
+                <t t-if="company.partner_id.vat">
+                    <span t-field="company.partner_id.vat"/><br/>
+                </t>
+            </xpath>
+        </template>
+        <!--REPORTE DE PAGO + REPORTE DE RETENCIONES-->
         <template id="report_account_payment">
             <t t-foreach="docs" t-as="o">
                 <t t-call="report.external_layout">
@@ -333,6 +490,11 @@
                         </div>
 
                     </div>
+                </t>
+                <t t-if="o.payment_type == 'outbound'">
+                    <t t-foreach="o.retention_ids" t-as="r">
+                        <t t-call="l10n_ar_account_payment_report.report_retentions_template"/>
+                    </t>
                 </t>
             </t>
         </template>

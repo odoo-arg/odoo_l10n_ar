@@ -54,11 +54,13 @@ class AccountBankReconcile(models.Model):
         }
 
     # Cantidad de movimientos sin conciliar
+    @api.multi
     def _get_unreconciled(self):
-        self.unreconciled_count = self.env['account.move.line'].search_count([
-            ('bank_reconciled', '=', False),
-            ('account_id', '=', self.account_id.id)
-        ])
+        for r in self:
+            r.unreconciled_count = r.env['account.move.line'].search_count([
+                ('bank_reconciled', '=', False),
+                ('account_id', '=', r.account_id.id)
+            ])
 
     # Chequeo si existen concialiaciones antes de eliminar una conciliacion bancaria
     @api.multi
@@ -74,8 +76,7 @@ class AccountBankReconcile(models.Model):
     @api.multi
     def write(self, vals):
         if vals.get('account_id') and len(self.bank_reconcile_line_ids) > 0:
-            raise ValidationError('No se puede modificar una cuenta de una conciliacion'
-                                  'con movimientos conciliados.')
+            raise ValidationError('No se puede modificar la cuenta si ya tiene movimientos conciliados')
         return super(AccountBankReconcile, self).write(vals)
 
     def get_last_conciliation(self):

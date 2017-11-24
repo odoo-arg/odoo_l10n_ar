@@ -16,12 +16,12 @@
 #
 ##############################################################################
 
-from odoo.tests import common
 from lxml import etree
+
+from odoo.tests import common
 
 
 class TestRetention(common.TransactionCase):
-
     def _get_fields_view_get(self, **kwargs):
 
         res = self.payment.with_context(kwargs).fields_view_get(
@@ -119,15 +119,15 @@ class TestRetention(common.TransactionCase):
         assert vals[0].get('account_id') == self.retention_caba.tax_id.account_id.id
 
     def test_get_payment_method_vals_wizard(self):
-        payment_wizard = self.env['account.register.payments'].\
+        payment_wizard = self.env['account.register.payments']. \
             with_context(active_ids=self.invoice.id, active_model='account.invoice').create({
-                'partner_id': self.partner.id,
-                'payment_type': 'inbound',
-                'partner_type': 'customer',
-                'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
-                'amount': 500,
-                'retention_ids': [(6, 0, [self.retention_payment.id])]
-            })
+            'partner_id': self.partner.id,
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+            'amount': 500,
+            'retention_ids': [(6, 0, [self.retention_payment.id])]
+        })
         res = payment_wizard.get_payment_vals()
         assert res.get('retention_ids')[0][0] == self.retention_caba.id
 

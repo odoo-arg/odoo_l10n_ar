@@ -32,15 +32,18 @@
 
     'depends': [
         'l10n_ar_account_payment',
-        'l10n_ar_taxes'
+        'l10n_ar_taxes',
     ],
 
     'data': [
         'views/retention_retention_view.xml',
         'views/account_payment_view.xml',
+        'views/retention_activity_view.xml',
         'wizard/account_register_payments_wizard.xml',
         'data/retention_data.xml',
-        'security/ir.model.access.csv'
+        'data/retention_activities.xml',
+        'data/sequence.xml',
+        'security/ir.model.access.csv',
     ],
 
     'installable': True,
