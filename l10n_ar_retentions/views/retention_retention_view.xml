@@ -28,8 +28,10 @@
                         </div>
                         <group string="Configuracion">
                             <group>
-                                <field name="tax_id"/>
+                                <field name="tax_group_retention_id" invisible="1"/>
+                                <field name="tax_id" domain="[('tax_group_id', '=', tax_group_retention_id)]"/>
                                 <field name="state_id"/>
+                                <field name="type_tax_use" string="Aplicacion impositiva" readonly="1"/>
                             </group>
                             <group>
                                 <field name="type"/>

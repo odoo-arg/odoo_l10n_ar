@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data noupdate="0">
+
+        <record model="retention.activity" id="ret_act_19">
+            <field name="name">Intereses por operaciones realizadas en entidades financieras. Ley Nro. 21.526 y sus modificaciones o agentes de bolsa o mercado abierto</field>
+            <field name="code">19</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_21">
+            <field name="name">Intereses originado en operaciones no comprendidas en el regimen anterior</field>
+            <field name="code">21</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_27">
+            <field name="name">Alquileres o arrendamientos de bienes muebles o inmuebles</field>
+            <field name="code">27</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_35">
+            <field name="name">Regalias</field>
+            <field name="code">35</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_43">
+            <field name="name">Interes accionario, excedentes y retornos distribiudos entre asociados, cooperativas-excepto consumo</field>
+            <field name="code">43</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_51">
+            <field name="name">Obligaciones de no hacer, o por abandono o no ejercicio de una actividad</field>
+            <field name="code">51</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_78">
+            <field name="name">Enajenacion de bienes muebles y bienes de cambio</field>
+            <field name="code">78</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_86">
+            <field name="name">Transferencia temporaria o definitiva de derechos de llave, marcas, patentes de invencion, regalias, conseciones y similares</field>
+            <field name="code">86</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_110">
+            <field name="name">Explotacion de derechos de autor (Ley Nro. 11.723)</field>
+            <field name="code">110</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_94">
+            <field name="name">Locacion de obras y/o servicios no ejecutados en relacion de dependencia no mencionados expresamente en otros incisos</field>
+            <field name="code">94</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_25">
+            <field name="name">Comisiones u otras retribuciones derivadas de la actividad de comisionista, rematador, consignatario y demas auxiliares de comercio a que se refiere el inciso c) del articulo 49 de la Ley de Impuesto a las Ganancias, Texto ordenado en 1997 y sus modificaciones</field>
+            <field name="code">25</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_116">
+            <field name="name">Honorarios de director de sociedades anonimas, sindico, fiduciario, consejero de sociedades cooperativas, integrante de consejos de vigilancia y socios administradores de las sociedades de responsabilidad limitida, en comandita simple y en comandita por acciones</field>
+            <field name="code">116</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_124">
+            <field name="name">Corredor, viajante de comercio y despachante de aduana</field>
+            <field name="code">124</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_95">
+            <field name="name">Operaciones de transporte de carga nacional e internacional</field>
+            <field name="code">95</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_53">
+            <field name="name">Operaciones realizadas por intermedio de mercados de cerealesa termino que se resuelvan en el curso del termino (arbitrajes) y de mercados de futuros y opciones</field>
+            <field name="code">53</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_55">
+            <field name="name">Distribucion de peliculas. Transmision de programacion. Television via satelital</field>
+            <field name="code">55</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_111">
+            <field name="name">Cualquier otra cesion o locacion de derechos, excepto las que correspondan a operaciones realizadas por intermedio de mercados de cerealesa termino que se resuelvan en el curso del termino (arbitrajes) y de mercados de futuros y opciones</field>
+            <field name="code">111</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_499">
+            <field name="name">Factura M - IVA - Emision de comprobantes con discriminacion del gravamen</field>
+            <field name="code">499</field>
+        </record>
+        
+        <record model="retention.activity" id="ret_act_99">
+            <field name="name">Factura M – Ganancias – Emision de comprobantes con discriminacion del gravamen</field>
+            <field name="code">99</field>
+        </record>
+
+        <record model="retention.activity" id="ret_act_0">
+            <field name="name">Monotributista</field>
+            <field name="code">0</field>
+        </record>
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

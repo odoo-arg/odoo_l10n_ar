@@ -16,44 +16,25 @@
 #
 ##############################################################################
 
-{
+from openerp import models, fields
 
-    'name': 'l10n_ar_retentions',
 
-    'version': '1.0',
+class RetentionActivity(models.Model):
+    _name = 'retention.activity'
+    _description = 'Actividad de retencion'
 
-    'category': 'Accounting',
+    name = fields.Char(
+        string="Actividad",
+        required=True,
+    )
 
-    'summary': 'Retenciones para Argentina',
+    code = fields.Integer(
+        string="Codigo AFIP",
+        required=True,
+    )
 
-    'author': 'OPENPYME S.R.L',
-
-    'website': 'http://www.openpyme.com.ar',
-
-    'depends': [
-        'l10n_ar_account_payment',
-        'l10n_ar_taxes',
-    ],
-
-    'data': [
-        'views/retention_retention_view.xml',
-        'views/account_payment_view.xml',
-        'views/retention_activity_view.xml',
-        'wizard/account_register_payments_wizard.xml',
-        'data/retention_data.xml',
-        'data/retention_activities.xml',
-        'data/sequence.xml',
-        'security/ir.model.access.csv',
-    ],
-
-    'installable': True,
-
-    'auto_install': False,
-
-    'application': True,
-
-    'description': 'Contempla retenciones en la carga de pagos',
-
-}
+    _sql_constraints = [
+        ('activity_code_unique', 'unique(code)', 'Ya existe una actividad con ese codigo.')
+    ]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

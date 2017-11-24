@@ -16,74 +16,24 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api
-from lxml import etree
+from openerp import models, api
 
-PAYMENT_TYPE = {
-    'inbound': 'sale',
-    'outbound': 'purchase'
+RETENTION_TYPE_CODES = {
+    'profit': 'profit',
+    'vat': 'vat',
+    'gross_income': 'gross',
 }
 
 
-class AccountAbstractPayment(models.AbstractModel):
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
 
-    _inherit = 'account.abstract.payment'
-
-    retention_ids = fields.One2many(
-        'account.payment.retention',
-        'payment_id',
-        'Retenciones'
-    )
-
-    @api.onchange('retention_ids')
-    def onchange_retention_ids(self):
-        self.recalculate_amount()
-
-    def set_payment_methods_vals(self):
-
-        vals = super(AccountAbstractPayment, self).set_payment_methods_vals()
-
-        retentions = [
-            {'amount': retention.amount, 'account_id': retention.retention_id.tax_id.account_id.id}
-            for retention in self.retention_ids
-        ]
-
-        return vals+retentions
-
-    @api.model
-    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        """ Le setiamos el dominio a las retenciones segun desde donde se abre la vista de pagos """
-
-        res = super(AccountAbstractPayment, self).fields_view_get(view_id=view_id, view_type=view_type,
-                                                                  toolbar=toolbar, submenu=submenu)
-
-        # Buscamos si el campo de retention_ids existe en la vista y si tiene una vista tree
-        if res['fields'].get('retention_ids') and res['fields'].get('retention_ids').get('views').get('tree'):
-            arch = res['fields']['retention_ids']['views']['tree']['arch']
-            doc = etree.XML(arch)
-
-            # Buscamos el campo retention_id dentro del tree nuevo y le agregamos el dominio segun el tipo de pago
-            for node in doc.xpath("//field[@name='retention_id']"):
-
-                payment_type = self.env.context.get('default_payment_type')
-                if not payment_type:
-
-                    # Para el caso que el pago se haga desde la factura
-                    invoice_type = self.env.context.get('type')
-                    if invoice_type:
-                        payment_type = 'outbound' if invoice_type == 'in_invoice' else 'inbound'
-
-                    # Para el caso que sea desde el wizard de pagos
-                    else:
-                        if self.env.context.get('active_model') == 'account.invoice':
-                            invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
-                            if invoice:
-                                payment_type = 'outbound' if invoice.type in ['in_invoice', 'out_refund'] else 'inbound'
-
-                if payment_type and payment_type in ['outbound', 'inbound']:
-                    node.set('domain', "[('type_tax_use', '=','"+PAYMENT_TYPE.get(payment_type)+"')]")
-                    res['fields']['retention_ids']['views']['tree']['arch'] = etree.tostring(doc)
-
-        return res
+    @api.multi
+    def post_l10n_ar(self):
+        for rec in self.search([('partner_type', '=', 'supplier')]):
+            for ret in rec.retention_ids.filtered(lambda x: not x.certificate_no):
+                ret.certificate_no = self.env['ir.sequence'].next_by_code(
+                    'rtl.{}.seq'.format(RETENTION_TYPE_CODES.get(ret.retention_id.type)))
+        return super(AccountPayment, self).post_l10n_ar()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

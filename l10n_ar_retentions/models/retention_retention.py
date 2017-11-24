@@ -16,12 +16,19 @@
 #
 ##############################################################################
 
-from openerp import models
+from openerp import models, fields, api
 
 
 class RetentionRetention(models.Model):
-
     _inherit = 'account.tax.ar'
     _name = 'retention.retention'
+
+    def _get_tax_group_retention(self):
+        return self.env.ref('l10n_ar_retentions.tax_group_retention')
+
+    tax_group_retention_id = fields.Many2one(
+        comodel_name='account.tax.group',
+        default=_get_tax_group_retention,
+    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
