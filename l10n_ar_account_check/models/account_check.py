@@ -70,6 +70,7 @@ THIRD_CHECK_NEXT_STATES = {
     'draft': 'wallet',
     'wallet_deposited': 'deposited',
     'wallet_handed': 'handed',
+    'wallet_sold': 'sold',
     'wallet_rejected': 'rejected',
     'handed': 'rejected',
     'deposited': 'rejected',
@@ -77,6 +78,7 @@ THIRD_CHECK_NEXT_STATES = {
 THIRD_CHECK_CANCEL_STATES = {
     'wallet': 'draft',
     'handed': 'wallet',
+    'sold': 'wallet',
     'deposited': 'wallet',
     'rejected_wallet': 'wallet',
     'rejected_handed': 'handed',
@@ -107,6 +109,7 @@ class AccountThirdCheck(models.Model):
             ('wallet', 'En cartera'),
             ('handed', 'Entregado'),
             ('deposited', 'Depositado'),
+            ('sold', 'Vendido'),
             ('rejected', 'Rechazado')
         ],
         string='Estado',
@@ -191,12 +194,14 @@ class AccountThirdCheck(models.Model):
 
 OWN_CHECK_NEXT_STATES = {
     'draft_handed': 'handed',
+    'draft_collect': 'collect',
     'draft_canceled': 'canceled',
     'handed': 'rejected',
 }
 OWN_CHECK_CANCEL_STATES = {
     'canceled': 'draft',
     'handed': 'draft',
+    'collect': 'draft',
     'rejected': 'handed'
 }
 
@@ -210,6 +215,7 @@ class AccountOwnCheck(models.Model):
         [
             ('draft', 'Borrador'),
             ('handed', 'Entregado'),
+            ('collect', 'Cobrado'),
             ('canceled', 'Anulado'),
             ('rejected', 'Rechazado')
         ],
@@ -232,6 +238,25 @@ class AccountOwnCheck(models.Model):
         track_visibility='onchange'
     )
 
+    collect_move_id = fields.Many2one(
+        'account.move',
+        'Asiento de cobro',
+        help="Asiento donde se registro el cobro de cheque",
+        track_visibility='onchange',
+        ondelete='restrict',
+    )
+
+    collect_date = fields.Date(
+        string='Fecha de cobro',
+        track_visibility='onchange'
+    )
+
+    @api.constrains('payment_date', 'collect_date')
+    def constraint_collect_date(self):
+        for check in self:
+            if check.collect_date and check.collect_date < check.payment_date:
+                raise ValidationError("La fecha de cobro no puede ser menor a la fecha de pago")
+
     @api.constrains('destination_payment_id', 'currency_id')
     def validate_check_currency(self):
         for check in self:
@@ -252,6 +277,26 @@ class AccountOwnCheck(models.Model):
         vals = vals if vals else {}
         self.write(vals)
         self.next_state('draft_handed')
+
+    @api.multi
+    def post_collect(self, vals):
+        """ Lo que deberia pasar con el cheque cuando se cobra.. """
+        if any(check.state != 'draft' for check in self):
+            raise ValidationError("Los cheques propios a cobrar deben estar en estado borrador")
+        vals = vals if vals else {}
+        self.write(vals)
+        self.next_state('draft_collect')
+
+    @api.multi
+    def cancel_collect(self):
+        """ Lo que deberia pasar con el cheque cuando se revierte el cobro.. """
+        if any(check.state != 'collect' for check in self):
+            raise ValidationError("Los cheques propios deben estar en estado cobrado para revertir el cobro")
+        self.cancel_state('collect')
+        move_id = self.collect_move_id
+        self.write({'collect_move_id': False, 'collect_date': False})
+        move_id.button_cancel()
+        move_id.unlink()
 
     @api.multi
     def cancel_payment(self):

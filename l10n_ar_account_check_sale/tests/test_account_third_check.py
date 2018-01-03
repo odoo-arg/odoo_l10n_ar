@@ -18,39 +18,43 @@
 
 from openerp import fields
 from openerp.exceptions import ValidationError
-from test_deposit_slip import TestDepositSlip
+from test_sold_check import TestSoldCheck
 
 
-class TestAccountThirdCheck(TestDepositSlip):
+class TestAccountThirdCheck(TestSoldCheck):
+
+    def test_sold_check_id(self):
+        self.sold_check.post()
+        assert self.third_check.sold_check_id == self.sold_check
 
     def test_invalid_third_check_state(self):
         self.third_check.state = 'draft'
         with self.assertRaises(ValidationError):
-            self.third_check.deposit_slip_ids = None
+            self.third_check.sold_check_ids = None
 
-    def test_multiple_deposit_slips(self):
+    def test_multiple_sold_checks(self):
         with self.assertRaises(ValidationError):
-            self.env['account.deposit.slip'].create({
-                'journal_id': self.deposit_slip.journal_id.id,
-                'date': fields.Date.context_today(self.env['account.deposit.slip']),
-                'check_ids': [(6, 0, [self.third_check.id])]
+            self.env['account.sold.check'].create({
+                'journal_id': self.sold_check.journal_id.id,
+                'date': fields.Date.context_today(self.env['account.sold.check']),
+                'account_third_check_ids': [(6, 0, [self.third_check.id])]
             })
 
     def test_invalid_check_state_post(self):
         self.third_check.state = 'draft'
         with self.assertRaises(ValidationError):
-            self.deposit_slip.post()
+            self.sold_check.post()
 
     def test_invalid_check_currency_post(self):
         usd = self.env.ref('base.USD')
         self.third_check.currency_id = usd.id
         third_checks = self.third_check | self.third_check_2
         with self.assertRaises(ValidationError):
-            third_checks.post_deposit_slip()
+            third_checks.post_sold_check()
 
     def test_invalid_check_state_cancel(self):
         self.third_check.state = 'draft'
         with self.assertRaises(ValidationError):
-            self.deposit_slip.cancel_deposit_slip()
+            self.sold_check.cancel()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -34,6 +34,20 @@ class WsaaToken(models.Model):
     sign = fields.Text('Sign', readonly=True)
     wsaa_configuration_id = fields.Many2one('wsaa.configuration', 'Configuracion', required=True)
 
+    def get_access_token(self):
+        """
+        Crea el objeto de ticket de acceso para utilizar en el los webervices
+        :return: instancia de AcessToken
+        """
+        self.ensure_one()
+
+        self.action_renew()
+        access_token = wsaa.tokens.AccessToken()
+        access_token.sign = self.sign
+        access_token.token = self.token
+
+        return access_token
+
     @api.multi
     def action_renew(self, context=None, delta_time_for_expiration=10):
         """ Renueva o crea el ticket de acceso si esta vencido o no creado """

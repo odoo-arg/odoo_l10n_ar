@@ -24,6 +24,28 @@
                 <form create="false" delete="false">
                     <header>
                         <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,handed"/>
+                        <button
+                            name="%(l10n_ar_account_check.account_check_collect_wizard_action)d"
+                            string="Cobrar"
+                            class="oe_highlight"
+                            states="draft"
+                            groups="l10n_ar_account_check.group_account_treasury_manager"
+                            type="action"
+                            context="{
+                                'default_issue_date': issue_date,
+                                'default_payment_date': payment_date,
+                                'default_collect_date': collect_date,
+                                'default_amount': amount,
+                            }"/>
+                        />
+                        <button
+                            name="cancel_collect"
+                            type="object"
+                            string="Revertir Cobro"
+                            confirm="Está seguro?"
+                            states="collect"
+                            groups="l10n_ar_account_check.group_account_treasury_manager"
+                        />
                     </header>
                     <sheet>
                         <h1>
@@ -34,7 +56,7 @@
                             <span>IMPORTE: </span>
                             <field name="currency_id" invisible="1"/>
                             <field name="amount"
-                                    attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('destination_payment_id', '!=', False)]}"
+                                    attrs="{'readonly': ['|', '|', ('state', '!=', 'draft'), ('destination_payment_id', '!=', False), ('collect_move_id', '!=', False)]}"
                             />
                         </h1>
                         <group string="Informacion del cheque">
@@ -45,7 +67,21 @@
                             <group>
                                 <field name="payment_date"/>
                                 <field name="bank_id" readonly="1"/>
-                                <field name="destination_payment_id" readonly="1"/>
+                                <field
+                                    name="destination_payment_id"
+                                    readonly="1"
+                                    attrs="{'invisible':[('destination_payment_id', '=', False)]}"
+                                />
+                                <field
+                                    name="collect_move_id"
+                                    readonly="1"
+                                    attrs="{'invisible':[('collect_move_id', '=', False)]}"
+                                />
+                                <field
+                                    name="collect_date"
+                                    readonly="1"
+                                    attrs="{'invisible':[('collect_move_id', '=', False)]}"
+                                />
                             </group>
                         </group>
                     </sheet>
@@ -108,7 +144,7 @@
                     delete="false"
                     decoration-info="state=='draft'"
                     decoration-danger="state=='rejected'"
-                    decoration-success="state in ['handed','deposited']"
+                    decoration-success="state in ['handed','deposited', 'sold']"
                 >
                     <field name="name"/>
                     <field name="issue_date"/>
@@ -200,7 +236,7 @@
                     decoration-info="state=='draft'"
                     decoration-muted="state=='canceled'"
                     decoration-danger="state=='rejected'"
-                    decoration-success="state=='handed'"
+                    decoration-success="state in ['handed','collect']"
                 >
                     <field name="checkbook_id"/>
                     <field name="name"/>
@@ -281,7 +317,8 @@
                                                         'draft': 'info',
                                                         'canceled': 'muted',
                                                         'rejected': 'danger',
-                                                        'handed': 'success'
+                                                        'handed': 'success',
+                                                        'collect': 'success'
                                                     }
                                                 }"/>
                                         </span>

@@ -80,4 +80,9 @@ class TestWsaaToken(TestWsaa):
         self.wsaa_token.action_renew()
         assert (self.wsaa_token.expiration_time and self.wsaa_token.token and self.wsaa_token.sign)
 
+    def test_get_access_token(self):
+        access_token = self.wsaa_token.get_access_token()
+        assert self.wsaa_token.sign == access_token.sign
+        assert self.wsaa_token.token == access_token.token
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
