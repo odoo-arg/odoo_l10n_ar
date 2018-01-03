@@ -35,6 +35,7 @@ class TestCheckbook(set_up.SetUp):
             'journal_id': journal.id,
             'number_from': '1',
             'number_to': '10',
+            'account_id': self.env['account.account'].search([], limit=1).id,
         })
 
     def test_numbers_digits(self):

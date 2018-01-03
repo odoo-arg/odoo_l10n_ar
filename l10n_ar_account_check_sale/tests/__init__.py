@@ -16,7 +16,8 @@
 #
 ##############################################################################
 
-import account_register_payments
-import account_check_collect_wizard
+import test_sold_check
+import test_account_third_check
+import test_wizard_sold_check
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

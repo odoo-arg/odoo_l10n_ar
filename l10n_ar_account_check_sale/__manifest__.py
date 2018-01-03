@@ -16,43 +16,44 @@
 #
 ##############################################################################
 
+
 {
 
-    'name': 'l10n_ar_all',
+    'name': 'l10n_ar_account_check_sale',
 
     'version': '1.0',
 
-    'summary': 'Localizacion Argentina',
+    'summary': 'Venta de cheques de terceros',
 
     'description': """
-Modulo encargado de instalar todos los modulos requeridos para la localizacion Argentina.
+Cheques
+==================================
+    Venta de cheques de terceros.
     """,
 
     'author': 'OPENPYME S.R.L.',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'Localization',
+    'category': 'Accounting',
 
     'depends': [
-        'l10n_ar_reject_checks',
-        'l10n_ar_account_check_sale',
-        'l10n_ar_account_payment_report',
-        'l10n_ar_electronic_invoice_report',
-        'l10n_ar_bank_reconcile',
-        'l10n_ar_invoice_presentation',
-        'l10n_ar_retentions_sifere',
-        'l10n_ar_perceptions_sifere'
+        'l10n_ar_account_check',
     ],
 
     'data': [
-
+        'data/sold_check_data.xml',
+        'views/account_third_check_view.xml',
+        'views/account_sold_check_view.xml',
+        'wizard/wizard_sell_check_view.xml',
+        'security/ir.model.access.csv'
     ],
 
     'active': False,
 
+    'application': True,
+
     'installable': True,
 
 }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

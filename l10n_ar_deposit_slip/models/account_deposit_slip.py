@@ -140,7 +140,6 @@ class AccountDepositSlip(models.Model):
         """
 
         vals = {
-            'name': name,
             'date': self.date,
             'ref': 'Boleta de deposito: ' + name,
             'journal_id': self.journal_id.id,
@@ -180,11 +179,11 @@ class AccountDepositSlip(models.Model):
             'debit': debit,
             'credit': credit,
             'amount_currency': amount_currency,
-            'name': move.name,
+            'name': move.ref,
             'account_id': account_id,
             'journal_id': self.journal_id.id,
             'currency_id': self.currency_id != company_currency and self.currency_id.id or False,
-            'ref': 'Boleta de deposito: ' + move.name
+            'ref': move.ref
         }
         return self.env['account.move.line'].with_context(check_move_validity=False).create(move_line_vals)
 

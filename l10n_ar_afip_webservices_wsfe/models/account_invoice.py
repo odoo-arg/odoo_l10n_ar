@@ -236,7 +236,7 @@ class AccountInvoice(models.Model):
         if not wsfe_config:
             raise ValidationError('No se encontro una configuracion de factura electronica')
 
-        access_token = self._get_access_token(wsfe_config)
+        access_token = wsfe_config.wsaa_token_id.get_access_token()
         homologation = False if wsfe_config.type == 'production' else True
         afip_wsfe = wsfe.wsfe.Wsfe(access_token, self.company_id.vat, homologation)
 
@@ -283,20 +283,5 @@ class AccountInvoice(models.Model):
                 code = '1'
 
         return self.env['codes.models.relation'].get_record_from_code('afip.concept', code)
-
-    @staticmethod
-    def _get_access_token(wsfe_config):
-        """
-        Crea el objeto de ticket de acceso para utilizar en el wsfe
-        :return: instancia de AcessToken
-        """
-
-        token = wsfe_config.wsaa_token_id
-        token.action_renew()
-        access_token = wsaa.tokens.AccessToken()
-        access_token.sign = token.sign
-        access_token.token = token.token
-
-        return access_token
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

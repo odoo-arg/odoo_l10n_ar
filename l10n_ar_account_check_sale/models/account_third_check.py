@@ -24,57 +24,63 @@ class AccountThirdCheck(models.Model):
 
     _inherit = 'account.third.check'
 
-    @api.depends('deposit_slip_ids')
-    def get_deposit_slip_id(self):
+    @api.depends('sold_check_ids')
+    def get_sold_check_id(self):
         for check in self:
-            check.deposit_slip_id = check.deposit_slip_ids[0].id\
-                if (check.deposit_slip_ids and check.deposit_slip_ids[0].state == 'deposited') else None
+            check.sold_check_id = check.sold_check_ids[0].id\
+                if (check.sold_check_ids and check.sold_check_ids[0].state == 'sold') else None
 
-    deposit_slip_ids = fields.Many2many(
-        'account.deposit.slip',
-        'third_check_deposit_slip_rel',
+    sold_check_ids = fields.Many2many(
+        'account.sold.check',
+        'third_check_sold_check_rel',
         'third_check_id',
-        'deposit_slip_id',
-        string='Boletas de deposito'
+        'sold_check_id',
+        string='Documentos de venta de cheques'
     )
-    deposit_slip_id = fields.Many2one(
-        'account.deposit.slip',
-        'Boleta de deposito',
-        compute='get_deposit_slip_id',
+    sold_check_id = fields.Many2one(
+        'account.sold.check',
+        'Documento de venta',
+        compute='get_sold_check_id',
     )
-    deposit_bank_id = fields.Many2one(
+    sold_bank_id = fields.Many2one(
         'account.journal',
-        'Cuenta de deposito',
-        related='deposit_slip_id.journal_id',
+        'Cuenta bancaria de venta',
+        related='sold_check_id.bank_account_id',
         readonly=True
     )
-    deposit_date = fields.Date(
-        'Fecha de deposito',
-        related='deposit_slip_id.date',
+    sold_partner_id = fields.Many2one(
+        'res.partner',
+        'Vendido a',
+        related='sold_check_id.partner_id',
+        readonly=True
+    )
+    sold_date = fields.Date(
+        'Fecha de venta',
+        related='sold_check_id.date',
         readonly=True
     )
 
-    @api.constrains('deposit_slip_ids')
-    def deposit_slip_contraints(self):
+    @api.constrains('sold_check_ids')
+    def sold_check_contraints(self):
         if any(check.state != 'wallet' for check in self):
-            raise ValidationError('Solo se puede modificar la boleta de deposito de un cheque en cartera.')
+            raise ValidationError('Solo se puede modificar el documento de venta de un cheque en cartera.')
         for check in self:
-            if len(check.deposit_slip_ids) > 1:
-                raise ValidationError("El cheque "+check.name+" ya se encuentra en una boleta de deposito")
+            if len(check.sold_check_ids) > 1:
+                raise ValidationError("El cheque {} ya se encuentra en un documento de venta".format(check.name))
 
     @api.multi
-    def post_deposit_slip(self):
+    def post_sold_check(self):
         if any(check.state != 'wallet' for check in self):
-            raise ValidationError("Todos los cheques a depositar deben estar en cartera")
+            raise ValidationError("Todos los cheques a vender deben estar en cartera")
         if len(self.mapped('currency_id')) > 1:
             raise ValidationError("No se pueden depositar cheques de distintas monedas en la misma boleta de deposito")
-        self.next_state('wallet_deposited')
+        self.next_state('wallet_sold')
 
     @api.multi
-    def cancel_deposit_slip(self):
-        if any(check.state not in ('deposited', 'wallet') for check in self):
-            raise ValidationError("Para cancelar la boleta de deposito"
+    def cancel_sold_check(self):
+        if any(check.state not in ('sold', 'wallet') for check in self):
+            raise ValidationError("Para cancelar el documento de venta de cheques"
                                   " los cheques deben estar depositados o en cartera")
-        self.cancel_state('deposited')
+        self.cancel_state('sold')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

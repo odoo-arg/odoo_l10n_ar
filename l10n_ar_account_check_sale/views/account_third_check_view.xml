@@ -16,22 +16,23 @@
 
 <openerp>
     <data>
-    	
-    	<record model="ir.ui.view" id="res_partner_document_type_form">
-            <field name="name">Res partner document type form</field>
-            <field name="model">res.partner</field>
-            <field name="type">form</field>
-            <field name="inherit_id" ref="base_vat.view_partner_form"/>
+
+        <record model="ir.ui.view" id="third_check_sold_check_form">
+            <field name="name">Third check sold check form</field>
+            <field name="model">account.third.check</field>
+            <field name="inherit_id" ref="l10n_ar_account_check.account_third_check_form"/>
             <field name="arch" type="xml">
-                <label for="vat" position="before">
-                    <field name="partner_document_type_id" widget="selection"/>
-                </label>
-                <field name="vat" position="attributes">
-                    <attribute name="placeholder">Ej. 12345678</attribute>
+                <field name="payment_type" position="after">
+                    <field name="sold_check_id" attrs="{'invisible': [('sold_check_id', '=', False)]}"/>
+                </field>
+                <field name="payment_date" position="after">
+                    <field name="sold_date" attrs="{'invisible': [('sold_date', '=', False)]}"/>
+                    <field name="sold_bank_id" attrs="{'invisible': [('sold_bank_id', '=', False)]}"/>
+                    <field name="sold_partner_id" attrs="{'invisible': [('sold_partner_id', '=', False)]}"/>
                 </field>
             </field>
         </record>
-    
+
     </data>
 </openerp>
 
