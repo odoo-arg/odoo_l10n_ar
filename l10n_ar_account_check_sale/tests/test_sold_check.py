@@ -20,6 +20,7 @@ from datetime import timedelta, datetime
 from odoo.tests import common
 from openerp import fields
 from openerp.exceptions import ValidationError, MissingError
+from psycopg2 import IntegrityError
 
 
 class TestSoldCheck(common.TransactionCase):
@@ -36,7 +37,8 @@ class TestSoldCheck(common.TransactionCase):
             'currency_id': self.env.user.company_id.currency_id.id,
             'issue_date': date_today,
             'payment_date': date_today,
-            'state': 'wallet'
+            'state': 'wallet',
+            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
         })
         self.third_check_2 = third_check_proxy.create({
             'name': '412414',
@@ -46,7 +48,8 @@ class TestSoldCheck(common.TransactionCase):
             'currency_id': self.env.user.company_id.currency_id.id,
             'issue_date': date_today,
             'payment_date': date_today,
-            'state': 'wallet'
+            'state': 'wallet',
+            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
         })
         journal = self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos')
         journal.update_posted = True
@@ -55,7 +58,7 @@ class TestSoldCheck(common.TransactionCase):
             'bank_account_id': journal.id,
             'date': fields.Date.context_today(self.env['account.sold.check']),
             'account_third_check_ids': [(6, 0, [self.third_check.id, self.third_check_2.id])],
-            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id
+            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
         })
 
     def test_negative_amounts(self):
@@ -65,6 +68,7 @@ class TestSoldCheck(common.TransactionCase):
     def test_create_sequence(self):
         sequence = self.env['ir.sequence'].next_by_code('account.sold.check.sequence')
         sold_check = self.env['account.sold.check'].create({
+            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
             'journal_id': self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos').id,
             'date': fields.Date.context_today(self.env['account.sold.check'])
         })
@@ -155,9 +159,8 @@ class TestSoldCheck(common.TransactionCase):
         assert any(line.account_id == self.sold_check.interest_account_id for line in debit_lines)
 
     def test_move_lines_not_account_journal(self):
-        self.sold_check.account_id = None
-        with self.assertRaises(ValidationError):
-            self.sold_check.post()
+        with self.assertRaises(IntegrityError):
+            self.sold_check.account_id = None
 
     def test_move_lines_not_account_third_check(self):
         self.env.user.company_id.third_check_account_id = None

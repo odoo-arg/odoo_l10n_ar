@@ -39,6 +39,7 @@ class TestAccountCheckCollectWizard(test_checkbook.TestCheckbook):
             'account_id': self.env['account.account'].search([], limit=1).id,
             'journal_id': self.env['account.journal'].search([], limit=1).id,
             'payment_date': date.today(),
+            'collect_date': date.today(),
             'issue_date': date.today(),
         })
 

@@ -37,7 +37,8 @@ class TestAccountThirdCheck(TestSoldCheck):
             self.env['account.sold.check'].create({
                 'journal_id': self.sold_check.journal_id.id,
                 'date': fields.Date.context_today(self.env['account.sold.check']),
-                'account_third_check_ids': [(6, 0, [self.third_check.id])]
+                'account_third_check_ids': [(6, 0, [self.third_check.id])],
+                'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
             })
 
     def test_invalid_check_state_post(self):
