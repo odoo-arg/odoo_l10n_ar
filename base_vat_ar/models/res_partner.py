@@ -15,7 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
+import re
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 from l10n_ar_api.padron import contributor
@@ -27,7 +27,7 @@ class ResPartner(models.Model):
 
     partner_document_type_id = fields.Many2one('partner.document.type', 'Tipo de documento')
      
-    @api.constrains("vat", "partner_document_type_id")
+    @api.constrains("vat", "partner_document_type_id", "country_id", "parent_id")
     def check_vat(self):
         # Si la empresa tiene el mismo pais, obviamos la parte de que el documento
         # necesite el prefijo del pais adelante para el chequeo de documento
@@ -35,6 +35,8 @@ class ResPartner(models.Model):
         for partner in self:
             country = partner.parent_id.country_id if partner.parent_id else partner.country_id
             if country.no_prefix:
+                if partner.vat and not re.match("[0-9]*$", partner.vat):
+                    raise ValidationError("El documento debe poseer solamente numeros")
                 check_func = partner.simple_vat_check
                 if not check_func(country.code.lower(), partner.vat):
                     raise ValidationError("El numero de documento [{vat}] no parece ser correcto para el tipo [{type}]".format(

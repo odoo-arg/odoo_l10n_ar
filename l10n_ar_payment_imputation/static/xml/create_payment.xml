@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="create_payment_custom_button" xml:space="preserve">
+    <t t-extend="ListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="replace">
+            <t t-if="widget.model != 'account.payment'">
+                <button class="btn btn-primary btn-sm o_list_button_add" type="button">
+                    <t t-esc="widget.options.addable"/>
+                </button>
+            </t>
+            <t t-if="widget.model == 'account.payment'">
+                <button class="btn btn-primary btn-sm" id="payment_imputation" type="button">
+                    <t t-esc="widget.options.addable"/>
+                </button>
+            </t>
+        </t>
+    </t>
+</templates>

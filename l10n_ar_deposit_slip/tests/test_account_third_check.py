@@ -29,12 +29,12 @@ class TestAccountThirdCheck(TestDepositSlip):
             self.third_check.deposit_slip_ids = None
 
     def test_multiple_deposit_slips(self):
-        deposit_slip = self.env['account.deposit.slip'].create({
-            'journal_id': self.deposit_slip.journal_id.id,
-            'date': fields.Date.context_today(self.env['account.deposit.slip']),
-        })
         with self.assertRaises(ValidationError):
-            self.third_check.deposit_slip_ids = [self.third_check.deposit_slip_id.id, deposit_slip.id]
+            self.env['account.deposit.slip'].create({
+                'journal_id': self.deposit_slip.journal_id.id,
+                'date': fields.Date.context_today(self.env['account.deposit.slip']),
+                'check_ids': [(6, 0, [self.third_check.id])]
+            })
 
     def test_invalid_check_state_post(self):
         self.third_check.state = 'draft'

@@ -35,7 +35,7 @@
                     </group>
                     <footer>
                         <button type="object" name="action_create_deposit_slip" string="Depositar" class="oe_highlight" groups="l10n_ar_account_check.group_account_treasury_manager"/>
-                        or
+                        o
                         <button class="oe_link" special="cancel" string="Cancelar"/>
                     </footer>
                 </form>

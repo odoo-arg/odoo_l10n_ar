@@ -29,7 +29,8 @@
 Cheques
 ==================================
     Cheques propios desde pagos.\n
-    Cheques de terceros para cobros y pagos.
+    Cheques de terceros para cobros y pagos.\n
+    Cobro de cheques propios.
     """,
 
     'author': 'OPENPYME S.R.L.',
@@ -43,6 +44,7 @@ Cheques
     ],
 
     'data': [
+        'wizard/account_check_collect_wizard.xml',
         'security/treasury_security.xml',
         'security/ir.model.access.csv',
         'views/account_check_view.xml',

@@ -24,10 +24,10 @@ class SetUp(common.TransactionCase):
 
     def _create_pos_data(self):
         self.pos_inbound = self.env['pos.ar'].create({
-            'name': '1'
+            'name': '9990'
         })
         self.pos_outbound = self.env['pos.ar'].create({
-            'name': '10'
+            'name': '9999'
         })
         self.document_book_inbound = self.env['document.book'].with_context(default_payment_type='inbound').create({
             'name': '1',

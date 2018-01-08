@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+
+    <data>
+
+        <!-- VISTA TREE -->
+        <record id="account_sold_check_tree" model="ir.ui.view">
+            <field name="name">account.sold.check.tree</field>
+            <field name="model">account.sold.check</field>
+            <field name="arch" type="xml">
+                <tree string="Cheques vendidos"
+                      decoration-info="state=='draft'"
+                      decoration-muted="state=='canceled'"
+                      decoration-success="state=='sold'"
+                      delete="false"
+                >
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- VISTA FORM -->
+        <record id="account_sold_check_form" model="ir.ui.view">
+            <field name="name">account.sold.check.form</field>
+            <field name="model">account.sold.check</field>
+            <field name="arch" type="xml">
+                <form string="Cheques vendidos" delete="false">
+                    <field name="state" invisible="1"/>
+                    <header>
+                        <button name="post" type="object" string="Validar" states="draft" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        <button name="cancel" type="object" string="Anular Venta" confirm="Está seguro?" states="sold,draft" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        <button name="draft" type="object" string="Volver a borrador" states="canceled" groups="l10n_ar_account_check.group_account_treasury_manager"/>
+                        <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,sold"/>
+                    </header>
+                    <sheet>
+                        <group string="Datos de la operación">
+                            <group>
+                                <field name="name"/>
+                                <field name="date" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="account_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="partner_id" attrs="{'invisible': [('bank_account_id', '!=', False)], 'readonly': [('state','!=','draft')]}"/>
+                                <field name="journal_id" attrs="{'invisible': [('partner_id', '=', False)],
+                                                                  'required': [('partner_id', '!=', False)],
+                                                                  'readonly': [('state','!=','draft')]}"/>
+                                <field name="bank_account_id" attrs="{'invisible': [('partner_id', '!=', False)], 'readonly': [('state','!=','draft')]}"/>
+                                <field name="move_id" attrs="{'invisible': [('move_id', '=', False)]}"/>
+                            </group>
+                        </group>
+                        <group string="Importes">
+                            <group>
+                                <field name="commission" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="interests" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="amount"/>
+                            </group>
+                            <group>
+                                <field name="commission_account_id" attrs="{'required': [('commission', '!=', 0)], 'readonly': [('state','!=','draft')]}"/>
+                                <field name="interest_account_id" attrs="{'required': [('interests', '!=', 0)], 'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group string="Cheques" attrs="{'readonly': [('state','!=','draft')]}">
+                            <field name="account_third_check_ids" options="{'no_create': True}"
+                                    domain="[('sold_check_ids', '=', False), ('state', '=', 'wallet')]"
+                                    attrs="{'readonly': [('state','!=','draft')]}" nolabel="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="source_payment_id"/>
+                                    <field name="issue_name"/>
+                                    <field name="bank_id"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACCIÓN  -->
+        <record  id="account_sold_check_action" model="ir.actions.act_window">
+            <field name="name">Cheques vendidos</field>
+            <field name="res_model">account.sold.check</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- MENÚ  -->
+        <menuitem
+            id="account_sold_check_menu"
+            action="account_sold_check_action"
+            name="Cheques vendidos"
+            parent="l10n_ar_account_check.treasury_third_checks_main_menu"
+            sequence="30"
+        />
+
+    </data>
+
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

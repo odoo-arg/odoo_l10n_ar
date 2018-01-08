@@ -25,8 +25,9 @@ class SaleSubscription(models.Model):
 
     @api.returns('account.invoice')
     def _recurring_create_invoice(self, automatic=False):
+        account_invoice_proxy = self.env['account.invoice']
         invoices = super(SaleSubscription, self)._recurring_create_invoice(automatic=automatic)
-        for invoice in invoices:
+        for invoice in account_invoice_proxy.browse(invoices):
             invoice.onchange_partner_id()
         return invoices
 

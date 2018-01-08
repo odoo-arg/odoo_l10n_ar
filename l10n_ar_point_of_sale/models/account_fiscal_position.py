@@ -16,7 +16,7 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 
 
@@ -31,6 +31,15 @@ class AccountFiscalPosition(models.Model):
         help="Desde aqui se realizan los mapeos para ver que tipo de documento se realizan"
              " a otras posiciones fiscales\npara cada denominacion"
     )
+
+    @api.constrains('denomination_fiscal_position_ids')
+    def _check_position_fiscal(self):
+        fiscal_positions = self.env['denomination.fiscal.position'].search([
+            ('issue_fiscal_position_id', '=', self.id)
+        ])
+        denomination_count = len(fiscal_positions.mapped('receipt_fiscal_position_id'))
+        if len(fiscal_positions) != denomination_count:
+            raise ValidationError("No se pueden repetir posiciones fiscales en el mapeo de denominaciones.")
 
     def get_denomination(self, receipt_fiscal_position):
         """

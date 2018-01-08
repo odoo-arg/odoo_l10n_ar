@@ -27,7 +27,8 @@ class AccountThirdCheck(models.Model):
     @api.depends('deposit_slip_ids')
     def get_deposit_slip_id(self):
         for check in self:
-            check.deposit_slip_id = check.deposit_slip_ids[0].id if check.deposit_slip_ids else None
+            check.deposit_slip_id = check.deposit_slip_ids[0].id\
+                if check.deposit_slip_ids else None
 
     deposit_slip_ids = fields.Many2many(
         'account.deposit.slip',

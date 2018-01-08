@@ -42,8 +42,10 @@ class TestCheckVat(common.TransactionCase):
 
     def test_vat_no_ar(self):
         """ Testeamos que no rompimos el super """
-        self.partner.country_id = self.env.ref('base.uy').id
-        self.partner.vat = 'UY30709653543'
+        self.partner.write({
+            'country_id': self.env.ref('base.uy').id,
+            'vat': 'UY30709653543',
+        })
         self.partner.check_vat()
 
     def test_invalid_vat(self):

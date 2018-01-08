@@ -41,6 +41,27 @@ class TestAccountOwnCheck(test_checkbook.TestCheckbook):
         with self.assertRaises(ValidationError):
             self.own_check.post_payment(None)
 
+    def test_post_collect(self):
+        # Cuando se cobra un pago deberian pasar los cheques a cobrado
+        self.own_check.post_collect(None)
+        assert self.own_check.state == 'collect'
+        # No se deberia poder hacer esto si un cheque no esta en borrador
+        with self.assertRaises(ValidationError):
+            self.own_check.post_payment(None)
+
+    def test_post_collect_with_vals(self):
+        own_check_proxy = self.env['account.own.check']
+        date_today = fields.Date.context_today(own_check_proxy)
+        vals = {
+            'amount': 300,
+            'payment_date': date_today,
+            'issue_date': date_today,
+            'collect_move_id': False, # Podria pasar un Mock
+        }
+        self.own_check.post_collect(vals)
+        assert self.own_check.amount == 300
+        assert self.own_check.state == 'collect'
+
     def test_post_payment_with_vals(self):
         own_check_proxy = self.env['account.own.check']
         date_today = fields.Date.context_today(own_check_proxy)
@@ -56,7 +77,7 @@ class TestAccountOwnCheck(test_checkbook.TestCheckbook):
         assert self.own_check.state == 'handed'
 
     def test_cancel_payment(self):
-        # Cuando se cancel un pago deberian pasar los cheques a borrador
+        # Cuando se cancela un pago deberian pasar los cheques a borrador
         self.own_check.post_payment(None)
         self.own_check.cancel_payment()
         assert self.own_check.state == 'draft'
@@ -64,6 +85,16 @@ class TestAccountOwnCheck(test_checkbook.TestCheckbook):
         # No se deberia poder hacer esto si el cheque no esta en cartera
         with self.assertRaises(ValidationError):
             self.own_check.cancel_payment()
+
+    def test_cancel_collect(self):
+        # Cuando se revierte un cobro deberian pasar los cheques a borrador
+        self.own_check.post_collect(None)
+        self.own_check.cancel_collect()
+        assert self.own_check.state == 'draft'
+
+        # No se deberia poder hacer esto si el cheque no esta en cobrado
+        with self.assertRaises(ValidationError):
+            self.own_check.cancel_collect()
 
     def test_cancel_state(self):
         with self.assertRaises(ValidationError):

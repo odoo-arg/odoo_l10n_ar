@@ -26,6 +26,9 @@
                 <label for="vat" position="before">
                     <field name="partner_document_type_id" widget="selection"/>
                 </label>
+                <field name="vat" position="attributes">
+                    <attribute name="placeholder">Ej. 12345678</attribute>
+                </field>
             </field>
         </record>
     

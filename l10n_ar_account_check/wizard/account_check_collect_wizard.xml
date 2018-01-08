@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_check_collect_wizard_form">
+            <field name="name">Cobrar Cheque</field>
+            <field name="model">account.check.collect.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="journal_id"/>
+                        <field name="account_id"/>
+                        <field name="issue_date"/>
+                        <field name="payment_date"/>
+                        <field name="collect_date"/>
+                        <field name="amount"/>
+                    </group>
+                    <footer>
+                        <button
+                            type="object"
+                            name="collect_check"
+                            string="Cobrar"
+                            class="oe_highlight"
+                        />
+                        o
+                        <button
+                            class="oe_link"
+                            special="cancel"
+                            string="Cancelar"
+                        />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="account_check_collect_wizard_action" model="ir.actions.act_window">
+            <field name="name">Cobrar</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.check.collect.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

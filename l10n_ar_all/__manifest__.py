@@ -36,12 +36,14 @@ Modulo encargado de instalar todos los modulos requeridos para la localizacion A
 
     'depends': [
         'l10n_ar_reject_checks',
+        'l10n_ar_account_check_sale',
         'l10n_ar_account_payment_report',
         'l10n_ar_electronic_invoice_report',
         'l10n_ar_bank_reconcile',
         'l10n_ar_invoice_presentation',
         'l10n_ar_retentions_sifere',
-        'l10n_ar_perceptions_sifere'
+        'l10n_ar_perceptions_sifere',
+        'l10n_ar_payment_imputation',
     ],
 
     'data': [

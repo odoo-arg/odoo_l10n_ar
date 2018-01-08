@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+l10n_ar_payment_imputation_line_user,l10n_ar_payment_imputation.payment_imputation_line.user,l10n_ar_payment_imputation.model_payment_imputation_line,account.group_account_user,1,1,1,1
