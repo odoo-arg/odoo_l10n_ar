@@ -28,7 +28,7 @@ class AccountThirdCheck(models.Model):
     def get_sold_check_id(self):
         for check in self:
             check.sold_check_id = check.sold_check_ids[0].id\
-                if (check.sold_check_ids and check.sold_check_ids[0].state == 'sold') else None
+                if check.sold_check_ids else None
 
     sold_check_ids = fields.Many2many(
         'account.sold.check',

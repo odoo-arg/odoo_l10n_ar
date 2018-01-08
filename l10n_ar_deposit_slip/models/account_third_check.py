@@ -28,7 +28,7 @@ class AccountThirdCheck(models.Model):
     def get_deposit_slip_id(self):
         for check in self:
             check.deposit_slip_id = check.deposit_slip_ids[0].id\
-                if (check.deposit_slip_ids and check.deposit_slip_ids[0].state == 'deposited') else None
+                if check.deposit_slip_ids else None
 
     deposit_slip_ids = fields.Many2many(
         'account.deposit.slip',

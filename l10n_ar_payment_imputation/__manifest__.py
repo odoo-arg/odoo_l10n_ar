@@ -18,41 +18,45 @@
 
 {
 
-    'name': 'l10n_ar_all',
+    'name': 'l10n_ar_payment_imputation',
 
     'version': '1.0',
 
-    'summary': 'Localizacion Argentina',
+    'category': 'Accounting',
 
-    'description': """
-Modulo encargado de instalar todos los modulos requeridos para la localizacion Argentina.
-    """,
+    'summary': 'Imputaciones de pagos',
 
-    'author': 'OPENPYME S.R.L.',
+    'author': 'OPENPYME S.R.L',
 
     'website': 'http://www.openpyme.com.ar',
 
-    'category': 'Localization',
-
     'depends': [
-        'l10n_ar_reject_checks',
-        'l10n_ar_account_check_sale',
-        'l10n_ar_account_payment_report',
-        'l10n_ar_electronic_invoice_report',
-        'l10n_ar_bank_reconcile',
-        'l10n_ar_invoice_presentation',
-        'l10n_ar_retentions_sifere',
-        'l10n_ar_perceptions_sifere',
-        'l10n_ar_payment_imputation',
+        'l10n_ar_account_payment',
     ],
 
     'data': [
-
+        'views/account_payment_view.xml',
+        'wizard/register_payment_view.xml',
+        'wizard/account_payment_imputation_view.xml',
+        'static/xml/create_payment_asset.xml',
+        'security/ir.model.access.csv'
     ],
 
-    'active': False,
+    'qweb': [
+        'static/xml/create_payment.xml'
+    ],
 
     'installable': True,
+
+    'auto_install': False,
+
+    'application': True,
+
+    'description': """
+Imputaciones de pagos
+========================================
+    Pagos de multiples facturas total y parcialmente
+    """,
 
 }
 

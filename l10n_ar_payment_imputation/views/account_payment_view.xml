@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="payment_imputation_form">
+            <field name="name">Payment imputation form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <form position="attributes">
+                    <attribute name="create">0</attribute>
+                </form>
+                <div name="amount_div" position="after">
+                    <field name="payment_imputation_difference" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                </div>
+                <group position="after">
+                    <group string="Documentos a imputar" attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
+                        <field name="payment_imputation_ids" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}" nolabel="1">
+                            <tree
+                                editable="bottom" create="false"
+                                decoration-info="amount &gt; 0 and amount &lt; amount_residual_in_payment_currency and payment_state =='draft'"
+                                decoration-muted="amount == 0 and payment_state =='draft'"
+                                decoration-success="amount == amount_residual_in_payment_currency and payment_state =='draft'"
+                                decoration-danger="amount &gt; amount_residual_in_payment_currency and payment_state =='draft'"
+                            >
+                                <field name="invoice_id" readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="payment_currency_id" invisible="1"/>
+                                <field name="payment_state" invisible="1"/>
+                                <field name="amount"/>
+                                <field name="amount_residual_in_payment_currency"/>
+                                <field name="invoice_amount_residual_company" string="Restante"/>
+                                <field name="invoice_amount_company" string="Total"/>
+                                <field name="invoice_amount_residual" string="Restante moneda comprobante"/>
+                                <field name="invoice_amount_total" string="Total moneda comprobante"/>
+                            </tree>
+                        </field>
+                        <field name="advance_amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="payment_invoice_imputation_form">
+            <field name="name">Payment invoice imputation form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+                <div name="amount_div" position="after">
+                    <field name="payment_imputation_difference"/>
+                </div>
+                <group position="after">
+                    <group string="Documentos a imputar">
+                        <field name="payment_imputation_ids" colspan="2" attrs="{'readonly': [('state', '!=', 'draft')]}" nolabel="1">
+                            <tree
+                                editable="bottom" create="false"
+                                decoration-info="amount &gt; 0 and amount &lt; amount_residual_in_payment_currency and payment_state =='draft'"
+                                decoration-muted="amount == 0 and payment_state =='draft'"
+                                decoration-success="amount == amount_residual_in_payment_currency and payment_state =='draft'"
+                                decoration-danger="amount &gt; amount_residual_in_payment_currency and payment_state =='draft'"
+                            >
+                                <field name="invoice_id" readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="payment_currency_id" invisible="1"/>
+                                <field name="payment_state" invisible="1"/>
+                                <field name="amount"/>
+                                <field name="amount_residual_in_payment_currency"/>
+                                <field name="invoice_amount_residual_company" string="Restante"/>
+                                <field name="invoice_amount_company" string="Total"/>
+                                <field name="invoice_amount_residual" string="Restante moneda comprobante"/>
+                                <field name="invoice_amount_total" string="Total moneda comprobante"/>
+                            </tree>
+                        </field>
+                        <field name="advance_amount" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                    </group>
+                </group>
+                <xpath expr="//group/group[@attrs]" position="replace"/>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4-->

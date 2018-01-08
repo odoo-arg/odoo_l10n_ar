@@ -85,7 +85,7 @@ class WizardSellCheck(models.TransientModel):
         'Cuenta para los intereses'
     )
 
-    @api.constrains('interests', 'commission', 'amount')
+    @api.constrains('interests', 'commission')
     def constrain_amount(self):
         if self.interests < 0 or self.commission < 0 or self.amount < 0:
             raise ValidationError("Los importes no pueden ser negativos")

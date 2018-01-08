@@ -38,7 +38,6 @@ class TestSoldCheck(common.TransactionCase):
             'issue_date': date_today,
             'payment_date': date_today,
             'state': 'wallet',
-            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
         })
         self.third_check_2 = third_check_proxy.create({
             'name': '412414',
@@ -49,7 +48,6 @@ class TestSoldCheck(common.TransactionCase):
             'issue_date': date_today,
             'payment_date': date_today,
             'state': 'wallet',
-            'account_id': self.env.ref('l10n_ar.1_caja_pesos').id,
         })
         journal = self.env.ref('l10n_ar_account_payment.journal_cobros_y_pagos')
         journal.update_posted = True
