@@ -19,6 +19,8 @@
 from openerp import models, fields, api
 from openerp.exceptions import ValidationError
 
+ROUND_PRECISION =  2
+
 
 class AccountAbstractPayment(models.AbstractModel):
 
@@ -127,7 +129,7 @@ class AccountAbstractPayment(models.AbstractModel):
             })
 
         # Validamos que no se haya imputado mas de lo permitido
-        if payment_total < 0:
+        if round(payment_total, ROUND_PRECISION) < 0:
             raise ValidationError("El importe del pago es menor a lo que se va a imputar en los documentos, "
                                   "por favor, modificar las imputaciones para no sobrepasar el mismo.")
 

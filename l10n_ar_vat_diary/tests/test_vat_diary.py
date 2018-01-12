@@ -195,15 +195,4 @@ class TestVatDiary(common.TransactionCase):
         self.tax_subdiary_wizard.type = 'purchases'
         self.tax_subdiary_wizard.generate_xls_report()
 
-
-class TestDiaryController(common.HttpCase):
-
-    def setUp(self):
-        super(TestDiaryController, self).setUp()
-
-    def test_open_url(self):
-        r = self.url_open('/web/binary/download_vat_diary/?filename=SubdiarioIva')
-        assert r.info().get('Content-Type') == 'application/excel'
-        assert r.info().get('Content-Disposition').endswith('SubdiarioIva')
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

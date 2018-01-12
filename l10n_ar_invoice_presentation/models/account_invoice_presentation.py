@@ -47,7 +47,6 @@ class GeneralData:
         self.tax_purchase_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_compras')
         self.tax_sale_ng = self.proxy.env.ref('l10n_ar.1_vat_no_gravado_ventas')
         self.codes_model_proxy = self.proxy.env['codes.models.relation']
-        self.fiscal_position_ad = self.proxy.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
         self.fiscal_position_nc = self.proxy.env.ref("l10n_ar_afip_tables.account_fiscal_position_no_categ")
 
 class AccountInvoicePresentation(models.Model):
