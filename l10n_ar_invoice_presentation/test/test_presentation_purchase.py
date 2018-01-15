@@ -28,7 +28,7 @@ class TestPresentationPurchase(TransactionCase):
             "supplier_taxes_id": [(6, 0, [self.env.ref("l10n_ar.1_vat_21_compras").id])]
         })
 
-    def create_partner(self, is_aduana=False):
+    def create_partner(self):
         data = {
             "name": "Test Partner",
             "vat": "20307810795",
@@ -37,10 +37,8 @@ class TestPresentationPurchase(TransactionCase):
             "partner_document_type_id": self.env.ref("l10n_ar_afip_tables.partner_document_type_80").id,
             "country_id": self.env.ref("base.ar").id,
         }
-        if is_aduana:
-            data.update({"property_account_position_id": self.fiscal_position_ad.id})
-        else:
-            data.update({"property_account_position_id": self.fiscal_position_ri.id})
+
+        data.update({"property_account_position_id": self.fiscal_position_ri.id})
 
         return self.env['res.partner'].create(data)
 
@@ -77,7 +75,7 @@ class TestPresentationPurchase(TransactionCase):
         return invoice
 
     def create_importation_invoice(self):
-        partner = self.create_partner(is_aduana=True)
+        partner = self.create_partner()
         product = self.create_product()
         invoice = self.env['account.invoice'].create({
             "name": '17073IC04092010Z',
@@ -111,7 +109,6 @@ class TestPresentationPurchase(TransactionCase):
 
     def get_general_data(self):
         self.fiscal_position_ri = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_ivari")
-        self.fiscal_position_ad = self.env.ref("l10n_ar_afip_tables.account_fiscal_position_despachante_aduana")
 
     def setUp(self):
         super(TestPresentationPurchase, self).setUp()
@@ -200,77 +197,77 @@ class TestPresentationPurchase(TransactionCase):
         # Impuesto liquidado
         assert decoded[69:84] == "000000000021000"
 
-    def test_importation_purchase_invoice_presentation(self):
-        "Se puede generar la presentacion de una factura de aduana comun."
-        self.create_importation_invoice()
-        self.presentation.generate_files()
-        decoded = base64.decodestring(self.presentation.purchase_file)
-        # Fecha de comprobante
-        assert decoded[0:8] == "20170801"
-        # Tipo de comprobante
-        assert decoded[8:11] == "066"
-        # Punto de venta
-        assert decoded[11:16] == "00000"
-        # Numero de comprobante
-        assert decoded[16:36] == "00000000000000000000"
-        # Numero de despacho de importacion
-        assert decoded[36:52] == "17073IC04092010Z"
-        # Codigo de documento del proveedor
-        assert decoded[52:54] == "80"
-        # Numero de identificacion del proveedor
-        assert decoded[54:74] == "00000000020307810795"
-        # Apellido y nombre del proveedor
-        assert decoded[74:104] == "Test Partner".ljust(30)
-        # Importe total de la operacion
-        assert decoded[104:119] == "000000000121000"
-        # Importe total de conceptos que no integran el precio neto gravado
-        assert decoded[119:134] == "000000000000000"
-        # Importe operaciones exentas
-        assert decoded[134:149] == "000000000000000"
-        # Percepciones IVA
-        assert decoded[149:164] == "000000000000000"
-        # Percepciones impuestos nacionales
-        assert decoded[164:179] == "000000000000000"
-        # Importe de percepciones de ingresos brutos
-        assert decoded[179:194] == "000000000000000"
-        # Importe de percepciones impuestos municipales
-        assert decoded[194:209] == "000000000000000"
-        # Importe impuestos internos
-        assert decoded[209:224] == "000000000000000"
-        # Codigo de moneda
-        assert decoded[224:227] == "PES"
-        # Tipo de cambio
-        assert decoded[227:237] == "0001000000"
-        # Cantidad de alicuotas de IVA
-        assert decoded[237:238] == "1"
-        # Codigo de operacion
-        assert decoded[238:239] == "X"
-        # Credito fiscal computable
-        assert decoded[239:254] == "000000000021000"
-        # Otros tributos
-        assert decoded[254:269] == "000000000000000"
-        # CUIT emisor
-        assert decoded[269:280] == "00000000000"
-        # Denominacion emisor
-        assert decoded[280:310] == "".ljust(30)
-        # IVA comision
-        assert decoded[310:325] == "000000000000000"
+    # TODO: Agregar este test cuando se hagan despachos de importacion
+    # def test_importation_purchase_invoice_presentation(self):
+    #     "Se puede generar la presentacion de una factura de aduana comun."
+    #     self.create_importation_invoice()
+    #     self.presentation.generate_files()
+    #     decoded = base64.decodestring(self.presentation.purchase_file)
+    #     # Fecha de comprobante
+    #     assert decoded[0:8] == "20170801"
+    #     # Tipo de comprobante
+    #     assert decoded[8:11] == "066"
+    #     # Punto de venta
+    #     assert decoded[11:16] == "00000"
+    #     # Numero de comprobante
+    #     assert decoded[16:36] == "00000000000000000000"
+    #     # Numero de despacho de importacion
+    #     assert decoded[36:52] == "17073IC04092010Z"
+    #     # Codigo de documento del proveedor
+    #     assert decoded[52:54] == "80"
+    #     # Numero de identificacion del proveedor
+    #     assert decoded[54:74] == "00000000020307810795"
+    #     # Apellido y nombre del proveedor
+    #     assert decoded[74:104] == "Test Partner".ljust(30)
+    #     # Importe total de la operacion
+    #     assert decoded[104:119] == "000000000121000"
+    #     # Importe total de conceptos que no integran el precio neto gravado
+    #     assert decoded[119:134] == "000000000000000"
+    #     # Importe operaciones exentas
+    #     assert decoded[134:149] == "000000000000000"
+    #     # Percepciones IVA
+    #     assert decoded[149:164] == "000000000000000"
+    #     # Percepciones impuestos nacionales
+    #     assert decoded[164:179] == "000000000000000"
+    #     # Importe de percepciones de ingresos brutos
+    #     assert decoded[179:194] == "000000000000000"
+    #     # Importe de percepciones impuestos municipales
+    #     assert decoded[194:209] == "000000000000000"
+    #     # Importe impuestos internos
+    #     assert decoded[209:224] == "000000000000000"
+    #     # Codigo de moneda
+    #     assert decoded[224:227] == "PES"
+    #     # Tipo de cambio
+    #     assert decoded[227:237] == "0001000000"
+    #     # Cantidad de alicuotas de IVA
+    #     assert decoded[237:238] == "1"
+    #     # Codigo de operacion
+    #     assert decoded[238:239] == "X"
+    #     # Credito fiscal computable
+    #     assert decoded[239:254] == "000000000021000"
+    #     # Otros tributos
+    #     assert decoded[254:269] == "000000000000000"
+    #     # CUIT emisor
+    #     assert decoded[269:280] == "00000000000"
+    #     # Denominacion emisor
+    #     assert decoded[280:310] == "".ljust(30)
+    #     # IVA comision
+    #     assert decoded[310:325] == "000000000000000"
 
-    def test_purchase_importation_presentation(self):
-        "Se puede generar la presentacion de importacion de una factura de aduana comun."
-        self.create_importation_invoice()
-        self.presentation.generate_files()
-        decoded = base64.decodestring(self.presentation.purchase_imports_file)
-        # Despacho importacion
-        assert decoded[0:16] == "17073IC04092010Z"
-        # Neto gravado
-        assert decoded[16:31] == "000000000100000"
-        # Alicuota de iva
-        assert decoded[31:35] == "0005"
-        # Impuesto liquidado
-        assert decoded[35:50] == "000000000021000"
-
-        # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+    # TODO: Agregar este test cuando se hagan despachos de importacion
+    # def test_purchase_importation_presentation(self):
+    #     "Se puede generar la presentacion de importacion de una factura de aduana comun."
+    #     self.create_importation_invoice()
+    #     self.presentation.generate_files()
+    #     decoded = base64.decodestring(self.presentation.purchase_imports_file)
+    #     # Despacho importacion
+    #     assert decoded[0:16] == "17073IC04092010Z"
+    #     # Neto gravado
+    #     assert decoded[16:31] == "000000000100000"
+    #     # Alicuota de iva
+    #     assert decoded[31:35] == "0005"
+    #     # Impuesto liquidado
+    #     assert decoded[35:50] == "000000000021000"
 
     def test_cannot_create_presentation_without_partner_cuit(self):
         "No se puede crear una presentacion con un partner sin cuit"
@@ -279,3 +276,4 @@ class TestPresentationPurchase(TransactionCase):
         with self.assertRaises(Exception):
             self.presentation.generate_purchase_file()
 
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

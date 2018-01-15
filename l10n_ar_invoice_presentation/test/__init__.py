@@ -11,10 +11,11 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##############################################################################
-from . import test_presentation
-from . import test_presentation_sale
-from . import test_presentation_sale_iva
-from . import test_presentation_purchase
-from . import test_presentation_tools
+
+import test_presentation
+import test_presentation_purchase
+import test_presentation_sale
+import test_presentation_sale_iva
+import test_presentation_tools
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

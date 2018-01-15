@@ -28,7 +28,7 @@ class TestTools(TransactionCase):
             "supplier_taxes_id": [(6, 0, [self.env.ref("l10n_ar.1_vat_21_compras").id])]
         })
 
-    def create_partner(self, is_aduana=False):
+    def create_partner(self):
         data = {
             "name": "Test Partner",
             "vat": "20307810795",
@@ -37,10 +37,8 @@ class TestTools(TransactionCase):
             "partner_document_type_id": self.env.ref("l10n_ar_afip_tables.partner_document_type_80").id,
             "country_id": self.env.ref("base.ar").id,
         }
-        if is_aduana:
-            data.update({"property_account_position_id": self.fiscal_position_ad.id})
-        else:
-            data.update({"property_account_position_id": self.fiscal_position_ri.id})
+
+        data.update({"property_account_position_id": self.fiscal_position_ri.id})
 
         return self.env['res.partner'].create(data)
 
