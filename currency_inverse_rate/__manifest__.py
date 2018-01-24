@@ -18,46 +18,34 @@
 
 {
 
-    'name': 'l10n_ar',
+    'name': 'Currency inverse rate',
 
     'version': '1.0',
 
-    'summary': 'Datas of taxes and accounts',
+    'category': 'base',
 
-    'description': """ Datas of a custom chart of account and taxes """,
+    'summary': 'Posibilidad de cargar la tasa de la moneda inversamente',
 
-    'author': 'OPENPYME S.R.L.',
+    'author': 'OPENPYME S.R.L',
 
-    'website': 'http://www.openpyme.com.ar',
-
-    'category': 'Accounting',
+    'website': '',
 
     'depends': [
-        'base_vat_ar',
-        'account',
-        'base_codes',
-        'currency_inverse_rate',
+        'base'
     ],
 
     'data': [
-        'data/company_data.xml',
-        'data/account_type_data.xml',
-        'data/account_chart_template_data.xml',
-        'data/account_chart_data.xml',
-        'data/account_tax_data.xml',
-        'data/account_chart_template_data.yml',
-        'data/bank_update.xml',
-        'views/account_tax_view.xml',
-        'views/res_bank.xml',
-        'views/res_company_view.xml',
-        'views/res_partner_view.xml',
-        'wizard/views/update_banks_wizard.xml'
-        
+        'views/res_currency_view.xml',
+        'views/res_currency_rate_view.xml'
     ],
 
-    'active': False,
-
     'installable': True,
+
+    'auto_install': False,
+
+    'application': True,
+
+    'description': """ Posibilidad de cargar la tasa de la moneda inversamente """,
 
 }
 
