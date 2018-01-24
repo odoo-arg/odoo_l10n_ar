@@ -11,7 +11,7 @@ def _assert_header_values(self, header):
     assert header.get(3) == 'Condicion IVA'
     assert header.get(4) == 'Tipo'
     assert header.get(5) == 'Numero'
-    assert header.get(6) == 'Provincia'
+    assert header.get(6) == 'Jurisdiccion'
     assert header.get(7) == self.env.ref('l10n_ar.1_vat_105_ventas').name + ' - Base'
     assert header.get(8) == self.env.ref('l10n_ar.1_vat_105_ventas').name + ' - Importe'
     assert header.get(9) == self.env.ref('l10n_ar.1_vat_21_ventas').name + ' - Base'
