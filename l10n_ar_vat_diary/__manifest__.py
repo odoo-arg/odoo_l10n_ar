@@ -35,7 +35,8 @@
     ],
 
     'data': [
-        'wizard/wizard_vat_diary_view.xml'
+        'wizard/wizard_vat_diary_view.xml',
+        'views/account_invoice_view.xml'
     ],
 
     'installable': True,

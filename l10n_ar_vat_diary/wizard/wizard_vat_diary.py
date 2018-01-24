@@ -94,7 +94,7 @@ class WizardVatDiary(models.TransientModel):
             3: 'Condicion IVA',
             4: 'Tipo',
             5: 'Numero',
-            6: 'Provincia'
+            6: 'Jurisdiccion'
         }
 
         for tax in taxes_position:
@@ -137,7 +137,7 @@ class WizardVatDiary(models.TransientModel):
                 3: invoice.partner_id.property_account_position_id.name or '',
                 4: invoice.name_get()[0][1][:3],
                 5: invoice.name,
-                6: invoice.partner_id.state_id.name or '',
+                6: invoice.jurisdiction_id.name or invoice.partner_id.state_id.name or '',
                 last_position + 7: invoice.amount_not_taxable * sign,
                 last_position + 8: invoice.amount_total_company_signed
             }

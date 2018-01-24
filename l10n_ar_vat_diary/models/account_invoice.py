@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
+# - coding: utf-8 -*-
 ##############################################################################
 #
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published
-#    by the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,8 +16,21 @@
 #
 ##############################################################################
 
-import test_vat_diary
-import assert_details
-import test_invoice
+from openerp import models, fields, api
+
+
+class AccountInvoice(models.Model):
+    _inherit = 'account.invoice'
+
+    @api.model
+    def _get_domain(self):
+        country_id = self.env.ref('base.ar').id
+        return [('country_id', '=', country_id)]
+
+    jurisdiction_id = fields.Many2one(
+        comodel_name='res.country.state',
+        string='Jurisdiccion',
+        domain=_get_domain
+    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
