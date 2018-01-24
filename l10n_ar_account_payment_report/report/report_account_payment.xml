@@ -354,6 +354,7 @@
                                     </tbody>
                                 </t>
                                 <t t-if="o.account_third_check_sent_ids">
+                                    <t t-set="total_check" t-value="0"/>
                                     <tbody class="invoice_tbody">
                                         <tr t-foreach="o.account_third_check_sent_ids" t-as="l">
                                             <td>
@@ -380,13 +381,14 @@
                                     </tbody>
                                 </t>
                                 <t t-if="o.account_own_check_line_ids">
+                                    <t t-set="total_check" t-value="0"/>
                                     <tbody class="invoice_tbody">
                                         <tr t-foreach="o.account_own_check_line_ids" t-as="l">
                                             <td>
                                                 <span t-field="l.own_check_id.name"/>
                                             </td>
                                             <td>
-                                                <span t-field="l.bank_id.name"/>
+                                                <span t-field="l.own_check_id.bank_id.name"/>
                                             </td>
                                             <td>
                                                 <span t-field="l.issue_date"/>
