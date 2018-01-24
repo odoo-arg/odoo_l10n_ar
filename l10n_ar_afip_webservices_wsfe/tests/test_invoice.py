@@ -278,7 +278,11 @@ class TestInvoice(set_up.SetUp):
             'wsaa_configuration_id': wsaa.id,
             'wsaa_token_id': wsaa_token.id,
         })
-        afip_wsfe = self.invoice._get_wsfe()
+
+        renew_ticket = 'odoo.addons.l10n_ar_afip_webservices_wsaa.models.wsaa_token.WsaaToken._renew_ticket'
+        with mock.patch(renew_ticket) as MockClass:
+            MockClass.return_value = None
+            afip_wsfe = self.invoice._get_wsfe()
 
         assert afip_wsfe.__class__.__name__ == 'Wsfe'
 
