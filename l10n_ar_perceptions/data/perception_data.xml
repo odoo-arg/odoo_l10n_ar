@@ -22,31 +22,31 @@
             <field name="name">Percepcion</field>
         </record>
 
-        <!-- CUENTAS DE PRECEPCIONES ACTIVO -->
+        <!-- CUENTAS DE PERCEPCIONES ACTIVO -->
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_sufridas_iigg">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1142.01</field>
             <field name="name">Percepciones Sufridas IIGG</field>
         </record>
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_sufrida">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1143.01</field>
             <field name="name">Percepciones IIBB PBA sufrida</field>
         </record>
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_sufrida">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1143.02</field>
             <field name="name">Percepciones IIBB CABA sufrida</field>
         </record>
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_sufrida">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">1144.01</field>
             <field name="name">Percepciones IVA sufrida</field>
@@ -55,21 +55,21 @@
         <!-- CUENTAS DE PRECEPCIONES PASIVO -->
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_pba_efectuada">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2153.01</field>
             <field name="name">Percepciones IIBB PBA efectuada</field>
         </record>
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iibb_caba_efectuada">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2153.02</field>
             <field name="name">Percepciones IIBB CABA efectuada</field>
         </record>
 
         <record model="account.account" id="l10n_ar_perceptions.percepciones_iva_efectuada">
-            <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+            <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="reconcile" eval="True"/>
             <field name="code">2154.01</field>
             <field name="name">Percepciones IVA efectuada</field>

@@ -32,7 +32,10 @@
                 ('tax_group_id', '=', 'Taxes'),
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'fixed'),
-                ('type_tax_use', '=', 'sale'), 
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>1</field>
         </record>
@@ -45,7 +48,10 @@
                 ('tax_group_id', '=', 'Iva'),
                 ('is_exempt', '=', True),
                 ('amount_type', '=', 'fixed'),
-                ('type_tax_use', '=', 'sale'), 
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>                        
             <field name='code'>2</field>
         </record>
@@ -58,7 +64,10 @@
                 ('tax_group_id', '=', 'Iva'),
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
-                ('type_tax_use', '=', 'sale'),                
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>                                    
             <field name='code'>3</field>
         </record>
@@ -71,7 +80,10 @@
                 ('tax_group_id', '=', 'Iva'),
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
-                ('type_tax_use', '=', 'sale'),                
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>  
             <field name='code'>4</field>
         </record>
@@ -84,7 +96,10 @@
                 ('tax_group_id', '=', 'Iva'),
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
-                ('type_tax_use', '=', 'sale'),                
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>  
             <field name='code'>5</field>
         </record>
@@ -97,7 +112,10 @@
                 ('tax_group_id', '=', 'Iva'),
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
-                ('type_tax_use', '=', 'sale'),                
+                ('type_tax_use', '=', 'sale'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>  
             <field name='code'>6</field>
         </record>
@@ -112,6 +130,9 @@
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'fixed'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>1</field>
         </record>
@@ -125,6 +146,9 @@
                 ('is_exempt', '=', True),
                 ('amount_type', '=', 'fixed'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>2</field>
         </record>
@@ -138,6 +162,9 @@
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>3</field>
         </record>
@@ -151,6 +178,9 @@
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>4</field>
         </record>
@@ -164,6 +194,9 @@
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>5</field>
         </record>
@@ -177,6 +210,9 @@
                 ('is_exempt', '=', False),
                 ('amount_type', '=', 'percent'),
                 ('type_tax_use', '=', 'purchase'),
+                '|',
+                ('active', '=', False),
+                ('active', '=', True),
             ]"/>
             <field name='code'>6</field>
         </record>
