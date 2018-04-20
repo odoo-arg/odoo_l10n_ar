@@ -17,16 +17,19 @@
 ##############################################################################
 
 import pytz
+from collections import defaultdict
 from datetime import datetime, date
-from l10n_ar_api import documents
 from dateutil.relativedelta import relativedelta
-from l10n_ar_api.afip_webservices import wsfe, wsaa
-from openerp import models, fields
+
+from l10n_ar_api import documents
+from l10n_ar_api.afip_webservices import wsfe
+from openerp import models, fields, api, registry
 from openerp.exceptions import ValidationError
+
+MAX_LENGTH = 199
 
 
 class AccountInvoice(models.Model):
-
     _inherit = 'account.invoice'
 
     date_service_from = fields.Date('Fecha servicio inicial', help='Fecha inicial del servicio brindado')
@@ -34,7 +37,58 @@ class AccountInvoice(models.Model):
     cae = fields.Char('CAE', readonly=True, copy=False)
     cae_due_date = fields.Date('Vencimiento CAE', readonly=True, copy=False)
     afip_concept_id = fields.Many2one('afip.concept', 'Concepto')
-    wsfe_request_detail_ids = fields.One2many('wsfe.request.detail', 'invoice_id', 'Detalles Wsfe')
+    wsfe_request_detail_ids = fields.Many2many(
+        'wsfe.request.detail',
+        'invoice_request_details',
+        'invoice_id',
+        'request_detail_id',
+        string='Detalles Wsfe'
+    )
+
+    @api.multi
+    def action_move_create(self):
+        """
+        En el modulo de PoS, se ejecuta la funcion del tipo de talonario una vez para cada factura. Aca busco que, si
+        todas las facturas seleccionadas son electronicas, lo ejecute una sola vez con todas esas, haciendo los chequeos
+        correspondientes
+        :return: finalmente llama al super
+        """
+        invoices_by_document_book = defaultdict(list)
+        all_invoices = self.browse(self.env.context.get('active_ids') or self.ids)
+        invoice_types = all_invoices.mapped('type')
+
+        for invoice in all_invoices:
+            if not invoice.amount_total_signed:
+                raise ValidationError("Ha seleccionado una o mas facturas con monto nulo")
+            book = invoice.get_document_book()
+            if book.book_type_id.type == 'electronic' and not invoice.cae:
+                invoices_by_document_book[book].append(invoice.id)
+            invoice._validate_fiscal_position_and_denomination()
+
+        if (invoice_types == ['out_invoice'] or invoice_types == ['out_refund']) and invoices_by_document_book:
+            afip_wsfe = all_invoices[0]._get_wsfe()
+            for k, v in invoices_by_document_book.iteritems():
+                # Obtenemos el codigo de comprobante
+                document_type_id = k.document_type_id.id
+                voucher_type = self.env['afip.voucher.type'].search([
+                    ('document_type_id', '=', document_type_id),
+                    ('denomination_id', '=', k.denomination_id.id)],
+                    limit=1
+                )
+                document_afip_code = int(
+                    self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
+
+                # Validamos la numeracion
+                k.action_wsfe_number(afip_wsfe, document_afip_code)
+
+            for k, v in invoices_by_document_book.iteritems():
+                split_ids = [v[i:i + MAX_LENGTH] for i in range(0, len(v), MAX_LENGTH)]
+                for split_list in split_ids:
+                    invoices = self.browse(split_list)
+                    getattr(invoices, k.book_type_id.foo)(k)
+                    for invoice in invoices:
+                        invoice.check_invoice_duplicity()
+        return super(AccountInvoice, self).action_move_create()
 
     def action_electronic(self, document_book):
         """
@@ -42,14 +96,13 @@ class AccountInvoice(models.Model):
         :raises ValidationError: Si el talonario configurado no tiene la misma numeracion que en AFIP.
                                  Si hubo algun error devuelto por afip al momento de enviar los datos.
         """
-        afip_wsfe = self._get_wsfe()
+        electronic_invoices = []
+        pos = document_book.pos_ar_id
+        invoices = self.filtered(lambda l: not l.cae and l.amount_total and l.pos_ar_id == pos).sorted(lambda l: l.id)
+        if invoices:
+            afip_wsfe = invoices[0]._get_wsfe()
 
-        for invoice in self:
-
-            # Si tiene cae no se re-envia
-            if invoice.cae:
-                continue
-
+        for invoice in invoices:
             # Validamos los campos
             invoice._validate_required_electronic_fields()
 
@@ -62,59 +115,79 @@ class AccountInvoice(models.Model):
             )
             document_afip_code = int(self.env['codes.models.relation'].get_code('afip.voucher.type', voucher_type.id))
 
-            # Validamos la numeracion
-            invoice._action_wsfe_number(document_book, afip_wsfe, document_afip_code)
-
             # Armamos la factura
-            electronic_invoice = invoice._set_electronic_invoice_details(document_afip_code)
+            electronic_invoices.append(invoice._set_electronic_invoice_details(document_afip_code))
 
-            # Guardamos el detalle del json enviado
-            invoice_detail = afip_wsfe._set_FECAERequest(electronic_invoice, invoice.pos_ar_id.name)
+        if electronic_invoices:
+            response = None
+            new_cr = None
 
-            # Chequeamos el status de los servidores y enviamos la factura a AFIP.
+            # Chequeamos la conexion y enviamos las facturas a AFIP, guardando el JSON enviado, el response y mostrando
+            # los errores (en caso de que los haya)
             try:
                 afip_wsfe.check_webservice_status()
-                response = afip_wsfe.get_cae(electronic_invoice, invoice.pos_ar_id.name)
+                response, invoice_detail = afip_wsfe.get_cae(electronic_invoices, pos.name)
+                afip_wsfe.show_error(response)
             except Exception, e:
+                new_cr = registry(self.env.cr.dbname).cursor()
+                self.env.cr.rollback()
                 raise ValidationError(e.message)
+            finally:
+                # Commiteamos para que no haya inconsistencia con la AFIP. Como ya tenemos el CAE escrito en la factura,
+                # al validarla nuevamente no se vuelve a enviar y se va a mantener la numeracion correctamente
+                if response and response.FeDetResp:
+                    with api.Environment.manage():
+                        cr_to_use = new_cr or self.env.cr
+                        new_env = api.Environment(cr_to_use, self.env.uid, self.env.context)
+                        invoices.write_wsfe_response(new_env, invoice_detail, response)
+                        new_invoices = new_env['account.invoice'].browse(invoices.ids)
+                        for invoice in new_invoices:
+                            # Busco, dentro del detalle de la respuesta, el segmento correspondiente a la factura
+                            number = document_book.next_number()
+                            filt = filter(lambda l: l.CbteDesde == long(number[-8:]),
+                                          response.FeDetResp.FECAEDetResponse)
+                            resp = filt[0] if filt else None
+                            if resp and resp.Resultado == 'A':
+                                invoice.write({
+                                    'cae': resp.CAE,
+                                    'cae_due_date': datetime.strptime(resp.CAEFchVto,
+                                                                      '%Y%m%d') if resp.CAEFchVto else None,
+                                    'name': number
+                                })
+                            # Si el envio no fue exitoso, se retrocede un numero en el talonario para compensar el
+                            # aumento realizado al enviar la factura fallida
+                            else:
+                                document_book.prev_number()
+                        self._commit(new_env)
 
-            invoice.write_wsfe_response(invoice_detail, response)
-
-            if response.FeCabResp.Resultado == 'R':
+            if response and response.FeCabResp and response.FeCabResp.Resultado == 'R':
                 # Traemos el conjunto de errores
-                errores = '\n'.join(obs.Msg for obs in response.FeDetResp.FECAEDetResponse[0].Observaciones.Obs)\
+                errores = '\n'.join(obs.Msg for obs in response.FeDetResp.FECAEDetResponse[0].Observaciones.Obs) \
                     if hasattr(response.FeDetResp.FECAEDetResponse[0], 'Observaciones') else ''
                 raise ValidationError('Hubo un error al intentar validar el documento\n{0}'.format(errores))
 
-            # Escribimos el CAE y su fecha de vencimiento
-            invoice.write({
-                'cae': response.FeDetResp.FECAEDetResponse[0].CAE,
-                'cae_due_date': datetime.strptime(response.FeDetResp.FECAEDetResponse[0].CAEFchVto, '%Y%m%d'),
-                'name': document_book.next_number()
-            })
-
-            # Commitiamos para que no halla inconsistencia con la AFIP. Como ya tenemos el CAE escrito en la factura
-            # Al validarla nuevamente, no vuelve a ir a la AFIP y se va a mantener la numeracion correctamente
-            self._commit()
-
-    def write_wsfe_response(self, invoice_detail, response):
+    def write_wsfe_response(self, env, invoice_detail, response):
         """ Escribe el envio y respuesta de un envio a AFIP """
-        self.ensure_one()
+        if response.FeCabResp:
+            # Nos traemos el offset de la zona horaria para dejar en la base en UTC como corresponde
+            offset = datetime.now(pytz.timezone('America/Argentina/Buenos_Aires')).utcoffset().total_seconds() / 3600
+            fch_proceso = datetime.strptime(response.FeCabResp.FchProceso, '%Y%m%d%H%M%S') - relativedelta(hours=offset)
+            result = response.FeCabResp.Resultado
+            date = fch_proceso
+        else:
+            result = "Error"
+            date = fields.Datetime.now()
 
-        # Nos traemos el offset de la zona horaria para dejar en la base en UTC como corresponde
-        offset = datetime.now(pytz.timezone('America/Argentina/Buenos_Aires')).utcoffset().total_seconds() / 3600
-        fch_proceso = datetime.strptime(response.FeCabResp.FchProceso, '%Y%m%d%H%M%S') - relativedelta(hours=offset)
-
-        self.wsfe_request_detail_ids.sudo().create({
-            'invoice_id': self.id,
+        env['wsfe.request.detail'].sudo().create({
+            'invoice_ids': [(4, self.ids)],
             'request_sent': invoice_detail,
             'request_received': response,
-            'result': response.FeCabResp.Resultado,
-            'date': fch_proceso
+            'result': result,
+            'date': date,
         })
 
-    def _commit(self):
-        self.env.cr.commit()
+    def _commit(self, env):
+        env.cr.commit()
 
     @staticmethod
     def convert_currency(from_currency, to_currency, amount=1.0, d=None):
@@ -182,7 +255,7 @@ class AccountInvoice(models.Model):
         # Agregamos impuestos y percepciones
         self._add_vat_to_electronic_invoice(electronic_invoice)
         self._add_perceptions_to_electronic_invoice(electronic_invoice)
-        return [electronic_invoice]
+        return electronic_invoice
 
     def _add_vat_to_electronic_invoice(self, electronic_invoice):
         """ Agrega los impuestos que son iva a informar """
@@ -210,19 +283,6 @@ class AccountInvoice(models.Model):
                 code = perception.get_afip_code()
                 tribute_aliquot = round(tax.amount / tax.base if tax.base else 0, 2)
                 electronic_invoice.add_tribute(documents.tax.Tribute(code, tax.amount, tax.base, tribute_aliquot))
-
-    def _action_wsfe_number(self, document_book, afip_wsfe, document_afip_code):
-        """
-        Valida que el ultimo numero del talonario sea el correcto en comparacion con el de la AFIP.
-        :param document_book: Talonario del documento.
-        :param afip_wsfe: instancia Wsfe.
-        :param document_afip_code: Codigo de afip del documento.
-        """
-
-        last_number = str(afip_wsfe.get_last_number(self.pos_ar_id.name, document_afip_code))
-
-        if last_number.zfill(8) != document_book.name.zfill(8):
-            raise ValidationError('El ultimo numero del talonario no coincide con el de la afip')
 
     def _get_wsfe(self):
         """

@@ -93,23 +93,24 @@ class WizardVatDiary(models.TransientModel):
             2: 'Doc. Numero',
             3: 'Condicion IVA',
             4: 'Tipo',
-            5: 'Numero',
-            6: 'Provincia'
+            5: 'Denominacion',
+            6: 'Numero',
+            7: 'Jurisdiccion'
         }
 
         for tax in taxes_position:
             if tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat'):
-                header[taxes_position[tax] + 7] = tax.name + ' - Base'
-                header[taxes_position[tax] + 8] = tax.name + ' - Importe'
+                header[taxes_position[tax] + 8] = tax.name + ' - Base'
+                header[taxes_position[tax] + 9] = tax.name + ' - Importe'
             else:
-                header[taxes_position[tax] + 7] = tax.name
+                header[taxes_position[tax] + 8] = tax.name
 
         last_tax = max(taxes_position, key=taxes_position.get)
         last_position = taxes_position[last_tax] + \
             (2 if last_tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat') else 1)
 
-        header[last_position + 7] = 'No Gravado'
-        header[last_position + 8] = 'Total'
+        header[last_position + 8] = 'No Gravado'
+        header[last_position + 9] = 'Total'
 
         return header
 
@@ -136,18 +137,19 @@ class WizardVatDiary(models.TransientModel):
                 2: invoice.partner_id.vat or '',
                 3: invoice.partner_id.property_account_position_id.name or '',
                 4: invoice.name_get()[0][1][:3],
-                5: invoice.name,
-                6: invoice.partner_id.state_id.name or '',
-                last_position + 7: invoice.amount_not_taxable * sign,
-                last_position + 8: invoice.amount_total_company_signed
+                5: invoice.denomination_id.name,
+                6: invoice.name,
+                7: invoice.jurisdiction_id.name or invoice.partner_id.state_id.name or '',
+                last_position + 8: invoice.amount_not_taxable * sign,
+                last_position + 9: invoice.amount_total_company_signed
             }
 
             for invoice_tax in invoice.tax_line_ids:
                 if invoice_tax.tax_id.tax_group_id == self.env.ref('l10n_ar.tax_group_vat'):
-                    invoice_values[taxes_position[invoice_tax.tax_id] + 7] = invoice_tax.base * sign
-                    invoice_values[taxes_position[invoice_tax.tax_id] + 8] = invoice_tax.amount * sign
+                    invoice_values[taxes_position[invoice_tax.tax_id] + 8] = invoice_tax.base * sign
+                    invoice_values[taxes_position[invoice_tax.tax_id] + 9] = invoice_tax.amount * sign
                 else:
-                    invoice_values[taxes_position[invoice_tax.tax_id] + 7] = invoice_tax.amount * sign
+                    invoice_values[taxes_position[invoice_tax.tax_id] + 8] = invoice_tax.amount * sign
 
             res.append(invoice_values)
 
@@ -186,15 +188,16 @@ class WizardVatDiary(models.TransientModel):
         sheet.col(2).width = 4000
         sheet.col(3).width = 6000
         sheet.col(4).width = 1500
-        sheet.col(5).width = 4000
+        sheet.col(5).width = 1500
         sheet.col(6).width = 4000
+        sheet.col(7).width = 4000
 
         row_number = 0
         total_cols = 0
         # Header
         for col in values[0]:
             # Le asignamos el ancho a las columnas de importes
-            if total_cols > 6:
+            if total_cols > 7:
                 sheet.col(col).width = 3500
             sheet.write(row_number, col, values[0][col], style)
             total_cols += 1
@@ -206,7 +209,7 @@ class WizardVatDiary(models.TransientModel):
                 sheet.write(row_number, col, value[col])
             row_number += 1
 
-        for x in range(7, total_cols):
+        for x in range(8, total_cols):
             column_start = xlwt.Utils.rowcol_to_cell(1, x)
             column_end = xlwt.Utils.rowcol_to_cell(row_number - 1, x)
             sheet.write(row_number, x, xlwt.Formula('SUM(' + column_start + ':' + column_end + ')'))

@@ -239,7 +239,7 @@ class TestInvoice(set_up.SetUp):
         response.FeCabResp.Resultado = 'A'
         response.FeCabResp.FchProceso = '20000101000000'
 
-        self.invoice.write_wsfe_response(invoice_detail, response)
+        self.invoice.write_wsfe_response(self.invoice.env, invoice_detail, response)
 
         # Nos aseguramos que en la base quede con el formato correspondiente
         assert self.invoice.wsfe_request_detail_ids[0].date == '2000-01-01 03:00:00'
@@ -278,7 +278,11 @@ class TestInvoice(set_up.SetUp):
             'wsaa_configuration_id': wsaa.id,
             'wsaa_token_id': wsaa_token.id,
         })
-        afip_wsfe = self.invoice._get_wsfe()
+
+        renew_ticket = 'odoo.addons.l10n_ar_afip_webservices_wsaa.models.wsaa_token.WsaaToken._renew_ticket'
+        with mock.patch(renew_ticket) as MockClass:
+            MockClass.return_value = None
+            afip_wsfe = self.invoice._get_wsfe()
 
         assert afip_wsfe.__class__.__name__ == 'Wsfe'
 
@@ -324,9 +328,10 @@ class TestInvoice(set_up.SetUp):
         assert self.refund._get_afip_concept_based_on_products().id == 1
 
     def test_exists_commit(self):
-        # Mockiamos el env para que el commit no commitee realmente en la base
-        self.invoice.env = mock.Mock()
-        self.invoice._commit()
+        # Mockeamos el env para que el commit no commitee realmente en la base
+        env = mock.Mock()
+        self.invoice.env = env
+        self.invoice._commit(env)
 
     def test_action_electronic(self):
         """ Hacemos una simluacion de envio de factura a AFIP con Mocks """

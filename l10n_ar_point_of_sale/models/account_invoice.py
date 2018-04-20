@@ -84,9 +84,11 @@ class AccountInvoice(models.Model):
             ('is_debit_note', '=', self.is_debit_note),
             ('denomination_id', '=', self.denomination_id.id),
             ('pos_ar_id', '=', self.pos_ar_id.id),
+            ('name', '!=', False),
             ('name', '=', self.name),
             ('type', '=', self.type),
-            ('state', 'not in', ['draft', 'cancel'])
+            ('state', 'not in', ['draft', 'cancel']),
+            ('id', '!=', self.id)
         ]
 
         if self.type in ['in_invoice', 'in_refund']:

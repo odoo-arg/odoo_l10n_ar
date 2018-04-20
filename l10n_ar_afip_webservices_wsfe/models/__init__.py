@@ -17,6 +17,7 @@
 ##############################################################################
 
 import wsfe_configuration
+import document_book
 import document_book_type
 import account_invoice
 import perception_perception

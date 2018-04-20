@@ -35,12 +35,12 @@
     'depends': [
         'base_vat_ar',
         'account',
-        'base_codes'
+        'base_codes',
+        'currency_inverse_rate',
     ],
 
     'data': [
         'data/company_data.xml',
-        'data/account_type_data.xml',
         'data/account_chart_template_data.xml',
         'data/account_chart_data.xml',
         'data/account_tax_data.xml',

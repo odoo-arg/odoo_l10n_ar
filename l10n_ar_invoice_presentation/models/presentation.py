@@ -240,11 +240,12 @@ class Presentation:
 
         exempt_taxes = self.get_invoice_exempt_taxes(invoice)
         not_taxed_taxes = self.get_invoice_notTaxed_taxes(invoice)
+        other_taxes = self.get_invoice_other_taxes(invoice)
 
-        if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids) - len(not_taxed_taxes):
+        if invoice.tax_line_ids and len(exempt_taxes) == len(invoice.tax_line_ids) - len(other_taxes):
             res = 'E'
 
-        if len(not_taxed_taxes) == len(invoice.tax_line_ids):
+        if invoice.tax_line_ids and len(not_taxed_taxes) == len(invoice.tax_line_ids) - len(other_taxes):
             res = 'N'
 
         return res
@@ -267,6 +268,12 @@ class Presentation:
 
     def get_invoice_notTaxed_taxes(self, invoice):
         raise NotImplementedError
+
+    def get_invoice_other_taxes(self, invoice):
+        return [
+            tax for tax in invoice.tax_line_ids
+            if tax.tax_id.tax_group_id != self.data.tax_group_vat
+        ]
 
     def get_otrosTrib(self, invoice):
         """

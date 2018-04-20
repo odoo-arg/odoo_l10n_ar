@@ -28,7 +28,7 @@ class AccountPaymentRetention(models.Model):
     _inherit = 'account.document.tax'
     _name = 'account.payment.retention'
 
-    payment_id = fields.Many2one('account.payment', 'Pago', required=True, ondelete="cascade")
+    payment_id = fields.Many2one('account.payment', 'Pago', ondelete="cascade")
     currency_id = fields.Many2one(related='payment_id.currency_id', readonly=True)
     retention_id = fields.Many2one(
         'retention.retention',
@@ -73,5 +73,9 @@ class AccountPaymentRetention(models.Model):
                 'name': None,
                 'jurisdiction': None,
             })
+
+    _sql_constraints = [
+        ('exist_payment_id', 'CHECK(payment_id IS NOT NULL)', 'La retencion debe pertenecer a un pago.')
+    ]
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -44,6 +44,9 @@ Modulo encargado de instalar todos los modulos requeridos para la localizacion A
         'l10n_ar_retentions_sifere',
         'l10n_ar_perceptions_sifere',
         'l10n_ar_payment_imputation',
+        'l10n_ar_vat_diary',
+        'l10n_ar_general_ledger',
+        'l10n_ar_move_renumber',
     ],
 
     'data': [

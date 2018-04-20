@@ -23,7 +23,7 @@
             <field name="name">Transferencias liquidez</field>
             <field name="code">1112.04</field>
             <field name="reconcile" eval="True"/>
-            <field name="user_type_id" ref="account_type_disponibility"/>
+            <field name="user_type_id" ref="account.data_account_type_liquidity"/>
         </record>      
         
         <record id="ar_chart_template" model="account.chart.template">

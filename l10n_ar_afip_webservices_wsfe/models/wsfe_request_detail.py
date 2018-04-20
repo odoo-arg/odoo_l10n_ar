@@ -25,7 +25,13 @@ class WsfeRequestDetail(models.Model):
 
     request_sent = fields.Text('Request enviado', required=True)
     request_received = fields.Text('Request recibido', required=True)
-    invoice_id = fields.Many2one('account.invoice', 'Documento', required=True)
+    invoice_ids = fields.Many2many(
+        'account.invoice',
+        'invoice_request_details',
+        'request_detail_id',
+        'invoice_id',
+        string='Documento'
+    )
     result = fields.Char('Resultado')
     date = fields.Datetime('Fecha')
 

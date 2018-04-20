@@ -25,28 +25,28 @@
         <!-- CUENTAS DE RETENCIONES ACTIVO -->
 
         <record id="retenciones_sufridas_iigg" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">1145.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones Sufridas IIGG</field>
         </record>
 
         <record id="retenciones_iibb_pba_sufrida" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">1146.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IIBB PBA Sufrida</field>
         </record>
 
         <record id="retenciones_iibb_caba_sufrida" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">1146.02</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IIBB CABA Sufrida</field>
         </record>
 
         <record id="retenciones_iva_sufrida" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">1147.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IVA Sufrida</field>
@@ -55,35 +55,35 @@
         <!-- CUENTAS DE RETENCIONES PASIVO -->
 
         <record id="iigg_ddjj_a_pagar" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">2155.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">IIGG DDJJ a pagar</field>
         </record>
 
         <record id="retenciones_iigg_a_pagar" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">2156.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retención IIGG a pagar</field>
         </record>
 
         <record id="retenciones_iibb_pba_efectuada" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">2157.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IIBB PBA efectuada</field>
         </record>
 
         <record id="retenciones_iibb_caba_efectuada" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">2157.02</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IIBB CABA efectuada</field>
         </record>
 
         <record id="retenciones_iva_efectuada" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
            <field name="code">2158.01</field>
            <field name="reconcile" eval="True"/>
            <field name="name">Retenciones IVA efectuada</field>
@@ -92,7 +92,7 @@
         <!-- RETENCIONES RESULTADO NEGATIVO -->
 
         <record id="retenciones_suss_sufrida" model="account.account">
-           <field name="user_type_id" ref="l10n_ar.account_type_tax"/>
+           <field name="user_type_id" ref="account.data_account_type_expenses"/>
             <field name="code">5141.04</field>
             <field name="reconcile" eval="True"/>
             <field name="name">Retenciones SUSS sufrida</field>
