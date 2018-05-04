@@ -140,7 +140,7 @@
                       <div style="width: 60%;text-align:center;float:left">
                         <div style="padding: 10px 0px 10px 0px">
                           <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'
-                               % ('I2of5', barcode+barcode_verificator_number, 500, 60)"
+                               % ('Code128', barcode+barcode_verificator_number, 500, 60)"
                                style="width:500px;height:60px"/>
                           <div style="font-size:10px;text-align:center">
                               <span t-esc="barcode"/><span t-esc="barcode_verificator_number"/>

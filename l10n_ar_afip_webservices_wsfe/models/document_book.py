@@ -17,22 +17,22 @@
 ##############################################################################
 
 from openerp import models, fields
+from openerp.exceptions import ValidationError
 
 
-class WsfeRequestDetail(models.Model):
+class DocumentBook(models.Model):
+    _inherit = 'document.book'
 
-    _name = 'wsfe.request.detail'
+    def action_wsfe_number(self, afip_wsfe, document_afip_code):
+        """
+        Valida que el ultimo numero del talonario sea el correcto en comparacion con el de la AFIP.
+        :param afip_wsfe: instancia Wsfe.
+        :param document_afip_code: Codigo de afip del documento.
+        """
+        last_number = str(afip_wsfe.get_last_number(self.pos_ar_id.name, document_afip_code))
 
-    request_sent = fields.Text('Request enviado', required=True)
-    request_received = fields.Text('Request recibido', required=True)
-    invoice_ids = fields.Many2many(
-        'account.invoice',
-        'invoice_request_details',
-        'request_detail_id',
-        'invoice_id',
-        string='Documento'
-    )
-    result = fields.Char('Resultado')
-    date = fields.Datetime('Fecha')
+        if last_number.zfill(8) != self.name.zfill(8):
+            raise ValidationError('El ultimo numero del talonario ({0}) no coincide con el de la AFIP ({1})'.format(
+                self.name, last_number))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

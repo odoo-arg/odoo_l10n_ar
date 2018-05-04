@@ -16,47 +16,6 @@
 #
 ##############################################################################
 
-{
-
-    'name': 'l10n_ar_all',
-
-    'version': '1.0',
-
-    'summary': 'Localizacion Argentina',
-
-    'description': """
-Modulo encargado de instalar todos los modulos requeridos para la localizacion Argentina.
-    """,
-
-    'author': 'OPENPYME S.R.L.',
-
-    'website': 'http://www.openpyme.com.ar',
-
-    'category': 'Localization',
-
-    'depends': [
-        'l10n_ar_reject_checks',
-        'l10n_ar_account_check_sale',
-        'l10n_ar_account_payment_report',
-        'l10n_ar_electronic_invoice_report',
-        'l10n_ar_bank_reconcile',
-        'l10n_ar_invoice_presentation',
-        'l10n_ar_retentions_sifere',
-        'l10n_ar_perceptions_sifere',
-        'l10n_ar_payment_imputation',
-        'l10n_ar_vat_diary',
-        'l10n_ar_general_ledger',
-        'l10n_ar_move_renumber',
-    ],
-
-    'data': [
-
-    ],
-
-    'active': False,
-
-    'installable': True,
-
-}
+import test_wizard_general_ledger_excel
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -37,17 +37,17 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos los montos
-        assert electronic_invoice[0].taxed_amount == 1000
-        assert electronic_invoice[0].untaxed_amount == 0
-        assert electronic_invoice[0].exempt_amount == 0
+        assert electronic_invoice.taxed_amount == 1000
+        assert electronic_invoice.untaxed_amount == 0
+        assert electronic_invoice.exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 iva del 21%)
-        assert electronic_invoice[0].array_iva[0].document_code == 5
-        assert electronic_invoice[0].array_iva[0].amount == 210
-        assert electronic_invoice[0].array_iva[0].taxable_base == 1000
+        assert electronic_invoice.array_iva[0].document_code == 5
+        assert electronic_invoice.array_iva[0].amount == 210
+        assert electronic_invoice.array_iva[0].taxable_base == 1000
 
-        assert not (electronic_invoice[0].service_from and electronic_invoice[0].service_to)
-        assert electronic_invoice[0].customer_document_type == '80'
+        assert not (electronic_invoice.service_from and electronic_invoice.service_to)
+        assert electronic_invoice.customer_document_type == '80'
 
     def test_electronic_invoice_details_nc_b(self):
 
@@ -63,17 +63,17 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.refund._set_electronic_invoice_details(document_afip_code)
 
         # Validamos los montos
-        assert electronic_invoice[0].taxed_amount == 2500
-        assert electronic_invoice[0].untaxed_amount == 150
-        assert electronic_invoice[0].exempt_amount == 0
+        assert electronic_invoice.taxed_amount == 2500
+        assert electronic_invoice.untaxed_amount == 150
+        assert electronic_invoice.exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 iva del 10.5%)
-        assert electronic_invoice[0].array_iva[0].document_code == 4
-        assert electronic_invoice[0].array_iva[0].amount == 262.50
-        assert electronic_invoice[0].array_iva[0].taxable_base == 2500
+        assert electronic_invoice.array_iva[0].document_code == 4
+        assert electronic_invoice.array_iva[0].amount == 262.50
+        assert electronic_invoice.array_iva[0].taxable_base == 2500
 
-        assert (electronic_invoice[0].service_from and electronic_invoice[0].service_to)
-        assert electronic_invoice[0].customer_document_type == '96'
+        assert (electronic_invoice.service_from and electronic_invoice.service_to)
+        assert electronic_invoice.customer_document_type == '96'
 
     def test_electronic_invoice_details_nd_c(self):
 
@@ -92,17 +92,17 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.debit_note._set_electronic_invoice_details(document_afip_code)
 
         # Validamos los montos
-        assert electronic_invoice[0].taxed_amount == 0
-        assert electronic_invoice[0].untaxed_amount == 0
-        assert electronic_invoice[0].exempt_amount == 0
+        assert electronic_invoice.taxed_amount == 0
+        assert electronic_invoice.untaxed_amount == 0
+        assert electronic_invoice.exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 iva Exento)
-        assert electronic_invoice[0].array_iva[0].document_code == 2
-        assert electronic_invoice[0].array_iva[0].amount == 0.0
-        assert electronic_invoice[0].array_iva[0].taxable_base == 5000
+        assert electronic_invoice.array_iva[0].document_code == 2
+        assert electronic_invoice.array_iva[0].amount == 0.0
+        assert electronic_invoice.array_iva[0].taxable_base == 5000
 
-        assert not (electronic_invoice[0].service_from and electronic_invoice[0].service_to)
-        assert electronic_invoice[0].customer_document_type == '86'
+        assert not (electronic_invoice.service_from and electronic_invoice.service_to)
+        assert electronic_invoice.customer_document_type == '86'
 
     def test_electronic_invoice_details_perceptions(self):
 
@@ -125,15 +125,15 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos los montos
-        assert electronic_invoice[0].taxed_amount == 1000
-        assert electronic_invoice[0].untaxed_amount == 0
-        assert electronic_invoice[0].exempt_amount == 0
+        assert electronic_invoice.taxed_amount == 1000
+        assert electronic_invoice.untaxed_amount == 0
+        assert electronic_invoice.exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 percepcion)
-        assert electronic_invoice[0].array_tributes[0].document_code == 2
-        assert electronic_invoice[0].array_tributes[0].amount == 10
-        assert electronic_invoice[0].array_tributes[0].taxable_base == 1000
-        assert electronic_invoice[0].array_tributes[0].aliquot == 0.01
+        assert electronic_invoice.array_tributes[0].document_code == 2
+        assert electronic_invoice.array_tributes[0].amount == 10
+        assert electronic_invoice.array_tributes[0].taxable_base == 1000
+        assert electronic_invoice.array_tributes[0].aliquot == 0.01
 
     def test_electronic_invoice_multiple_perceptions_and_taxes(self):
         document_type_id = self.document_book_fc_a.document_type_id.id
@@ -198,29 +198,29 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos los montos
-        assert electronic_invoice[0].taxed_amount == 2000
-        assert electronic_invoice[0].untaxed_amount == 150
-        assert electronic_invoice[0].exempt_amount == 0
+        assert electronic_invoice.taxed_amount == 2000
+        assert electronic_invoice.untaxed_amount == 150
+        assert electronic_invoice.exempt_amount == 0
 
         # Validamos el array de impuestos (deberia haber 1 iva del 10.5% y 1 del 21%)
-        electronic_invoice[0].array_iva.sort(key=lambda x: x.document_code)
-        assert electronic_invoice[0].array_iva[0].document_code == 4
-        assert electronic_invoice[0].array_iva[0].amount == 52.5
-        assert electronic_invoice[0].array_iva[0].taxable_base == 500
-        assert electronic_invoice[0].array_iva[1].document_code == 5
-        assert electronic_invoice[0].array_iva[1].amount == 315
-        assert electronic_invoice[0].array_iva[1].taxable_base == 1500
+        electronic_invoice.array_iva.sort(key=lambda x: x.document_code)
+        assert electronic_invoice.array_iva[0].document_code == 4
+        assert electronic_invoice.array_iva[0].amount == 52.5
+        assert electronic_invoice.array_iva[0].taxable_base == 500
+        assert electronic_invoice.array_iva[1].document_code == 5
+        assert electronic_invoice.array_iva[1].amount == 315
+        assert electronic_invoice.array_iva[1].taxable_base == 1500
 
         # Validamos el array de impuestos (deberia haber 2 percepciones, una nacional y una provincial)
-        electronic_invoice[0].array_tributes.sort(key=lambda x: x.document_code)
-        assert electronic_invoice[0].array_tributes[0].document_code == 1
-        assert electronic_invoice[0].array_tributes[0].amount == 100
-        assert electronic_invoice[0].array_tributes[0].taxable_base == 2000
-        assert electronic_invoice[0].array_tributes[0].aliquot == 0.05
-        assert electronic_invoice[0].array_tributes[1].document_code == 2
-        assert electronic_invoice[0].array_tributes[1].amount == 20
-        assert electronic_invoice[0].array_tributes[1].taxable_base == 2000
-        assert electronic_invoice[0].array_tributes[1].aliquot == 0.01
+        electronic_invoice.array_tributes.sort(key=lambda x: x.document_code)
+        assert electronic_invoice.array_tributes[0].document_code == 1
+        assert electronic_invoice.array_tributes[0].amount == 100
+        assert electronic_invoice.array_tributes[0].taxable_base == 2000
+        assert electronic_invoice.array_tributes[0].aliquot == 0.05
+        assert electronic_invoice.array_tributes[1].document_code == 2
+        assert electronic_invoice.array_tributes[1].amount == 20
+        assert electronic_invoice.array_tributes[1].taxable_base == 2000
+        assert electronic_invoice.array_tributes[1].aliquot == 0.01
 
     def test_tax_not_found(self):
         """ Si hay un impuesto que no es IVA y no se encuentra un percepcion asociada deberia tirar error """
@@ -239,7 +239,7 @@ class TestInvoice(set_up.SetUp):
         response.FeCabResp.Resultado = 'A'
         response.FeCabResp.FchProceso = '20000101000000'
 
-        self.invoice.write_wsfe_response(invoice_detail, response)
+        self.invoice.write_wsfe_response(self.invoice.env, invoice_detail, response)
 
         # Nos aseguramos que en la base quede con el formato correspondiente
         assert self.invoice.wsfe_request_detail_ids[0].date == '2000-01-01 03:00:00'
@@ -251,11 +251,11 @@ class TestInvoice(set_up.SetUp):
         afip_wsfe.get_last_number = mock.MagicMock(return_value=1)
 
         with self.assertRaises(ValidationError):
-            self.invoice._action_wsfe_number(self.document_book_fc_a, afip_wsfe, 001)
+            self.document_book_fc_a.action_wsfe_number(afip_wsfe, 001)
 
         # Ahora probamos el caso que coinciden ambos talonarios
         afip_wsfe.get_last_number = mock.MagicMock(return_value=0)
-        self.invoice._action_wsfe_number(self.document_book_fc_a, afip_wsfe, 001)
+        self.document_book_fc_a.action_wsfe_number(afip_wsfe, 001)
 
     def test_get_wsfe(self):
 
@@ -328,9 +328,10 @@ class TestInvoice(set_up.SetUp):
         assert self.refund._get_afip_concept_based_on_products().id == 1
 
     def test_exists_commit(self):
-        # Mockiamos el env para que el commit no commitee realmente en la base
-        self.invoice.env = mock.Mock()
-        self.invoice._commit()
+        # Mockeamos el env para que el commit no commitee realmente en la base
+        env = mock.Mock()
+        self.invoice.env = env
+        self.invoice._commit(env)
 
     def test_action_electronic(self):
         """ Hacemos una simluacion de envio de factura a AFIP con Mocks """
@@ -350,16 +351,19 @@ class TestInvoice(set_up.SetUp):
             response.FeCabResp.Resultado = 'A'
             response.FeCabResp.FchProceso = '20000101000000'
             response.FeDetResp.FECAEDetResponse = [mock.Mock()]
+            response.FeDetResp.FECAEDetResponse[0].Resultado = 'A'
             response.FeDetResp.FECAEDetResponse[0].CAE = '123871298371923'
             response.FeDetResp.FECAEDetResponse[0].CAEFchVto = '20000110'
+            response.FeDetResp.FECAEDetResponse[0].CbteDesde = long(1)
 
             # Simulamos las funciones del wsfe
             wsfe_mock.get_last_number = mock.MagicMock(return_value=0)
-            wsfe_mock.get_cae = mock.MagicMock(return_value=response)
+            wsfe_mock.get_cae = mock.MagicMock(return_value=(response, "Request enviado"))
             MockClass.return_value = wsfe_mock
             commitMock.return_value = None
 
             # Enviamos la factura
+            self.invoice.pos_ar_id = self.pos
             self.invoice.action_electronic(self.document_book_fc_a)
             assert self.invoice.cae == '123871298371923'
             assert self.invoice.cae_due_date == '2000-01-10'
@@ -399,8 +403,8 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos la moneda y cotizacion
-        assert electronic_invoice[0].mon_id == 'PES'
-        assert electronic_invoice[0].mon_cotiz == 1.0
+        assert electronic_invoice.mon_id == 'PES'
+        assert electronic_invoice.mon_cotiz == 1.0
 
     def test_electronic_invoice_currency_usd(self):
         document_type_id = self.document_book_fc_a.document_type_id.id
@@ -422,8 +426,8 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos la moneda y cotizacion
-        assert electronic_invoice[0].mon_id == 'DOL'
-        assert electronic_invoice[0].mon_cotiz == 10
+        assert electronic_invoice.mon_id == 'DOL'
+        assert electronic_invoice.mon_cotiz == 10
 
     def test_electronic_invoice_currency_eur(self):
         document_type_id = self.document_book_fc_a.document_type_id.id
@@ -445,7 +449,7 @@ class TestInvoice(set_up.SetUp):
         electronic_invoice = self.invoice._set_electronic_invoice_details(document_afip_code)
 
         # Validamos la moneda y cotizacion
-        assert electronic_invoice[0].mon_id == '060'
-        assert electronic_invoice[0].mon_cotiz == 5
+        assert electronic_invoice.mon_id == '060'
+        assert electronic_invoice.mon_cotiz == 5
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
