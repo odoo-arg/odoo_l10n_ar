@@ -18,7 +18,7 @@ def _assert_header_values(self, header):
     assert header.get(10) == self.env.ref('l10n_ar.1_vat_21_ventas').name + ' - Base'
     assert header.get(11) == self.env.ref('l10n_ar.1_vat_21_ventas').name + ' - Importe'
     assert header.get(12) == self.env.ref('l10n_ar.1_vat_enard').name
-    assert header.get(13) == 'No Gravado'
+    assert header.get(13) == 'No Gravado/Exento'
     assert header.get(14) == 'Total'
 
 
@@ -37,9 +37,9 @@ def _assert_invoices_values_customer(self, details):
     assert not details[0].get(9)
     assert details[0].get(10) == 500
     assert details[0].get(11) == 105
-    assert details[0].get(12) == 0
+    assert details[0].get(12) == 1
     assert details[0].get(13) == 0
-    assert details[0].get(14) == 605
+    assert details[0].get(14) == 606
 
 
     # Caso de una nota de credito
@@ -62,9 +62,9 @@ def _assert_invoices_values_customer(self, details):
     assert not details[2].get(9)
     assert not details[2].get(10)
     assert not details[2].get(11)
-    assert details[2].get(12) == 0
+    assert details[2].get(12) == 1
     assert details[2].get(13) == 500
-    assert details[2].get(14) == 500
+    assert details[2].get(14) == 501
 
 
 def _assert_invoices_values_supplier(self, details):
@@ -78,9 +78,9 @@ def _assert_invoices_values_supplier(self, details):
     assert not details[0].get(9)
     assert details[0].get(10) == 500
     assert details[0].get(11) == 105
-    assert details[0].get(12) == 0
+    assert details[0].get(12) == 1
     assert details[0].get(13) == 0
-    assert details[0].get(14) == 605
+    assert details[0].get(14) == 606
 
     # Caso de una nota de credito
     assert details[1].get(0) == date.today().replace(day=2).strftime('%d/%m/%Y')
@@ -102,8 +102,8 @@ def _assert_invoices_values_supplier(self, details):
     assert not details[2].get(9)
     assert not details[2].get(10)
     assert not details[2].get(11)
-    assert details[2].get(12) == 0
+    assert details[2].get(12) == 1
     assert details[2].get(13) == 500
-    assert details[2].get(14) == 500
+    assert details[2].get(14) == 501
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

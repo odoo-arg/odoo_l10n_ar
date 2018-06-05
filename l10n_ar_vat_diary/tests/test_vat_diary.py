@@ -108,6 +108,8 @@ class TestVatDiary(common.TransactionCase):
         for invoice in self.invoices:
             invoice.onchange_partner_id()
             invoice._onchange_invoice_line_ids()
+            invoice.tax_line_ids.filtered(
+                lambda l: l.tax_id == self.env.ref('l10n_ar.1_vat_enard')).write({'amount': 1})
             invoice.action_invoice_open()
 
     def setUp(self):
