@@ -50,7 +50,8 @@
         'views/res_bank.xml',
         'views/res_company_view.xml',
         'views/res_partner_view.xml',
-        'wizard/views/update_banks_wizard.xml'
+        'wizard/views/update_banks_wizard.xml',
+        'data/security.xml',
         
     ],
 

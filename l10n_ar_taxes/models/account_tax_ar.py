@@ -20,7 +20,6 @@ from openerp import models, fields
 
 
 class AccountTaxAr(models.AbstractModel):
-
     _name = 'account.tax.ar'
 
     def _get_country_ar(self):
@@ -56,5 +55,11 @@ class AccountTaxAr(models.AbstractModel):
         default='nacional'
     )
     state_id = fields.Many2one('res.country.state', string="Provincia", domain=_get_country_ar)
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

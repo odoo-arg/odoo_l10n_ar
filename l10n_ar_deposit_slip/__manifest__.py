@@ -46,7 +46,8 @@ Cheques
         'views/deposit_slip_view.xml',
         'views/account_check_view.xml',
         'wizard/wizard_deposit_slip_view.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'active': False,

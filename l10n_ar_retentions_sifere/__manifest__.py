@@ -37,6 +37,7 @@
     'data': [
         'views/retention_sifere.xml',
         'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

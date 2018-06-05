@@ -42,7 +42,8 @@ class AccountInvoice(models.Model):
         'invoice_request_details',
         'invoice_id',
         'request_detail_id',
-        string='Detalles Wsfe'
+        string='Detalles Wsfe',
+        copy=False,
     )
 
     @api.multi
@@ -54,17 +55,18 @@ class AccountInvoice(models.Model):
         :return: finalmente llama al super
         """
         invoices_by_document_book = defaultdict(list)
-        all_invoices = self.browse(self.env.context.get('active_ids') or self.ids)
+        all_invoices = self.browse(self.ids or self.env.context.get('active_ids'))
         invoice_types = all_invoices.mapped('type')
 
         for invoice in all_invoices:
             if not invoice.amount_total_signed:
                 raise ValidationError("Ha seleccionado una o mas facturas con monto nulo")
-            book = invoice.get_document_book()
-            if book.book_type_id.type == 'electronic' and not invoice.cae:
-                invoices_by_document_book[book].append(invoice.id)
             invoice._validate_fiscal_position_and_denomination()
-
+            if invoice.type in ['out_invoice', 'out_refund']:
+                book = invoice.get_document_book()
+                if book.book_type_id.type == 'electronic' and not invoice.cae:
+                    invoices_by_document_book[book].append(invoice.id)
+        
         if (invoice_types == ['out_invoice'] or invoice_types == ['out_refund']) and invoices_by_document_book:
             afip_wsfe = all_invoices[0]._get_wsfe()
             for k, v in invoices_by_document_book.iteritems():

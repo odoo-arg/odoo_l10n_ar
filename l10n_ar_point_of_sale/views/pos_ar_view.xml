@@ -33,6 +33,7 @@
                         <group string="Detalles">
                             <group>
                                 <field name="name" string="Numero"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="description"/>
@@ -72,6 +73,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="description"/>
                 </tree>
             </field>

@@ -42,6 +42,12 @@ class AccountBankReconcile(models.Model):
     unreconciled_count = fields.Integer(
         'Elementos sin conciliar',
         compute='_get_unreconciled')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     @api.multi
     def open_unreconciled_move_lines(self):

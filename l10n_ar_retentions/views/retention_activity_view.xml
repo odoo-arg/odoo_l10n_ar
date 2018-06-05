@@ -25,6 +25,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="code"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="name"/>
                 </tree>
             </field>
@@ -41,6 +42,8 @@
                         <h2><field name="code"/></h2>
                         <label for="name" class="oe_edit_only"/>
                         <field name="name"/>
+                        <label for="company_id" class="oe_edit_only" groups="base.group_multi_company"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
                     </sheet>
                 </form>
             </field>

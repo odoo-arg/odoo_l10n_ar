@@ -21,7 +21,6 @@ from openerp.exceptions import ValidationError
 
 
 class DocumentBook(models.Model):
-
     _name = 'document.book'
 
     name = fields.Char('Ultimo numero', required=True, size=8)
@@ -43,6 +42,12 @@ class DocumentBook(models.Model):
     denomination_id = fields.Many2one('account.denomination', 'Denominacion')
     sequence = fields.Integer('Secuencia', help='Por default, se eligirá el que menos secuencia tiene')
     active = fields.Boolean('Activo', default=True)
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     @api.onchange('category')
     def onchange_category(self):

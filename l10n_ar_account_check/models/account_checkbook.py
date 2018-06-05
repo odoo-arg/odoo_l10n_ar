@@ -91,6 +91,13 @@ class AccountCheckbook(models.Model):
         readonly=True
     )
 
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
+
     @api.constrains('number_from', 'number_to')
     def constraint_numbers(self, max_checks=100):
         for checkbook in self:

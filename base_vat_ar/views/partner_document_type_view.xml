@@ -28,6 +28,7 @@
                         <group>
                             <field name="name"/>
                             <field name="verification_required"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </sheet>
                 </form>
@@ -40,7 +41,8 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="verification_required"/>          
+                    <field name="verification_required"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                 </tree>
             </field>
         </record>

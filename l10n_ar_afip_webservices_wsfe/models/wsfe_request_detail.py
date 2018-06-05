@@ -34,5 +34,7 @@ class WsfeRequestDetail(models.Model):
     )
     result = fields.Char('Resultado')
     date = fields.Datetime('Fecha')
+    company_id = fields.Many2one('res.company', string='Compania', related='invoice_id.company_id', store=True,
+                                 readonly=True, related_sudo=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

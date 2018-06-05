@@ -77,6 +77,12 @@ class AccountDepositSlip(models.Model):
         readonly=True,
         track_visibility='onchange'
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     _sql_constraints = [('name_uniq', 'unique(name)', 'El nombre de la boleta de deposito debe ser unico')]
 

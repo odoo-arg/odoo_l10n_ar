@@ -27,6 +27,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                             <field name="date_from"/>
                             <field name="date_to"/>
                             <field name="file" filename="filename"/>
@@ -51,6 +52,7 @@
             <field name="arch" type="xml">
                 <tree string="SIFERE Percepciones">
                     <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
                     <field name="file" filename="filename"/>

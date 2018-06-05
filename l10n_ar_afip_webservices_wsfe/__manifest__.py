@@ -40,7 +40,8 @@
         'views/account_invoice_view.xml',
         'views/wsfe_request_detail_view.xml',
         'data/document_book_type.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

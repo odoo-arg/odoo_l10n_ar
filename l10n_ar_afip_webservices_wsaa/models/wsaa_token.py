@@ -33,6 +33,8 @@ class WsaaToken(models.Model):
     token = fields.Text('Token', readonly=True)
     sign = fields.Text('Sign', readonly=True)
     wsaa_configuration_id = fields.Many2one('wsaa.configuration', 'Configuracion', required=True)
+    company_id = fields.Many2one('res.company', string='Compania', related='wsaa_configuration_id.company_id',
+                                 store=True, readonly=True, related_sudo=False)
 
     def get_access_token(self):
         """

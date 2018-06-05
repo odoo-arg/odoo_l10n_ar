@@ -21,7 +21,6 @@ from openerp.exceptions import ValidationError
 
 
 class AccountDocumentTax(models.AbstractModel):
-
     _name = 'account.document.tax'
 
     currency_id = fields.Many2one('res.currency')
@@ -37,6 +36,12 @@ class AccountDocumentTax(models.AbstractModel):
         required=True,
     )
     name = fields.Char('Nombre', required=True)
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     @api.constrains('amount')
     def check_amount(self):

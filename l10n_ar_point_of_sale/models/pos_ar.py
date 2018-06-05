@@ -21,7 +21,6 @@ from openerp.exceptions import ValidationError
 
 
 class PosAr(models.Model):
-
     _name = 'pos.ar'
 
     name = fields.Char('Nombre', required=True, size=4)
@@ -32,6 +31,12 @@ class PosAr(models.Model):
         'Talonarios'
     )
     active = fields.Boolean('Activo', default=True)
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     @api.constrains('name')
     def check_name(self):

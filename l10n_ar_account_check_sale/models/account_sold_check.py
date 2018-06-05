@@ -71,7 +71,12 @@ class AccountSoldCheck(models.Model):
         string='Estado',
         readonly=True
     )
-    company_id = fields.Many2one('res.company', 'Compania')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
     currency_id = fields.Many2one(
         'res.currency',
         'Moneda',

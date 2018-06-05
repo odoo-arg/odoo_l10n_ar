@@ -74,6 +74,9 @@ class AccountReconcileMoveLine(models.Model):
         string='Monto moneda',
     )
 
+    company_id = fields.Many2one('res.company', string='Compania', related='bank_reconcile_line_id.company_id',
+                                 store=True, readonly=True, related_sudo=False)
+
     @api.multi
     def unlink(self):
         for reconcile_move_line in self:

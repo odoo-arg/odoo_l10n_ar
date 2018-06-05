@@ -30,6 +30,8 @@
                       delete="false"
                 >
                     <field name="name"/>
+                    <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                       groups="base.group_multi_company"/>
                     <field name="date"/>
                     <field name="amount"/>
                     <field name="state"/>

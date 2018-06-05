@@ -50,6 +50,7 @@ mapped with models using l10n_ar_codes application
         'data/account_fiscal_position.xml',
         'data/afip_concept.xml',
         'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'active': False,

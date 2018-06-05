@@ -39,6 +39,13 @@ class AccountAbstractCheck(models.AbstractModel):
     issue_date = fields.Date('Fecha de emision', track_visibility='onchange')
     payment_date = fields.Date('Fecha de pago', track_visibility='onchange')
 
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
+
     @api.constrains('name')
     def constraint_name(self):
         for check in self:

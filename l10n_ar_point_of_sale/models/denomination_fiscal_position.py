@@ -20,7 +20,6 @@ from openerp import models, fields
 
 
 class DenominationFiscalPosition(models.Model):
-
     _name = 'denomination.fiscal.position'
 
     issue_fiscal_position_id = fields.Many2one(
@@ -38,6 +37,9 @@ class DenominationFiscalPosition(models.Model):
         'Denominacion',
         required=True
     )
+
+    company_id = fields.Many2one('res.company', string='Compania', related='issue_fiscal_position_id.company_id',
+                                 store=True, readonly=True, related_sudo=False)
 
     _sql_constraints = [(
         'unique',

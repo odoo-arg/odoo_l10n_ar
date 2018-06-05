@@ -39,7 +39,8 @@
         'wizard/register_payment_view.xml',
         'wizard/account_payment_imputation_view.xml',
         'static/xml/create_payment_asset.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'qweb': [

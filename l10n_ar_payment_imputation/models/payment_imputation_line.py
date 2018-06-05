@@ -48,6 +48,8 @@ class AccountPaymentImputationLine(models.Model):
     invoice_amount_total = fields.Monetary(related='invoice_id.amount_total_signed')
     invoice_amount_residual_company = fields.Monetary(related='invoice_id.residual_company_signed')
     invoice_amount_company = fields.Monetary(related='invoice_id.amount_total_company_signed')
+    company_id = fields.Many2one('res.company', string='Compania', related='payment_id.company_id', store=True,
+                                 readonly=True, related_sudo=False)
     amount_residual_in_payment_currency = fields.Monetary(
         'Restante moneda pago',
         'payment_currency_id',

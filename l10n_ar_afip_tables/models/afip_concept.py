@@ -25,7 +25,6 @@ product_concept_selection = [
 ]
 
 class AfipConcept(models.Model):
-
     _name = 'afip.concept'
 
     name = fields.Char('Nombre', required=True)
@@ -33,9 +32,14 @@ class AfipConcept(models.Model):
         'product.concept.category', 
         string='Categoria de conceptos'
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
     
 class ProductConcept(models.Model):
-
     _name = 'product.concept'
 
     name = fields.Char('Descripcion', required=True)
@@ -49,12 +53,23 @@ class ProductConcept(models.Model):
         'Categoria de concepto', 
         required=True
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
     
 class ProductConceptCategory(models.Model):
-
     _name = 'product.concept.category'
     
     name = fields.Char('Nombre', required=True)
     afip_concept_ids = fields.Many2many('afip.concept', string='Concepto Afip')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
