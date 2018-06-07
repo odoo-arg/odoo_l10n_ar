@@ -24,13 +24,6 @@
             <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
         </record>
 
-        <record model="ir.rule" id="wsfe_request_detail_multi">
-            <field name="name">Wsfe request_detail: multi-company</field>
-            <field name="model_id" ref="model_wsfe_request_detail"/>
-            <field name="global" eval="True"/>
-            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
-        </record>
-
     </data>
 </openerp>
 
