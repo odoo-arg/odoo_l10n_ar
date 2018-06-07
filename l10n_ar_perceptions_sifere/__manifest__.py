@@ -37,6 +37,7 @@
     'data': [
         'views/perception_sifere.xml',
         'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

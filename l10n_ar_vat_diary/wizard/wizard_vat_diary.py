@@ -70,7 +70,7 @@ class WizardVatDiary(models.TransientModel):
         position = 0
 
         # Ordenamos los impuestos para tener el IVA primero y removemos duplicados
-        sorted_taxes = invoices.mapped('tax_line_ids.tax_id').sorted(
+        sorted_taxes = invoices.mapped('tax_line_ids').filtered(lambda l: l.amount).mapped('tax_id').sorted(
             key=lambda x: (x.tax_group_id != self.env.ref('l10n_ar.tax_group_vat'), x.name),
         )
 
@@ -105,11 +105,14 @@ class WizardVatDiary(models.TransientModel):
             else:
                 header[taxes_position[tax] + 8] = tax.name
 
-        last_tax = max(taxes_position, key=taxes_position.get)
-        last_position = taxes_position[last_tax] + \
-            (2 if last_tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat') else 1)
+        if taxes_position:
+            last_tax = max(taxes_position, key=taxes_position.get)
+            last_position = taxes_position[last_tax] + \
+                (2 if last_tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat') else 1)
+        else:
+            last_position = 0
 
-        header[last_position + 8] = 'No Gravado'
+        header[last_position + 8] = 'No Gravado/Exento'
         header[last_position + 9] = 'Total'
 
         return header
@@ -124,9 +127,12 @@ class WizardVatDiary(models.TransientModel):
         res = []
 
         # Obtenemos el ultimo impuesto para saber en que columna van los totales
-        last_tax = max(taxes_position, key=taxes_position.get)
-        last_position = taxes_position[last_tax] + \
-                        (2 if last_tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat') else 1)
+        if taxes_position:
+            last_tax = max(taxes_position, key=taxes_position.get)
+            last_position = taxes_position[last_tax] + \
+                            (2 if last_tax.tax_group_id == self.env.ref('l10n_ar.tax_group_vat') else 1)
+        else:
+            last_position = 0
 
         for invoice in invoices.sorted(key=lambda x: (x.date_invoice, x.type, x.name)):
 
@@ -140,11 +146,11 @@ class WizardVatDiary(models.TransientModel):
                 5: invoice.denomination_id.name,
                 6: invoice.name,
                 7: invoice.jurisdiction_id.name or invoice.partner_id.state_id.name or '',
-                last_position + 8: invoice.amount_not_taxable * sign,
+                last_position + 8: (invoice.amount_not_taxable + invoice.amount_exempt) * sign,
                 last_position + 9: invoice.amount_total_company_signed
             }
 
-            for invoice_tax in invoice.tax_line_ids:
+            for invoice_tax in invoice.tax_line_ids.filtered(lambda l: l.amount):
                 if invoice_tax.tax_id.tax_group_id == self.env.ref('l10n_ar.tax_group_vat'):
                     invoice_values[taxes_position[invoice_tax.tax_id] + 8] = invoice_tax.base * sign
                     invoice_values[taxes_position[invoice_tax.tax_id] + 9] = invoice_tax.amount * sign
@@ -154,7 +160,7 @@ class WizardVatDiary(models.TransientModel):
             res.append(invoice_values)
 
         return res
-
+    
     def get_report_values(self):
         """
         Devuelve los datos de cabecera y detalles del reporte a armar de las invoices obtenidas del wizard

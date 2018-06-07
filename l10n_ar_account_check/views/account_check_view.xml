@@ -63,6 +63,8 @@
                             <group>
                                 <field name="issue_date"/>
                                 <field name="payment_type" readonly="1"/>
+                                <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                       groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="payment_date"/>
@@ -118,6 +120,8 @@
                                 <field name="issue_date"/>
                                 <field name="payment_type"/>
                                 <field name="source_payment_id" readonly="1"/>
+                                <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                       groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="payment_date"/>

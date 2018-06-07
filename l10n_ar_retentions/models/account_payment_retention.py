@@ -52,6 +52,8 @@ class AccountPaymentRetention(models.Model):
         related='retention_id.type',
         readonly=True,
     )
+    company_id = fields.Many2one('res.company', string='Compania', related='payment_id.company_id', store=True,
+                                 readonly=True, related_sudo=False)
 
     @api.constrains('payment_id', 'retention_id', 'activity_id')
     def _check_repeat(self):

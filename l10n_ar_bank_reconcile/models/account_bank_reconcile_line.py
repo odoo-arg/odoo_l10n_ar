@@ -58,6 +58,9 @@ class AccountBankReconcileLine(models.Model):
         string='Ultimo',
     )
 
+    company_id = fields.Many2one('res.company', string='Compania', related='bank_reconcile_id.company_id', store=True,
+                                 readonly=True, related_sudo=False)
+
     @api.onchange('reconcile_move_line_ids')
     def onchange_balance(self):
         self.current_balance_currency = sum(

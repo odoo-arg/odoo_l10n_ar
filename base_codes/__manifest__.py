@@ -41,7 +41,8 @@
 
     'data': [
         'views/codes_modes_relation_view.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'active': False,

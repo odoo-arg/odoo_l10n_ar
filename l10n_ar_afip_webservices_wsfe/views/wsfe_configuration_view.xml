@@ -26,6 +26,7 @@
                         <h1><field name="name" placeholder="Nombre..."/></h1>
                         <group>
                             <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
                                 <field name="type"/>
                                 <field name="wsaa_configuration_id"/>
                                 <field name="wsaa_token_id" domain="[('wsaa_configuration_id', '=', wsaa_configuration_id)]"/>
@@ -42,6 +43,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="type"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="wsaa_configuration_id"/>
                     <field name="wsaa_token_id"/>
                 </tree>

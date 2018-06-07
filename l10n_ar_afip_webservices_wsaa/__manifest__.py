@@ -37,6 +37,7 @@
     'data': [
         'views/wsaa_configuration_view.xml',
         'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

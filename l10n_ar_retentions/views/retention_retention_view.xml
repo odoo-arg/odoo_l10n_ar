@@ -36,6 +36,7 @@
                             <group>
                                 <field name="type"/>
                                 <field name="jurisdiction"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                         </group>
                     </sheet>
@@ -49,6 +50,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="tax_id"/>
                     <field name="state_id"/>
                     <field name="type"/>

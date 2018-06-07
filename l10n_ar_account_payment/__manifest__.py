@@ -40,7 +40,8 @@
         'wizard/account_register_payments_view.xml',
         'views/menu.xml',
         'data/account_journal.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

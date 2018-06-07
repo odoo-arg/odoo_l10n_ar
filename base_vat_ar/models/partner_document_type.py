@@ -24,5 +24,12 @@ class PartnerDocumentType(models.Model):
     
     name = fields.Char('Nombre', required=True)
     verification_required = fields.Boolean('Valida documento?')
+
+    company_id = fields.Many2one(
+        'res.company',
+        'Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

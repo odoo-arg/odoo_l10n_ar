@@ -49,5 +49,7 @@ class AccountInvoicePerception(models.Model):
         ondelete='restrict',
         required=True
     )
+    company_id = fields.Many2one('res.company', string='Compania', related='invoice_id.company_id', store=True,
+                                 readonly=True, related_sudo=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -20,7 +20,6 @@ from openerp import models, fields
 
 
 class AccountDenomination(models.Model):
-
     _name = 'account.denomination'
 
     name = fields.Char('Nombre', required=True, size=1)
@@ -28,6 +27,12 @@ class AccountDenomination(models.Model):
     validate_supplier = fields.Boolean(
         'Validar numeracion?',
         help="Valida numeracion con el formato 'xxxx-xxxxxxxx' para los documentos de proveedores"
+    )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
     )
 
     _sql_constraints = [('name_unique', 'unique(name)', 'El nombre debe ser unico por denominacion')]

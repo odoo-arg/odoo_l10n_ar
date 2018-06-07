@@ -33,6 +33,13 @@ class RetentionActivity(models.Model):
         required=True,
     )
 
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
+
     _sql_constraints = [
         ('activity_code_unique', 'unique(code)', 'Ya existe una actividad con ese codigo.')
     ]

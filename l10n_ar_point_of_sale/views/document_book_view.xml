@@ -50,6 +50,7 @@
                                     attrs="{'required': [('category', 'in', ['invoice', 'payment'])],
                                             'invisible': [('category', 'not in', ['invoice', 'payment'])]}"
                                 />
+                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                         </group>
                     </sheet>
@@ -64,6 +65,7 @@
                 <tree>
                     <field name="sequence" widget="handle"/>
                     <field name="pos_ar_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="category"/>
                     <field name="document_type_id"/>
                     <field name="book_type_id"/>

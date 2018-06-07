@@ -46,7 +46,8 @@ Cheques
         'views/account_third_check_view.xml',
         'views/account_sold_check_view.xml',
         'wizard/wizard_sell_check_view.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'active': False,

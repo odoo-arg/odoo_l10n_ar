@@ -54,7 +54,7 @@ class PerceptionSifere(models.Model):
         line.jurisdiccion = code
         vat = p.invoice_id.partner_id.vat
         line.cuit = "{0}-{1}-{2}".format(vat[0:2], vat[2:10], vat[-1:])
-        line.fecha = datetime.strptime(p.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+        line.fecha = datetime.strptime(p.invoice_id.date, '%Y-%m-%d').strftime('%d/%m/%Y')
         line.puntoDeVenta = p.invoice_id.name[0:4]
         line.numeroComprobante = p.invoice_id.name[5:]
         line.tipo = self._get_tipo(p)
@@ -64,13 +64,13 @@ class PerceptionSifere(models.Model):
     def generate_file(self):
         lines = presentation.Presentation("sifere", "percepciones")
         perceptions = self.env['account.invoice.perception'].search([
-            ('create_date', '>=', self.date_from),
-            ('create_date', '<=', self.date_to),
+            ('invoice_id.date', '>=', self.date_from),
+            ('invoice_id.date', '<=', self.date_to),
             ('perception_id.type', '=', 'gross_income'),
             ('invoice_id.denomination_id.name', '!=', self._get_invalid_denomination()),
             ('invoice_id.state', 'in', ['open', 'paid']),
             ('perception_id.type_tax_use', '=', 'purchase')
-        ]).sorted(key=lambda r: (r.create_date, r.id))
+        ]).sorted(key=lambda r: (r.invoice_id.date, r.id))
 
         missing_vats = set()
         invalid_doctypes = set()

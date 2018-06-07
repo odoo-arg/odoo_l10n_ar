@@ -18,11 +18,17 @@
 
 from openerp import models, fields
 
-class AfipVoucherType(models.Model):
 
+class AfipVoucherType(models.Model):
     _name = 'afip.voucher.type'
 
     name = fields.Char('Denominacion', required=True)
     denomination_id = fields.Many2one('account.denomination', 'Denominacion')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

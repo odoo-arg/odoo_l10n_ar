@@ -40,6 +40,8 @@ class AccountPaymentTypeLine(models.Model):
         string='Moneda',
         related='account_payment_type_id.currency_id'
     )
+    company_id = fields.Many2one('res.company', string='Compania', related='account_payment_type_id.company_id',
+                                 store=True, readonly=True, related_sudo=False)
 
     @api.constrains('amount')
     def constraint_amount(self):

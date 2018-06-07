@@ -24,6 +24,7 @@
             <field name="arch" type="xml">
                 <tree string="Codigos y modelos" editable="bottom">
                     <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="name_model"/>
                     <field name="code"/>
                     <field name="id_model"/>

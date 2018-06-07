@@ -33,6 +33,13 @@ class CodesModelsRelation(models.Model):
     id_model = fields.Integer('Id del modelo', required=True)
     code = fields.Char('Codigo / Nombre', required=True)
 
+    company_id = fields.Many2one(
+        'res.company',
+        'Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
+
     def get_record_from_code(self, name_model, code, name='Afip'):
         """
         Busca el objeto segun el codigo de la aplicacion

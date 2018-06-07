@@ -53,7 +53,8 @@ Cheques
         'views/account_checkbook_view.xml',
         'views/menu.xml',
         'wizard/account_register_payments_view.xml',
-        'data/res_company.xml'
+        'data/res_company.xml',
+        'data/security.xml',
     ],
 
     'active': False,

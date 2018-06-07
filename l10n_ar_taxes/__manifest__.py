@@ -38,7 +38,8 @@
         'views/account_invoice_view.xml',
         'views/account.xml',
         'views/taxes_menu_view.xml',
-        'data/codes_modes_relation.xml'
+        'data/codes_modes_relation.xml',
+        'data/security.xml',
     ],
     'qweb': [
         "static/src/xml/account_info.xml",

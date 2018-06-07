@@ -33,6 +33,12 @@ class AccountDenomination(models.Model):
         string='Discrimina IVA?',
         help='Discriminacion de IVA en reporte'
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Compania',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
 
     _sql_constraints = [('name_unique', 'unique(name)', 'El nombre debe ser unico por denominacion')]
 

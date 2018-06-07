@@ -20,10 +20,10 @@ from openerp import models, fields
 
 
 class ResPartner(models.Model):
-
     _inherit = "res.partner"
 
     iibb_number = fields.Char(string="Numero IIBB")
     start_date = fields.Date(string="Fecha Inicio Actividad")
+    company_id = fields.Many2one(required=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

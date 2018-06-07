@@ -37,6 +37,13 @@ class WsfeConfiguration(models.Model):
     # no utilizamos otro lo dejamos asi, tener en cuenta si algun dia se utiliza el wsaa para otros servicios.
     wsaa_token_id = fields.Many2one('wsaa.token', 'Token Acceso', required=True)
 
+    company_id = fields.Many2one(
+        'res.company',
+        'Empresa',
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
+
     _sql_constraints = [('unique_name', 'unique(name)', 'Ya existe una configuracion con ese nombre')]
 
     @api.constrains('wsaa_token_id')

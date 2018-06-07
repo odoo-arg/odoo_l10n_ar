@@ -37,7 +37,7 @@ class RetentionSifere(models.Model):
         line.jurisdiccion = code
         vat = r.payment_id.partner_id.vat
         line.cuit = "{0}-{1}-{2}".format(vat[0:2], vat[2:10], vat[-1:])
-        line.fecha = datetime.strptime(r.create_date, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y')
+        line.fecha = datetime.strptime(r.payment_id.payment_date, '%Y-%m-%d').strftime('%d/%m/%Y')
         line.puntoDeVenta = r.payment_id.pos_ar_id.name
         line.numeroComprobante = filter(str.isdigit, str(r.certificate_no))
         line.numeroBase = filter(str.isdigit, str(r.payment_id.name.split('-')[1]))
@@ -48,12 +48,12 @@ class RetentionSifere(models.Model):
     def generate_file(self):
         lines = presentation.Presentation("sifere", "retenciones")
         retentions = self.env['account.payment.retention'].search([
-            ('create_date', '>=', self.date_from),
-            ('create_date', '<=', self.date_to),
+            ('payment_id.payment_date', '>=', self.date_from),
+            ('payment_id.payment_date', '<=', self.date_to),
             ('retention_id.type', '=', 'gross_income'),
             ('payment_id.state', '=', 'posted'),
             ('payment_id.payment_type', '=', 'inbound')
-        ]).sorted(key=lambda r: (r.create_date, r.id))
+        ]).sorted(key=lambda r: (r.payment_id.payment_date, r.id))
 
         missing_vats = set()
         invalid_doctypes = set()

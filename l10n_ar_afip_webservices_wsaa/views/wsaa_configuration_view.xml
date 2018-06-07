@@ -26,6 +26,7 @@
                         <h1><field name="name" placeholder="Nombre..."/></h1>
                         <group>
                             <group>
+                                <field name="company_id" groups="base.group_multi_company"/>
                                 <field name="type"/>
                             </group>
                             <group>
@@ -81,6 +82,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="type"/>
                 </tree>
             </field>

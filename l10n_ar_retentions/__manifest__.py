@@ -44,6 +44,7 @@
         'data/retention_activities.xml',
         'data/sequence.xml',
         'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,

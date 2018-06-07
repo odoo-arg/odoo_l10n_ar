@@ -31,7 +31,7 @@
     'website': 'http://www.openpyme.com.ar',
 
     'depends': [
-        'l10n_ar_point_of_sale'
+        'l10n_ar_taxes',
     ],
 
     'data': [

@@ -36,7 +36,8 @@
 
     'data': [
         'views/account_invoice_presentation.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/security.xml',
     ],
 
     'installable': True,
