@@ -16,7 +16,6 @@
 #
 ##############################################################################
 
-import account_denomination
 import account_invoice
 import account_fiscal_position
 import denomination_fiscal_position

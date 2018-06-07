@@ -47,6 +47,7 @@ class TestPerceptionsSifere(common.TransactionCase):
             'journal_id': self.journal.id,
             'denomination_id': self.denomination.id,
             'name': '9999-88888888',
+            'date_invoice': date.today()
         })
 
     def create_tax_data(self):

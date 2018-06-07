@@ -54,7 +54,7 @@ class PerceptionSifere(models.Model):
         line.jurisdiccion = code
         vat = p.invoice_id.partner_id.vat
         line.cuit = "{0}-{1}-{2}".format(vat[0:2], vat[2:10], vat[-1:])
-        line.fecha = datetime.strptime(p.invoice_id.date, '%Y-%m-%d').strftime('%d/%m/%Y')
+        line.fecha = datetime.strptime(p.invoice_id.date or p.invoice_id.date_invoice, '%Y-%m-%d').strftime('%d/%m/%Y')
         line.puntoDeVenta = p.invoice_id.name[0:4]
         line.numeroComprobante = p.invoice_id.name[5:]
         line.tipo = self._get_tipo(p)
